@@ -1,0 +1,852 @@
+ [
+  {
+    "id": 1,
+    "question": "Which level of teaching focuses primarily on memory, rote learning, and the reproduction of facts without deep conceptual understanding?",
+    "options": {
+      "A": "Reflective Level of Teaching (RLT)",
+      "B": "Understanding Level of Teaching (ULT)",
+      "C": "Memory Level of Teaching (MLT)",
+      "D": "Autonomous Development Level"
+    },
+    "correctAnswer": "C",
+    "explanation": "Memory Level of Teaching focuses on memorization, recall, and reproduction of factual information. It is the lowest level of teaching in terms of cognitive complexity.",
+    "topic": "Teaching Aptitude",
+    "unit": "Teaching Aptitude",
+    "difficulty": "Moderate",
+    "questionType": "MCQ",
+    "marks": 2
+  },
+  {
+    "id": 2,
+    "question": "What is the primary objective of Action Research in an educational setting?",
+    "options": {
+      "A": "To develop new theoretical frameworks",
+      "B": "To solve immediate classroom or local practical problems",
+      "C": "To conduct cross-cultural comparative studies",
+      "D": "To establish universal context-free generalizations"
+    },
+    "correctAnswer": "B",
+    "explanation": "Action Research is conducted to identify and solve immediate practical problems in a specific classroom or local educational setting. It emphasizes action, reflection, and improvement.",
+    "topic": "Research Aptitude",
+    "unit": "Research Aptitude",
+    "difficulty": "Moderate",
+    "questionType": "MCQ",
+    "marks": 2
+  },
+  {
+    "id": 3,
+    "question": "Which probability sampling technique ensures that every single member of the population has an equal and independent chance of selection?",
+    "options": {
+      "A": "Quota Sampling",
+      "B": "Snowball Sampling",
+      "C": "Simple Random Sampling",
+      "D": "Purposive Sampling"
+    },
+    "correctAnswer": "C",
+    "explanation": "In Simple Random Sampling, every member of the population has an equal and independent probability of being selected.",
+    "topic": "Research Aptitude",
+    "unit": "Research Aptitude",
+    "difficulty": "Moderate",
+    "questionType": "MCQ",
+    "marks": 2
+  },
+  {
+    "id": 4,
+    "question": "Communication with oneself, involving internal cognitive processing, self-talk, and reflection, is classified as:",
+    "options": {
+      "A": "Interpersonal Communication",
+      "B": "Intrapersonal Communication",
+      "C": "Group Communication",
+      "D": "Mass Communication"
+    },
+    "correctAnswer": "B",
+    "explanation": "Intrapersonal communication refers to communication within oneself, including self-talk, internal thinking, reflection, and cognitive processing.",
+    "topic": "Communication",
+    "unit": "Communication",
+    "difficulty": "Easy",
+    "questionType": "MCQ",
+    "marks": 2
+  },
+  {
+    "id": 5,
+    "question": "In the context of digital higher education in India, what does the acronym 'MOOC' stand for?",
+    "options": {
+      "A": "Massive Open Online Courses",
+      "B": "Modern Online Organizational Curriculum",
+      "C": "Media-Based Open Online Classes",
+      "D": "Module-Oriented Open Certification"
+    },
+    "correctAnswer": "A",
+    "explanation": "MOOC stands for Massive Open Online Courses. MOOCs provide online learning opportunities to a large number of learners through open-access platforms.",
+    "topic": "ICT",
+    "unit": "ICT",
+    "difficulty": "Easy",
+    "questionType": "MCQ",
+    "marks": 2
+  },
+  {
+    "id": 6,
+    "question": "Which ancient Indian university was globally renowned for its specialized study of Medicine and Surgery under the teachings of Acharya Charaka?",
+    "options": {
+      "A": "Nalanda",
+      "B": "Takshashila (Taxila)",
+      "C": "Vikramashila",
+      "D": "Vallabhi"
+    },
+    "correctAnswer": "B",
+    "explanation": "Takshashila was an ancient centre of learning associated with several disciplines, including medicine. However, the question's specific attribution to Acharya Charaka should be treated carefully because historical accounts do not establish Takshashila as a modern-style university.",
+    "topic": "Higher Education",
+    "unit": "Higher Education",
+    "difficulty": "Difficult",
+    "questionType": "MCQ",
+    "marks": 2
+  },
+  {
+    "id": 7,
+    "question": "As per National Education Policy (NEP) 2020, what percentage of learners from schools and higher education institutions are expected to have exposure to vocational education by the year 2025?",
+    "options": {
+      "A": "30%",
+      "B": "40%",
+      "C": "50%",
+      "D": "75%"
+    },
+    "correctAnswer": "C",
+    "explanation": "NEP 2020 aims to expose at least 50% of learners in school and higher education to vocational education by 2025.",
+    "topic": "Higher Education",
+    "unit": "Higher Education",
+    "difficulty": "Moderate",
+    "questionType": "MCQ",
+    "marks": 2
+  },
+  {
+    "id": 8,
+    "question": "Which of the following is NOT one of the national coordinators appointed for managing courses on the SWAYAM platform?",
+    "options": {
+      "A": "Indira Gandhi National Open University (IGNOU)",
+      "B": "Consortium for Educational Communication (CEC)",
+      "C": "National Institute of Technical Teachers Training and Research (NITTTR)",
+      "D": "National Council of Educational Research and Training (NCERT)"
+    },
+    "correctAnswer": "D",
+    "explanation": "SWAYAM has designated national coordinators for different categories of courses. IGNOU, CEC and NITTTR are among the higher-education-related coordinators, whereas NCERT is primarily associated with school education.",
+    "topic": "ICT",
+    "unit": "ICT",
+    "difficulty": "Difficult",
+    "questionType": "MCQ",
+    "marks": 2
+  },
+  {
+    "id": 9,
+    "question": "In classical Indian philosophy (Nyaya Epistemology), which valid source of knowledge (pramana) is defined as cognition derived through comparison or similarity?",
+    "options": {
+      "A": "Pratyaksha (Perception)",
+      "B": "Anumana (Inference)",
+      "C": "Upamana (Comparison / Analogy)",
+      "D": "Shabda (Verbal Testimony)"
+    },
+    "correctAnswer": "C",
+    "explanation": "Upamana is the pramana of comparison or analogy. It produces knowledge through the recognition of similarity between a known and an unknown object.",
+    "topic": "Logical Reasoning",
+    "unit": "Logical Reasoning",
+    "difficulty": "Moderate",
+    "questionType": "MCQ",
+    "marks": 2
+  },
+  {
+    "id": 10,
+    "question": "Which of the following is a non-renewable energy resource?",
+    "options": {
+      "A": "Biomass",
+      "B": "Geothermal energy",
+      "C": "Bituminous Coal",
+      "D": "Wind power"
+    },
+    "correctAnswer": "C",
+    "explanation": "Bituminous coal is a fossil fuel formed over geological periods and is therefore classified as a non-renewable energy resource.",
+    "topic": "Environment",
+    "unit": "Environment",
+    "difficulty": "Easy",
+    "questionType": "MCQ",
+    "marks": 2
+  },
+  {
+    "id": 11,
+    "question": "In qualitative research, the criterion that directly parallels 'internal validity' used in quantitative research is:",
+    "options": {
+      "A": "Credibility",
+      "B": "Transferability",
+      "C": "Dependability",
+      "D": "Confirmability"
+    },
+    "correctAnswer": "A",
+    "explanation": "Credibility in qualitative research corresponds broadly to internal validity in quantitative research. It concerns the trustworthiness and accuracy of the findings.",
+    "topic": "Research Aptitude",
+    "unit": "Research Aptitude",
+    "difficulty": "Difficult",
+    "questionType": "MCQ",
+    "marks": 2
+  },
+  {
+    "id": 12,
+    "question": "A researcher formulates a hypothesis stating: \"There is no statistically significant difference in test performance between students taught via online mode and offline mode.\" This hypothesis is classified as a:",
+    "options": {
+      "A": "Directional Research Hypothesis",
+      "B": "Null Hypothesis",
+      "C": "Alternative Hypothesis",
+      "D": "Causal Hypothesis"
+    },
+    "correctAnswer": "B",
+    "explanation": "A null hypothesis states that there is no significant difference or relationship between variables. It is commonly tested statistically against an alternative hypothesis.",
+    "topic": "Research Aptitude",
+    "unit": "Research Aptitude",
+    "difficulty": "Moderate",
+    "questionType": "MCQ",
+    "marks": 2
+  },
+  {
+    "id": 13,
+    "question": "At the Reflective Level of Teaching (RLT), the primary role and posture of the teacher is best described as:",
+    "options": {
+      "A": "An authoritative dictator imparting structured facts",
+      "B": "A passive observer letting students work unguided",
+      "C": "A facilitator creating a democratic environment for student-led problem-solving",
+      "D": "An instructor focusing strictly on syllabus completion"
+    },
+    "correctAnswer": "C",
+    "explanation": "Reflective Level Teaching encourages critical thinking and problem-solving. The teacher functions mainly as a facilitator who supports learners in analysing and solving problems.",
+    "topic": "Teaching Aptitude",
+    "unit": "Teaching Aptitude",
+    "difficulty": "Difficult",
+    "questionType": "MCQ",
+    "marks": 2
+  },
+  {
+    "id": 14,
+    "question": "When a teacher uses non-verbal body language such as posture, facial expressions, eye contact, and hand gestures to reinforce a verbal lecture, this dimension of communication is studied under:",
+    "options": {
+      "A": "Proxemics",
+      "B": "Kinesics",
+      "C": "Chronemics",
+      "D": "Haptics"
+    },
+    "correctAnswer": "B",
+    "explanation": "Kinesics is the study of body movements and non-verbal behaviour such as facial expressions, posture, gestures, and eye movements.",
+    "topic": "Communication",
+    "unit": "Communication",
+    "difficulty": "Moderate",
+    "questionType": "MCQ",
+    "marks": 2
+  },
+  {
+    "id": 15,
+    "question": "Which computer memory type is volatile, directly accessible by the CPU, and stores data temporarily while programs are actively running?",
+    "options": {
+      "A": "ROM (Read Only Memory)",
+      "B": "Hard Disk Drive (HDD)",
+      "C": "RAM (Random Access Memory)",
+      "D": "CD-ROM"
+    },
+    "correctAnswer": "C",
+    "explanation": "RAM is volatile primary memory. It temporarily stores data and instructions currently being used by the CPU.",
+    "topic": "ICT",
+    "unit": "ICT",
+    "difficulty": "Easy",
+    "questionType": "MCQ",
+    "marks": 2
+  },
+  {
+    "id": 16,
+    "question": "Biochemical Oxygen Demand (BOD) is a standard water quality parameter used to measure:",
+    "options": {
+      "A": "The level of dissolved heavy metals in industrial wastewater",
+      "B": "The amount of oxygen consumed by microorganisms to decompose organic waste in water",
+      "C": "The total salt concentration in drinking water",
+      "D": "The atmospheric oxygen absorption rate of oceans"
+    },
+    "correctAnswer": "B",
+    "explanation": "BOD measures the amount of dissolved oxygen consumed by microorganisms while decomposing biodegradable organic matter in water.",
+    "topic": "Environment",
+    "unit": "Environment",
+    "difficulty": "Moderate",
+    "questionType": "MCQ",
+    "marks": 2
+  },
+  {
+    "id": 17,
+    "question": "Which qualitative research approach focuses specifically on exploring and understanding the shared culture, rituals, and values of an intact social group through immersion?",
+    "options": {
+      "A": "Grounded Theory",
+      "B": "Phenomenology",
+      "C": "Ethnography",
+      "D": "Case Study"
+    },
+    "correctAnswer": "C",
+    "explanation": "Ethnography involves the systematic study of a group's culture, practices, rituals, values, and social behaviour, often through prolonged immersion.",
+    "topic": "Research Aptitude",
+    "unit": "Research Aptitude",
+    "difficulty": "Difficult",
+    "questionType": "MCQ",
+    "marks": 2
+  },
+  {
+    "id": 18,
+    "question": "The pedagogical structure proposed by NEP 2020 to replace the legacy 10+2 school education system is:",
+    "options": {
+      "A": "5 + 3 + 3 + 4",
+      "B": "3 + 5 + 3 + 4",
+      "C": "5 + 4 + 3 + 3",
+      "D": "4 + 3 + 3 + 5"
+    },
+    "correctAnswer": "A",
+    "explanation": "NEP 2020 proposes a 5+3+3+4 curricular and pedagogical structure covering Foundational, Preparatory, Middle, and Secondary stages.",
+    "topic": "Higher Education",
+    "unit": "Higher Education",
+    "difficulty": "Easy",
+    "questionType": "MCQ",
+    "marks": 2
+  },
+  {
+    "id": 19,
+    "question": "What is the missing term in the number series: 3, 12, 36, 144, 432, ?, 5184?",
+    "options": {
+      "A": "1296",
+      "B": "1728",
+      "C": "1738",
+      "D": "1512"
+    },
+    "correctAnswer": "B",
+    "explanation": "The pattern alternates between ×4 and ×3: 3×4=12, 12×3=36, 36×4=144, 144×3=432. Therefore, 432×4=1728.",
+    "topic": "Logical Reasoning",
+    "unit": "Logical Reasoning",
+    "difficulty": "Moderate",
+    "questionType": "Number Series",
+    "marks": 2
+  },
+  {
+    "id": 20,
+    "question": "In classroom evaluation, an assessment conducted continuously during the instructional process to provide immediate feedback and diagnose learning gaps is known as:",
+    "options": {
+      "A": "Summative Evaluation",
+      "B": "Formative Evaluation",
+      "C": "Norm-Referenced Evaluation",
+      "D": "Benchmark Evaluation"
+    },
+    "correctAnswer": "B",
+    "explanation": "Formative evaluation is conducted during instruction to provide feedback, identify learning difficulties, and improve the teaching-learning process.",
+    "topic": "Teaching Aptitude",
+    "unit": "Teaching Aptitude",
+    "difficulty": "Easy",
+    "questionType": "MCQ",
+    "marks": 2
+  },
+  {
+    "id": 21,
+    "question": "A researcher wishes to study the attitudes of college students toward digital learning across a widely dispersed geographic state with limited budget. Which multi-stage sampling design is most pragmatic?",
+    "options": {
+      "A": "Simple Random Sampling",
+      "B": "Cluster Sampling",
+      "C": "Systematic Sampling",
+      "D": "Stratified Random Sampling"
+    },
+    "correctAnswer": "B",
+    "explanation": "Cluster sampling is useful when the population is geographically dispersed. Researchers can select groups or clusters first and then study individuals within selected clusters.",
+    "topic": "Research Aptitude",
+    "unit": "Research Aptitude",
+    "difficulty": "Difficult",
+    "questionType": "MCQ",
+    "marks": 2
+  },
+  {
+    "id": 22,
+    "question": "In an experimental study designed to evaluate the impact of a new AI-based teaching tool on student test scores, the variable that is systematically manipulated by the researcher is the:",
+    "options": {
+      "A": "Dependent Variable",
+      "B": "Independent Variable",
+      "C": "Extraneous Variable",
+      "D": "Intervening Variable"
+    },
+    "correctAnswer": "B",
+    "explanation": "The independent variable is deliberately manipulated by the researcher to examine its effect on the dependent variable.",
+    "topic": "Research Aptitude",
+    "unit": "Research Aptitude",
+    "difficulty": "Moderate",
+    "questionType": "MCQ",
+    "marks": 2
+  },
+  {
+    "id": 23,
+    "question": "During a live online lecture, severe audio stuttering and video freezing disrupt student understanding. This scenario exemplifies which type of communication barrier?",
+    "options": {
+      "A": "Psychological Barrier",
+      "B": "Mechanical / Technical Noise",
+      "C": "Semantic Barrier",
+      "D": "Cultural Barrier"
+    },
+    "correctAnswer": "B",
+    "explanation": "Technical failures such as audio distortion, network problems, and video freezing constitute mechanical or technical barriers to communication.",
+    "topic": "Communication",
+    "unit": "Communication",
+    "difficulty": "Moderate",
+    "questionType": "MCQ",
+    "marks": 2
+  },
+  {
+    "id": 24,
+    "question": "Identify the logical fallacy committed in the argument: \"You should not accept Professor Verma's research findings on renewable energy because he is an arrogant person who owns an expensive car.\"",
+    "options": {
+      "A": "Begging the Question (Petitio Principii)",
+      "B": "Argument Ad Hominem (Attacking the Person)",
+      "C": "Hasty Generalization",
+      "D": "Slippery Slope"
+    },
+    "correctAnswer": "B",
+    "explanation": "Ad Hominem is committed when an argument is rejected by attacking the person presenting it rather than addressing the evidence or reasoning.",
+    "topic": "Logical Reasoning",
+    "unit": "Logical Reasoning",
+    "difficulty": "Difficult",
+    "questionType": "MCQ",
+    "marks": 2
+  },
+  {
+    "id": 25,
+    "question": "An item was bought for ₹400 and sold for ₹500. What is the profit percentage?",
+    "options": {
+      "A": "20%",
+      "B": "25%",
+      "C": "15%",
+      "D": "30%"
+    },
+    "correctAnswer": "B",
+    "explanation": "Profit = ₹500 − ₹400 = ₹100. Profit percentage = (100 ÷ 400) × 100 = 25%.",
+    "topic": "Data Interpretation",
+    "unit": "Data Interpretation",
+    "difficulty": "Easy",
+    "questionType": "Numerical",
+    "marks": 2
+  },
+  {
+    "id": 26,
+    "question": "A research team wants to store, annotate, and automatically format bibliographies across 200 PDF papers in APA 7th Edition format. Which tool should they use?",
+    "options": {
+      "A": "SPSS",
+      "B": "Zotero / Mendeley",
+      "C": "MS Excel",
+      "D": "NVivo"
+    },
+    "correctAnswer": "B",
+    "explanation": "Reference management tools such as Zotero and Mendeley help researchers organize documents, annotate references, and generate bibliographies in citation styles such as APA.",
+    "topic": "Research Aptitude",
+    "unit": "Research Aptitude",
+    "difficulty": "Moderate",
+    "questionType": "MCQ",
+    "marks": 2
+  },
+  {
+    "id": 27,
+    "question": "A teacher notices that a student frequently seeks attention through minor misbehaviors. Instead of shouting, the teacher reinforces positive behavior when the student works quietly. This strategy is based on:",
+    "options": {
+      "A": "Classical Conditioning (Pavlov)",
+      "B": "Operant Conditioning & Behavior Modification (Skinner)",
+      "C": "Social Learning Theory (Bandura)",
+      "D": "Cognitive Constructivism (Piaget)"
+    },
+    "correctAnswer": "B",
+    "explanation": "Operant conditioning explains behaviour in terms of its consequences. Reinforcing desired behaviour increases the likelihood that the behaviour will be repeated.",
+    "topic": "Teaching Aptitude",
+    "unit": "Teaching Aptitude",
+    "difficulty": "Moderate",
+    "questionType": "MCQ",
+    "marks": 2
+  },
+  {
+    "id": 28,
+    "question": "Which of the Creative Commons licenses is considered the MOST liberal for Open Educational Resources (OER), allowing re-use, modification, and redistribution as long as original credit is given?",
+    "options": {
+      "A": "CC-BY",
+      "B": "CC-BY-SA",
+      "C": "CC-BY-ND",
+      "D": "CC-BY-NC"
+    },
+    "correctAnswer": "A",
+    "explanation": "CC BY permits reuse, adaptation, and redistribution, including commercially, provided appropriate attribution is given to the original creator.",
+    "topic": "ICT",
+    "unit": "ICT",
+    "difficulty": "Difficult",
+    "questionType": "MCQ",
+    "marks": 2
+  },
+  {
+    "id": 29,
+    "question": "A city municipality decides to build urban green parks and reflective roofs to combat rising summer temperatures. This action represents:",
+    "options": {
+      "A": "Climate Change Mitigation and Adaptation",
+      "B": "Geo-engineering experimentation",
+      "C": "Ozone layer depletion reversal",
+      "D": "Acid rain control measure"
+    },
+    "correctAnswer": "A",
+    "explanation": "Urban green spaces and reflective roofs help reduce local heat impacts and improve resilience to rising temperatures. Such measures are associated primarily with climate adaptation, while some urban measures can also contribute to mitigation.",
+    "topic": "Environment",
+    "unit": "Environment",
+    "difficulty": "Moderate",
+    "questionType": "MCQ",
+    "marks": 2
+  },
+  {
+    "id": 30,
+    "question": "A researcher conducts a study combining quantitative survey data with qualitative in-depth interviews to validate the findings from different angles. This approach is called:",
+    "options": {
+      "A": "Meta-analysis",
+      "B": "Triangulation",
+      "C": "Cross-sectional survey",
+      "D": "Longitudinal study"
+    },
+    "correctAnswer": "B",
+    "explanation": "Triangulation involves using multiple methods, data sources, researchers, or perspectives to examine a research problem and strengthen the credibility of findings.",
+    "topic": "Research Aptitude",
+    "unit": "Research Aptitude",
+    "difficulty": "Moderate",
+    "questionType": "MCQ",
+    "marks": 2
+  },
+  {
+    "id": 31,
+    "question": "Match List-I (Research Paradigm) with List-II (Core Feature).",
+    "options": {
+      "A": "A-II, B-IV, C-III, D-I",
+      "B": "A-I, B-II, C-III, D-IV",
+      "C": "A-IV, B-III, C-II, D-I",
+      "D": "A-II, B-I, C-IV, D-III"
+    },
+    "correctAnswer": "A",
+    "explanation": "Positivism emphasizes objective measurement; Constructivism views reality as socially constructed; Action Research solves local practical problems; Phenomenology focuses on lived experiences.",
+    "topic": "Research Aptitude",
+    "unit": "Research Aptitude",
+    "difficulty": "Very Difficult",
+    "questionType": "Match the Following",
+    "marks": 2
+  },
+  {
+    "id": 32,
+    "question": "Identify the correct operational sequence of steps in the Action Research cycle:",
+    "options": {
+      "A": "Act → Plan → Observe → Reflect",
+      "B": "Plan → Act → Observe → Reflect",
+      "C": "Reflect → Observe → Plan → Act",
+      "D": "Observe → Reflect → Plan → Act"
+    },
+    "correctAnswer": "B",
+    "explanation": "A commonly used Action Research cycle proceeds through Plan, Act, Observe, and Reflect. The reflective stage informs subsequent planning.",
+    "topic": "Research Aptitude",
+    "unit": "Research Aptitude",
+    "difficulty": "Moderate",
+    "questionType": "Sequence",
+    "marks": 2
+  },
+  {
+    "id": 33,
+    "question": "Given below are two statements regarding Communication. Statement I: Asynchronous communication occurs in real-time where sender and receiver interact simultaneously. Statement II: Discussion forums, email, and recorded video lectures are prime examples of Asynchronous communication tools.",
+    "options": {
+      "A": "Both Statement I and Statement II are correct",
+      "B": "Both Statement I and Statement II are incorrect",
+      "C": "Statement I is incorrect but Statement II is correct",
+      "D": "Statement I is correct but Statement II is incorrect"
+    },
+    "correctAnswer": "C",
+    "explanation": "Statement I is incorrect because real-time simultaneous interaction is synchronous communication. Discussion forums, email, and recorded lectures are examples of asynchronous communication.",
+    "topic": "Communication",
+    "unit": "Communication",
+    "difficulty": "Difficult",
+    "questionType": "Statement I and II",
+    "marks": 2
+  },
+  {
+    "id": 34,
+    "question": "Match List-I (Variable Type) with List-II (Description).",
+    "options": {
+      "A": "A-II, B-I, C-IV, D-III",
+      "B": "A-I, B-II, C-III, D-IV",
+      "C": "A-III, B-IV, C-I, D-II",
+      "D": "A-II, B-III, C-IV, D-I"
+    },
+    "correctAnswer": "A",
+    "explanation": "The Independent Variable is manipulated by the researcher; the Dependent Variable is the outcome measured; Extraneous Variables may distort results; Intervening Variables logically occur between independent and dependent variables.",
+    "topic": "Research Aptitude",
+    "unit": "Research Aptitude",
+    "difficulty": "Very Difficult",
+    "questionType": "Match the Following",
+    "marks": 2
+  },
+  {
+    "id": 35,
+    "question": "Given below are two statements regarding Logical Fallacies in Classical Indian Logic (Hetvabhasa). Statement I: Savyabhichara is the fallacy of the irregular middle term. Statement II: Satpratipaksha occurs when an inference is contradicted by another equally valid inference.",
+    "options": {
+      "A": "Both Statement I and Statement II are correct",
+      "B": "Both Statement I and Statement II are incorrect",
+      "C": "Statement I is correct but Statement II is incorrect",
+      "D": "Statement I is incorrect but Statement II is correct"
+    },
+    "correctAnswer": "A",
+    "explanation": "Savyabhichara refers to an irregular or inconclusive middle term. Satpratipaksha refers to an inference being countered by another inference that establishes an opposite conclusion.",
+    "topic": "Logical Reasoning",
+    "unit": "Logical Reasoning",
+    "difficulty": "Very Difficult",
+    "questionType": "Statement I and II",
+    "marks": 2
+  },
+  {
+    "id": 36,
+    "question": "According to the Square of Opposition, if the universal affirmative proposition \"All scientists are rational\" is given as TRUE, what can be immediately inferred about the truth value of \"Some scientists are not rational\"?",
+    "options": {
+      "A": "True",
+      "B": "False",
+      "C": "Undetermined",
+      "D": "Partially True"
+    },
+    "correctAnswer": "B",
+    "explanation": "The universal affirmative A-proposition and the particular negative O-proposition are contradictories. If the A-proposition is true, the corresponding O-proposition must be false.",
+    "topic": "Logical Reasoning",
+    "unit": "Logical Reasoning",
+    "difficulty": "Difficult",
+    "questionType": "Logical Reasoning",
+    "marks": 2
+  },
+  {
+    "id": 37,
+    "question": "Arrange the following ancient higher educational institutions in order of their historical establishment from earliest to later: Nalanda, Takshashila, Vikramashila, Vallabhi.",
+    "options": {
+      "A": "(B), (A), (D), (C)",
+      "B": "(A), (B), (C), (D)",
+      "C": "(B), (D), (A), (C)",
+      "D": "(C), (A), (B), (D)"
+    },
+    "correctAnswer": "A",
+    "explanation": "The commonly presented chronological sequence is Takshashila, Nalanda, Vallabhi, and Vikramashila. Exact dates for some ancient institutions are debated in historical scholarship.",
+    "topic": "Higher Education",
+    "unit": "Higher Education",
+    "difficulty": "Very Difficult",
+    "questionType": "Ascending Order",
+    "marks": 2
+  },
+  {
+    "id": 38,
+    "question": "Match List-I (International Environmental Agreement) with List-II (Core Focus).",
+    "options": {
+      "A": "A-II, B-I, C-IV, D-III",
+      "B": "A-I, B-II, C-III, D-IV",
+      "C": "A-IV, B-III, C-II, D-I",
+      "D": "A-III, B-IV, C-I, D-II"
+    },
+    "correctAnswer": "A",
+    "explanation": "Montreal Protocol focuses on stratospheric ozone protection; Kyoto Protocol on greenhouse gas reduction targets; Paris Agreement on limiting temperature rise; Nagoya Protocol on access and benefit sharing.",
+    "topic": "Environment",
+    "unit": "Environment",
+    "difficulty": "Very Difficult",
+    "questionType": "Match the Following",
+    "marks": 2
+  },
+  {
+    "id": 39,
+    "question": "Given below are two statements. Statement I: Formative evaluation is terminal in nature and used for grading/certifying students at the end of a session. Statement II: Summative evaluation provides continuous feedback during the instructional process to improve teaching-learning.",
+    "options": {
+      "A": "Both Statement I and Statement II are correct",
+      "B": "Both Statement I and Statement II are incorrect",
+      "C": "Statement I is correct but Statement II is incorrect",
+      "D": "Statement I is incorrect but Statement II is correct"
+    },
+    "correctAnswer": "B",
+    "explanation": "Both statements reverse the usual definitions. Formative evaluation is continuous and feedback-oriented, whereas summative evaluation is generally conducted at the end of an instructional period.",
+    "topic": "Teaching Aptitude",
+    "unit": "Teaching Aptitude",
+    "difficulty": "Moderate",
+    "questionType": "Statement I and II",
+    "marks": 2
+  },
+  {
+    "id": 40,
+    "question": "Match List-I (Panchakosha) with List-II (Aspect of Human Development).",
+    "options": {
+      "A": "A-I, B-II, C-III, D-IV",
+      "B": "A-IV, B-III, C-I, D-II",
+      "C": "A-I, B-III, C-II, D-IV",
+      "D": "A-III, B-I, C-IV, D-II"
+    },
+    "correctAnswer": "A",
+    "explanation": "Annamaya Kosha relates to the physical layer; Pranamaya to vital energy; Manomaya to the mental layer; and Vijnanamaya to intellect or wisdom.",
+    "topic": "Higher Education",
+    "unit": "Higher Education",
+    "difficulty": "Difficult",
+    "questionType": "Match the Following",
+    "marks": 2
+  },
+  {
+    "id": 41,
+    "question": "Assertion (A): The National Education Policy 2020 envisions creating 'Research-Intensive Universities' (RIUs) across the country. Reason (R): NEP 2020 conceives universities as higher education institutions that place equal emphasis on high-quality teaching and cutting-edge research.",
+    "options": {
+      "A": "Both (A) and (R) are correct and (R) is the correct explanation of (A)",
+      "B": "Both (A) and (R) are correct but (R) is NOT the correct explanation of (A)",
+      "C": "(A) is correct but (R) is incorrect",
+      "D": "(A) is incorrect but (R) is correct"
+    },
+    "correctAnswer": "A",
+    "explanation": "NEP 2020 emphasizes strengthening research and integrating high-quality teaching with research in higher education. This vision supports research-intensive institutional development.",
+    "topic": "Higher Education",
+    "unit": "Higher Education",
+    "difficulty": "Very Difficult",
+    "questionType": "Assertion and Reason",
+    "marks": 2
+  },
+  {
+    "id": 42,
+    "question": "In a statistical hypothesis testing scenario, committing a Type I Error (α) occurs when the researcher:",
+    "options": {
+      "A": "Rejects the Null Hypothesis when it is actually TRUE",
+      "B": "Fails to reject the Null Hypothesis when it is actually FALSE",
+      "C": "Accepts both Null and Alternative Hypotheses simultaneously",
+      "D": "Uses a non-parametric test instead of a parametric test"
+    },
+    "correctAnswer": "A",
+    "explanation": "Type I Error occurs when a true null hypothesis is rejected. Its probability is represented by alpha (α), the level of significance.",
+    "topic": "Research Aptitude",
+    "unit": "Research Aptitude",
+    "difficulty": "Moderate",
+    "questionType": "MCQ",
+    "marks": 2
+  },
+  {
+    "id": 43,
+    "question": "Arrange the following senior functionaries of a Central University in correct descending hierarchical order: Visitor, Chancellor, Vice-Chancellor, Dean of Faculty, Head of Department (HoD).",
+    "options": {
+      "A": "(A), (B), (C), (D), (E)",
+      "B": "(B), (A), (C), (E), (D)",
+      "C": "(A), (C), (B), (D), (E)",
+      "D": "(C), (A), (B), (E), (D)"
+    },
+    "correctAnswer": "A",
+    "explanation": "The question follows the intended hierarchical sequence of Visitor, Chancellor, Vice-Chancellor, Dean, and Head of Department. Specific statutory powers can vary according to the governing university Act.",
+    "topic": "Higher Education",
+    "unit": "Higher Education",
+    "difficulty": "Very Difficult",
+    "questionType": "Descending Order",
+    "marks": 2
+  },
+  {
+    "id": 44,
+    "question": "Given below are two statements regarding Research Methods. Statement I: Parametric tests such as t-test and ANOVA make assumptions including distributional assumptions. Statement II: Non-parametric tests such as Chi-Square and Mann-Whitney U test are distribution-free and flexible for nominal/ordinal data.",
+    "options": {
+      "A": "Both Statement I and Statement II are correct",
+      "B": "Both Statement I and Statement II are incorrect",
+      "C": "Statement I is correct but Statement II is incorrect",
+      "D": "Statement I is incorrect but Statement II is correct"
+    },
+    "correctAnswer": "A",
+    "explanation": "Parametric tests generally rely on assumptions about the population distribution and other conditions. Non-parametric tests make fewer distributional assumptions and are often suitable for categorical or ordinal data.",
+    "topic": "Research Aptitude",
+    "unit": "Research Aptitude",
+    "difficulty": "Difficult",
+    "questionType": "Statement I and II",
+    "marks": 2
+  },
+  {
+    "id": 45,
+    "question": "The mass media theory which asserts that media may not tell people what to think, but is strikingly successful in telling readers what to think about by selecting specific public issues, is known as:",
+    "options": {
+      "A": "Agenda-Setting Theory",
+      "B": "Cultivation Theory",
+      "C": "Uses and Gratifications Theory",
+      "D": "Spiral of Silence"
+    },
+    "correctAnswer": "A",
+    "explanation": "Agenda-Setting Theory proposes that media influence the salience of issues by highlighting certain topics, thereby influencing what audiences think about.",
+    "topic": "Communication",
+    "unit": "Communication",
+    "difficulty": "Moderate",
+    "questionType": "MCQ",
+    "marks": 2
+  },
+  {
+    "id": 46,
+    "question": "As per NEP 2020 recommendations, all standalone teacher education institutions will be required to convert into multidisciplinary institutions by which target year?",
+    "options": {
+      "A": "2025",
+      "B": "2030",
+      "C": "2035",
+      "D": "2040"
+    },
+    "correctAnswer": "B",
+    "explanation": "NEP 2020 states that teacher education institutions should move towards multidisciplinary environments, with the transformation of standalone TEIs targeted for 2030.",
+    "topic": "Higher Education",
+    "unit": "Higher Education",
+    "difficulty": "Difficult",
+    "questionType": "MCQ",
+    "marks": 2
+  },
+  {
+    "id": 47,
+    "question": "Assertion (A): Salami-slicing (salami publication) is considered an unethical practice in academic publishing. Reason (R): It involves segmenting a single large research study into multiple thin, minimum publishable papers to artificially inflate publication metrics.",
+    "options": {
+      "A": "Both (A) and (R) are correct and (R) is the correct explanation of (A)",
+      "B": "Both (A) and (R) are correct but (R) is NOT the correct explanation of (A)",
+      "C": "(A) is correct but (R) is incorrect",
+      "D": "(A) is incorrect but (R) is correct"
+    },
+    "correctAnswer": "A",
+    "explanation": "Salami publication refers to unnecessarily dividing research findings into multiple minimal publications. When done merely to inflate publication counts, it raises serious research-integrity concerns.",
+    "topic": "Research Ethics",
+    "unit": "Research Aptitude",
+    "difficulty": "Difficult",
+    "questionType": "Assertion and Reason",
+    "marks": 2
+  },
+  {
+    "id": 48,
+    "question": "Which of the following features belong to the Choice Based Credit System (CBCS) implemented in Higher Education?",
+    "options": {
+      "A": "(A), (B), and (C) only",
+      "B": "(B), (C), and (D) only",
+      "C": "(A) and (D) only",
+      "D": "(A), (B), (C), and (D)"
+    },
+    "correctAnswer": "A",
+    "explanation": "CBCS promotes learner-centric education, internal assessment, standardized grading, and flexibility in choosing elective and interdisciplinary courses. It does not eliminate examinations completely.",
+    "topic": "Higher Education",
+    "unit": "Higher Education",
+    "difficulty": "Difficult",
+    "questionType": "Multiple Statements",
+    "marks": 2
+  },
+  {
+    "id": 49,
+    "question": "In computer networking, what is the main difference between IPv4 and IPv6 IP addresses?",
+    "options": {
+      "A": "IPv4 is 32-bit while IPv6 is 128-bit",
+      "B": "IPv4 is 64-bit while IPv6 is 32-bit",
+      "C": "IPv4 uses hexadecimal while IPv6 uses binary only",
+      "D": "IPv4 is wireless while IPv6 is wired"
+    },
+    "correctAnswer": "A",
+    "explanation": "IPv4 addresses use 32 bits, while IPv6 addresses use 128 bits. IPv6 therefore provides a vastly larger address space.",
+    "topic": "ICT",
+    "unit": "ICT",
+    "difficulty": "Easy",
+    "questionType": "MCQ",
+    "marks": 2
+  },
+  {
+    "id": 50,
+    "question": "Under the Sustainable Development Goals (SDGs) framework established by the United Nations, which specific goal is dedicated to ensuring \"Inclusive and equitable quality education and promoting lifelong learning opportunities for all\"?",
+    "options": {
+      "A": "SDG 3",
+      "B": "SDG 4",
+      "C": "SDG 5",
+      "D": "SDG 13"
+    },
+    "correctAnswer": "B",
+    "explanation": "SDG 4 focuses on ensuring inclusive and equitable quality education and promoting lifelong learning opportunities for all.",
+    "topic": "Environment",
+    "unit": "Environment",
+    "difficulty": "Easy",
+    "questionType": "MCQ",
+    "marks": 2
+  }
+]

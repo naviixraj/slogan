@@ -1,0 +1,4716 @@
+/* =========================================================
+   SLOGON ACADEMY
+   ONLINE EXAMINATION PLATFORM
+   MAIN STYLESHEET
+========================================================= */
+
+
+/* =========================================================
+   ROOT VARIABLES
+========================================================= */
+
+:root {
+
+    /* Brand Colors */
+
+    --navy-blue: #0B1F3A;
+
+    --gold: #D4AF37;
+
+    --white: #FFFFFF;
+
+    --light-gray: #F5F6F8;
+
+    --text-dark: #1F2937;
+
+    --text-gray: #6B7280;
+
+    --border-color: #E5E7EB;
+
+    --danger: #DC2626;
+
+}
+
+
+/* =========================================================
+   RESET
+========================================================= */
+
+* {
+
+    margin: 0;
+
+    padding: 0;
+
+    box-sizing: border-box;
+
+}
+
+
+/* =========================================================
+   BODY
+========================================================= */
+
+body {
+
+    font-family:
+        "Poppins",
+        "Noto Sans Tamil",
+        sans-serif;
+
+    background: var(--light-gray);
+
+    color: var(--text-dark);
+
+    min-height: 100vh;
+
+}
+
+
+/* =========================================================
+   LOGIN PAGE
+========================================================= */
+
+.login-page {
+
+    min-height: 100vh;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    padding: 30px 20px;
+
+    background:
+
+        linear-gradient(
+            135deg,
+            #F5F6F8 0%,
+            #E9EDF3 100%
+        );
+
+}
+
+
+/* =========================================================
+   LOGIN CARD
+========================================================= */
+
+.login-card {
+
+    width: 100%;
+
+    max-width: 520px;
+
+    background: var(--white);
+
+    border-radius: 16px;
+
+    overflow: hidden;
+
+    box-shadow:
+        0 20px 60px rgba(11, 31, 58, 0.12);
+
+    border:
+        1px solid rgba(11, 31, 58, 0.08);
+
+}
+
+
+/* =========================================================
+   BRAND HEADER
+========================================================= */
+
+.brand-header {
+
+    background: var(--navy-blue);
+
+    color: var(--white);
+
+    text-align: center;
+
+    padding: 36px 25px 30px;
+
+}
+
+
+/* Academy Logo */
+
+.academy-logo {
+
+    width: 58px;
+
+    height: 58px;
+
+    margin: 0 auto 14px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: var(--gold);
+
+    color: var(--navy-blue);
+
+    font-size: 28px;
+
+    font-weight: 700;
+
+    font-family: "Poppins", sans-serif;
+
+    box-shadow:
+        0 8px 20px rgba(0, 0, 0, 0.2);
+
+}
+
+
+/* Academy Name */
+
+.brand-header h1 {
+
+    font-size: 27px;
+
+    font-weight: 700;
+
+    letter-spacing: 1.5px;
+
+    margin-bottom: 8px;
+
+}
+
+
+/* Tagline */
+
+.brand-header p {
+
+    font-size: 14px;
+
+    font-weight: 400;
+
+    color: rgba(255, 255, 255, 0.85);
+
+}
+
+
+.brand-header p span {
+
+    color: var(--gold);
+
+    margin: 0 5px;
+
+}
+
+
+/* =========================================================
+   GOLD ACCENT LINE
+========================================================= */
+
+.gold-line {
+
+    height: 4px;
+
+    width: 100%;
+
+    background: var(--gold);
+
+}
+
+
+/* =========================================================
+   LOGIN CONTENT
+========================================================= */
+
+.login-content {
+
+    padding: 36px 42px;
+
+}
+
+
+/* =========================================================
+   LOGIN TITLE
+========================================================= */
+
+.login-title {
+
+    text-align: center;
+
+    margin-bottom: 30px;
+
+}
+
+
+.login-title h2 {
+
+    color: var(--navy-blue);
+
+    font-size: 21px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.8px;
+
+    margin-bottom: 8px;
+
+}
+
+
+.login-title p {
+
+    font-size: 13px;
+
+    color: var(--text-gray);
+
+    line-height: 1.6;
+
+}
+
+
+/* =========================================================
+   FORM GROUP
+========================================================= */
+
+.form-group {
+
+    margin-bottom: 21px;
+
+}
+
+
+/* Labels */
+
+.form-group label {
+
+    display: block;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    color: var(--navy-blue);
+
+    margin-bottom: 8px;
+
+}
+
+
+/* Inputs and Select */
+
+.form-group input,
+.form-group select {
+
+    width: 100%;
+
+    height: 48px;
+
+    padding: 0 14px;
+
+    border:
+
+        1px solid var(--border-color);
+
+    border-radius: 8px;
+
+    background: var(--white);
+
+    color: var(--text-dark);
+
+    font-family:
+        "Poppins",
+        "Noto Sans Tamil",
+        sans-serif;
+
+    font-size: 14px;
+
+    outline: none;
+
+    transition:
+
+        border 0.25s ease,
+        box-shadow 0.25s ease;
+
+}
+
+
+/* Placeholder */
+
+.form-group input::placeholder {
+
+    color: #9CA3AF;
+
+}
+
+
+/* Input Focus */
+
+.form-group input:focus,
+.form-group select:focus {
+
+    border-color: var(--gold);
+
+    box-shadow:
+
+        0 0 0 3px
+        rgba(212, 175, 55, 0.15);
+
+}
+
+
+/* Select Cursor */
+
+.form-group select {
+
+    cursor: pointer;
+
+}
+
+
+/* =========================================================
+   ERROR MESSAGE
+========================================================= */
+
+.error-message {
+
+    display: block;
+
+    color: var(--danger);
+
+    font-size: 12px;
+
+    margin-top: 6px;
+
+    min-height: 16px;
+
+}
+
+
+/* Input Error */
+
+.input-error {
+
+    border-color: var(--danger) !important;
+
+    box-shadow:
+
+        0 0 0 3px
+        rgba(220, 38, 38, 0.1) !important;
+
+}
+
+
+/* =========================================================
+   START BUTTON
+========================================================= */
+
+.start-btn {
+
+    width: 100%;
+
+    height: 52px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: var(--navy-blue);
+
+    color: var(--white);
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 14px;
+
+    font-weight: 600;
+
+    letter-spacing: 0.8px;
+
+    cursor: pointer;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    margin-top: 8px;
+
+    transition:
+
+        transform 0.25s ease,
+        background 0.25s ease,
+        box-shadow 0.25s ease;
+
+}
+
+
+/* Button Hover */
+
+.start-btn:hover {
+
+    background: #102A4C;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+
+        0 10px 25px
+        rgba(11, 31, 58, 0.2);
+
+}
+
+
+/* Button Active */
+
+.start-btn:active {
+
+    transform: translateY(0);
+
+}
+
+
+/* Arrow */
+
+.start-btn .arrow {
+
+    font-size: 20px;
+
+    line-height: 1;
+
+    color: var(--gold);
+
+}
+
+
+/* =========================================================
+   LOGIN FOOTER
+========================================================= */
+
+.login-footer {
+
+    border-top:
+
+        1px solid var(--border-color);
+
+    padding: 18px 20px;
+
+    text-align: center;
+
+    background: #FAFAFA;
+
+}
+
+
+.login-footer p {
+
+    font-size: 11px;
+
+    color: var(--text-gray);
+
+    letter-spacing: 0.3px;
+
+}
+
+
+/* =========================================================
+   ACCESSIBILITY
+========================================================= */
+
+button:focus-visible,
+input:focus-visible,
+select:focus-visible {
+
+    outline:
+
+        3px solid
+        rgba(212, 175, 55, 0.35);
+
+    outline-offset: 2px;
+
+}
+
+
+/* =========================================================
+   TABLET RESPONSIVE
+========================================================= */
+
+@media (max-width: 768px) {
+
+    .login-page {
+
+        padding: 25px 18px;
+
+    }
+
+
+    .login-card {
+
+        max-width: 500px;
+
+    }
+
+
+    .login-content {
+
+        padding: 32px 30px;
+
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE RESPONSIVE
+========================================================= */
+
+@media (max-width: 480px) {
+
+    .login-page {
+
+        padding: 15px;
+
+        align-items: flex-start;
+
+        padding-top: 30px;
+
+    }
+
+
+    .login-card {
+
+        border-radius: 12px;
+
+    }
+
+
+    .brand-header {
+
+        padding: 28px 20px 25px;
+
+    }
+
+
+    .academy-logo {
+
+        width: 52px;
+
+        height: 52px;
+
+        font-size: 24px;
+
+    }
+
+
+    .brand-header h1 {
+
+        font-size: 22px;
+
+        letter-spacing: 1px;
+
+    }
+
+
+    .brand-header p {
+
+        font-size: 12px;
+
+    }
+
+
+    .login-content {
+
+        padding: 28px 22px;
+
+    }
+
+
+    .login-title h2 {
+
+        font-size: 19px;
+
+    }
+
+
+    .login-title p {
+
+        font-size: 12px;
+
+    }
+
+
+    .form-group input,
+    .form-group select {
+
+        height: 46px;
+
+        font-size: 13px;
+
+    }
+
+
+    .start-btn {
+
+        height: 50px;
+
+        font-size: 13px;
+
+    }
+
+}
+
+/* =========================================================
+   PART 3
+   GENERAL INSTRUCTIONS PAGE
+========================================================= */
+
+
+/* =========================================================
+   INSTRUCTIONS BODY
+========================================================= */
+
+.instructions-body {
+
+    background: #F5F6F8;
+
+    min-height: 100vh;
+
+}
+
+
+/* =========================================================
+   HEADER
+========================================================= */
+
+.instructions-header {
+
+    min-height: 76px;
+
+    background: #0B1F3A;
+
+    color: #FFFFFF;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    padding: 0 5%;
+
+    border-bottom: 3px solid #D4AF37;
+
+}
+
+
+/* Brand */
+
+.instructions-brand {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+}
+
+
+.mini-logo {
+
+    width: 42px;
+
+    height: 42px;
+
+    border-radius: 50%;
+
+    background: #D4AF37;
+
+    color: #0B1F3A;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 20px;
+
+    font-weight: 700;
+
+}
+
+
+.instructions-brand h1 {
+
+    font-size: 17px;
+
+    letter-spacing: 1px;
+
+    margin-bottom: 2px;
+
+}
+
+
+.instructions-brand p {
+
+    font-size: 10px;
+
+    color: rgba(255,255,255,0.72);
+
+}
+
+
+.header-exam-info {
+
+    font-size: 13px;
+
+    font-weight: 500;
+
+    color: #FFFFFF;
+
+}
+
+
+/* =========================================================
+   MAIN CONTAINER
+========================================================= */
+
+.instructions-container {
+
+    width: 100%;
+
+    max-width: 1100px;
+
+    margin: 0 auto;
+
+    padding: 35px 25px 50px;
+
+}
+
+
+/* =========================================================
+   PAGE HEADING
+========================================================= */
+
+.page-heading {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 15px;
+
+    margin-bottom: 25px;
+
+}
+
+
+.heading-icon {
+
+    width: 46px;
+
+    height: 46px;
+
+    border-radius: 10px;
+
+    background: #0B1F3A;
+
+    color: #D4AF37;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 22px;
+
+    font-weight: 700;
+
+}
+
+
+.page-heading h2 {
+
+    color: #0B1F3A;
+
+    font-size: 24px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.5px;
+
+}
+
+
+.page-heading p {
+
+    color: #6B7280;
+
+    font-size: 13px;
+
+    margin-top: 4px;
+
+}
+
+
+/* =========================================================
+   CANDIDATE INFORMATION
+========================================================= */
+
+.candidate-info-card {
+
+    background: #FFFFFF;
+
+    border: 1px solid #E5E7EB;
+
+    border-radius: 12px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    margin-bottom: 20px;
+
+    overflow: hidden;
+
+}
+
+
+.candidate-info-item {
+
+    padding: 17px 20px;
+
+    border-right: 1px solid #E5E7EB;
+
+}
+
+
+.candidate-info-item:last-child {
+
+    border-right: none;
+
+}
+
+
+.info-label {
+
+    display: block;
+
+    color: #6B7280;
+
+    font-size: 11px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.5px;
+
+    margin-bottom: 5px;
+
+}
+
+
+.candidate-info-item strong {
+
+    display: block;
+
+    color: #0B1F3A;
+
+    font-size: 13px;
+
+    font-weight: 600;
+
+    overflow-wrap: anywhere;
+
+}
+
+
+/* =========================================================
+   OVERVIEW CARDS
+========================================================= */
+
+.overview-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 16px;
+
+    margin-bottom: 20px;
+
+}
+
+
+.overview-card {
+
+    background: #FFFFFF;
+
+    border: 1px solid #E5E7EB;
+
+    border-radius: 12px;
+
+    padding: 18px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 14px;
+
+}
+
+
+.overview-icon {
+
+    width: 42px;
+
+    height: 42px;
+
+    border-radius: 9px;
+
+    background: rgba(212,175,55,0.13);
+
+    color: #0B1F3A;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-weight: 700;
+
+    font-size: 15px;
+
+}
+
+
+.overview-card span {
+
+    display: block;
+
+    color: #6B7280;
+
+    font-size: 11px;
+
+    margin-bottom: 3px;
+
+}
+
+
+.overview-card strong {
+
+    display: block;
+
+    color: #0B1F3A;
+
+    font-size: 15px;
+
+}
+
+
+/* =========================================================
+   COMMON CARD
+========================================================= */
+
+.instructions-card {
+
+    background: #FFFFFF;
+
+    border: 1px solid #E5E7EB;
+
+    border-radius: 12px;
+
+    padding: 25px;
+
+    margin-bottom: 20px;
+
+}
+
+
+/* =========================================================
+   SECTION HEADER
+========================================================= */
+
+.section-header {
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 13px;
+
+    padding-bottom: 18px;
+
+    border-bottom: 1px solid #E5E7EB;
+
+    margin-bottom: 5px;
+
+}
+
+
+.section-number {
+
+    color: #D4AF37;
+
+    background: #0B1F3A;
+
+    width: 38px;
+
+    height: 38px;
+
+    border-radius: 8px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 12px;
+
+    font-weight: 700;
+
+}
+
+
+.section-header h3 {
+
+    color: #0B1F3A;
+
+    font-size: 17px;
+
+    margin-bottom: 3px;
+
+}
+
+
+.section-header p {
+
+    color: #6B7280;
+
+    font-size: 11px;
+
+}
+
+
+/* =========================================================
+   INSTRUCTION LIST
+========================================================= */
+
+.instruction-list {
+
+    display: flex;
+
+    flex-direction: column;
+
+}
+
+
+.instruction-item {
+
+    display: flex;
+
+    gap: 15px;
+
+    padding: 17px 5px;
+
+    border-bottom: 1px solid #F0F1F3;
+
+}
+
+
+.instruction-item:last-child {
+
+    border-bottom: none;
+
+}
+
+
+.instruction-number {
+
+    flex-shrink: 0;
+
+    width: 29px;
+
+    height: 29px;
+
+    border-radius: 50%;
+
+    background: #F5F6F8;
+
+    color: #0B1F3A;
+
+    border: 1px solid #E5E7EB;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+}
+
+
+.instruction-item h4 {
+
+    color: #1F2937;
+
+    font-size: 13px;
+
+    margin-bottom: 4px;
+
+}
+
+
+.instruction-item p {
+
+    color: #6B7280;
+
+    font-size: 12px;
+
+    line-height: 1.7;
+
+}
+
+
+.instruction-item strong {
+
+    color: #0B1F3A;
+
+    font-weight: 600;
+
+}
+
+
+/* =========================================================
+   QUESTION STATUS
+========================================================= */
+
+.status-grid {
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(2, 1fr);
+
+    gap: 12px;
+
+    padding-top: 18px;
+
+}
+
+
+.status-item {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 11px;
+
+    padding: 14px;
+
+    border: 1px solid #E5E7EB;
+
+    border-radius: 9px;
+
+    background: #FAFAFA;
+
+}
+
+
+.status-dot {
+
+    width: 14px;
+
+    height: 14px;
+
+    border-radius: 4px;
+
+    flex-shrink: 0;
+
+    margin-top: 2px;
+
+}
+
+
+.status-item strong {
+
+    display: block;
+
+    color: #1F2937;
+
+    font-size: 12px;
+
+    margin-bottom: 3px;
+
+}
+
+
+.status-item small {
+
+    display: block;
+
+    color: #6B7280;
+
+    font-size: 10px;
+
+    line-height: 1.5;
+
+}
+
+
+/* Status Colors */
+
+.status-dot.not-visited {
+
+    background: #E5E7EB;
+
+    border: 1px solid #CBD5E1;
+
+}
+
+
+.status-dot.not-answered {
+
+    background: #F59E0B;
+
+}
+
+
+.status-dot.answered {
+
+    background: #22C55E;
+
+}
+
+
+.status-dot.review {
+
+    background: #8B5CF6;
+
+}
+
+
+.status-dot.answered-review {
+
+    background: #6366F1;
+
+}
+
+
+/* =========================================================
+   DECLARATION
+========================================================= */
+
+.declaration-card {
+
+    display: flex;
+
+    gap: 15px;
+
+    background: #FFFCF2;
+
+    border: 1px solid rgba(212,175,55,0.45);
+
+    border-radius: 12px;
+
+    padding: 20px;
+
+    margin-bottom: 18px;
+
+}
+
+
+.declaration-icon {
+
+    width: 35px;
+
+    height: 35px;
+
+    flex-shrink: 0;
+
+    border-radius: 50%;
+
+    background: #D4AF37;
+
+    color: #0B1F3A;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    font-weight: 700;
+
+}
+
+
+.declaration-content h3 {
+
+    color: #0B1F3A;
+
+    font-size: 14px;
+
+    margin-bottom: 10px;
+
+}
+
+
+/* Checkbox */
+
+.checkbox-label {
+
+    display: flex;
+
+    align-items: flex-start;
+
+    gap: 10px;
+
+    cursor: pointer;
+
+    position: relative;
+
+}
+
+
+.checkbox-label input {
+
+    position: absolute;
+
+    opacity: 0;
+
+    pointer-events: none;
+
+}
+
+
+.custom-checkbox {
+
+    width: 20px;
+
+    height: 20px;
+
+    flex-shrink: 0;
+
+    border: 2px solid #9CA3AF;
+
+    border-radius: 4px;
+
+    background: #FFFFFF;
+
+    position: relative;
+
+    transition: 0.2s ease;
+
+}
+
+
+.checkbox-label input:checked + .custom-checkbox {
+
+    background: #0B1F3A;
+
+    border-color: #0B1F3A;
+
+}
+
+
+.checkbox-label input:checked + .custom-checkbox::after {
+
+    content: "✓";
+
+    position: absolute;
+
+    color: #D4AF37;
+
+    font-size: 13px;
+
+    font-weight: 700;
+
+    left: 3px;
+
+    top: -1px;
+
+}
+
+
+.checkbox-text {
+
+    color: #4B5563;
+
+    font-size: 12px;
+
+    line-height: 1.7;
+
+}
+
+
+/* =========================================================
+   PROCEED SECTION
+========================================================= */
+
+.proceed-section {
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 20px;
+
+    padding-top: 5px;
+
+}
+
+
+.proceed-section p {
+
+    color: #6B7280;
+
+    font-size: 11px;
+
+}
+
+
+.proceed-btn {
+
+    min-width: 205px;
+
+    height: 48px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: #0B1F3A;
+
+    color: #FFFFFF;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 12px;
+
+    font-weight: 600;
+
+    letter-spacing: 0.5px;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: center;
+
+    gap: 10px;
+
+    cursor: pointer;
+
+    transition: 0.25s ease;
+
+}
+
+
+.proceed-btn:not(:disabled):hover {
+
+    background: #102A4C;
+
+    transform: translateY(-2px);
+
+    box-shadow:
+        0 8px 20px rgba(11,31,58,0.18);
+
+}
+
+
+.proceed-btn:disabled {
+
+    background: #CBD5E1;
+
+    color: #FFFFFF;
+
+    cursor: not-allowed;
+
+}
+
+
+.proceed-arrow {
+
+    color: #D4AF37;
+
+    font-size: 18px;
+
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.instructions-footer {
+
+    background: #0B1F3A;
+
+    color: rgba(255,255,255,0.7);
+
+    text-align: center;
+
+    padding: 18px 20px;
+
+    font-size: 10px;
+
+    line-height: 1.8;
+
+}
+
+
+.instructions-footer span {
+
+    color: #D4AF37;
+
+    margin: 0 5px;
+
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 800px) {
+
+    .instructions-header {
+
+        padding: 0 25px;
+
+    }
+
+
+    .candidate-info-card {
+
+        grid-template-columns:
+            repeat(2, 1fr);
+
+    }
+
+
+    .candidate-info-item:nth-child(2) {
+
+        border-right: none;
+
+    }
+
+
+    .candidate-info-item:nth-child(-n+2) {
+
+        border-bottom: 1px solid #E5E7EB;
+
+    }
+
+
+    .overview-grid {
+
+        grid-template-columns:
+            repeat(3, 1fr);
+
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .instructions-header {
+
+        min-height: 68px;
+
+        padding: 0 15px;
+
+    }
+
+
+    .instructions-brand h1 {
+
+        font-size: 14px;
+
+    }
+
+
+    .instructions-brand p {
+
+        font-size: 9px;
+
+    }
+
+
+    .mini-logo {
+
+        width: 36px;
+
+        height: 36px;
+
+        font-size: 17px;
+
+    }
+
+
+    .header-exam-info {
+
+        font-size: 10px;
+
+        max-width: 120px;
+
+        text-align: right;
+
+    }
+
+
+    .instructions-container {
+
+        padding: 25px 14px 40px;
+
+    }
+
+
+    .page-heading {
+
+        align-items: flex-start;
+
+    }
+
+
+    .heading-icon {
+
+        width: 40px;
+
+        height: 40px;
+
+        flex-shrink: 0;
+
+    }
+
+
+    .page-heading h2 {
+
+        font-size: 19px;
+
+    }
+
+
+    .page-heading p {
+
+        font-size: 11px;
+
+    }
+
+
+    .candidate-info-card {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .candidate-info-item {
+
+        border-right: none;
+
+        border-bottom: 1px solid #E5E7EB;
+
+    }
+
+
+    .candidate-info-item:last-child {
+
+        border-bottom: none;
+
+    }
+
+
+    .overview-grid {
+
+        grid-template-columns: 1fr;
+
+        gap: 10px;
+
+    }
+
+
+    .instructions-card {
+
+        padding: 18px 15px;
+
+    }
+
+
+    .status-grid {
+
+        grid-template-columns: 1fr;
+
+    }
+
+
+    .declaration-card {
+
+        padding: 17px;
+
+    }
+
+
+    .proceed-section {
+
+        flex-direction: column;
+
+        align-items: stretch;
+
+        text-align: center;
+
+    }
+
+
+    .proceed-btn {
+
+        width: 100%;
+
+    }
+
+}
+/* =========================================================
+   SLOGON ACADEMY
+   ONLINE EXAMINATION PAGE
+   ========================================================= */
+
+
+/* ================= EXAM BODY ================= */
+
+.exam-body {
+    margin: 0;
+
+    background: #F5F6F8;
+
+    color: #1F2937;
+
+    font-family: "Inter", "Noto Sans Tamil", sans-serif;
+
+    overflow-x: hidden;
+}
+
+
+.exam-page {
+    min-height: 100vh;
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+/* ================= EXAM HEADER ================= */
+
+.exam-header {
+    height: 72px;
+
+    padding: 0 24px;
+
+    background: #0B1F3A;
+
+    color: #FFFFFF;
+
+    display: grid;
+
+    grid-template-columns:
+        1fr auto 1fr;
+
+    align-items: center;
+
+    gap: 20px;
+
+    border-bottom: 2px solid #D4AF37;
+}
+
+
+.exam-brand {
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+}
+
+
+.exam-logo {
+    width: 42px;
+    height: 42px;
+
+    border: 2px solid #D4AF37;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    color: #D4AF37;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 20px;
+
+    font-weight: 700;
+}
+
+
+.exam-brand-text {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 2px;
+}
+
+
+.exam-brand-text strong {
+    font-family: "Poppins", sans-serif;
+
+    font-size: 15px;
+
+    letter-spacing: 0.4px;
+}
+
+
+.exam-brand-text span {
+    color: #C9D1DD;
+
+    font-size: 9px;
+
+    letter-spacing: 0.4px;
+}
+
+
+.exam-name {
+    text-align: center;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 2px;
+}
+
+
+.exam-name span {
+    color: #AEB9C8;
+
+    font-size: 9px;
+
+    font-weight: 600;
+
+    letter-spacing: 1.2px;
+}
+
+
+.exam-name strong {
+    color: #D4AF37;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 14px;
+
+    letter-spacing: 0.4px;
+}
+
+
+.exam-timer {
+    justify-self: end;
+
+    min-width: 105px;
+
+    padding: 8px 14px;
+
+    border: 1px solid rgba(255, 255, 255, 0.15);
+
+    border-radius: 7px;
+
+    background: rgba(255, 255, 255, 0.06);
+
+    text-align: center;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 2px;
+}
+
+
+.timer-label {
+    color: #AEB9C8;
+
+    font-size: 8px;
+
+    font-weight: 600;
+
+    letter-spacing: 0.8px;
+}
+
+
+.exam-timer strong {
+    color: #FFFFFF;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 19px;
+
+    line-height: 1.1;
+
+    letter-spacing: 1px;
+}
+
+
+/* ================= CANDIDATE BAR ================= */
+
+.candidate-bar {
+    min-height: 58px;
+
+    padding: 0 24px;
+
+    background: #FFFFFF;
+
+    border-bottom: 1px solid #E5E7EB;
+
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr 1fr 1fr;
+
+    align-items: stretch;
+}
+
+
+.candidate-bar-item {
+    padding: 9px 18px;
+
+    border-right: 1px solid #E5E7EB;
+
+    display: flex;
+
+    flex-direction: column;
+
+    justify-content: center;
+
+    gap: 2px;
+}
+
+
+.candidate-bar-item:first-child {
+    padding-left: 0;
+}
+
+
+.candidate-bar-item:last-child {
+    border-right: none;
+}
+
+
+.candidate-bar-item span {
+    color: #6B7280;
+
+    font-size: 9px;
+
+    text-transform: uppercase;
+
+    letter-spacing: 0.6px;
+
+    font-weight: 600;
+}
+
+
+.candidate-bar-item strong {
+    color: #0B1F3A;
+
+    font-size: 12px;
+
+    font-weight: 700;
+}
+
+
+.question-counter {
+    align-items: flex-end;
+
+    text-align: right;
+}
+
+
+.question-counter strong {
+    font-family: "Poppins", sans-serif;
+
+    font-size: 15px;
+}
+
+
+/* ================= MAIN EXAM ================= */
+
+.exam-main {
+    width: 100%;
+
+    max-width: 1500px;
+
+    margin: 0 auto;
+
+    padding: 18px 24px 22px;
+
+    display: grid;
+
+    grid-template-columns:
+        minmax(0, 1fr) 330px;
+
+    gap: 18px;
+
+    flex: 1;
+}
+
+
+/* ================= QUESTION AREA ================= */
+
+.question-area {
+    min-width: 0;
+
+    display: flex;
+
+    flex-direction: column;
+}
+
+
+.question-card {
+    background: #FFFFFF;
+
+    border: 1px solid #E5E7EB;
+
+    border-radius: 9px;
+
+    box-shadow:
+        0 2px 8px rgba(11, 31, 58, 0.04);
+
+    overflow: hidden;
+}
+
+
+/* ================= QUESTION HEADER ================= */
+
+.question-header {
+    min-height: 54px;
+
+    padding: 0 20px;
+
+    border-bottom: 1px solid #E5E7EB;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+}
+
+
+.question-number-badge {
+    color: #0B1F3A;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 12px;
+
+    font-weight: 700;
+}
+
+
+.question-number-badge span {
+    color: #D4AF37;
+
+    margin-left: 4px;
+}
+
+
+.question-type {
+    padding: 5px 10px;
+
+    border-radius: 5px;
+
+    background: #EEF2F7;
+
+    color: #0B1F3A;
+
+    font-size: 9px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.7px;
+}
+
+
+/* ================= QUESTION CONTENT ================= */
+
+.question-content {
+    padding: 27px 30px 23px;
+}
+
+
+.question-content h2 {
+    margin: 0;
+
+    color: #1F2937;
+
+    font-family:
+        "Noto Sans Tamil",
+        "Inter",
+        sans-serif;
+
+    font-size: 17px;
+
+    font-weight: 600;
+
+    line-height: 1.8;
+}
+
+
+/* ================= OPTIONS ================= */
+
+.options-container {
+    padding: 0 30px 28px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 10px;
+}
+
+
+.option {
+    min-height: 54px;
+
+    padding: 8px 14px;
+
+    border: 1px solid #DDE2E8;
+
+    border-radius: 7px;
+
+    background: #FFFFFF;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 12px;
+
+    cursor: pointer;
+
+    transition:
+        border-color 0.15s ease,
+        background 0.15s ease,
+        box-shadow 0.15s ease;
+}
+
+
+.option:hover {
+    border-color: #9AA7B8;
+
+    background: #FAFBFC;
+}
+
+
+.option input {
+    position: absolute;
+
+    opacity: 0;
+
+    pointer-events: none;
+}
+
+
+.option-letter {
+    width: 31px;
+    height: 31px;
+
+    border: 1px solid #CBD5E1;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    flex-shrink: 0;
+
+    color: #475569;
+
+    font-size: 11px;
+
+    font-weight: 700;
+}
+
+
+.option-text {
+    color: #374151;
+
+    font-family:
+        "Noto Sans Tamil",
+        "Inter",
+        sans-serif;
+
+    font-size: 13px;
+
+    line-height: 1.6;
+}
+
+
+/* Selected option */
+
+.option:has(input:checked) {
+    border-color: #0B1F3A;
+
+    background: #F4F7FB;
+
+    box-shadow:
+        0 0 0 1px #0B1F3A;
+}
+
+
+.option:has(input:checked)
+.option-letter {
+    background: #0B1F3A;
+
+    border-color: #0B1F3A;
+
+    color: #D4AF37;
+}
+
+
+/* ================= QUESTION CONTROLS ================= */
+
+.question-controls {
+    margin-top: 14px;
+
+    display: grid;
+
+    grid-template-columns:
+        auto auto 1fr auto;
+
+    gap: 8px;
+
+    align-items: center;
+}
+
+
+.exam-btn {
+    min-height: 40px;
+
+    padding: 0 15px;
+
+    border: 1px solid #CBD5E1;
+
+    border-radius: 6px;
+
+    background: #FFFFFF;
+
+    color: #374151;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition:
+        background 0.15s ease,
+        border-color 0.15s ease,
+        transform 0.15s ease;
+}
+
+
+.exam-btn:hover {
+    background: #F8FAFC;
+
+    border-color: #94A3B8;
+}
+
+
+.exam-btn:active {
+    transform: translateY(1px);
+}
+
+
+.review-btn {
+    color: #6D28D9;
+
+    border-color: #C4B5FD;
+
+    background: #FAF8FF;
+}
+
+
+
+/* SLOGON ACADEMY — EMERALD SAVE & NEXT BUTTON */
+
+.next-btn {
+    background: #176B52;
+    border: 1px solid #176B52;
+    color: #FFFFFF;
+
+    min-height: 42px;
+    padding: 0 22px;
+
+    border-radius: 8px;
+
+    font-family: "Poppins", sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+
+    cursor: pointer;
+
+    transition: all 0.2s ease;
+}
+
+.next-btn:hover {
+    background: #125640;
+    border-color: #125640;
+
+    box-shadow: 0 3px 8px rgba(23, 107, 82, 0.18);
+}
+
+.next-btn:active {
+    transform: scale(0.98);
+}
+
+.next-btn:focus-visible {
+    outline: 3px solid #8BC8AE;
+    outline-offset: 3px;
+}
+
+.next-btn:disabled {
+    background: #A8BDB3;
+    border-color: #A8BDB3;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+
+
+/* ================= MOBILE SUBMIT ================= */
+
+.mobile-submit-area {
+    display: none;
+
+    margin-top: 10px;
+}
+
+
+.submit-test-button {
+    width: 100%;
+
+    min-height: 42px;
+
+    border: none;
+
+    border-radius: 6px;
+
+    background: #DC2626;
+
+    color: #FFFFFF;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 11px;
+
+    font-weight: 700;
+
+    letter-spacing: 0.3px;
+
+    cursor: pointer;
+}
+
+
+.submit-test-button:hover {
+    background: #B91C1C;
+}
+
+
+/* ================= SIDEBAR ================= */
+
+.exam-sidebar {
+    min-width: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 12px;
+}
+
+
+/* ================= SIDEBAR CANDIDATE ================= */
+
+.sidebar-candidate {
+    min-height: 64px;
+
+    padding: 11px 14px;
+
+    background: #FFFFFF;
+
+    border: 1px solid #E5E7EB;
+
+    border-radius: 8px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 11px;
+}
+
+
+.sidebar-avatar {
+    width: 38px;
+    height: 38px;
+
+    border-radius: 50%;
+
+    background: #0B1F3A;
+
+    color: #D4AF37;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 16px;
+
+    font-weight: 700;
+}
+
+
+.sidebar-candidate div:last-child {
+    min-width: 0;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 2px;
+}
+
+
+.sidebar-candidate strong {
+    color: #0B1F3A;
+
+    font-size: 12px;
+
+    overflow: hidden;
+
+    white-space: nowrap;
+
+    text-overflow: ellipsis;
+}
+
+
+.sidebar-candidate span {
+    color: #6B7280;
+
+    font-size: 9px;
+}
+
+
+/* ================= SIDEBAR CARDS ================= */
+
+.palette-card,
+.summary-card,
+.legend-card {
+    background: #FFFFFF;
+
+    border: 1px solid #E5E7EB;
+
+    border-radius: 8px;
+
+    padding: 14px;
+}
+
+
+.sidebar-title {
+    margin-bottom: 12px;
+
+    display: flex;
+
+    align-items: baseline;
+
+    justify-content: space-between;
+
+    gap: 10px;
+}
+
+
+.sidebar-title h3 {
+    margin: 0;
+
+    color: #0B1F3A;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 12px;
+
+    font-weight: 700;
+}
+
+
+.sidebar-title span {
+    color: #9CA3AF;
+
+    font-family:
+        "Noto Sans Tamil",
+        sans-serif;
+
+    font-size: 9px;
+}
+
+
+/* ================= QUESTION PALETTE ================= */
+
+.question-palette {
+    display: grid;
+
+    grid-template-columns:
+        repeat(5, 1fr);
+
+    gap: 7px;
+
+    max-height: 310px;
+
+    overflow-y: auto;
+
+    padding-right: 2px;
+}
+
+
+.palette-number {
+    width: 100%;
+
+    aspect-ratio: 1 / 1;
+
+    min-height: 36px;
+
+    border: 1px solid #E5E7EB;
+
+    border-radius: 5px;
+
+    background: #E5E7EB;
+
+    color: #475569;
+
+    font-size: 10px;
+
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.1s ease,
+        box-shadow 0.1s ease;
+}
+
+
+.palette-number:hover {
+    transform: translateY(-1px);
+
+    box-shadow:
+        0 2px 5px rgba(0, 0, 0, 0.08);
+}
+
+
+/* Palette statuses */
+
+.palette-number.not-visited {
+    background: #E5E7EB;
+
+    color: #475569;
+
+    border-color: #E5E7EB;
+}
+
+
+.palette-number.not-answered {
+    background: #F59E0B;
+
+    color: #FFFFFF;
+
+    border-color: #F59E0B;
+}
+
+
+.palette-number.answered {
+    background: #22C55E;
+
+    color: #FFFFFF;
+
+    border-color: #22C55E;
+}
+
+
+.palette-number.review {
+    background: #8B5CF6;
+
+    color: #FFFFFF;
+
+    border-color: #8B5CF6;
+}
+
+
+.palette-number.answered-review {
+    background: #6366F1;
+
+    color: #FFFFFF;
+
+    border-color: #6366F1;
+}
+
+
+/* Active question */
+
+.palette-number.active {
+    outline: 3px solid rgba(212, 175, 55, 0.55);
+
+    outline-offset: 1px;
+
+    transform: scale(1.04);
+}
+
+
+/* ================= SUMMARY ================= */
+
+.summary-grid {
+    display: grid;
+
+    grid-template-columns:
+        1fr 1fr;
+
+    gap: 8px;
+}
+
+
+.summary-item {
+    min-height: 50px;
+
+    padding: 8px;
+
+    background: #F8FAFC;
+
+    border: 1px solid #EDF0F3;
+
+    border-radius: 6px;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 8px;
+}
+
+
+.summary-dot {
+    width: 10px;
+    height: 10px;
+
+    border-radius: 3px;
+
+    flex-shrink: 0;
+}
+
+
+.answered-dot {
+    background: #22C55E;
+}
+
+
+.not-answered-dot {
+    background: #F59E0B;
+}
+
+
+.review-dot {
+    background: #8B5CF6;
+}
+
+
+.not-visited-dot {
+    background: #E5E7EB;
+}
+
+
+.summary-item div {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 1px;
+}
+
+
+.summary-item strong {
+    color: #0B1F3A;
+
+    font-size: 13px;
+}
+
+
+.summary-item small {
+    color: #6B7280;
+
+    font-size: 8px;
+
+    white-space: nowrap;
+}
+
+
+/* ================= LEGEND ================= */
+
+.legend-list {
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 8px;
+}
+
+
+.legend-item {
+    display: flex;
+
+    align-items: center;
+
+    gap: 9px;
+
+    color: #4B5563;
+
+    font-size: 9px;
+}
+
+
+.legend-box {
+    width: 18px;
+    height: 18px;
+
+    border-radius: 4px;
+
+    flex-shrink: 0;
+}
+
+
+.legend-not-visited {
+    background: #E5E7EB;
+}
+
+
+.legend-not-answered {
+    background: #F59E0B;
+}
+
+
+.legend-answered {
+    background: #22C55E;
+}
+
+
+.legend-review {
+    background: #8B5CF6;
+}
+
+
+.legend-answered-review {
+    background: #6366F1;
+}
+
+
+/* ================= SIDEBAR SUBMIT ================= */
+
+.sidebar-submit {
+    margin-top: auto;
+}
+
+
+.sidebar-submit .submit-test-button {
+    min-height: 45px;
+}
+
+
+/* ================= SUBMIT MODAL ================= */
+
+.modal-overlay {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 9999;
+
+    background: rgba(11, 31, 58, 0.62);
+
+    display: none;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 20px;
+}
+
+
+.modal-overlay.show {
+    display: flex;
+}
+
+
+.submit-modal {
+    width: min(420px, 100%);
+
+    background: #FFFFFF;
+
+    border-radius: 10px;
+
+    padding: 28px;
+
+    text-align: center;
+
+    box-shadow:
+        0 20px 50px rgba(0, 0, 0, 0.2);
+}
+
+
+.modal-icon {
+    width: 46px;
+    height: 46px;
+
+    margin: 0 auto 12px;
+
+    border-radius: 50%;
+
+    background: #FEF2F2;
+
+    color: #DC2626;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 20px;
+
+    font-weight: 700;
+}
+
+
+.submit-modal h2 {
+    margin: 0;
+
+    color: #0B1F3A;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 20px;
+}
+
+
+.submit-modal > p {
+    margin: 8px 0 18px;
+
+    color: #6B7280;
+
+    font-size: 12px;
+}
+
+
+.modal-summary {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 7px;
+
+    margin-bottom: 20px;
+}
+
+
+.modal-summary div {
+    padding: 10px 5px;
+
+    background: #F8FAFC;
+
+    border-radius: 6px;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 3px;
+}
+
+
+.modal-summary span {
+    color: #6B7280;
+
+    font-size: 8px;
+}
+
+
+.modal-summary strong {
+    color: #0B1F3A;
+
+    font-size: 15px;
+}
+
+
+.modal-actions {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr;
+
+    gap: 8px;
+}
+
+
+.modal-actions button {
+    min-height: 40px;
+
+    border-radius: 6px;
+
+    font-family: "Poppins", sans-serif;
+
+    font-size: 10px;
+
+    font-weight: 600;
+
+    cursor: pointer;
+}
+
+
+.modal-cancel {
+    border: 1px solid #CBD5E1;
+
+    background: #FFFFFF;
+
+    color: #374151;
+}
+
+
+.modal-confirm {
+    border: 1px solid #DC2626;
+
+    background: #DC2626;
+
+    color: #FFFFFF;
+}
+
+
+/* ================= EXAM FOOTER ================= */
+
+.exam-footer {
+    min-height: 42px;
+
+    padding: 0 24px;
+
+    background: #0B1F3A;
+
+    color: #AEB9C8;
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    font-size: 8px;
+
+    letter-spacing: 0.4px;
+}
+
+
+.exam-footer span:first-child {
+    color: #D4AF37;
+
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   TABLET
+   ========================================================= */
+
+@media (max-width: 1000px) {
+
+    .exam-header {
+        grid-template-columns:
+            1fr auto;
+
+        height: auto;
+
+        min-height: 68px;
+
+        padding: 10px 18px;
+    }
+
+
+    .exam-name {
+        display: none;
+    }
+
+
+    .exam-main {
+        grid-template-columns:
+            minmax(0, 1fr) 270px;
+
+        padding: 14px;
+
+        gap: 12px;
+    }
+
+
+    .question-content {
+        padding: 23px;
+    }
+
+
+    .options-container {
+        padding: 0 23px 23px;
+    }
+
+
+    .question-controls {
+        grid-template-columns:
+            1fr 1fr;
+
+        gap: 7px;
+    }
+
+
+    .review-btn {
+        grid-column: span 1;
+    }
+
+
+    .next-btn {
+        grid-column: span 1;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+   ========================================================= */
+
+@media (max-width: 700px) {
+
+    .exam-header {
+        padding: 9px 12px;
+    }
+
+
+    .exam-logo {
+        width: 37px;
+        height: 37px;
+
+        font-size: 18px;
+    }
+
+
+    .exam-brand-text strong {
+        font-size: 12px;
+    }
+
+
+    .exam-brand-text span {
+        font-size: 8px;
+    }
+
+
+    .exam-timer {
+        min-width: 82px;
+
+        padding: 6px 9px;
+    }
+
+
+    .exam-timer strong {
+        font-size: 16px;
+    }
+
+
+    .candidate-bar {
+        padding: 0 12px;
+
+        grid-template-columns:
+            1fr 1fr;
+
+        min-height: auto;
+    }
+
+
+    .candidate-bar-item {
+        min-height: 48px;
+
+        padding: 7px 10px;
+
+        border-bottom: 1px solid #E5E7EB;
+    }
+
+
+    .candidate-bar-item:nth-child(2) {
+        border-right: none;
+    }
+
+
+    .candidate-bar-item:nth-child(3) {
+        border-bottom: none;
+    }
+
+
+    .candidate-bar-item:nth-child(4) {
+        border-right: none;
+
+        border-bottom: none;
+    }
+
+
+    .candidate-bar-item:first-child {
+        padding-left: 10px;
+    }
+
+
+    .question-counter {
+        align-items: flex-end;
+    }
+
+
+    .exam-main {
+        width: auto;
+
+        padding: 10px;
+
+        display: flex;
+
+        flex-direction: column;
+
+        gap: 10px;
+    }
+
+
+    .question-content {
+        padding: 20px 17px 18px;
+    }
+
+
+    .question-content h2 {
+        font-size: 14px;
+
+        line-height: 1.8;
+    }
+
+
+    .options-container {
+        padding: 0 17px 19px;
+
+        gap: 8px;
+    }
+
+
+    .option {
+        min-height: 50px;
+
+        padding: 7px 10px;
+
+        gap: 9px;
+    }
+
+
+    .option-letter {
+        width: 28px;
+        height: 28px;
+    }
+
+
+    .option-text {
+        font-size: 12px;
+    }
+
+
+    .question-controls {
+        grid-template-columns:
+            1fr 1fr;
+
+        margin-top: 8px;
+    }
+
+
+    .exam-btn {
+        min-height: 38px;
+
+        padding: 0 9px;
+
+        font-size: 9px;
+    }
+
+
+    .mobile-submit-area {
+        display: block;
+    }
+
+
+    .exam-sidebar {
+        order: 2;
+    }
+
+
+    .palette-card,
+    .summary-card,
+    .legend-card {
+        padding: 12px;
+    }
+
+
+    .question-palette {
+        grid-template-columns:
+            repeat(8, 1fr);
+
+        max-height: 210px;
+    }
+
+
+    .palette-number {
+        min-height: 32px;
+    }
+
+
+    .sidebar-submit {
+        display: none;
+    }
+
+
+    .exam-footer {
+        min-height: 58px;
+
+        padding: 8px 12px;
+
+        flex-direction: column;
+
+        justify-content: center;
+
+        gap: 3px;
+
+        text-align: center;
+    }
+
+}
+
+
+/* =========================================================
+   SMALL MOBILE
+   ========================================================= */
+
+@media (max-width: 400px) {
+
+    .question-palette {
+        grid-template-columns:
+            repeat(6, 1fr);
+    }
+
+
+    .question-controls {
+        grid-template-columns:
+            1fr 1fr;
+    }
+
+
+    .review-btn {
+        font-size: 8px;
+    }
+
+
+    .clear-btn {
+        font-size: 8px;
+    }
+
+
+    .modal-actions {
+        grid-template-columns: 1fr;
+    }
+
+}
+/* =========================================================
+   SLOGON ACADEMY — RESULT PAGE
+========================================================= */
+
+.result-page {
+    background: #F5F6F8;
+    color: #1F2937;
+    min-height: 100vh;
+}
+
+
+/* =========================================================
+   RESULT HEADER
+========================================================= */
+
+.result-header {
+    background: #0B1F3A;
+    color: #FFFFFF;
+    border-bottom: 3px solid #D4AF37;
+}
+
+
+.result-header-inner {
+    width: min(1200px, 94%);
+    margin: 0 auto;
+    min-height: 78px;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+}
+
+
+.result-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+
+.result-logo {
+    width: 44px;
+    height: 44px;
+
+    border: 2px solid #D4AF37;
+    border-radius: 50%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    color: #D4AF37;
+    font-family: Poppins, sans-serif;
+    font-size: 20px;
+    font-weight: 800;
+}
+
+
+.result-academy-name {
+    font-family: Poppins, sans-serif;
+    font-size: 17px;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+}
+
+
+.result-tagline {
+    margin-top: 2px;
+
+    color: #D4AF37;
+
+    font-size: 11px;
+    font-weight: 500;
+
+    letter-spacing: 0.5px;
+}
+
+
+.result-header-label {
+    text-align: right;
+}
+
+
+.result-header-label span {
+    display: block;
+
+    color: rgba(255, 255, 255, 0.65);
+
+    font-size: 10px;
+    font-weight: 600;
+
+    letter-spacing: 1.2px;
+}
+
+
+.result-header-label strong {
+    display: block;
+
+    margin-top: 2px;
+
+    color: #D4AF37;
+
+    font-family: Poppins, sans-serif;
+
+    font-size: 16px;
+    font-weight: 700;
+
+    letter-spacing: 1px;
+}
+
+
+/* =========================================================
+   MAIN CONTENT
+========================================================= */
+
+.result-main {
+    width: min(1100px, 94%);
+    margin: 0 auto;
+
+    padding: 35px 0 50px;
+}
+
+
+/* =========================================================
+   TITLE
+========================================================= */
+
+.result-title-section {
+    display: flex;
+    align-items: center;
+
+    gap: 15px;
+
+    margin-bottom: 25px;
+}
+
+
+.result-title-icon {
+    width: 48px;
+    height: 48px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #D4AF37;
+    color: #0B1F3A;
+
+    font-size: 24px;
+    font-weight: 800;
+}
+
+
+.result-title-section h1 {
+    margin: 0;
+
+    color: #0B1F3A;
+
+    font-family: Poppins, "Noto Sans Tamil", sans-serif;
+
+    font-size: 28px;
+    font-weight: 800;
+}
+
+
+.result-title-section p {
+    margin: 4px 0 0;
+
+    color: #6B7280;
+
+    font-size: 14px;
+}
+
+
+/* =========================================================
+   COMMON CARD
+========================================================= */
+
+.result-card {
+    background: #FFFFFF;
+
+    border: 1px solid #E5E7EB;
+    border-radius: 14px;
+
+    box-shadow:
+        0 4px 16px rgba(11, 31, 58, 0.05);
+
+    margin-bottom: 20px;
+}
+
+
+.result-card-heading {
+    padding: 22px 25px 0;
+}
+
+
+.result-section-label {
+    color: #D4AF37;
+
+    font-size: 10px;
+    font-weight: 800;
+
+    letter-spacing: 1.2px;
+}
+
+
+.result-card-heading h2 {
+    margin: 4px 0 0;
+
+    color: #0B1F3A;
+
+    font-family: Poppins, "Noto Sans Tamil", sans-serif;
+
+    font-size: 20px;
+    font-weight: 700;
+}
+
+
+/* =========================================================
+   CANDIDATE DETAILS
+========================================================= */
+
+.candidate-details-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(4, 1fr);
+
+    gap: 1px;
+
+    margin-top: 20px;
+
+    background: #E5E7EB;
+
+    border-top: 1px solid #E5E7EB;
+}
+
+
+.candidate-detail-item {
+    min-height: 82px;
+
+    padding: 16px 20px;
+
+    background: #FFFFFF;
+}
+
+
+.candidate-detail-item span {
+    display: block;
+
+    margin-bottom: 7px;
+
+    color: #6B7280;
+
+    font-size: 11px;
+    font-weight: 600;
+
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+}
+
+
+.candidate-detail-item strong {
+    display: block;
+
+    color: #0B1F3A;
+
+    font-size: 14px;
+    font-weight: 700;
+
+    word-break: break-word;
+}
+
+
+/* =========================================================
+   MAIN SCORE CARD
+========================================================= */
+
+.main-score-card {
+    display: grid;
+
+    grid-template-columns:
+        1.2fr 0.8fr;
+
+    overflow: hidden;
+}
+
+
+.score-card-left {
+    padding: 30px;
+}
+
+
+.score-card-left h2 {
+    margin: 5px 0 15px;
+
+    color: #0B1F3A;
+
+    font-family: Poppins, sans-serif;
+
+    font-size: 22px;
+}
+
+
+.score-display {
+    display: flex;
+    align-items: baseline;
+
+    gap: 7px;
+}
+
+
+.score-value {
+    color: #0B1F3A;
+
+    font-family: Poppins, sans-serif;
+
+    font-size: 58px;
+    line-height: 1;
+
+    font-weight: 800;
+}
+
+
+.score-divider {
+    color: #9CA3AF;
+
+    font-size: 32px;
+    font-weight: 400;
+}
+
+
+.score-total {
+    color: #6B7280;
+
+    font-family: Poppins, sans-serif;
+
+    font-size: 30px;
+    font-weight: 600;
+}
+
+
+.score-label {
+    margin-top: 7px;
+
+    color: #6B7280;
+
+    font-size: 12px;
+    font-weight: 500;
+}
+
+
+.performance-progress {
+    width: 100%;
+    height: 9px;
+
+    margin-top: 22px;
+
+    overflow: hidden;
+
+    border-radius: 20px;
+
+    background: #E5E7EB;
+}
+
+
+.performance-progress-fill {
+    height: 100%;
+
+    border-radius: inherit;
+
+    background: #D4AF37;
+
+    transition:
+        width 0.6s ease;
+}
+
+
+.percentage-display {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-top: 9px;
+}
+
+
+.percentage-display strong {
+    color: #0B1F3A;
+
+    font-size: 15px;
+    font-weight: 800;
+}
+
+
+.percentage-display span {
+    color: #6B7280;
+
+    font-size: 11px;
+}
+
+
+/* =========================================================
+   SCORE RIGHT
+========================================================= */
+
+.score-card-right {
+    padding: 30px;
+
+    background:
+        linear-gradient(
+            135deg,
+            #0B1F3A 0%,
+            #132C4F 100%
+        );
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+
+.performance-badge {
+    display: flex;
+    align-items: center;
+
+    gap: 12px;
+}
+
+
+.performance-badge-icon {
+    width: 45px;
+    height: 45px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    background: #D4AF37;
+    color: #0B1F3A;
+
+    font-size: 20px;
+}
+
+
+.performance-badge span {
+    display: block;
+
+    color: rgba(255, 255, 255, 0.65);
+
+    font-size: 9px;
+    font-weight: 700;
+
+    letter-spacing: 1.2px;
+}
+
+
+.performance-badge strong {
+    display: block;
+
+    margin-top: 3px;
+
+    color: #FFFFFF;
+
+    font-family: Poppins, sans-serif;
+
+    font-size: 20px;
+}
+
+
+.score-note {
+    margin-top: 28px;
+
+    padding-top: 20px;
+
+    border-top: 1px solid
+        rgba(255, 255, 255, 0.14);
+}
+
+
+.score-note strong {
+    color: #D4AF37;
+
+    font-size: 13px;
+}
+
+
+.score-note p {
+    margin: 6px 0 0;
+
+    color: rgba(255, 255, 255, 0.68);
+
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   STATISTICS GRID
+========================================================= */
+
+.result-statistics-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 15px;
+
+    margin-bottom: 20px;
+}
+
+
+.stat-card {
+    min-height: 100px;
+
+    display: flex;
+    align-items: center;
+
+    gap: 14px;
+
+    padding: 18px;
+
+    background: #FFFFFF;
+
+    border: 1px solid #E5E7EB;
+    border-radius: 12px;
+
+    box-shadow:
+        0 3px 12px rgba(11, 31, 58, 0.04);
+}
+
+
+.stat-icon {
+    width: 42px;
+    height: 42px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 10px;
+
+    font-size: 17px;
+    font-weight: 800;
+}
+
+
+.total-icon {
+    background: #EEF2F7;
+    color: #0B1F3A;
+}
+
+
+.attempted-icon {
+    background: #ECFDF5;
+    color: #15803D;
+}
+
+
+.correct-icon {
+    background: #DCFCE7;
+    color: #166534;
+}
+
+
+.wrong-icon {
+    background: #FEF2F2;
+    color: #DC2626;
+}
+
+
+.unanswered-icon {
+    background: #FFF7ED;
+    color: #C2410C;
+}
+
+
+.marks-icon {
+    background: #FFFBEB;
+    color: #A16207;
+}
+
+
+.stat-content span {
+    display: block;
+
+    color: #6B7280;
+
+    font-size: 11px;
+    font-weight: 600;
+}
+
+
+.stat-content strong {
+    display: block;
+
+    margin-top: 4px;
+
+    color: #0B1F3A;
+
+    font-family: Poppins, sans-serif;
+
+    font-size: 24px;
+    font-weight: 800;
+}
+
+
+/* =========================================================
+   PERFORMANCE SUMMARY
+========================================================= */
+
+.performance-summary-card {
+    padding-bottom: 25px;
+}
+
+
+.performance-summary-grid {
+    display: grid;
+
+    grid-template-columns:
+        repeat(3, 1fr);
+
+    gap: 25px;
+
+    padding: 25px;
+}
+
+
+.summary-item-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    margin-bottom: 8px;
+}
+
+
+.summary-item-header span {
+    color: #4B5563;
+
+    font-size: 12px;
+    font-weight: 600;
+}
+
+
+.summary-item-header strong {
+    color: #0B1F3A;
+
+    font-size: 12px;
+    font-weight: 800;
+}
+
+
+.summary-bar {
+    width: 100%;
+    height: 7px;
+
+    overflow: hidden;
+
+    background: #E5E7EB;
+
+    border-radius: 20px;
+}
+
+
+.summary-bar-fill {
+    height: 100%;
+
+    background: #D4AF37;
+
+    border-radius: inherit;
+
+    transition:
+        width 0.6s ease;
+}
+
+
+/* =========================================================
+   RESULT MESSAGE
+========================================================= */
+
+.result-message-card {
+    display: flex;
+    align-items: flex-start;
+
+    gap: 14px;
+
+    padding: 20px;
+
+    margin-bottom: 25px;
+
+    background: #FFFBEB;
+
+    border: 1px solid #F3E8A6;
+    border-left: 4px solid #D4AF37;
+
+    border-radius: 10px;
+}
+
+
+.result-message-icon {
+    width: 32px;
+    height: 32px;
+
+    flex-shrink: 0;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 50%;
+
+    background: #D4AF37;
+    color: #0B1F3A;
+
+    font-weight: 800;
+}
+
+
+.result-message-content h3 {
+    margin: 0;
+
+    color: #0B1F3A;
+
+    font-size: 14px;
+    font-weight: 800;
+}
+
+
+.result-message-content p {
+    margin: 5px 0 0;
+
+    color: #6B7280;
+
+    font-size: 12px;
+    line-height: 1.6;
+}
+
+
+/* =========================================================
+   ACTION BUTTONS
+========================================================= */
+
+.result-actions {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    gap: 12px;
+
+    margin-top: 10px;
+}
+
+
+.result-button {
+    min-height: 46px;
+
+    padding: 0 22px;
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    gap: 8px;
+
+    border-radius: 8px;
+
+    font-family: Inter, "Noto Sans Tamil", sans-serif;
+
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    transition:
+        transform 0.15s ease,
+        box-shadow 0.15s ease,
+        background 0.15s ease;
+}
+
+
+.result-button:hover {
+    transform: translateY(-1px);
+}
+
+
+.primary-result-button {
+    border: 1px solid #0B1F3A;
+
+    background: #0B1F3A;
+    color: #FFFFFF;
+}
+
+
+.primary-result-button:hover {
+    box-shadow:
+        0 5px 15px rgba(11, 31, 58, 0.18);
+}
+
+
+.outline-result-button {
+    border: 1px solid #0B1F3A;
+
+    background: #FFFFFF;
+    color: #0B1F3A;
+}
+
+
+.outline-result-button:hover {
+    background: #F5F6F8;
+}
+
+
+.secondary-result-button {
+    border: 1px solid #D1D5DB;
+
+    background: #FFFFFF;
+    color: #4B5563;
+}
+
+
+.secondary-result-button:hover {
+    background: #F9FAFB;
+}
+
+
+/* =========================================================
+   FOOTER
+========================================================= */
+
+.result-footer {
+    min-height: 75px;
+
+    padding: 18px 3%;
+
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    gap: 20px;
+
+    background: #0B1F3A;
+
+    color: #FFFFFF;
+}
+
+
+.result-footer strong {
+    display: block;
+
+    color: #FFFFFF;
+
+    font-family: Poppins, sans-serif;
+
+    font-size: 12px;
+}
+
+
+.result-footer span {
+    display: block;
+
+    margin-top: 2px;
+
+    color: #D4AF37;
+
+    font-size: 9px;
+}
+
+
+.result-footer p {
+    margin: 0;
+
+    color: rgba(255, 255, 255, 0.55);
+
+    font-size: 10px;
+}
+
+
+/* =========================================================
+   PRINT STYLES
+========================================================= */
+
+@media print {
+
+    .result-header {
+        background: #FFFFFF !important;
+        color: #000000 !important;
+
+        border-bottom: 2px solid #000000;
+    }
+
+
+    .result-logo {
+        border-color: #000000;
+        color: #000000;
+    }
+
+
+    .result-academy-name {
+        color: #000000;
+    }
+
+
+    .result-tagline {
+        color: #000000;
+    }
+
+
+    .result-header-label span,
+    .result-header-label strong {
+        color: #000000;
+    }
+
+
+    .result-actions,
+    .result-footer {
+        display: none !important;
+    }
+
+
+    .result-page {
+        background: #FFFFFF;
+    }
+
+
+    .result-main {
+        width: 100%;
+        padding: 15px 0;
+    }
+
+
+    .result-card,
+    .stat-card {
+        box-shadow: none;
+    }
+
+
+    .score-card-right {
+        background: #FFFFFF !important;
+        border-left: 1px solid #DDDDDD;
+    }
+
+
+    .performance-badge span,
+    .performance-badge strong,
+    .score-note strong,
+    .score-note p {
+        color: #000000 !important;
+    }
+
+}
+
+
+/* =========================================================
+   TABLET
+========================================================= */
+
+@media (max-width: 900px) {
+
+    .candidate-details-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+
+    .main-score-card {
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .score-card-right {
+        padding-top: 25px;
+        padding-bottom: 25px;
+    }
+
+
+    .result-statistics-grid {
+        grid-template-columns:
+            repeat(2, 1fr);
+    }
+
+
+    .performance-summary-grid {
+        grid-template-columns:
+            1fr;
+    }
+
+}
+
+
+/* =========================================================
+   MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .result-header-inner {
+        min-height: 68px;
+    }
+
+
+    .result-header-label {
+        display: none;
+    }
+
+
+    .result-main {
+        width: 92%;
+        padding-top: 25px;
+    }
+
+
+    .result-title-section {
+        align-items: flex-start;
+    }
+
+
+    .result-title-icon {
+        width: 40px;
+        height: 40px;
+
+        font-size: 19px;
+    }
+
+
+    .result-title-section h1 {
+        font-size: 21px;
+    }
+
+
+    .result-title-section p {
+        font-size: 12px;
+        line-height: 1.5;
+    }
+
+
+    .candidate-details-grid {
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .candidate-detail-item {
+        min-height: auto;
+    }
+
+
+    .score-card-left {
+        padding: 24px 20px;
+    }
+
+
+    .score-card-right {
+        padding: 24px 20px;
+    }
+
+
+    .score-value {
+        font-size: 46px;
+    }
+
+
+    .score-divider {
+        font-size: 26px;
+    }
+
+
+    .score-total {
+        font-size: 25px;
+    }
+
+
+    .result-statistics-grid {
+        grid-template-columns:
+            1fr;
+    }
+
+
+    .performance-summary-grid {
+        padding: 20px;
+    }
+
+
+    .result-actions {
+        flex-direction: column;
+    }
+
+
+    .result-button {
+        width: 100%;
+    }
+
+
+    .result-footer {
+        flex-direction: column;
+
+        text-align: center;
+    }
+
+}
+/* Current question in the palette */
+.question-palette .palette-btn.active {
+    outline: 3px solid #0B1F3A !important;
+    outline-offset: 2px;
+    border: 2px solid #D4AF37 !important;
+    font-weight: 700;
+    position: relative;
+    z-index: 2;
+}
+
+/* Make navigation buttons clearly clickable */
+.question-controls button:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+}
+
+.question-controls button:not(:disabled) {
+    cursor: pointer;
+}
+
+/* ==========================================
+   SLOGON ACADEMY — QUESTION PALETTE COLOURS
+   ========================================== */
+
+/* Common palette button styling */
+.palette-btn {
+    min-height: 36px;
+    border: 1px solid #D1D5DB;
+    border-radius: 6px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.15s ease,
+                border-color 0.15s ease;
+}
+
+/* 1. Not Visited — Grey */
+.palette-btn.not-visited {
+    background-color: #E5E7EB !important;
+    color: #374151 !important;
+    border-color: #D1D5DB;
+}
+
+/* 2. Not Answered — Orange */
+.palette-btn.not-answered {
+    background-color: #F59E0B !important;
+    color: #111827 !important;
+    border-color: #D97706;
+}
+
+/* 3. Answered — Green */
+.palette-btn.answered {
+    background-color: #22C55E !important;
+    color: #052E16 !important;
+    border-color: #16A34A;
+}
+
+/* 4. Mark for Review — Purple */
+.palette-btn.review {
+    background-color: #8B5CF6 !important;
+    color: #FFFFFF !important;
+    border-color: #7C3AED;
+}
+
+/* 5. Answered & Marked for Review — Blue */
+.palette-btn.answered-review {
+    background-color: #6366F1 !important;
+    color: #FFFFFF !important;
+    border-color: #4F46E5;
+}
+
+/* Current question — highlight without hiding its status colour */
+.palette-btn.active {
+    outline: 3px solid #0B1F3A !important;
+    outline-offset: 2px;
+    border: 2px solid #D4AF37 !important;
+    font-weight: 800;
+    position: relative;
+    z-index: 2;
+}
+
+/* Keyboard accessibility */
+.palette-btn:focus-visible {
+    outline: 3px solid #0B1F3A;
+    outline-offset: 3px;
+}
+
+
+/* ========================================
+   SLOGON ACADEMY — IVORY & EMERALD THEME
+   ======================================== */
+
+:root {
+  --page-bg: #F8FAF7;
+  --primary-green: #176B52;
+  --primary-green-hover: #125640;
+  --text-charcoal: #202824;
+
+  --correct-bg: #DDF3E5;
+  --correct-text: #176B3A;
+
+  --incorrect-bg: #FCE5E5;
+  --incorrect-text: #A52828;
+
+  --unanswered-bg: #FFF0CC;
+  --unanswered-text: #805600;
+
+  --card-bg: #FFFFFF;
+  --border-color: #DCE4DE;
+}
+
+/* Overall screen */
+html,
+body {
+  background-color: var(--page-bg);
+  color: var(--text-charcoal);
+}
+
+/* Main content and exam areas */
+.instructions-container,
+.exam-container,
+.question-container,
+.result-container,
+.review-container {
+  color: var(--text-charcoal);
+}
+
+/* Main action buttons */
+button,
+.start-test-button,
+.save-next-button,
+.primary-result-button {
+  background-color: var(--primary-green);
+  color: #FFFFFF;
+  border-color: var(--primary-green);
+}
+
+/* Hover effect */
+button:hover,
+.start-test-button:hover,
+.save-next-button:hover,
+.primary-result-button:hover {
+  background-color: var(--primary-green-hover);
+  border-color: var(--primary-green-hover);
+}
+
+/* Cards and question panels */
+.question-card,
+.instruction-card,
+.result-card,
+.review-question,
+.summary-card {
+  background-color: var(--card-bg);
+  color: var(--text-charcoal);
+  border-color: var(--border-color);
+}
+
+/* Correct answer */
+.correct-answer,
+.answer-correct {
+  background-color: var(--correct-bg);
+  color: var(--correct-text);
+  border-color: #A6D9B7;
+}
+
+/* Incorrect answer */
+.incorrect-answer,
+.answer-incorrect {
+  background-color: var(--incorrect-bg);
+  color: var(--incorrect-text);
+  border-color: #EAB3B3;
+}
+
+/* Unanswered question */
+.unanswered,
+.answer-unanswered {
+  background-color: var(--unanswered-bg);
+  color: var(--unanswered-text);
+  border-color: #E8CE8B;
+}
+
+/* Answer choices */
+.option,
+.option-label {
+  color: var(--text-charcoal);
+  border-color: var(--border-color);
+}
+
+/* Keyboard focus accessibility */
+button:focus-visible,
+input:focus-visible,
+.option:focus-visible {
+  outline: 3px solid #65A98C;
+  outline-offset: 3px;
+}
+
+
+/* SLOGON ACADEMY — Save & Next Button */
+
+#saveNextButton {
+  background-color: #176B52;
+  color: #FFFFFF;
+  border: 1px solid #176B52;
+  border-radius: 8px;
+  padding: 12px 24px;
+  font-size: 16px;
+  font-weight: 600;
+  font-family: inherit;
+  cursor: pointer;
+  transition: background-color 0.2s ease,
+              box-shadow 0.2s ease,
+              transform 0.2s ease;
+}
+
+#saveNextButton:hover {
+  background-color: #125640;
+  border-color: #125640;
+  box-shadow: 0 3px 8px rgba(23, 107, 82, 0.18);
+}
+
+#saveNextButton:active {
+  transform: scale(0.98);
+}
+
+#saveNextButton:focus-visible {
+  outline: 3px solid #8BC8AE;
+  outline-offset: 3px;
+}
+
+#saveNextButton:disabled {
+  background-color: #A8BDB3;
+  border-color: #A8BDB3;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+

@@ -1,0 +1,808 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Online Examination | SLOGON ACADEMY</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect"
+        href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@500;600;700&family=Noto+Sans+Tamil:wght@400;500;600;700&display=swap"
+        rel="stylesheet">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet"
+        href="style.css">
+
+</head>
+
+
+<body class="exam-body">
+
+    <div class="exam-page">
+
+
+        <!-- =================================================
+             TOP HEADER
+        ================================================== -->
+
+        <header class="exam-header">
+
+            <!-- Brand -->
+            <div class="exam-brand">
+
+                <div class="exam-logo">
+                    S
+                </div>
+
+                <div class="exam-brand-text">
+
+                    <strong>
+                        SLOGON ACADEMY
+                    </strong>
+
+                    <span>
+                        Learn • Practice • Qualify
+                    </span>
+
+                </div>
+
+            </div>
+
+
+            <!-- Exam Name -->
+            <div class="exam-name">
+
+                <span>
+                    ONLINE EXAMINATION
+                </span>
+
+                <strong id="examTitle">
+                    UGC NET MOCK TEST
+                </strong>
+
+            </div>
+
+
+            <!-- Timer -->
+            <div class="exam-timer">
+
+                <span class="timer-label">
+                    TIME REMAINING
+                </span>
+
+                <strong id="timer">
+                    60:00
+                </strong>
+
+            </div>
+
+        </header>
+
+
+
+        <!-- =================================================
+             CANDIDATE INFORMATION BAR
+        ================================================== -->
+
+        <section class="candidate-bar">
+
+            <div class="candidate-bar-item">
+
+                <span>
+                    Candidate
+                </span>
+
+                <strong id="examCandidateName">
+                    Candidate
+                </strong>
+
+            </div>
+
+
+            <div class="candidate-bar-item">
+
+                <span>
+                    Register Number
+                </span>
+
+                <strong id="examRegisterNumber">
+                    ---
+                </strong>
+
+            </div>
+
+
+            <div class="candidate-bar-item">
+
+                <span>
+                    Subject
+                </span>
+
+                <strong id="examSubject">
+                    Tamil
+                </strong>
+
+            </div>
+
+
+            <div class="candidate-bar-item question-counter">
+
+                <span>
+                    Question
+                </span>
+
+                <strong>
+                    <span id="currentQuestionNumber">
+                        1
+                    </span>
+
+                    /
+
+                    <span id="totalQuestionNumber">
+                        50
+                    </span>
+                </strong>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- =================================================
+             MAIN EXAM AREA
+        ================================================== -->
+
+        <main class="exam-main">
+
+
+            <!-- =================================================
+                 LEFT QUESTION AREA
+            ================================================== -->
+
+            <section class="question-area">
+
+
+                <!-- Question Card -->
+
+                <div class="question-card">
+
+
+                    <!-- Question Header -->
+
+                    <div class="question-header">
+
+                        <div class="question-number-badge">
+
+                            Question
+                            <span id="questionNumber">
+                                01
+                            </span>
+
+                        </div>
+
+
+                        <div class="question-type">
+
+                            MCQ
+
+                        </div>
+
+                    </div>
+
+
+
+                    <!-- Question Content -->
+
+                    <div class="question-content">
+
+                        <h2 id="questionText">
+
+                            தொல்காப்பியத்தின்
+                            எழுத்ததிகாரத்தில் இடம்பெறும்
+                            இயல்களின் எண்ணிக்கை எத்தனை?
+
+                        </h2>
+
+                    </div>
+
+
+
+                    <!-- Options -->
+
+                    <div class="options-container"
+                        id="optionsContainer">
+
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="answer"
+                                value="A">
+
+                            <span class="option-letter">
+                                A
+                            </span>
+
+                            <span class="option-text">
+                                8
+                            </span>
+
+                        </label>
+
+
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="answer"
+                                value="B">
+
+                            <span class="option-letter">
+                                B
+                            </span>
+
+                            <span class="option-text">
+                                9
+                            </span>
+
+                        </label>
+
+
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="answer"
+                                value="C">
+
+                            <span class="option-letter">
+                                C
+                            </span>
+
+                            <span class="option-text">
+                                10
+                            </span>
+
+                        </label>
+
+
+
+                        <label class="option">
+
+                            <input
+                                type="radio"
+                                name="answer"
+                                value="D">
+
+                            <span class="option-letter">
+                                D
+                            </span>
+
+                            <span class="option-text">
+                                11
+                            </span>
+
+                        </label>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- =================================================
+                     BOTTOM QUESTION CONTROLS
+                ================================================== -->
+
+                <div class="question-controls">
+
+
+                    <button
+                        type="button"
+                        class="exam-btn previous-btn"
+                        id="previousButton">
+
+                        ← Previous
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="exam-btn clear-btn"
+                        id="clearButton">
+
+                        Clear Response
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="exam-btn review-btn"
+                        id="reviewButton">
+
+                        Mark for Review
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="exam-btn next-btn"
+                        id="saveNextButton">
+
+                        Save & Next →
+
+                    </button>
+
+                </div>
+
+
+
+                <!-- Mobile Submit -->
+
+                <div class="mobile-submit-area">
+
+                    <button
+                        type="button"
+                        class="submit-test-button"
+                        id="mobileSubmitButton">
+
+                        Submit Test
+
+                    </button>
+
+                </div>
+
+
+            </section>
+
+
+
+            <!-- =================================================
+                 RIGHT SIDEBAR
+            ================================================== -->
+
+            <aside class="exam-sidebar">
+
+
+                <!-- Candidate Mini Card -->
+
+                <div class="sidebar-candidate">
+
+                    <div class="sidebar-avatar">
+                        S
+                    </div>
+
+                    <div>
+
+                        <strong id="sidebarCandidateName">
+                            Candidate
+                        </strong>
+
+                        <span id="sidebarSubject">
+                            Tamil
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Question Palette -->
+
+                <div class="palette-card">
+
+                    <div class="sidebar-title">
+
+                        <h3>
+                            Question Palette
+                        </h3>
+
+                        <span>
+                            கேள்வி எண்
+                        </span>
+
+                    </div>
+
+
+                    <div
+                        class="question-palette"
+                        id="questionPalette">
+
+                        <!--
+                            Question numbers will be
+                            generated by JavaScript.
+                        -->
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Question Summary -->
+
+                <div class="summary-card">
+
+                    <div class="sidebar-title">
+
+                        <h3>
+                            Question Summary
+                        </h3>
+
+                        <span>
+                            கேள்வி நிலை
+                        </span>
+
+                    </div>
+
+
+                    <div class="summary-grid">
+
+
+                        <div class="summary-item">
+
+                            <span
+                                class="summary-dot answered-dot">
+                            </span>
+
+                            <div>
+
+                                <strong
+                                    id="answeredCount">
+                                    0
+                                </strong>
+
+                                <small>
+                                    Answered
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="summary-item">
+
+                            <span
+                                class="summary-dot not-answered-dot">
+                            </span>
+
+                            <div>
+
+                                <strong
+                                    id="notAnsweredCount">
+                                    0
+                                </strong>
+
+                                <small>
+                                    Not Answered
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="summary-item">
+
+                            <span
+                                class="summary-dot review-dot">
+                            </span>
+
+                            <div>
+
+                                <strong
+                                    id="reviewCount">
+                                    0
+                                </strong>
+
+                                <small>
+                                    Review
+                                </small>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="summary-item">
+
+                            <span
+                                class="summary-dot not-visited-dot">
+                            </span>
+
+                            <div>
+
+                                <strong
+                                    id="notVisitedCount">
+                                    50
+                                </strong>
+
+                                <small>
+                                    Not Visited
+                                </small>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Legend -->
+
+                <div class="legend-card">
+
+                    <div class="sidebar-title">
+
+                        <h3>
+                            Status Legend
+                        </h3>
+
+                        <span>
+                            நிலை
+                        </span>
+
+                    </div>
+
+
+                    <div class="legend-list">
+
+
+                        <div class="legend-item">
+
+                            <span
+                                class="legend-box legend-not-visited">
+                            </span>
+
+                            <span>
+                                Not Visited
+                            </span>
+
+                        </div>
+
+
+                        <div class="legend-item">
+
+                            <span
+                                class="legend-box legend-not-answered">
+                            </span>
+
+                            <span>
+                                Not Answered
+                            </span>
+
+                        </div>
+
+
+                        <div class="legend-item">
+
+                            <span
+                                class="legend-box legend-answered">
+                            </span>
+
+                            <span>
+                                Answered
+                            </span>
+
+                        </div>
+
+
+                        <div class="legend-item">
+
+                            <span
+                                class="legend-box legend-review">
+                            </span>
+
+                            <span>
+                                Mark for Review
+                            </span>
+
+                        </div>
+
+
+                        <div class="legend-item">
+
+                            <span
+                                class="legend-box legend-answered-review">
+                            </span>
+
+                            <span>
+                                Answered & Review
+                            </span>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Submit Test -->
+
+                <div class="sidebar-submit">
+
+                    <button
+                        type="button"
+                        class="submit-test-button"
+                        id="submitButton">
+
+                        Submit Test
+
+                    </button>
+
+                </div>
+
+            </aside>
+
+        </main>
+
+
+
+        <!-- =================================================
+             SUBMIT CONFIRMATION MODAL
+        ================================================== -->
+
+        <div
+            class="modal-overlay"
+            id="submitModal">
+
+
+            <div class="submit-modal">
+
+
+                <div class="modal-icon">
+                    !
+                </div>
+
+
+                <h2>
+                    Submit Test?
+                </h2>
+
+
+                <p>
+                    Are you sure you want to submit
+                    the examination?
+                </p>
+
+
+                <div class="modal-summary">
+
+
+                    <div>
+
+                        <span>
+                            Answered
+                        </span>
+
+                        <strong id="modalAnswered">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Not Answered
+                        </span>
+
+                        <strong id="modalNotAnswered">
+                            0
+                        </strong>
+
+                    </div>
+
+
+                    <div>
+
+                        <span>
+                            Review
+                        </span>
+
+                        <strong id="modalReview">
+                            0
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="modal-actions">
+
+                    <button
+                        type="button"
+                        class="modal-cancel"
+                        id="cancelSubmit">
+
+                        Continue Test
+
+                    </button>
+
+
+                    <button
+                        type="button"
+                        class="modal-confirm"
+                        id="confirmSubmit">
+
+                        Submit Test
+
+                    </button>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+        <!-- =================================================
+             EXAM FOOTER
+        ================================================== -->
+
+        <footer class="exam-footer">
+
+            <span>
+                SLOGON ACADEMY
+            </span>
+
+            <span>
+                Learn • Practice • Qualify
+            </span>
+
+            <span>
+                Online Examination Portal
+            </span>
+
+        </footer>
+
+
+    </div>
+
+
+
+    <!-- =================================================
+         JAVASCRIPT FILES
+    ================================================== -->
+
+    <script src="questions.js"></script>
+
+    <script src="timer.js"></script>
+
+    <script src="exam.js"></script>
+
+
+</body>
+
+</html>

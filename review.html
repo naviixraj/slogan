@@ -1,0 +1,193 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Review Answers | SLOGON ACADEMY</title>
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .review-main {
+            width: min(1100px, 94%);
+            margin: 36px auto;
+        }
+
+        .review-heading, .review-card {
+            background: #ffffff;
+            border: 1px solid #e3e8ef;
+            border-radius: 14px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 5px 20px rgba(11, 31, 58, 0.05);
+        }
+
+        .review-heading h1 {
+            color: #0B1F3A;
+            margin: 0 0 8px;
+        }
+
+        .review-meta, .review-muted {
+            color: #64748b;
+            line-height: 1.7;
+        }
+
+        .review-card h2 {
+            color: #0B1F3A;
+            font-size: 18px;
+            line-height: 1.6;
+        }
+
+        .review-status {
+            display: inline-block;
+            border-radius: 20px;
+            padding: 6px 12px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .review-correct {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .review-incorrect {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .review-unanswered {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .review-option {
+            padding: 12px 14px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            margin: 9px 0;
+            line-height: 1.6;
+        }
+
+        .review-option.correct-option {
+            background: #f0fdf4;
+            border-color: #16a34a;
+        }
+
+        .review-option.selected-wrong {
+            background: #fef2f2;
+            border-color: #dc2626;
+        }
+
+        .review-explanation {
+            background: #fffbeb;
+            border-left: 4px solid #D4AF37;
+            padding: 16px;
+            margin-top: 18px;
+            border-radius: 5px;
+            line-height: 1.8;
+        }
+
+        .review-explanation h3 {
+            margin: 0 0 8px;
+            color: #0B1F3A;
+        }
+
+        .review-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 24px 0;
+        }
+
+        .review-actions a {
+            text-decoration: none;
+        }
+
+        .review-error {
+            padding: 18px;
+            border-radius: 10px;
+            background: #fef2f2;
+            color: #991b1b;
+        }
+
+        @media print {
+            .review-actions, .result-header, .result-footer {
+                display: none !important;
+            }
+
+            .review-card {
+                box-shadow: none;
+                break-inside: avoid;
+            }
+
+            body {
+                background: #ffffff !important;
+            }
+        }
+    </style>
+</head>
+
+<body class="result-page">
+
+    <header class="result-header">
+        <div class="result-header-inner">
+            <div class="result-brand">
+                <div class="result-logo">S</div>
+                <div class="result-brand-text">
+                    <div class="result-academy-name">SLOGON ACADEMY</div>
+                </div>
+            </div>
+
+            <div class="result-header-label">
+                <span>ONLINE EXAMINATION</span>
+                <strong>ANSWER REVIEW</strong>
+            </div>
+        </div>
+    </header>
+
+    <main class="review-main">
+
+        <section class="review-heading">
+            <h1>Review Answers</h1>
+            <p class="review-muted">
+                Review your responses, verify the correct answers,
+                and learn from the explanations.
+            </p>
+
+            <div id="reviewCandidate" class="review-meta"></div>
+            <div id="reviewSummary" class="review-meta"></div>
+        </section>
+
+        <div id="reviewMessage" aria-live="polite"></div>
+        <section id="reviewQuestions"></section>
+
+        <div class="review-actions">
+            <button
+                type="button"
+                class="result-button secondary-result-button"
+                onclick="window.print()"
+            >
+                Print Review
+            </button>
+
+            <a href="result.html"
+               class="result-button primary-result-button">
+                Back to Result
+            </a>
+        </div>
+
+    </main>
+
+    <footer class="result-footer">
+        <div>
+            <strong>SLOGON ACADEMY</strong>
+            <span>Learn • Practice • Qualify</span>
+        </div>
+        <p>© 2026 SLOGON ACADEMY. All Rights Reserved.</p>
+    </footer>
+
+    <script src="review.js"></script>
+</body>
+</html>

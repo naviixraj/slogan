@@ -1,0 +1,9 @@
+.env
+node_modules/
+Backend/candidates.sqlite
+*.sqlite
+*.sqlite3
+.DS_Store
+Thumbs.db
+# Local HTTPS certificates
+certs/

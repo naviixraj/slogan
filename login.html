@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SLOGON ACADEMY | Candidate Login</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            font-family: 'Poppins',Arial, sans-serif;
+            background: #F8FAF7;
+            color: #26332D;
+            /* Background Image Setup */
+    background-image: url('loginbg.png');
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-color: #f4f5f0; /* Fallback color */
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 420px;
+            padding: 38px 32px;
+            background: #FFFFFF;
+            border: 1px solid #E4EAE5;
+            border-radius: 16px;
+            box-shadow: 0 12px 35px rgba(0,0,0,0.07);
+        }
+
+        .brand {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .brand h1 {
+            margin: 0;
+            color: #176B52;
+            font-size: 27px;
+            letter-spacing: 1px;
+        }
+
+        .brand p {
+            margin-top: 9px;
+            color: #65736B;
+            font-size: 13px;
+        }
+
+        h2 {
+            margin-bottom: 8px;
+            font-size: 23px;
+        }
+
+        .subtitle {
+            color: #738078;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin: 17px 0 8px;
+            font-weight: 600;
+            font-size: 14px;
+        }
+
+        input {
+            width: 100%;
+            padding: 13px;
+            border: 1px solid #D6DED8;
+            border-radius: 8px;
+            font-size: 15px;
+            outline: none;
+        }
+
+        input:focus {
+            border-color: #176B52;
+            box-shadow: 0 0 0 3px rgba(23,107,82,0.10);
+        }
+
+        button {
+            width: 100%;
+            margin-top: 25px;
+            padding: 14px;
+            background: #176B52;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #11563F;
+        }
+
+        button:disabled {
+            opacity: 0.65;
+            cursor: not-allowed;
+        }
+
+        #message {
+            margin-top: 18px;
+            text-align: center;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 28px;
+            color: #89938C;
+            font-size: 12px;
+        }
+        
+/* TABLET */
+@media (max-width: 900px) {
+    body {
+        background-size: contain;
+        background-position: center center;
+    }
+
+    .login-card {
+        max-width: 400px;
+    }
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+    body {
+        padding: 20px 15px;
+        background-size: contain;
+        background-position: center center;
+        background-color: #eaf2fa;
+    }
+
+    .login-card {
+        max-width: 420px;
+        padding: 32px 24px;
+    }
+
+    .brand h1 {
+        font-size: 23px;
+    }
+}
+
+    </style>
+</head>
+
+<body>
+
+    <main class="login-card">
+
+        <header class="brand">
+            <h1>SLOGON ACADEMY</h1>
+        </header>
+
+        <h2>Candidate Login</h2>
+        <p class="subtitle">
+            Sign in to access your mock examinations.
+        </p>
+
+        <form id="loginForm">
+
+            <label for="userId">Candidate User ID</label>
+            <input
+                type="text"
+                id="userId"
+                name="userId"
+                placeholder="Enter your User ID"
+                autocomplete="username"
+                required
+            >
+
+            <label for="password">Password</label>
+            <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Enter your password"
+                autocomplete="current-password"
+                required
+            >
+
+            <button type="submit" id="loginButton">
+                LOGIN
+            </button>
+
+            <p id="message" role="status" aria-live="polite"></p>
+
+        </form>
+
+        <footer class="footer">
+            © SLOGON ACADEMY | Mock Test Portal
+        </footer>
+
+    </main>
+
+    <script src="login.js"></script>
+
+</body>
+</html>

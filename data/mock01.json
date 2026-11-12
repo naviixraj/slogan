@@ -1,0 +1,1903 @@
+[
+  {
+    "id": 1,
+    "section": "Paper 1",
+    "question": "Data passage: The following Table-1 shows the readership of Hindi (H) and English (E) magazines (in lakh) of four different categories, namely, General, Sports, Film, and Business from the year 2020 to 2023 and Table-2 shows the number of Hindi (H) and English (E) magazine of same four categories published during the same period. No magazine was discontinued during the above mentioned period. Based on the data in the tables, answer the questions that follows.\nTable-1: Category-wise details of Readership of Magazines (in Lakh)\nCategory | 2020 (E) | 2020 (H) | 2021 (E) | 2021 (H) | 2022 (E) | 2022 (H) | 2023 (E) | 2023 (H)\nGeneral | 2.0 | 2.4 | 2.6 | 3.2 | 4.0 | 3.6 | 5.0 | 4.0\nSports | 0.8 | 0.4 | 1.2 | 0.8 | 2.0 | 1.4 | 2.4 | 1.6\nFilm | 1.2 | 1.6 | 1.9 | 2.5 | 2.0 | 3.0 | 2.4 | 3.6\nBusiness | 0.6 | 0.3 | 0.8 | 0.32 | 1.2 | 0.5 | 1.6 | 1.0\nTable-2: Category-wise Details of Publication of Magazines\nCategory | 2020 (E) | 2020 (H) | 2021 (E) | 2021 (H) | 2022 (E) | 2022 (H) | 2023 (E) | 2023 (H)\nGeneral | 24 | 20 | 30 | 28 | 34 | 30 | 58 | 32\nSports | 6 | 4 | 10 | 6 | 14 | 8 | 16 | 12\nFilm | 6 | 8 | 10 | 12 | 10 | 14 | 12 | 16\nBusiness | 8 | 4 | 10 | 6 | 12 | 8 | 14 | 16\nWhat is the approximate average readership per magazine in 2022?\n13615\n14600\n12805\n15715\nHindi magazines: 2020 = 36, 2021 = 52\nP = 52 − 36 = 16\nEnglish magazines: 2020 = 44, 2021 = 60\nQ = 60 − 44 = 16\nP : Q = 16 : 16 = 1 : 1\nTrick: Find the increase in magazines for each language, then simplify the ratio.",
+    "options": {
+      "A": "13615",
+      "B": "14600",
+      "C": "12805",
+      "D": "15715"
+    },
+    "correctAnswer": "C",
+    "explanation": ""
+  },
+  {
+    "id": 2,
+    "section": "Paper 1",
+    "question": "Data passage: The following Table-1 shows the readership of Hindi (H) and English (E) magazines (in lakh) of four different categories, namely, General, Sports, Film, and Business from the year 2020 to 2023 and Table-2 shows the number of Hindi (H) and English (E) magazine of same four categories published during the same period. No magazine was discontinued during the above mentioned period. Based on the data in the tables, answer the questions that follows.\nTable-1: Category-wise details of Readership of Magazines (in Lakh)\nCategory | 2020 (E) | 2020 (H) | 2021 (E) | 2021 (H) | 2022 (E) | 2022 (H) | 2023 (E) | 2023 (H)\nGeneral | 2.0 | 2.4 | 2.6 | 3.2 | 4.0 | 3.6 | 5.0 | 4.0\nSports | 0.8 | 0.4 | 1.2 | 0.8 | 2.0 | 1.4 | 2.4 | 1.6\nFilm | 1.2 | 1.6 | 1.9 | 2.5 | 2.0 | 3.0 | 2.4 | 3.6\nBusiness | 0.6 | 0.3 | 0.8 | 0.32 | 1.2 | 0.5 | 1.6 | 1.0\nTable-2: Category-wise Details of Publication of Magazines\nCategory | 2020 (E) | 2020 (H) | 2021 (E) | 2021 (H) | 2022 (E) | 2022 (H) | 2023 (E) | 2023 (H)\nGeneral | 24 | 20 | 30 | 28 | 34 | 30 | 58 | 32\nSports | 6 | 4 | 10 | 6 | 14 | 8 | 16 | 12\nFilm | 6 | 8 | 10 | 12 | 10 | 14 | 12 | 16\nBusiness | 8 | 4 | 10 | 6 | 12 | 8 | 14 | 16\nThe difference between the number of magazines published in 2022 and 2020 is.\n50\n44\n52\n56\nTotal magazines in 2022 = 130\nTotal magazines in 2020 = 80\nDifference = 130 − 80 = 50\nTrick: Add all magazines (E + H) for both years, then subtract.",
+    "options": {
+      "A": "50",
+      "B": "44",
+      "C": "52",
+      "D": "56"
+    },
+    "correctAnswer": "A",
+    "explanation": ""
+  },
+  {
+    "id": 3,
+    "section": "Paper 1",
+    "question": "Data passage: The following Table-1 shows the readership of Hindi (H) and English (E) magazines (in lakh) of four different categories, namely, General, Sports, Film, and Business from the year 2020 to 2023 and Table-2 shows the number of Hindi (H) and English (E) magazine of same four categories published during the same period. No magazine was discontinued during the above mentioned period. Based on the data in the tables, answer the questions that follows.\nTable-1: Category-wise details of Readership of Magazines (in Lakh)\nCategory | 2020 (E) | 2020 (H) | 2021 (E) | 2021 (H) | 2022 (E) | 2022 (H) | 2023 (E) | 2023 (H)\nGeneral | 2.0 | 2.4 | 2.6 | 3.2 | 4.0 | 3.6 | 5.0 | 4.0\nSports | 0.8 | 0.4 | 1.2 | 0.8 | 2.0 | 1.4 | 2.4 | 1.6\nFilm | 1.2 | 1.6 | 1.9 | 2.5 | 2.0 | 3.0 | 2.4 | 3.6\nBusiness | 0.6 | 0.3 | 0.8 | 0.32 | 1.2 | 0.5 | 1.6 | 1.0\nTable-2: Category-wise Details of Publication of Magazines\nCategory | 2020 (E) | 2020 (H) | 2021 (E) | 2021 (H) | 2022 (E) | 2022 (H) | 2023 (E) | 2023 (H)\nGeneral | 24 | 20 | 30 | 28 | 34 | 30 | 58 | 32\nSports | 6 | 4 | 10 | 6 | 14 | 8 | 16 | 12\nFilm | 6 | 8 | 10 | 12 | 10 | 14 | 12 | 16\nBusiness | 8 | 4 | 10 | 6 | 12 | 8 | 14 | 16\nFrom the year 2020 to 2021, if P is the difference between the number of Hindi magazines and Q is the difference between the number of English magazines published then P : Q is.\n2 : 3\n1 : 2\n1 : 1\n2 : 1\nHindi magazines: 2020 = 36, 2021 = 52\nP = 52 − 36 = 16\nEnglish magazines: 2020 = 44, 2021 = 60\nQ = 60 − 44 = 16\nP : Q = 16 : 16 = 1 : 1\nTrick: Find the increase in magazines for each language, then simplify the ratio.",
+    "options": {
+      "A": "2 : 3",
+      "B": "1 : 2",
+      "C": "1 : 1",
+      "D": "2 : 1"
+    },
+    "correctAnswer": "C",
+    "explanation": ""
+  },
+  {
+    "id": 4,
+    "section": "Paper 1",
+    "question": "Data passage: The following Table-1 shows the readership of Hindi (H) and English (E) magazines (in lakh) of four different categories, namely, General, Sports, Film, and Business from the year 2020 to 2023 and Table-2 shows the number of Hindi (H) and English (E) magazine of same four categories published during the same period. No magazine was discontinued during the above mentioned period. Based on the data in the tables, answer the questions that follows.\nTable-1: Category-wise details of Readership of Magazines (in Lakh)\nCategory | 2020 (E) | 2020 (H) | 2021 (E) | 2021 (H) | 2022 (E) | 2022 (H) | 2023 (E) | 2023 (H)\nGeneral | 2.0 | 2.4 | 2.6 | 3.2 | 4.0 | 3.6 | 5.0 | 4.0\nSports | 0.8 | 0.4 | 1.2 | 0.8 | 2.0 | 1.4 | 2.4 | 1.6\nFilm | 1.2 | 1.6 | 1.9 | 2.5 | 2.0 | 3.0 | 2.4 | 3.6\nBusiness | 0.6 | 0.3 | 0.8 | 0.32 | 1.2 | 0.5 | 1.6 | 1.0\nTable-2: Category-wise Details of Publication of Magazines\nCategory | 2020 (E) | 2020 (H) | 2021 (E) | 2021 (H) | 2022 (E) | 2022 (H) | 2023 (E) | 2023 (H)\nGeneral | 24 | 20 | 30 | 28 | 34 | 30 | 58 | 32\nSports | 6 | 4 | 10 | 6 | 14 | 8 | 16 | 12\nFilm | 6 | 8 | 10 | 12 | 10 | 14 | 12 | 16\nBusiness | 8 | 4 | 10 | 6 | 12 | 8 | 14 | 16\nIn the year 2021, as against the year 2020, the number of readers per magazine declined for the category of ________ magazine.\nGeneral\nSports\nBusiness\nFilm\nBusiness magazine readership per magazine:\n2020 = 0.9 lakh ÷ 12 = 7,500\n2021 = 1.12 lakh ÷ 16 = 7,000\nDecline = 7,500 − 7,000 = 500 readers\nTrick: Divide total readers (E + H) by total magazines (E + H) for each year and compare.",
+    "options": {
+      "A": "General",
+      "B": "Sports",
+      "C": "Business",
+      "D": "Film"
+    },
+    "correctAnswer": "C",
+    "explanation": ""
+  },
+  {
+    "id": 5,
+    "section": "Paper 1",
+    "question": "Data passage: The following Table-1 shows the readership of Hindi (H) and English (E) magazines (in lakh) of four different categories, namely, General, Sports, Film, and Business from the year 2020 to 2023 and Table-2 shows the number of Hindi (H) and English (E) magazine of same four categories published during the same period. No magazine was discontinued during the above mentioned period. Based on the data in the tables, answer the questions that follows.\nTable-1: Category-wise details of Readership of Magazines (in Lakh)\nCategory | 2020 (E) | 2020 (H) | 2021 (E) | 2021 (H) | 2022 (E) | 2022 (H) | 2023 (E) | 2023 (H)\nGeneral | 2.0 | 2.4 | 2.6 | 3.2 | 4.0 | 3.6 | 5.0 | 4.0\nSports | 0.8 | 0.4 | 1.2 | 0.8 | 2.0 | 1.4 | 2.4 | 1.6\nFilm | 1.2 | 1.6 | 1.9 | 2.5 | 2.0 | 3.0 | 2.4 | 3.6\nBusiness | 0.6 | 0.3 | 0.8 | 0.32 | 1.2 | 0.5 | 1.6 | 1.0\nTable-2: Category-wise Details of Publication of Magazines\nCategory | 2020 (E) | 2020 (H) | 2021 (E) | 2021 (H) | 2022 (E) | 2022 (H) | 2023 (E) | 2023 (H)\nGeneral | 24 | 20 | 30 | 28 | 34 | 30 | 58 | 32\nSports | 6 | 4 | 10 | 6 | 14 | 8 | 16 | 12\nFilm | 6 | 8 | 10 | 12 | 10 | 14 | 12 | 16\nBusiness | 8 | 4 | 10 | 6 | 12 | 8 | 14 | 16\nConsidering only the English sports magazines, the ratio between the number of readers in 2020 to the number of readers during 2020 to 2023 is.\n2 : 9\n1 : 8\n2 : 15\n2 : 5\nEnglish Sports Readership:\n2020 = 0.8 lakh\n2020–2023 = 0.8 + 1.2 + 2.0 + 2.4 = 6.4 lakh\nRatio = 0.8 : 6.4 = 1 : 8\nTrick: Divide both values by 0.8 to get the simplified ratio.",
+    "options": {
+      "A": "2 : 9",
+      "B": "1 : 8",
+      "C": "2 : 15",
+      "D": "2 : 5"
+    },
+    "correctAnswer": "B",
+    "explanation": ""
+  },
+  {
+    "id": 6,
+    "section": "Paper 1",
+    "question": "Match List I with List II regarding educational processes.\nList I: A. Teaching B. Training C. Instruction D. Indoctrination\nList II: I. Facilitates holistic autonomous intellectual growth II. Develops specific practical habituated skills III. Imparts structured domain knowledge directly IV. Instills uncritical belief systems permanently",
+    "options": {
+      "A": "A-I, B-II, C-III, D-IV",
+      "B": "A-II, B-I, C-IV, D-III",
+      "C": "A-I, B-III, C-II, D-IV",
+      "D": "A-III, B-II, C-I, D-IV"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "id": 7,
+    "section": "Paper 1",
+    "question": "Which statements regarding educational objectives are correct?\nA. Cognitive domain focuses on intellectual skill development. B. Affective domain emphasizes emotional value internalization. C. Psychomotor domain involves physical motor skill mastery. D. Training encourages reflective questioning of core beliefs.",
+    "options": {
+      "A": "A, B and C only",
+      "B": "A, B and D only",
+      "C": "B, C and D only",
+      "D": "A, C and D only"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "id": 8,
+    "section": "Paper 1",
+    "question": "Choose the correct option regarding effective teaching:\nAssertion (A): Effective teaching transforms passive information reception into active knowledge construction. Reason (R): Learner participation fosters deeper cognitive processing and conceptual understanding.",
+    "options": {
+      "A": "Both (A) and (R) are correct and (R) is the correct explanation of (A)",
+      "B": "Both (A) and (R) are correct but (R) is NOT the correct explanation of (A)",
+      "C": "(A) is correct but (R) is incorrect",
+      "D": "(A) is incorrect but (R) is correct"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "id": 9,
+    "section": "Paper 1",
+    "question": "Arrange the steps of instructional planning in correct sequential order:\nA. Formulate instructional objectives B. Assess entry behavior C. Implement teaching strategies D. Evaluate learning outcomes",
+    "options": {
+      "A": "A, B, C, D",
+      "B": "B, A, C, D",
+      "C": "A, C, B, D",
+      "D": "C, A, B, D"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "id": 10,
+    "section": "Paper 1",
+    "question": "Match List I with List II regarding pedagogical functions.\nList I: A. Diagnostic B. Formative C. Summative D. Prognostic\nList II: I. Identifies underlying learning difficulties continuously II. Monitors progress during instruction process III. Evaluates overall achievement at completion IV. Predicts future learning performance potential",
+    "options": {
+      "A": "A-I, B-II, C-III, D-IV",
+      "B": "A-II, B-I, C-IV, D-III",
+      "C": "A-I, B-III, C-II, D-IV",
+      "D": "A-III, B-II, C-I, D-IV"
+    },
+    "correctAnswer": "A",
+    "explanation": "Teaching aims at holistic autonomy, training develops specific skills, instruction imparts knowledge, and indoctrination instills uncritical beliefs. Cognitive, affective, and psychomotor domains represent Bloom's objectives, whereas training focuses on habituation rather than reflective belief questioning. Active learner participation drives deeper cognitive processing, which directly transforms passive information reception into meaningful knowledge construction. Glaser's model specifies formulating objectives first, assessing entry behavior, executing teaching strategies, and concluding with outcome evaluation. Diagnostic evaluation pinpoints difficulties, formative monitors ongoing progress, summative assesses final achievement, and prognostic predicts future potential."
+  },
+  {
+    "id": 11,
+    "section": "Paper 1",
+    "question": "Match List I with List II regarding research types.\nList I: A. Fundamental research B. Applied research C. Action research D. Exploratory research\nList II: I. Developing broad fundamental theoretical principles II. Solving immediate practical operational problems III. Improving specific local practitioner practices IV. Formulating precise researchable problem hypotheses",
+    "options": {
+      "A": "A-II, B-I, C-IV, D-III",
+      "B": "A-I, B-III, C-II, D-IV",
+      "C": "A-I, B-II, C-III, D-IV",
+      "D": "A-III, B-II, C-I, D-IV"
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "id": 12,
+    "section": "Paper 1",
+    "question": "Which statements regarding characteristics of scientific inquiry are correct?\nA. Scientific inquiry demands systematic empirical observation and verification. B. Falsifiability allows empirical testing and refutation of hypotheses. C. Replication verifies reliability across different research contexts. D. Absolute objectivity eliminates all researcher subjective influence completely.",
+    "options": {
+      "A": "A, B and C only",
+      "B": "A, B and D only",
+      "C": "B, C and D only",
+      "D": "A, C and D only"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "id": 13,
+    "section": "Paper 1",
+    "question": "Choose the correct option regarding research objectives and methodology:\nAssertion (A): Exploratory research requires rigid formal quantitative hypothesis testing methods. Reason (R): Exploratory research seeks initial insights into poorly understood phenomena.",
+    "options": {
+      "A": "Both (A) and (R) are correct and (R) is the correct explanation of (A)",
+      "B": "Both (A) and (R) are correct but (R) is NOT the correct explanation of (A)",
+      "C": "(A) is correct but (R) is incorrect",
+      "D": "(A) is incorrect but (R) is correct"
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "id": 14,
+    "section": "Paper 1",
+    "question": "Arrange the stages of the scientific research process sequentially:\nA. Formulate research problem clearly B. Develop testable research hypotheses C. Select research design methodology D. Execute data collection procedures",
+    "options": {
+      "A": "B, A, C, D",
+      "B": "A, B, C, D",
+      "C": "A, C, B, D",
+      "D": "C, A, B, D"
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "id": 15,
+    "section": "Paper 1",
+    "question": "Match List I with List II regarding research purposes.\nList I: A. Descriptive research B. Explanatory research C. Empirical research D. Conceptual research\nList II: I. Mapping existing phenomenon characteristics systematically II. Identifying causal relationships between variables III. Testing hypotheses through observable evidence IV. Analyzing abstract ideas and frameworks\nDirections: Read the following passage carefully and answer Questions 1–5.\nPassage\nEducational success is often judged by how confidently students reproduce what they have been taught. Such fluency is useful: without a vocabulary of concepts and examples, criticism easily becomes little more than preference. Yet familiarity with established answers can disguise an inability to decide when those answers are appropriate. A student may accurately recite several explanations for a social problem while failing to identify which assumptions distinguish them. In that case, the difficulty is not ignorance but the absence of a method for weighing claims. Some educators argue that evaluation should come only after extensive mastery, since premature questioning may encourage unearned certainty. This concern is reasonable where teachers reward disagreement rather than justification. But waiting for mastery to be complete creates another danger: students learn to treat knowledge as settled material instead of as an organised body of revisable judgements. A more defensible approach introduces critical examination alongside factual instruction, gradually increasing the complexity of the choices learners must justify. Teachers remain essential, not as permanent arbiters of every conclusion, but as guides to standards of evidence and reasoning. Intellectual independence, on this account, is not the freedom to disregard expertise; it is the capacity to use expertise without surrendering one's responsibility to judge.",
+    "options": {
+      "A": "A-II, B-I, C-IV, D-III",
+      "B": "A-I, B-III, C-II, D-IV",
+      "C": "A-I, B-II, C-III, D-IV",
+      "D": "A-III, B-II, C-I, D-IV"
+    },
+    "correctAnswer": "C",
+    "explanation": "Fundamental research builds theory, applied solves practical problems, action improves local practice, and exploratory formulates initial hypotheses. Scientific inquiry relies on empirical evidence, falsifiability, and replication; absolute objectivity remains an ideal rather than an achievable reality. Exploratory research utilizes flexible, qualitative approaches to gain initial insights rather than rigid quantitative hypothesis testing methods. The scientific research process moves sequentially from formulating the problem to building hypotheses, selecting design, and collecting data. Descriptive research maps characteristics, explanatory establishes causes, empirical tests observed evidence, and conceptual analyzes theoretical frameworks."
+  },
+  {
+    "id": 16,
+    "section": "Paper 1",
+    "question": "Which interpretation best represents the author's central educational argument?",
+    "options": {
+      "A": "Mastery must precede critical evaluation",
+      "B": "Knowledge and judgement develop together",
+      "C": "Criticism primarily corrects factual ignorance",
+      "D": "Instruction mainly transmits evaluative standards"
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "id": 17,
+    "section": "Paper 1",
+    "question": "What does the student's difficulty with competing explanations primarily indicate?",
+    "options": {
+      "A": "Recall can conceal weak judgement",
+      "B": "Evidence matters less than interpretation",
+      "C": "Competing accounts require additional information",
+      "D": "Conceptual knowledge prevents independent criticism"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "id": 18,
+    "section": "Paper 1",
+    "question": "How does the author qualify concerns about premature questioning?",
+    "options": {
+      "A": "They apply to all early questioning",
+      "B": "They justify delaying critical evaluation",
+      "C": "They challenge the value of expertise",
+      "D": "They concern dissent without justification"
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "id": 19,
+    "section": "Paper 1",
+    "question": "Which teaching practice most closely reflects the proposed educational approach?",
+    "options": {
+      "A": "Integrate concepts with evidence appraisal",
+      "B": "Complete instruction before permitting criticism",
+      "C": "Gradually replace expertise with scepticism",
+      "D": "Reward disagreement regardless of justification"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "id": 20,
+    "section": "Paper 1",
+    "question": "Which assumption is necessary for the author's educational recommendation?",
+    "options": {
+      "A": "Expertise can settle disputed conclusions",
+      "B": "Factual mastery eventually removes uncertainty",
+      "C": "Judgement can develop alongside conceptual learning",
+      "D": "Independent inquiry requires diminishing teacher guidance"
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "id": 21,
+    "section": "Paper 1",
+    "question": "Match List I with List II regarding communication elements.\nList I: A. Encoding B. Decoding C. Feedback D. Noise\nList II: I. Converting thoughts into symbolic messages II. Interpreting received symbolic message signals III. Transmitting receiver response to sender IV. Distorting clear message signal transmission",
+    "options": {
+      "A": "A-I, B-II, C-III, D-IV",
+      "B": "A-II, B-I, C-IV, D-III",
+      "C": "A-I, B-III, C-II, D-IV",
+      "D": "A-IV, B-II, C-I, D-III"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "id": 22,
+    "section": "Paper 1",
+    "question": "Which statements regarding communication models are correct?\nA. Linear models depict communication as one-way message transmission. B. Interactive models incorporate sequential two-way feedback loops. C. Transactional models treat communicators as simultaneous message senders. D. Shannon-Weaver model includes mandatory interactive feedback.",
+    "options": {
+      "A": "A, B and C only",
+      "B": "A, B and D only",
+      "C": "B, C and D only",
+      "D": "A, C and D only"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "id": 23,
+    "section": "Paper 1",
+    "question": "Choose the correct option regarding communication feedback:\nAssertion (A): Interactive feedback enables senders to adjust messages for effective understanding. Reason (R): Immediate feedback completely eliminates all potential semantic noise in communication.",
+    "options": {
+      "A": "Both (A) and (R) are correct and (R) is the correct explanation of (A)",
+      "B": "Both (A) and (R) are correct but (R) is NOT the correct explanation of (A)",
+      "C": "(A) is correct but (R) is incorrect",
+      "D": "(A) is incorrect but (R) is correct"
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "id": 24,
+    "section": "Paper 1",
+    "question": "Arrange the stages of a communication process sequentially:\nA. Sender encodes intended message B. Channel transmits encoded signal C. Receiver decodes received signal D. Receiver provides feedback response",
+    "options": {
+      "A": "A, B, C, D",
+      "B": "B, A, C, D",
+      "C": "A, C, B, D",
+      "D": "C, A, B, D"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "id": 25,
+    "section": "Paper 1",
+    "question": "Match List I with List II regarding communication models.\nList I: A. Shannon-Weaver B. Berlo SMCR C. Schramm model D. Barnlund model\nList II: I. Technical signal transmission noise focus II. Source message channel receiver alignment III. Overlapping field of experience emphasis IV. Continuous simultaneous transactional feedback process",
+    "options": {
+      "A": "A-I, B-II, C-III, D-IV",
+      "B": "A-II, B-I, C-IV, D-III",
+      "C": "A-I, B-III, C-II, D-IV",
+      "D": "A-IV, B-II, C-I, D-III"
+    },
+    "correctAnswer": "A",
+    "explanation": "Encoding formulates messages, decoding interprets them, feedback conveys responses, and noise distorts transmission. Statements A, B, and C are correct; the original Shannon-Weaver model is a linear mathematical model without feedback. Assertion is correct; Reason is false because feedback helps detect misunderstandings but cannot completely eliminate all semantic noise. The communication loop moves sequentially from encoding to transmission, decoding, and returning feedback. Shannon-Weaver addresses technical noise, Berlo maps SMCR factors, Schramm highlights field of experience, and Barnlund models transactional communication."
+  },
+  {
+    "id": 26,
+    "section": "Paper 1",
+    "question": "Match List I with List II regarding reasoning forms and numerical examples.\nList I: A. Deductive reasoning B. Inductive reasoning C. Numerical analogy D. Conditional reasoning\nList II: I. Even primes imply number two II. Pattern extrapolation predicting next term III. Equal ratio relation 2:4::8:16 IV. If divisible by 4, even",
+    "options": {
+      "A": "A-I, B-II, C-III, D-IV",
+      "B": "A-II, B-I, C-IV, D-III",
+      "C": "A-I, B-III, C-II, D-IV",
+      "D": "A-IV, B-II, C-I, D-III"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "id": 27,
+    "section": "Paper 1",
+    "question": "Which statements regarding conditional numerical relationships and logical necessity are correct?\nA. If x is divisible by 6, x is even. B. If x is prime, x must be odd. C. Divisibility by 8 guarantees divisibility by 4. D. Sum of two odd integers is always even.",
+    "options": {
+      "A": "A, C and D only",
+      "B": "A, B and C only",
+      "C": "B, C and D only",
+      "D": "A, B and D only"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "id": 28,
+    "section": "Paper 1",
+    "question": "Choose the correct option regarding valid mathematical inference and logical necessity:\nAssertion (A): Deductive mathematical inference guarantees absolute conclusion truth if premises are true.Reason (R): Inductive reasoning provides logically necessary proof in all quantitative relationships.",
+    "options": {
+      "A": "Both (A) and (R) are correct and (R) is the correct explanation of (A)",
+      "B": "Both (A) and (R) are correct but (R) is NOT the correct explanation of (A)",
+      "C": "(A) is correct but (R) is incorrect",
+      "D": "(A) is incorrect but (R) is correct"
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "id": 29,
+    "section": "Paper 1",
+    "question": "Arrange these numerical expressions in ascending order of calculated value:\nA. Expression 2⁴ - 3 B. Expression 3² + 5 C. Expression √225 + 1 D. Expression 5² - 7",
+    "options": {
+      "A": "A, B, C, D",
+      "B": "B, A, C, D",
+      "C": "A, C, B, D",
+      "D": "C, A, B, D"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "id": 30,
+    "section": "Paper 1",
+    "question": "Match List I with List II regarding numerical patterns and structural properties.\nList I: A. Geometric progression B. Arithmetic progression C. Prime sequence D. Fibonacci sequence\nList II: I. Constant multiplicative ratio between terms II. Constant additive difference between terms III. Numbers with exactly two factors IV. Term equals sum of previous",
+    "options": {
+      "A": "A-I, B-II, C-III, D-IV",
+      "B": "A-II, B-I, C-IV, D-III",
+      "C": "A-I, B-III, C-II, D-IV",
+      "D": "A-IV, B-II, C-I, D-III"
+    },
+    "correctAnswer": "A",
+    "explanation": "Deductive gives necessary conclusions, inductive extrapolates patterns, analogy maps ratios, and conditional uses if-then implication structure. Statements A, C, and D are deductively necessary; Statement B is false because two is an even prime. Assertion is true; Reason is false because inductive reasoning yields probabilistic generalization rather than logically necessary proof. Evaluating yields A=13, B=14, C=16, and D=18, establishing a strict unique ascending sequence A, B, C, D. Geometric uses constant ratios, arithmetic constant differences, primes exactly two factors, and Fibonacci sums preceding terms."
+  },
+  {
+    "id": 31,
+    "section": "Paper 1",
+    "question": "Match List I with List II regarding argument forms.\nList I: A. Modus Ponens B. Modus Tollens C. Affirming Consequent D. Denying Antecedent\nList II: I. Valid affirming conditional antecedent inference II. Valid denying conditional consequent inference III. Invalid affirming conditional consequent fallacy IV. Invalid denying conditional antecedent fallacy",
+    "options": {
+      "A": "A-II, B-I, C-IV, D-III",
+      "B": "A-I, B-II, C-III, D-IV",
+      "C": "A-I, B-III, C-II, D-IV",
+      "D": "A-IV, B-II, C-I, D-III"
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "id": 32,
+    "section": "Paper 1",
+    "question": "Which statements regarding validity and soundness are correct?\nA. Valid deductive arguments can possess false empirical premises. B. Sound arguments must possess true premises and validity. C. Invalid arguments can possess all true empirical premises. D. Validity guarantees the empirical truth of conclusion claims.",
+    "options": {
+      "A": "A, B and C only",
+      "B": "A, B and D only",
+      "C": "B, C and D only",
+      "D": "A, C and D only"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "id": 33,
+    "section": "Paper 1",
+    "question": "Choose the correct option regarding deductive validity:\nAssertion (A): Valid deductive arguments guarantee true conclusions if premises are true. Reason (R): Logical validity requires every premise to be empirically true.",
+    "options": {
+      "A": "Both (A) and (R) are correct and (R) is the correct explanation of (A)",
+      "B": "Both (A) and (R) are correct but (R) is NOT the correct explanation of (A)",
+      "C": "(A) is correct but (R) is incorrect",
+      "D": "(A) is incorrect but (R) is correct"
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "id": 34,
+    "section": "Paper 1",
+    "question": "Arrange these statements to form a valid deductive implication chain:\nA. Assert initial antecedent P B. Apply rule: P implies Q C. Apply rule: Q implies R D. Deduce final consequent R",
+    "options": {
+      "A": "B, A, C, D",
+      "B": "A, C, B, D",
+      "C": "C, A, B, D",
+      "D": "A, B, C, D"
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "id": 35,
+    "section": "Paper 1",
+    "question": "Match List I with List II regarding uses of language.\nList I: A. Informative function B. Expressive function C. Directive function D. Performative function\nList II: I. Stating empirical facts or propositions II. Expressing feelings or emotional attitudes III. Commanding or requesting specific actions IV. Accomplishing acts by uttering words",
+    "options": {
+      "A": "A-II, B-I, C-IV, D-III",
+      "B": "A-I, B-II, C-III, D-IV",
+      "C": "A-I, B-III, C-II, D-IV",
+      "D": "A-IV, B-II, C-III, D-I"
+    },
+    "correctAnswer": "B",
+    "explanation": "Modus Ponens and Tollens are valid conditional forms, while affirming consequent and denying antecedent represent formal fallacies. Validity concerns structural entailment, soundness requires premise truth, and valid arguments may contain false premises. Assertion correctly defines validity; Reason is false because validity depends on logical form rather than premise truth. Deductive implication moves sequentially from asserting antecedent P through hypothetical conditionals to deriving final consequent R. Informative states facts, expressive conveys feelings, directive issues commands, and performative executes actions through spoken utterances."
+  },
+  {
+    "id": 36,
+    "section": "Paper 1",
+    "question": "Match List I with List II regarding cloud and software models.\nList I: A. SaaS B. PaaS C. IaaS D. Firmware\nList II: I. End-user software application delivery II. Application development framework environment III. Virtualized hardware infrastructure provision IV. Hardware-embedded control software code",
+    "options": {
+      "A": "A-I, B-II, C-III, D-IV",
+      "B": "A-II, B-I, C-IV, D-III",
+      "C": "A-I, B-III, C-II, D-IV",
+      "D": "A-IV, B-II, C-I, D-III"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "id": 37,
+    "section": "Paper 1",
+    "question": "Which statements regarding computer memory architecture are correct?\nA. Cache memory operates faster than RAM main memory. B. RAM provides volatile temporary data storage during processing. C. ROM retains permanent non-volatile system startup instructions. D. Secondary storage capacity directly determines CPU execution speed.",
+    "options": {
+      "A": "A, B and C only",
+      "B": "A, B and D only",
+      "C": "B, C and D only",
+      "D": "A, C and D only"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "id": 38,
+    "section": "Paper 1",
+    "question": "Choose the correct option regarding system software functionality:\nAssertion (A): An operating system manages hardware resources and application execution. Reason (R): System software functions independently without requiring any hardware resources.",
+    "options": {
+      "A": "Both (A) and (R) are correct and (R) is the correct explanation of (A)",
+      "B": "Both (A) and (R) are correct but (R) is NOT the correct explanation of (A)",
+      "C": "(A) is correct but (R) is incorrect",
+      "D": "(A) is incorrect but (R) is correct"
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "id": 39,
+    "section": "Paper 1",
+    "question": "Arrange the stages of a digital data-processing workflow sequentially:\nA. Receive raw data input B. Process data in RAM C. Generate processed information output D. Save information to storage",
+    "options": {
+      "A": "A, B, C, D",
+      "B": "B, A, C, D",
+      "C": "A, C, B, D",
+      "D": "C, A, B, D"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "id": 40,
+    "section": "Paper 1",
+    "question": "Match List I with List II regarding ICT technical applications.\nList I: A. URL B. HTML C. HTTP D. FTP\nList II: I. Web resource location address identifier II. Hypertext webpage structure markup language III. Web browser server communication protocol IV. Bulk network file transfer protocol",
+    "options": {
+      "A": "A-I, B-II, C-III, D-IV",
+      "B": "A-II, B-I, C-IV, D-III",
+      "C": "A-I, B-III, C-II, D-IV",
+      "D": "A-IV, B-II, C-I, D-III"
+    },
+    "correctAnswer": "A",
+    "explanation": "SaaS delivers software, PaaS provides development environments, IaaS offers virtualized infrastructure, and firmware controls hardware directly. Statements A, B, and C are correct; secondary storage capacity expands storage space but does not determine CPU execution speed. Assertion is correct; Reason is false because all software requires underlying physical hardware resources to operate. The digital computing cycle flows sequentially from receiving input to processing in RAM, generating output, and saving to storage. URL locates web resources, HTML structures web pages, HTTP transfers web data, and FTP handles bulk file transfers."
+  },
+  {
+    "id": 41,
+    "section": "Paper 1",
+    "question": "Match List I with List II regarding SDG environmental targets.\nList I: A. SDG 6 B. SDG 7 C. SDG 13 D. SDG 15\nList II: I. Ensure clean water and sanitation II. Ensure affordable clean energy access III. Take urgent climate change action IV. Protect terrestrial ecosystems and biodiversity",
+    "options": {
+      "A": "A-I, B-II, C-III, D-IV",
+      "B": "A-II, B-I, C-IV, D-III",
+      "C": "A-I, B-III, C-II, D-IV",
+      "D": "A-IV, B-II, C-I, D-III"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "id": 42,
+    "section": "Paper 1",
+    "question": "Which statements regarding MDGs and SDGs frameworks are correct?\nA. MDGs comprised eight target-driven global development goals. B. SDGs comprise seventeen integrated sustainable development goals. C. SDGs apply universally to developing and developed nations. D. MDGs focused exclusively on high-income industrialized nations.",
+    "options": {
+      "A": "A, B and C only",
+      "B": "A, B and D only",
+      "C": "B, C and D only",
+      "D": "A, C and D only"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "id": 43,
+    "section": "Paper 1",
+    "question": "Choose the correct option regarding sustainable development and environment:\nAssertion (A): Sustainable Development Goals integrate economic growth with ecological protection. Reason (R): SDG 13 focuses exclusively on stratospheric ozone layer depletion.",
+    "options": {
+      "A": "Both (A) and (R) are correct and (R) is the correct explanation of (A)",
+      "B": "Both (A) and (R) are correct but (R) is NOT the correct explanation of (A)",
+      "C": "(A) is correct but (R) is incorrect",
+      "D": "(A) is incorrect but (R) is correct"
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "id": 44,
+    "section": "Paper 1",
+    "question": "Arrange these global sustainability milestones in historical chronological order:\nA. Rio Earth Summit B. UN Millennium Declaration C. Rio+20 Conference D. Agenda 2030 adoption",
+    "options": {
+      "A": "A, B, C, D",
+      "B": "B, A, C, D",
+      "C": "A, C, B, D",
+      "D": "C, A, B, D"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "id": 45,
+    "section": "Paper 1",
+    "question": "Which statements regarding SDG interactions and development trade-offs are correct?\nA. Expanding agricultural land can undermine biodiversity conservation SDGs. B. Universal energy access supports poverty eradication and health. C. SDG targets exhibit synergistic and trade-off systemic linkages. D. SDG implementation operates isolated from national policy integration.",
+    "options": {
+      "A": "A, B and C only",
+      "B": "A, B and D only",
+      "C": "B, C and D only",
+      "D": "A, C and D only"
+    },
+    "correctAnswer": "A",
+    "explanation": "SDG 6 targets water/sanitation, SDG 7 clean energy, SDG 13 climate action, and SDG 15 terrestrial ecosystems and biodiversity. Statements A, B, and C are correct; MDGs focused on developing nations rather than exclusively high-income industrialized nations. Assertion is correct; Reason is false because SDG 13 addresses climate action, while ozone depletion is governed separately. Milestones occurred chronologically: Rio Earth Summit (1992), Millennium Declaration (2000), Rio+20 (2012), and Agenda 2030 (2015). Statements A, B, and C are correct; SDG implementation requires integrated national policy frameworks rather than isolated governance."
+  },
+  {
+    "id": 46,
+    "section": "Paper 1",
+    "question": "Match List I with List II regarding ancient learning centers.\nList I: A. Nalanda B. Takshashila C. Vikramashila D. Valabhi\nList II: I. Yogacara philosophy and Dharmaganja library II. Gandhara location and Ayurveda studies III. Dvara-Panditas and Vajrayana Buddhism IV. Hinayana doctrine and Maitraka patronage",
+    "options": {
+      "A": "A-I, B-II, C-III, D-IV",
+      "B": "A-II, B-I, C-IV, D-III",
+      "C": "A-I, B-III, C-II, D-IV",
+      "D": "A-III, B-II, C-I, D-IV"
+    },
+    "correctAnswer": "A",
+    "explanation": "Nalanda hosted Dharmaganja library, Takshashila taught Ayurveda, Vikramashila had Dvara-Panditas, and Valabhi specialized in Hinayana doctrine."
+  },
+  {
+    "id": 47,
+    "section": "Paper 1",
+    "question": "Arrange these ancient learning centres by their historical emergence:\nA. Takshashila in Gandhara region B. Nalanda under Kumaragupta I C. Valabhi under Maitraka dynasty D. Vikramashila under King Dharmapala E. Jagaddala under King Ramapala",
+    "options": {
+      "A": "A, B, C, D, E",
+      "B": "B, A, C, D, E",
+      "C": "A, C, B, E, D",
+      "D": "C, A, B, D, E"
+    },
+    "correctAnswer": "A",
+    "explanation": "Takshashila arose first (~6th century BCE), followed by Nalanda (5th CE), Valabhi (6th CE), Vikramashila (8th CE), and Jagaddala (11th CE)."
+  },
+  {
+    "id": 48,
+    "section": "Paper 1",
+    "question": "Which statements about ancient educational systems are correct?\nA. Agraharas were tax-free land grants to learned Brahmins. B. Ghatikas were South Indian centers for higher education. C. Dvara-Panditas managed financial treasuries in ancient monastic universities. D. Pabbajja marked initial entry into Buddhist monastic life.",
+    "options": {
+      "A": "A, B and D only",
+      "B": "A, C and D only",
+      "C": "B and C only",
+      "D": "A, B, C and D"
+    },
+    "correctAnswer": "A",
+    "explanation": "Statements A, B, and D are true. Dvara-Panditas conducted rigorous academic gate-examinations, not financial administration."
+  },
+  {
+    "id": 49,
+    "section": "Paper 1",
+    "question": "Choose the correct option regarding ancient monastic education:\nAssertion (A): Mahaviharas emphasized structured Shastrartha debate and formal logical reasoning. Reason (R): Mahaviharas admitted all candidates without conducting academic entrance screening.",
+    "options": {
+      "A": "Both (A) and (R) are correct and (R) is the correct explanation of (A)",
+      "B": "Both (A) and (R) are correct but (R) is NOT the correct explanation of (A)",
+      "C": "(A) is correct but (R) is incorrect",
+      "D": "(A) is incorrect but (R) is correct"
+    },
+    "correctAnswer": "C",
+    "explanation": "Assertion is true; Reason is false as Dvara-Panditas conducted highly competitive entrance examinations."
+  },
+  {
+    "id": 50,
+    "section": "Paper 1",
+    "question": "Match List I with List II regarding ancient scholars and patrons.\nList I: A. Shilabhadra B. Atisha Dipankara C. Panini D. Dharmapala\nList II: I. Venerated Kulapati of Nalanda II. Vikramashila scholar visiting Tibet III. Sanskrit grammarian from Takshashila IV. Pala founder of Vikramashila",
+    "options": {
+      "A": "A-I, B-II, C-III, D-IV",
+      "B": "A-II, B-I, C-IV, D-III",
+      "C": "A-III, B-II, C-I, D-IV",
+      "D": "A-I, B-IV, C-III, D-II"
+    },
+    "correctAnswer": "A",
+    "explanation": "Shilabhadra headed Nalanda, Atisha reformed Tibetan Buddhism, Panini studied at Takshashila, and Dharmapala founded Vikramashila."
+  },
+  {
+    "id": 51,
+    "section": "Tamil Paper 2",
+    "question": "பொருத்துக (சங்க இலக்கியச் சொற்களும் பொருள்களும்)\nபட்டியல் - I (A) தடாரி (B) வேரி (C) அமலே (D) அலவன்\nபட்டியல் - II (I) கள் (II) பறை (III) நண்டு (IV) திரண்ட சோறு",
+    "options": {
+      "A": "(A)-(II), (B)-(I), (C)-(IV), (D)-(III)",
+      "B": "(A)-(I), (B)-(II), (C)-(III), (D)-(IV)",
+      "C": "(A)-(III), (B)-(IV), (C)-(I), (D)-(II)",
+      "D": "(A)-(IV), (B)-(III), (C)-(II), (D)-(I)"
+    },
+    "correctAnswer": "A",
+    "explanation": "தடாரி என்பது பறையையும், வேரி என்பது கள்ளையும், அமலை என்பது சோற்றையும், அலவன் என்பது நண்டையும் குறிக்கும்."
+  },
+  {
+    "id": 52,
+    "section": "Tamil Paper 2",
+    "question": "நிரல்படுத்துக (பழமொழி நானூறு - செய்யுள் தொடர் வரிசை)\n(A) தனக்கணி தான்செல் உலகத்து அறம்\n(B) குளத்துக்கு அணியென்ப தாமரை\n(C) நிலத்துக்கு அணியென்ப நெல்லும் கரும்பும்\n(D) பெண்மை நலத்துக்கு அணியென்ப நாணம்",
+    "options": {
+      "A": "(C), (B), (D), (A)",
+      "B": "(A), (B), (C), (D)",
+      "C": "(B), (D), (A), (C)",
+      "D": "(D), (A), (C), (B)"
+    },
+    "correctAnswer": "A",
+    "explanation": "பழமொழி நானூற்றுப் பாடல் \"நிலத்துக்கு அணியென்ப...\", \"குளத்துக்கு அணியென்ப...\", \"பெண்மை நலத்துக்கு...\", \"தனக்கணி தான்செல்...\" என்ற வரிசையில் அமைகிறது."
+  },
+  {
+    "id": 53,
+    "section": "Tamil Paper 2",
+    "question": "பல்நோக்குக் கூற்றுத் தேர்வு (நெடுநல்வாடையில் கூதிர்க்கால நிகழ்வுகள்)\n(A) நெடுநல்வாடையில் மேய்ச்சல் நிலத்து மாடுகள் குளிரால் மேய்தலை மறந்தன.\n(B) பறவைகள் கூதிர்க்காற்றின் கொடுமையால் மரங்களிலிருந்து நிலத்தில் வீழ்ந்தன.\n(C) குரங்குகள் குளிரின் மிகுதியால் நடுங்கி ஒடுங்கின.\n(D) கறவை பசுக்கள் பாலுண்ண வந்த கன்றுகளை உதைத்துத் தள்ளின.",
+    "options": {
+      "A": "(A), (B), (C) மட்டும் சரி",
+      "B": "(B), (C), (D) மட்டும் சரி",
+      "C": "(A), (C), (D) மட்டும் சரி",
+      "D": "(A), (B), (D) மட்டும் சரி"
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "id": 54,
+    "section": "Tamil Paper 2",
+    "question": "கூற்று 1 - கூற்று 2 (சங்க இலக்கிய அச்சுப் பதிப்பு வரலாறு)\nகூற்று 1: பத்துப்பாட்டு மூலமும் உரையும் முதன்முதலில் உ.வே. சாமிநாதையரால் பதிப்பிக்கப்பட்டது.\nகூற்று 2: பட்டினப்பாலை சங்க இலக்கிய நூல்களுள் முதன்முதலில் அச்சிடப்பெற்ற தனி நூலாகும்.",
+    "options": {
+      "A": "கூற்று 1 சரி - கூற்று 2 தவறு",
+      "B": "கூற்று 1 தவறு - கூற்று 2 சரி",
+      "C": "கூற்று 1 மற்றும் கூற்று 2 இரண்டும் சரி",
+      "D": "கூற்று 1 மற்றும் கூற்று 2 இரண்டும் தவறு"
+    },
+    "correctAnswer": "C",
+    "explanation": "பத்துப்பாட்டை 1889-இல் உ.வே.சா பதிப்பித்தார்; சங்க நூல்களுள் முதன்முதலில் அச்சேறிய தனிநூல் பட்டினப்பாலை ஆகும்."
+  },
+  {
+    "id": 55,
+    "section": "Tamil Paper 2",
+    "question": "பொருத்துக (பதிற்றுப்பத்துப் பத்துகளும் பாட்டுடைச் சேர மன்னர்களும்)\nபட்டியல் – I\n(A) இரண்டாம் பத்து\n(B) மூன்றாம் பத்து\n(C) நான்காம் பத்து\n(D) ஐந்தாம் பத்து\nபட்டியல் - II\nகளங்காய்க்கண்ணி நார்முடிச்சேரல்\nகடல்பிறக்கோட்டிய செங்குட்டுவன்\nமயவரம்பன் நெடுஞ்சேரலாதன்\nபல்யானைச் செல்கெழு குட்டுவன்",
+    "options": {
+      "A": "(A)-(III), (B)-(IV), (C)-(I), (D)-(II)",
+      "B": "(A)-(I), (B)-(II), (C)-(III), (D)-(IV)",
+      "C": "(A)-(IV), (B)-(III), (C)-(II), (D)-(I)",
+      "D": "(A)-(II), (B)-(I), (C)-(IV), (D)-(III)"
+    },
+    "correctAnswer": "A",
+    "explanation": "பதிற்றுப்பத்தில் 2 முதல் 5 வரை முறையே நெடுஞ்சேரலாதன், பல்யானைச் செல்கெழு குட்டுவன், நார்முடிச்சேரல், செங்குட்டுவன் தலைவர்களாவர்."
+  },
+  {
+    "id": 56,
+    "section": "Tamil Paper 2",
+    "question": "நிரல்படுத்துக (குறிஞ்சிப்பாட்டில் கபிலர் வகுத்த மலர்களின் வைப்புமுறை)\n(A) அனிச்சம்\n(B) செங்காந்தள்\n(C) செங்கழுநீர்\n(D) ஆம்பல்",
+    "options": {
+      "A": "(B), (D), (A), (C)",
+      "B": "(A), (B), (C), (D)",
+      "C": "(C), (A), (B), (D)",
+      "D": "(D), (C), (B), (A)"
+    },
+    "correctAnswer": "A",
+    "explanation": "குறிஞ்சிப்பாட்டின் மலர்ப்பட்டியலில் முதல் நான்கு மலர்கள் காந்தள், ஆம்பல், அனிச்சம், செங்கழுநீர் ஆகும்."
+  },
+  {
+    "id": 57,
+    "section": "Tamil Paper 2",
+    "question": "பல்நோக்குக் கூற்றுத் தேர்வு (புறநானூற்றில் கடமைகளின் பகுப்பு)\n(A) \"ஈன்று புறந்தருதல் என்தலைக் கடனே\" - தாயின் கடன்\n(B) \"சான்றோனாக்குதல் எந்தைக்குக் கடனே\" - தந்தையின் கடன்\n(C) \"வேல்வடித்துக் கொடுத்தல் கொல்லற்குக் கடனே\" - கொல்லன் கடன்\n(D) \"நன்னடை நல்கல் வேந்தற்குக் கடனே\" - வேந்தனின் கடன்",
+    "options": {
+      "A": "(A), (B), (C) மட்டும் சரி",
+      "B": "(B), (C), (D) மட்டும் சரி",
+      "C": "(A), (C), (D) மட்டும் சரி",
+      "D": "(A), (B), (D) மட்டும் சரி"
+    },
+    "correctAnswer": "C",
+    "explanation": "பொன்முடியாரின் பாடலில் தாய், தந்தை, கொல்லன், வேந்தன் ஆகிய நால்வரின் கடமைகளும் கூறப்பட்டுள்ளன."
+  },
+  {
+    "id": 58,
+    "section": "Tamil Paper 2",
+    "question": "உறுதிக்கூற்று - காரணம் (களவழி நாற்பதின் பாடுபொருள்)\nஉறுதிக்கூற்று (உ): களவழி நாற்பது சேரனை மீட்கப் பொய்கையாரால் சோழன் செங்கணானின் போர்க்கள வெற்றியைப் பாடிய நூலாகும்.\nகாரணம் (கா): களவழி நாற்பது பதினெண்கீழ்க்கணக்கு நூல்களுள் அகப்பொருள் சார்ந்த முல்லைத் திணை நூலாகும்.",
+    "options": {
+      "A": "உறுதிக்கூற்று சரி - காரணம் தவறு",
+      "B": "உறுதிக்கூற்று தவறு - காரணம் சரி",
+      "C": "உறுதிக்கூற்று மற்றும் காரணம் இரண்டும் சரி",
+      "D": "உறுதிக்கூற்று மற்றும் காரணம் இரண்டும் தவறு"
+    },
+    "correctAnswer": "A",
+    "explanation": "களவழி நாற்பது கீழ்க்கணக்கின் ஒரே புறப்பொருள் நூலாகும்; அகநூல் எனக் கூறுவது தவறாகும்."
+  },
+  {
+    "id": 59,
+    "section": "Tamil Paper 2",
+    "question": "கூற்று 1 - கூற்று 2 (சங்க இலக்கியக் காட்சி உவமைகள்)\nகூற்று 1: நெடுநல்வாடை அரசமாதேவியின் பிரிவுத் துயரத்திற்குத் திங்களை உரோகிணி நட்சத்திரத்துடன் கண்ட நிகழ்வை உவமிக்கிறது.\nகூற்று 2: பட்டினப்பாலை புகார் நகரில் மகளிரின் இசைக்கேற்ப முழவு, முரசு, யாழ் முழங்கியதை விவரிக்கிறது.",
+    "options": {
+      "A": "கூற்று 1 சரி - கூற்று 2 தவறு",
+      "B": "கூற்று 1 தவறு - கூற்று 2 சரி",
+      "C": "கூற்று 1 மற்றும் கூற்று 2 இரண்டும் சரி",
+      "D": "கூற்று 1 மற்றும் கூற்று 2 இரண்டும் தவறு"
+    },
+    "correctAnswer": "C",
+    "explanation": "நெடுநல்வாடையில் உரோகிணியும், பட்டினப்பாலையில் மகளிர் இசைக்கருவிகளும் சுட்டப்பட்டுள்ளன."
+  },
+  {
+    "id": 60,
+    "section": "Tamil Paper 2",
+    "question": "உறுதிக்கூற்று - காரணம் (கலித்தொகைத் திணை மரபு)\nஉறுதிக்கூற்று (உ): கலித்தொகை பாலைக் கலியை முதலாவதாகக் கொண்டு அகப்பொருள் ஒழுக்கங்களை வரிசைப்படுத்தியுள்ளது.\nகாரணம் (கா): கலித்தொகையில் பாலைக்கலியைப் பாடியவர் பாலை பாடிய பெருங்கடுங்கோ ஆவார்; இதன் உரையினை நச்சினார்க்கினியர் இயற்றினார்.",
+    "options": {
+      "A": "உறுதிக்கூற்று தவறு - காரணம் சரி",
+      "B": "உறுதிக்கூற்று சரி - காரணம் தவறு",
+      "C": "உறுதிக்கூற்று மற்றும் காரணம் இரண்டும் சரி",
+      "D": "உறுதிக்கூற்று மற்றும் காரணம் இரண்டும் தவறு"
+    },
+    "correctAnswer": "C",
+    "explanation": "கலித்தொகையில் பாலை முதலாக அமைந்ததும், அதனைப் பாடியவர் பெருங்கடுங்கோ என்பதும், உரையாசிரியர் நச்சினார்க்கினியர் என்பதும் சரியாகும்."
+  },
+  {
+    "id": 61,
+    "section": "Tamil Paper 2",
+    "question": "[பொருத்துக].\nபட்டியல் ஒன்றைப் பட்டியல் இரண்டோடு பொருத்துக (காப்பிய உரையாசிரியர்களும் அவர்தம் உரைச் சிறப்புகளும்):\nகீழே தரப்பெற்றுள்ள விருப்பங்களிலிருந்து சரியான விடையைத் தேர்ந்தெடுக்க:\nசுருக்கமான விளக்கம்: அடியார்க்குநல்லார் கடலாடு காதையை அகலவுரை என்றும்; நச்சினார்க்கினியர் சிந்தாமணியின் கண்டிப் பாடல்களை இடைச்செருகல் என்றும்; சமயதிவாகர வாமனமுனிவர் நீலகேசிக்கு உரை இயற்றியவர் என்றும்; அரும்பதவுரையாசிரியர் 30 காதைகளுக்கும் அரும்பதவுரை தந்தவர் என்றும் சுட்டுவர்.",
+    "options": {
+      "A": "(A)-(I), (B)-(II), (C)-(III), (D)-(IV)",
+      "B": "(A)-(II), (B)-(I), (C)-(IV), (D)-(III)",
+      "C": "(A)-(III), (B)-(IV), (C)-(I), (D)-(II)",
+      "D": "(A)-(IV), (B)-(III), (C)-(II), (D)-(I)"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "id": 62,
+    "section": "Tamil Paper 2",
+    "question": "[நிரல்படுத்துக – காப்பியப் பாடலடிகள்].\nசீவகசிந்தாமணியில் விசையையின் புலம்பல் பாடலடிகளின் அசல் வரிசையை நிரல்படுத்துக:\n(A) \"மண்ணாள்வான் சென்னியின்மேல் வைப்பாரே போலும்\"\n(B) \"வேல்வாய் எரிமுழுவாக விளிந்தார் சமம்விளக்காக\"\n(C) \"விண்ணாள்வான் எய்தியவற்கு என்செய்வேன் என்றாளே\"\n(D) \"ஈமப் பிடவத்தின்மேல் எரியக் கண்டேனும்\"\nகீழே தரப்பெற்றுள்ள விருப்பங்களிலிருந்து சரியான விடையைத் தேர்ந்தெடுக்க:\nசுருக்கமான விளக்கம்: சீவகசிந்தாமணி நாமகள் இலம்பகத்தில் விசையை சுடுகாட்டில் புலம்பும் பாடலின் அசல் வரிசை: \"வேல்வாய் எரிமுழுவாக...\" ➔ \"ஈமப் பிடவத்தின்மேல்...\" ➔ \"மண்ணாள்வான் சென்னியின்மேல்...\" ➔ \"விண்ணாள்வான் எய்தியவற்கு...\" என்பதாகும்.",
+    "options": {
+      "A": "(A), (B), (C), (D)",
+      "B": "(B), (D), (A), (C)",
+      "C": "(C), (A), (D), (B)",
+      "D": "(D), (C), (B), (A)"
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "id": 63,
+    "section": "Tamil Paper 2",
+    "question": "[பல்நோக்குக் கூற்றுத் தேர்வு].\nசிலப்பதிகாரம் மற்றும் மணிமேகலையின் யாப்பமைப்பு மற்றும் உரைமரபு பற்றிய பின்வரும் கூற்றுகளை ஆராய்க:\n(A) சிலப்பதிகாரம் முழுவதும் நிலைமண்டில ஆசிரியப்பாவினால் மட்டுமே இயற்றப்பட்ட பௌத்தக் காப்பியமாகும்.\n(B) மணிமேகலை காப்பியம் முழுவதும் ஆசிரியப்பா யாப்பினால் அமைந்த சமணத் தர்க்க நூலாகும்.\n(C) மணிமேகலையின் சமயக்கணக்கர் திறங்கேட்ட காதையில் அளவைவாதம் முதலாகப் பல்வேறு சமயக் கோட்பாடுகள் ஆராயப்படுகின்றன.\n(D) சிலப்பதிகாரத்து இந்திரவிழவூரெடுத்த காதையில் புகாரின் ஐம்பெருமன்றங்களின் அதிசய ஆற்றல்கள் விவரிக்கப்படுகின்றன.\nகீழே தரப்பெற்றுள்ள விருப்பங்களிலிருந்து சரியான விடையைத் தேர்ந்தெடுக்க:\nசுருக்கமான விளக்கம்: சிலப்பதிகாரம் முத்தமிழ்க் காப்பியம்; பௌத்தக் காப்பியம் அன்று. மணிமேகலை பௌத்தக் காப்பியம்; சமணத் தர்க்க நூல் அன்று. எனவே (A), (B) தவறானவை; (C), (D) சரியானவை.",
+    "options": {
+      "A": "(A), (B), (C) மட்டும் சரி",
+      "B": "(C), (D) மட்டும் சரி",
+      "C": "(A), (C), (D) மட்டும் சரி",
+      "D": "(A), (B), (D) மட்டும் சரி"
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "id": 64,
+    "section": "Tamil Paper 2",
+    "question": "[கூற்று 1 - கூற்று 2].\nகூற்று 1: ஒட்டக்கூத்தர் தாம் இயற்றிய தக்கயாகப் பரணியின் உரையில் கவிதையழகு வேண்டி நினைந்த நூலாகக் வளையாபதியைக் குறிப்பிடுகிறார். கூற்று 2: வளையாபதி காப்பியத்தின் பாடல்கள் அனைத்தும் முழுமையாகக் கிடைக்கப்பெற்று, அடியார்க்குநல்லாரால் பதிப்பிக்கப்பட்டுள்ளன.\nகீழே தரப்பெற்றுள்ள விருப்பங்களிலிருந்து சரியான பதிலத்தைத் தேர்ந்தெடுக்க:\nசுருக்கமான விளக்கம்: ஒட்டக்கூத்தர் கவிதையழகு வேண்டி நினைந்த நூல் வளையாபதி என்பது சரி. வளையாபதி முழுமையாகக் கிடைக்கவில்லை; புறத்திரட்டு வாயிலாக 72 பாடல்களே கிடைக்கின்றன (கூற்று 2 தவறு).",
+    "options": {
+      "A": "கூற்று 1 சரி, கூற்று 2 சரி",
+      "B": "கூற்று 1 தவறு, கூற்று 2 சரி",
+      "C": "கூற்று 1 சரி, கூற்று 2 தவறு",
+      "D": "கூற்று 1 தவறு, கூற்று 2 தவறு"
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "id": 65,
+    "section": "Tamil Paper 2",
+    "question": "[பொருத்துக].\nபட்டியல் ஒன்றைப் பட்டியல் இரண்டோடு பொருத்துக (காப்பியக் கதைமாந்தர்களும் அவர்தம் சமயம்/செயல்பாடுகளும்):\nகீழே தரப்பெற்றுள்ள விருப்பங்களிலிருந்து சரியான விடையைத் தேர்ந்தெடுக்க:\nசுருக்கமான விளக்கம்: சாதுவன் - நாகநாட்டிற்கு அறம் உரைத்தவன் (மணிமேகலை); கவுந்தி அடிகள் - சமணத் துறவி (சிலப்பதிகாரம்); ஆதிரை - அமுதசுரபியில் முதற்பிச்சையிட்டவள்; அச்சணந்தி - சீவகனின் ஆசிரியர் (சீவகசிந்தாமணி).",
+    "options": {
+      "A": "(A)-(I), (B)-(II), (C)-(III), (D)-(IV)",
+      "B": "(A)-(II), (B)-(I), (C)-(IV), (D)-(III)",
+      "C": "(A)-(III), (B)-(IV), (C)-(I), (D)-(II)",
+      "D": "(A)-(IV), (B)-(III), (C)-(II), (D)-(I)"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "id": 66,
+    "section": "Tamil Paper 2",
+    "question": "[நிரல்படுத்துக – காப்பியப் பாடலடிகள்].\nகுண்டலகேசியில் யாக்கை நிலையாமையைக் கூறும் புகழ்பெற்ற பாடலடிகளின் அசல் வரிசையை நிரல்படுத்துக:\n(A) \"பாளையாம் தன்மை செத்தும் பாலனாம் தன்மை செத்தும்\"\n(B) \"காளையாம் தன்மை செத்தும் காமுறும் இளமை செத்தும்\"\n(C) \"மீளும்இவ் இயல்பும் இன்னே மேல்வரும் மூப்புமாகி\"\n(D) \"நாளுநாள் சாகின்றேமால் நமக்குநாம் அழாதது என்னோ\"\nகீழே தரப்பெற்றுள்ள விருப்பங்களிலிருந்து சரியான விடையைத் தேர்ந்தெடுக்க:\nசுருக்கமான விளக்கம்: குண்டலகேசி நிலையாமைப் பாடலின் அசல் வரிசை: \"பாளையாம் தன்மை செத்தும்...\" ➔ \"காளையாம் தன்மை செத்தும்...\" ➔ \"மீளும்இவ் இயல்பும் இன்னே...\" ➔ \"நாளுநாள் சாகின்றேமால் நமக்குநாம் அழாதது என்னோ\" என்பதாகும்.",
+    "options": {
+      "A": "(B), (A), (C), (D)",
+      "B": "(C), (D), (A), (B)",
+      "C": "(A), (B), (C), (D)",
+      "D": "(D), (C), (B), (A)"
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "id": 67,
+    "section": "Tamil Paper 2",
+    "question": "[பல்நோக்குக் கூற்றுத் தேர்வு].\nகம்பராமாயணத்தின் காப்பியக் கட்டமைப்பு மற்றும் பாத்திரப் படைப்பு குறித்த பின்வரும் கூற்றுகளை ஆராய்க:\n(A) கம்பர் வான்மீகி இராமாயணத்தைத் தழுவிப் பாடினாலும், தமிழ்நாட்டுப் பண்பாட்டிற்கு ஏற்பச் சீதையைத் தொடாமல் பர்ணசாலையோடு பெயர்த்து இராவணன் கவர்ந்ததாக மாற்றினார்.\n(B) கம்பராமாயணத்தில் இராமன் குகனைச் சந்தித்த போது \"குகனொடும் ஐவரானோம்\" என்று உரைத்தான்.\n(C) கம்பர் வான்மீகியில் இல்லாத இரணியன் வதைப் படலத்தை சுந்தர காண்டத்தில் புதிதாக இணைத்துப் பாடினார்.\n(D) கம்பராமாயணத்தில் யுத்த காண்டத்தில் விபீடணனைச் சரணாகதியாக ஏற்று \"உன்னொடும் எழுவரானோம்\" என்று இராமன் கூறினான்.\nகீழே தரப்பெற்றுள்ள விருப்பங்களிலிருந்து சரியான விடையைத் தேர்ந்தெடுக்க:\nசுருக்கமான விளக்கம்: கம்பர் இரணியன் வதைப் படலத்தை யுத்த காண்டத்தில் இணைத்துள்ளார்; சுந்தர காண்டத்தில் அன்று. எனவே (C) கூற்று தவறானது.",
+    "options": {
+      "A": "(A), (B), (C) மட்டும் சரி",
+      "B": "(A), (B), (D) மட்டும் சரி",
+      "C": "(B), (C), (D) மட்டும் சரி",
+      "D": "(A), (C), (D) மட்டும் சரி"
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "id": 68,
+    "section": "Tamil Paper 2",
+    "question": "[உறுதிக்கூற்று - காரணம்].\nஉறுதிக்கூற்று (உ): வீரமாமுனிவர் இயற்றிய தேம்பாவணி காப்பியத்தின் முதன்மைப் பாட்டுடைத் தலைவன் இயேசு பெருமான் ஆவார்.\nகாரணம் (கா): தேம்பாவணி 3 காண்டங்களையும் 36 படலங்களையும் 3,615 விருத்தப் பாடல்களையும் கொண்டக் கிறித்துவச் சமயக் காப்பியமாகும்.\nகீழே தரப்பெற்றுள்ள விருப்பங்களிலிருந்து சரியான பதிலத்தைத் தேர்ந்தெடுக்க:\nசுருக்கமான விளக்கம்: தேம்பாவணியின் தலைவன் இயேசுவின் வளர்ப்புத் தந்தையாகிய வளன் (சூசையப்பர்) ஆவார் (உறுதிக்கூற்று தவறு). காரணம் அமைப்பியல் எண்களின்படி சரியானது.",
+    "options": {
+      "A": "(உ) சரி, (கா) சரி; (கா) என்பது (உ)-விற்குச் சரியான விளக்கமாகும்",
+      "B": "(உ) சரி, (கா) தவறு",
+      "C": "(உ) தவறு, (கா) சரி",
+      "D": "(உ) தவறு, (கா) தவறு"
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "id": 69,
+    "section": "Tamil Paper 2",
+    "question": "[பொருத்துக].\nபட்டியல் ஒன்றைப் பட்டியல் இரண்டோடு பொருத்துக (காப்பியங்களும் அவசியப் படைப்பாளர்களும்):\nகீழே தரப்பெற்றுள்ள விருப்பங்களிலிருந்து சரியான விடையைத் தேர்ந்தெடுக்க:\nசுருக்கமான விளக்கம்: இரட்சணிய யாத்திரிகம் - எச்.ஏ. கிருஷ்ணபிள்ளை; சீறாப்புராணம் - உமறுப்புலவர்; இராவண காவியம் - புலவர் குழந்தை; நளவெண்பா - புகழேந்திப் புலவர்.",
+    "options": {
+      "A": "(A)-(I), (B)-(II), (C)-(III), (D)-(IV)",
+      "B": "(A)-(II), (B)-(I), (C)-(IV), (D)-(III)",
+      "C": "(A)-(III), (B)-(IV), (C)-(I), (D)-(II)",
+      "D": "(A)-(IV), (B)-(III), (C)-(II), (D)-(I)"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "id": 70,
+    "section": "Tamil Paper 2",
+    "question": "[நிரல்படுத்துக – காப்பியப் பாடலடிகள்].\nமணிமேகலையின் உலக அறவி புக்க காதையில் உடம்பின் இழிநிலையைக் கூறும் பாடலடிகளின் அசல் வரிசையை நிரல்படுத்துக:\n(A) \"வினையின் வந்தது வினைக்கு விளைவாயுள்\"\n(B) \"புனைவன நீங்கின் புலால்புறத்து உதிரும்\"\n(C) \"மூப்புவிளி வுடையது தீப்பிணி இருக்கை\"\n(D) \"பற்றின் பற்றிடம் குற்றக் கொள்கலம்\"\nகீழே தரப்பெற்றுள்ள விருப்பங்களிலிருந்து சரியான விடையைத் தேர்ந்தெடுக்க:\nசுருக்கமான விளக்கம்: மணிமேகலையின் பாடலடிகளின் அசல் வரிசை: \"வினையின் வந்தது...\" ➔ \"புனைவன நீங்கின்...\" ➔ \"மூப்புவிளி வுடையது...\" ➔ \"பற்றின் பற்றிடம்...\" என்பதாகும்.\n71: பொருத்துக",
+    "options": {
+      "A": "(A), (B), (C), (D)",
+      "B": "(B), (A), (D), (C)",
+      "C": "(C), (D), (A), (B)",
+      "D": "(D), (C), (B), (A)"
+    },
+    "correctAnswer": "A"
+  },
+  {
+    "id": 71,
+    "section": "Tamil Paper 2",
+    "question": "பக்திப் பாடல்களின் சுருக்கமான அடிகளை அவற்றின் பக்தி மார்க்கங்களோடு (நெறி) பொருத்துக:\nபட்டியல் I (பாடல் வரிகள்):\n(a) \"பித்தா பிறைசூடீ பெருமானே\"\n(b) \"கூற்றாயினவாறு விலக்ககலீர்\"\n(c) \"தோடுடைய செவியன் விடைஏறி\"\n(d) \"உற்றாரை யான்வேண்டேன் ஊர்வேண்டேன்\"\nபட்டியல் II (பக்தி நெறி):\n(i) சத்புத்திர நெறி (கிரியை)\n(ii) சன்மார்க்க நெறி (ஞானம்)\n(iii) தாச நெறி (சரியை)\n(iv) சகமார்க்க நெறி (யோகம்)",
+    "options": {
+      "A": "(a)-(i), (b)-(ii), (c)-(iv), (d)-(iii)",
+      "B": "(a)-(ii), (b)-(i), (c)-(iii), (d)-(iv)",
+      "C": "(a)-(iv), (b)-(iii), (c)-(i), (d)-(ii)",
+      "D": "(a)-(iii), (b)-(iv), (c)-(ii), (d)-(i)"
+    },
+    "correctAnswer": "C",
+    "explanation": "சுந்தரர் - சகமார்க்கம் (a-iv); அப்பர் - தாசமார்க்கம் (b-iii); சம்பந்தர் - சத்புத்திர மார்க்கம் (c-i); மாணிக்கவாசகர் - சன்மார்க்கம் (d-ii)."
+  },
+  {
+    "id": 72,
+    "section": "Tamil Paper 2",
+    "question": "சிற்றிலக்கியக் குறுவரிகளை அவற்றுக்குரிய துறை / கருப்பொருளோடு பொருத்துக:\nபட்டியல் I (குறுவரிகள்):\n(a) \"இருந்தமிழே உன்னால் இருந்தேன்\"\n(b) \"ஆனை ஆயிரம் அமரிடை வென்ற\"\n(c) \"நாற்று நடவே நல்வயல் ஆயத்தமாச்சு\"\n(d) \"செங்கீரை ஆடியருளுக திங்கள் திருமுடியாய்\"\nபட்டியல் II (துறை / கருப்பொருள்):\n(i) உழவர் தொழில் நிலை\n(ii) குழந்தை வளர்ச்சிப் பருவம்\n(iii) தூது அனுப்பும் சான்றண்மை\n(iv) போர்க்கள வெற்றிப் புகழ்",
+    "options": {
+      "A": "(a)-(i), (b)-(ii), (c)-(iii), (d)-(iv)",
+      "B": "(a)-(iii), (b)-(iv), (c)-(i), (d)-(ii)",
+      "C": "(a)-(iv), (b)-(iii), (c)-(ii), (d)-(i)",
+      "D": "(a)-(ii), (b)-(i), (c)-(iv), (d)-(iii)"
+    },
+    "correctAnswer": "B",
+    "explanation": "தமிழ்விடு தூது (a-iii); பரணி இலக்கணம் (b-iv); பள்ளு இலக்கிய நாற்று நடுதல் (c-i); பிள்ளைத்தமிழ்ப் பருவம் (d-ii)."
+  },
+  {
+    "id": 73,
+    "section": "Tamil Paper 2",
+    "question": "சிற்றிலக்கிய வகைகளை அவற்றின் பாடுபொருள் அமைப்பியலோடு பொருத்துக:\nபட்டியல் I (பிரபந்த வகை):\n(a) உலா\n(b) கோவை\n(c) கலம்பகம்\n(d) சதகம்\nபட்டியல் II (அமைப்பியல் வீச்சு):\n(i) 100 பாடல்களில் அறம், நீதி, சமயம் பாடுதல்\n(ii) 18 உறுப்புகள் கொண்டு பலவகை யாப்புகளில் பாடுதல்\n(iii) ஏழ் பருவ மகளிரின் காதலைக் கலிவெண்பாவில் பாடுதல்\n(iv) 400 கட்டளைக் கலித்துறையில் அகப்பொருள் பாடுதல்",
+    "options": {
+      "A": "(a)-(iv), (b)-(iii), (c)-(i), (d)-(ii)",
+      "B": "(a)-(ii), (b)-(i), (c)-(iv), (d)-(iii)",
+      "C": "(a)-(iii), (b)-(i), (c)-(iv), (d)-(ii)",
+      "D": "(a)-(iii), (b)-(iv), (c)-(ii), (d)-(i)"
+    },
+    "correctAnswer": "D",
+    "explanation": "உலா (ஏழ்பருவ மகளிர்); கோவை (400 கட்டளைக் கலித்துறை); கலம்பகம் (18 உறுப்புகள்); சதகம் (100 நீதி/சமயப் பாடல்கள்)."
+  },
+  {
+    "id": 74,
+    "section": "Tamil Paper 2",
+    "question": "ஆழ்வார்களின் அருளிச்செயல்களை அவற்றின் யாப்பு/பிரபந்த வடிவத்தோடு பொருத்துக:\nபட்டியல் I (அருளிச்செயல்):\n(a) திருப்பல்லாண்டு\n(b) சிறிய திருமடல்\n(c) நான்முகன் திருவந்தாதி\n(d) திருவாசிரியம்\nபட்டியல் II (யாப்பு / பிரபந்த வடிவம்):\n(i) ஆசிரியப்பாவால் அமைந்த பாசுரங்கள்\n(ii) கலிவெண்பாவால் அமைந்த மடல் வடிவம்\n(iii) அந்தாதித் தொடையில் அமைந்த வெண்பா\n(iv) அறுசீர்க் கழிநெடிலடி ஆசிரிய விருத்தம்",
+    "options": {
+      "A": "(a)-(iv), (b)-(ii), (c)-(iii), (d)-(i)",
+      "B": "(a)-(i), (b)-(iii), (c)-(ii), (d)-(iv)",
+      "C": "(a)-(ii), (b)-(iv), (c)-(i), (d)-(iii)",
+      "D": "(a)-(iii), (b)-(i), (c)-(iv), (d)-(ii)"
+    },
+    "correctAnswer": "A",
+    "explanation": "திருப்பல்லாண்டு (அறுசீர்விருத்தம்); சிறிய திருமடல் (கலிவெண்பா); நான்முகன் திருவந்தாதி (வெண்பா அந்தாதி); திருவாசிரியம் (ஆசிரியப்பா)."
+  },
+  {
+    "id": 75,
+    "section": "Tamil Paper 2",
+    "question": "சித்தர்களின் குறுஞ்செய்யுள் அடிகளை அவற்றுக்குரிய குறியீட்டுத் தத்துவத்தோடு பொருத்துக:\nபட்டியல் I (குறுஞ்செய்யுள் அடிகள்):\n(a) \"நட்ட கல்லைத் தெய்வமென்று\"\n(b) \"நந்தவனத்தில் ஒரு ஆண்டி\"\n(c) \"சாதிய பேதம் சுடக் கற்றோம்\"\n(d) \"வெட்டவெளிக்குள்ளே விளங்கும்\"\nபட்டியல் II (குறியீட்டுத் தத்துவம்):\n(i) நிராமய சித்தாந்த யோக நிலை\n(ii) சாதிச் சடங்கு மறுப்பு\n(iii) பாவனா பூசை / உருவ வழிபாட்டு எதிர்ப்பு\n(iv) உடம்பும் உயிர்வாழ்வுக் கடமையும்",
+    "options": {
+      "A": "(a)-(iv), (b)-(iii), (c)-(i), (d)-(ii)",
+      "B": "(a)-(ii), (b)-(i), (c)-(iv), (d)-(iii)",
+      "C": "(a)-(iii), (b)-(iv), (c)-(ii), (d)-(i)",
+      "D": "(a)-(i), (b)-(ii), (c)-(iii), (d)-(iv)"
+    },
+    "correctAnswer": "C",
+    "explanation": "சிவவாக்கியார் (உருவ எதிர்ப்பு); கடுவெளிச் சித்தர் (உடல்/உயிர் தத்துவம்); பாம்பாட்டிச் சித்தர் (சாதி மறுப்பு); பத்திரகிரியார் (வெட்டவெளி யோகம்)."
+  },
+  {
+    "id": 76,
+    "section": "Tamil Paper 2",
+    "question": "பன்னிரு திருமுறைத் தொடக்கப் பாடலடிகளைப் பாடிய நாயன்மார்களின் வரலாற்றுச் சமயக் கால வரிசைப்படி ஒழுங்குபடுத்துக:\n(A) \"பித்தா பிறைசூடீ பெருமானே\"\n(B) \"கூற்றாயினவாறு விலக்ககலீர்\"\n(C) \"தோடுடைய செவியன் விடைஏறி\"\n(D) \"உற்றாரை யான்வேண்டேன் ஊர்வேண்டேன்\"",
+    "options": {
+      "A": "(A), (B), (C), (D)",
+      "B": "(C), (B), (A), (D)",
+      "C": "(B), (C), (A), (D)",
+      "D": "(C), (A), (B), (D)"
+    },
+    "correctAnswer": "B",
+    "explanation": "சம்பந்தர் (C) → அப்பர் (B) → சுந்தரர் (A) → மாணிக்கவாசகர் (D)."
+  },
+  {
+    "id": 77,
+    "section": "Tamil Paper 2",
+    "question": "தமிழ் இலக்கண உரையாசிரியர்களை அவர்களின் வரலாற்றுச் சமயக் கால வரிசைப்படி நிரல்படுத்துக:\n(A) நச்சினார்க்கினியர்\n(B) இளம்பூரணர்\n(C) சேனாவரையர்\n(D) பரிமேலழகர்",
+    "options": {
+      "A": "(A), (B), (C), (D)",
+      "B": "(B), (D), (C), (A)",
+      "C": "(C), (B), (A), (D)",
+      "D": "(B), (C), (D), (A)"
+    },
+    "correctAnswer": "D",
+    "explanation": "இளம்பூரணர் (11-ஆம் நூ.) → சேனாவரையர் (13-ஆம் நூ.) → பரிமேலழகர் (13-ஆம் நூ. பிற்பகுதி) → நச்சினார்க்கினியர் (14-ஆம் நூ.)."
+  },
+  {
+    "id": 78,
+    "section": "Tamil Paper 2",
+    "question": "பாட்டியல் நூல்கள் தோன்றிய கால வரிசையினை முறைப்படுத்துக:\n(A) பிரபந்த மரபியல்\n(B) வெண்பாப் பாட்டியல்\n(C) பன்னிரு பாட்டியல்\n(D) சதுரகராதி",
+    "options": {
+      "A": "(C), (B), (A), (D)",
+      "B": "(A), (B), (C), (D)",
+      "C": "(B), (C), (D), (A)",
+      "D": "(C), (A), (B), (D)"
+    },
+    "correctAnswer": "A",
+    "explanation": "பன்னிரு பாட்டியல் (10-ஆம் நூ.) → வெண்பாப் பாட்டியல் (12-ஆம் நூ.) → பிரபந்த மரபியல் (16-ஆம் நூ.) → சதுரகராதி (18-ஆம் நூ.)."
+  },
+  {
+    "id": 79,
+    "section": "Tamil Paper 2",
+    "question": "முக்கூடற்பள்ளு பாடலில் உழவுத் தொழில் தொடங்கும் நிகழ்வுகளைப் பாடல் அடிகளின் வரிசைப்படி நிரல்படுத்துக:\n(A) \"மலையாள மின்னல் ஈழமின்னல் சூழ மின்னுதே\"\n(B) \"ஆற்று வெள்ளம் நாளைவரத் தோற்றுதே குறி\"\n(C) \"நாற்று நடவே நல்வயல் ஆயத்தமாச்சுதே\"\n(D) \"ஏர்பூட்டினாரே கதிர்சாயும் வேளையிலே\"",
+    "options": {
+      "A": "(B), (A), (C), (D)",
+      "B": "(A), (C), (B), (D)",
+      "C": "(A), (B), (D), (C)",
+      "D": "(D), (C), (A), (B)"
+    },
+    "correctAnswer": "C",
+    "explanation": "மின்னல் தோன்றுதல் (A) → வெள்ள அறிகுறி (B) → ஏர்பூட்டுதல் (D) → நாற்று நடுதல் (C)."
+  },
+  {
+    "id": 80,
+    "section": "Tamil Paper 2",
+    "question": "முதலாயிரத்தில் திவ்வியப் பிரபந்தத் தொகுப்பிலுள்ள நூல்களின் அமைப்பியலை முதற்பிரபந்த வைப்புமுறைப்படி நிரல்படுத்துக:\n(A) திருப்பல்லாண்டு\n(B) பெரியாழ்வார் திருமொழி\n(C) திருப்பாவை\n(D) நாச்சியார் திருமொழி",
+    "options": {
+      "A": "(B), (A), (D), (C)",
+      "B": "(A), (B), (C), (D)",
+      "C": "(C), (D), (A), (B)",
+      "D": "(A), (C), (B), (D)"
+    },
+    "correctAnswer": "B",
+    "explanation": "முதலாயிரத்தின் வைணவ மரபுப் பிரபந்த வைப்புமுறை: திருப்பல்லாண்டு → பெரியாழ்வார் திருமொழி → திருப்பாவை → நாச்சியார் திருமொழி"
+  },
+  {
+    "id": 81,
+    "section": "Tamil Paper 2",
+    "question": "கூற்று – காரணம் வினா\nகூற்று (A): பாரதிதாசனின் 'பாண்டியன் பரிசு' காப்பியத்தில் வேலன் கதிர்நாட்டுச் சுயாட்சிப் பட்டயப் பேழையைக் கைப்பற்றுகிறான். காரணம் (R): கதிர்நாட்டு மன்னன் முத்தாண்டான் வேலனைத் தன் மூத்த மகனாக ஏற்று முடிசூட்டுகிறான்.",
+    "options": {
+      "A": "(A) சரி, (R) தவறு",
+      "B": "(A) தவறு, (R) சரி",
+      "C": "(A), (R) இரண்டும் சரி; (R) என்பது (A)-விற்குச் சரியான விளக்கம்",
+      "D": "(A), (R) இரண்டும் தவறு"
+    },
+    "correctAnswer": "A",
+    "explanation": "வேலன் பட்டயப் பேழையைக் கைப்பற்றுவது சரி; ஆனால் வேலன் சிற்றரசின் வேளான் மகன், முத்தாண்டானின் மூத்த மகன் அல்ல."
+  },
+  {
+    "id": 82,
+    "section": "Tamil Paper 2",
+    "question": "கூற்று – காரணம் வினா\nகூற்று (A): புதுமைப்பித்தனின் 'சாப விமோசனம்' சிறுகதையில் அகலிகை மீண்டும் கல்லாக மாறுகிறாள்.\nகாரணம் (R): இராமனின் சந்தேகத்தால் சீதை தீக்குளித்த செய்தியைக் கேட்டு, தர்மத்தின் மீதே அவள் நம்பிக்கை இழப்பதே இதன் காரணமாகப் படைக்கப்பட்டுள்ளது.",
+    "options": {
+      "A": "(A) சரி, (R) தவறு",
+      "B": "(A), (R) இரண்டும் சரி; (R) என்பது (A)-விற்குச் சரியான விளக்கம்",
+      "C": "(A) தவறு, (R) சரி",
+      "D": "(A), (R) இரண்டும் தவறு"
+    },
+    "correctAnswer": "B",
+    "explanation": "இராமாயணத் தொன்மத்தை மறுவாசிப்பு செய்யும் புதுமைப்பித்தன், இராமனின் தர்மத்தின் மீதான அதிருப்தியால் அகலிகை மீண்டும் கல்லாவதாகக் கதையை முடித்துள்ளார்."
+  },
+  {
+    "id": 83,
+    "section": "Tamil Paper 2",
+    "question": "கூற்று – காரணம் வினா\nகூற்று (A): தகழி சிவசங்கர பிள்ளையின் மலையாளப் புதினமான 'செம்மீன்' நூலைத் தமிழில் மொழிபெயர்த்தவர் ஜெயகாந்தன் ஆவார்.\nகாரணம் (R): 'செம்மீன்' நாவல் மீனவர் சமுதாய வாழ்வியலையும் கடல் மாதா நம்பிக்கையையும் மையமாகக் கொண்ட படைப்பாகும்.",
+    "options": {
+      "A": "(A) சரி, (R) தவறு",
+      "B": "(A), (R) இரண்டும் சரி; (R) என்பது (A)-விற்குச் சரியான விளக்கம்",
+      "C": "(A) தவறு, (R) சரி",
+      "D": "(A), (R) இரண்டும் தவறு"
+    },
+    "correctAnswer": "C",
+    "explanation": "'செம்மீன்' நாவலைத் தமிழில் மொழிபெயர்த்தவர் சுந்தர ராமசாமி ஆவார் (ஜெயகாந்தன் அல்ல). காரணம் கூறுவது 'செம்மீன்' நாவலின் கதைக்களம் என்பதால் சரி."
+  },
+  {
+    "id": 84,
+    "section": "Tamil Paper 2",
+    "question": "பொருத்துக வினா\nபட்டியல் I (நூல்) $\\leftrightarrow$ பட்டியல் II (ஆசிரியர்):\n(A) புயலிலே ஒரு தோணி $\\leftrightarrow$ (1) சுந்தர ராமசாமி\n(B) குருதிப்புனல் $\\leftrightarrow$ (2) அசோகமித்திரன்\n(C) அப்பாவின் சிநேகிதர் $\\leftrightarrow$ (3) இந்திரா பார்த்தசாரதி\n(D) ஜே.ஜே. சில குறிப்புகள் $\\leftrightarrow$ (4) ப. சிங்காரம்",
+    "options": {
+      "A": "A-2, B-1, C-4, D-3",
+      "B": "A-1, B-2, C-3, D-4",
+      "C": "A-3, B-4, C-1, D-2",
+      "D": "A-4, B-3, C-2, D-1"
+    },
+    "correctAnswer": "D"
+  },
+  {
+    "id": 85,
+    "section": "Tamil Paper 2",
+    "question": "பொருத்துக வினா\nபட்டியல் I (நூல் / இயக்கம்) $\\leftrightarrow$ பட்டியல் II (ஆசிரியர் / நிறுவனர்):\n(A) ரௌத்திரம் பழகு $\\leftrightarrow$ (1) பரிதிமாற்கலைஞர்\n(B) நாடகவியல் $\\leftrightarrow$ (2) எம். இராமசுவாமி\n(C) கூத்துப்பட்டறை $\\leftrightarrow$ (3) பம்மல் சம்பந்த முதலியார்\n(D) மனோஹரா $\\leftrightarrow$ (4) ந. முத்துசாமி",
+    "options": {
+      "A": "A-1, B-2, C-3, D-4",
+      "B": "A-2, B-1, C-4, D-3",
+      "C": "A-3, B-4, C-1, D-2",
+      "D": "A-4, B-3, C-2, D-1"
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "id": 86,
+    "section": "Tamil Paper 2",
+    "question": "பொருத்துக வினா\nபட்டியல் I (சிறுகதை) $\\leftrightarrow$ பட்டியல் II (கதைமாந்தர்):\n(A) துன்பக்கேணி $\\leftrightarrow$ (1) சுபத்ரா\n(B) கடவுளும் கந்தசாமிப் பிள்ளையும் $\\leftrightarrow$ (2) ஹெட் கான்ஸ்டபிள் கிருஷ்ணன்\n(C) பிரசாதம் $\\leftrightarrow$ (3) விருத்தாசலம் பிள்ளை\n(D) அம்மா ஒரு கொலை செய்தாள் $\\leftrightarrow$ (4) கற்பகம்பிள்ளை",
+    "options": {
+      "A": "A-1, B-2, C-3, D-4",
+      "B": "A-2, B-1, C-4, D-3",
+      "C": "A-4, B-3, C-2, D-1",
+      "D": "A-3, B-4, C-1, D-2"
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "id": 87,
+    "section": "Tamil Paper 2",
+    "question": "காலவரிசை வினா\nபின்வரும் தமிழ்ப் புதினங்களை அவை முதன்முதலில் வெளியான ஆண்டின் அடிப்படையில் சரியான காலவரிசையில் சீரமைக்க:\nகமலாம்பாள் சரித்திரம்\nபிரதாப முதலியார் சரித்திரம்\nஒரு புளியமரத்தின் கதை\nமோகமுள்",
+    "options": {
+      "A": "(i) $\\rightarrow$ (ii) $\\rightarrow$ (iii) $\\rightarrow$ (iv)",
+      "B": "(ii) $\\rightarrow$ (i) $\\rightarrow$ (iv) $\\rightarrow$ (iii)",
+      "C": "(ii) $\\rightarrow$ (iv) $\\rightarrow$ (i) $\\rightarrow$ (iii)",
+      "D": "(i) $\\rightarrow$ (iv) $\\rightarrow$ (ii) $\\rightarrow$ (iii)"
+    },
+    "correctAnswer": "B",
+    "explanation": "பிரதாப முதலியார் சரித்திரம் (1879) $\\rightarrow$ கமலாம்பாள் சரித்திரம் (1896) $\\rightarrow$ மோகமுள் (1956) $\\rightarrow$ ஒரு புளியமரத்தின் கதை (1966)."
+  },
+  {
+    "id": 88,
+    "section": "Tamil Paper 2",
+    "question": "காலவரிசை வினா\nபின்வரும் சிறுகதைத் தொகுப்புகளை அவை வெளிவந்த காலவரிசையில் சீரமைக்க: (i) மங்கையர்க்கரசியின் காதல் (ii) கஞ்சனை (iii) கதவு (iv) சிறகுகள் முறியும்",
+    "options": {
+      "A": "(iv) $\\rightarrow$ (iii) $\\rightarrow$ (ii) $\\rightarrow$ (i)",
+      "B": "(ii) $\\rightarrow$ (i) $\\rightarrow$ (iv) $\\rightarrow$ (iii)",
+      "C": "(iii) $\\rightarrow$ (i) $\\rightarrow$ (ii) $\\rightarrow$ (iv)",
+      "D": "(i) $\\rightarrow$ (ii) $\\rightarrow$ (iii) $\\rightarrow$ (iv)"
+    },
+    "correctAnswer": "D",
+    "explanation": "மங்கையர்க்கரசியின் காதல் (1920) $\\rightarrow$ கஞ்சனை (1938) $\\rightarrow$ கதவு (1965) $\\rightarrow$ சிறகுகள் முறியும் (1976)."
+  },
+  {
+    "id": 89,
+    "section": "Tamil Paper 2",
+    "question": "காலவரிசை வினா\nஉவமைக் கவிஞர் சுரதா நடத்திய பின்வரும் இதழ்களை அவை வெளிவந்த காலவரிசையில் சீரமைக்க: (i) ஊர்வலம் (ii) காவியம் (iii) சுரதா (iv) இலக்கியம்",
+    "options": {
+      "A": "(ii) (iv) (i) (iii)",
+      "B": "(i) (ii) (iv) (iii)",
+      "C": "(iv) (i) (iii) (ii)",
+      "D": "(ii) (i) (iii) (iv)"
+    },
+    "correctAnswer": "A",
+    "explanation": "காவியம் (1955) $\\rightarrow$ இலக்கியம் (1958) $\\rightarrow$ ஊர்வலம் (1967) $\\rightarrow$ சுரதா (1988)."
+  },
+  {
+    "id": 90,
+    "section": "Tamil Paper 2",
+    "question": "பல்கூற்றுத் தேர்வு வினா\nபெண்ணியக் கவிஞர்கள் பற்றிய பின்வரும் கூற்றுகளை ஆராய்க:\n'கருவறை வாசனை' என்னும் கவிதைத் தொகுப்பைப் படைத்தவர் கனிமொழி.\n'இரவு மிருகம்' கவிதைத் தொகுப்பை எழுதியவர் சல்மா.\n'நீலமுடி', 'முதல் மனுசி' ஆகிய தொகுப்புகளை எழுதிய இளம்பிறையின் இயற்பெயர் பஞ்சவர்ணம்.\nசுகிர்தராணியின் கவிதைகள் இயற்கை அழகியலை மட்டுமே பாடுகின்றன.",
+    "options": {
+      "A": "(i), (ii) மட்டும் சரி",
+      "B": "(i), (iii) மட்டும் சரி",
+      "C": "(ii), (iv) மட்டும் சரி",
+      "D": "(i), (ii), (iii), (iv) அனைத்தும் சரி"
+    },
+    "correctAnswer": "B",
+    "explanation": "(i) சரி; (ii) தவறு ('இரவு மிருகம்' சுகிர்தராணியினுடையது); (iii) சரி; (iv) தவறு (சுகிர்தராணியின் கவிதைகள் தலித் பெண்ணியம் மற்றும் உடலரசியலைப் பேசுகின்றன)."
+  },
+  {
+    "id": 91,
+    "section": "Tamil Paper 2",
+    "question": "பொருத்துக\nபட்டியல் I (வேற்றுமைகள்)\n(A) இரண்டாம் வேற்றுமை\n(B) மூன்றாம் வேற்றுமை\n(C) நான்காம் வேற்றுமை\n(D) ஐந்தாம் வேற்றுமை\nபட்டியல் II (இலக்கணப் பொருள்கள்)\nசெயப்படுபொருள் (ஆக்கல், அழித்தல், அடைதல் போன்றவை)\nகருவி, கருத்தா, உடன்நிகழ்ச்சி\nகொடை, பகை, நட்பு, தகுதி, அதுவாதல்\nநீங்கல், ஒப்பு, எல்லை, ஏது",
+    "options": {
+      "A": "(A)-(I), (B)-(II), (C)-(III), (D)-(IV)",
+      "B": "(A)-(III), (B)-(IV), (C)-(I), (D)-(II)",
+      "C": "(A)-(II), (B)-(I), (C)-(IV), (D)-(III)",
+      "D": "(A)-(IV), (B)-(III), (C)-(II), (D)-(I)"
+    },
+    "correctAnswer": "A",
+    "explanation": "தொல்காப்பிய வேற்றுமையியலில் 2 முதல் 5 ஆம் வேற்றுமைகளுக்கான முதன்மைப் பொருண்மைகள் முறையே செயப்படுபொருள், கருவி/கருத்தா, கொடை/தகுதி, நீங்கல்/எல்லை என வகுக்கப்பட்டுள்ளன."
+  },
+  {
+    "id": 92,
+    "section": "Tamil Paper 2",
+    "question": "நிரல்படுத்துக\nதொல்காப்பியச் செய்யுளியல் சுட்டும் அடியளவுகளை சீர் எண்ணிக்கையின் அடிப்படையில் குறைந்த சீரிலிருந்து கூடிய சீர் வரிசைப்படி நிரல்படுத்துக:\n(A) குறளடி\n(B) சிந்தடி\n(C) அளவடி\n(D) நெடிலடி",
+    "options": {
+      "A": "(A), (B), (C), (D)",
+      "B": "(B), (A), (D), (C)",
+      "C": "(C), (D), (A), (B)",
+      "D": "(D), (C), (B), (A)"
+    },
+    "correctAnswer": "A",
+    "explanation": "செய்யுளியலில் சீர் எண்ணிக்கை நிரல்: இருசீர் கொண்ட குறளடி, முச்சீர் கொண்ட சிந்தடி, நாற்சீர் கொண்ட அளவடி, ஐந்தீர் கொண்ட நெடிலடி என்பதாகும்."
+  },
+  {
+    "id": 93,
+    "section": "Tamil Paper 2",
+    "question": "பல்நோக்குக் கூற்றுத் தேர்வு\nநன்னூல் - எழுத்ததிகாரம் (சார்பெழுத்து & பதம்) பற்றிய பின்வரும் கூற்றுகளை ஆராய்க:\nபவணந்தி முனிவர் சார்பெழுத்துகளை உயிர்மெய், ஆய்தம், உயிரளபெடை முதலாக பத்து வகைகளாகப் பகுத்துள்ளார்.\nபதம் என்பது பகாப்பதம், பகுப்பதம் என இருவகைப்படும் என நன்னூலார் சுட்டியுள்ளார்.\nபகுபத உறுப்புகளை தொல்காப்பியர் போலவே நன்னூலாரும் முப்பத்து நான்கு உறுப்புகளாக விரித்துக் காட்டியுள்ளார்.\nபகுபதத்தின் விகாரம் என்பது விகுதிக்கு மட்டுமே உரிய விகாரமாகும்.",
+    "options": {
+      "A": "(i), (ii) மட்டுமே சரி",
+      "B": "(iii), (iv) மட்டுமே சரி",
+      "C": "(i), (ii), (iii), (iv) அனைத்தும் சரி",
+      "D": "(i), (ii), (iii) சரி; (iv) தவறு"
+    },
+    "correctAnswer": "A",
+    "explanation": "பகுபத உறுப்புகள் ஆறெனப் பவணந்தியார் செப்பனிட்டார்; விகாரம் பகுதி, சந்தி, இடைநிலை போன்ற பல உறுப்புகளிலும் வரும். எனவே (iii), (iv) கூற்றுகள் தவறானவை."
+  },
+  {
+    "id": 94,
+    "section": "Tamil Paper 2",
+    "question": "கூற்று - காரணம்\nஉறுதிக்கூற்று (A): தண்டியலங்காரத்தில் தன்மை அணி என்பது ஒரு பொருளின் இயல்பை உள்ளவாறே அழகுறக் கூறுவதாகும்.\nகாரணம் (R): தொல்காப்பியர் உவமவியலில் தன்மை அணியைத் தண்டியலங்காரத்தைப் போலவே நாற்பது உள்வகைகளாகப் பகுத்து விளக்கியுள்ளார்.",
+    "options": {
+      "A": "(A) சரி, (R) தவறு",
+      "B": "(A), (R) இரண்டும் சரி; (R) என்பது (A)-விற்குச் சரியான விளக்கம்",
+      "C": "(A) தவறு, (R) சரி",
+      "D": "(A), (R) இரண்டும் தவறு"
+    },
+    "correctAnswer": "A",
+    "explanation": "தண்டியலங்காரம் தன்மை அணியின் இயல்பைக் கூறியது சரி; தொல்காப்பியர் உவமவியலில் அணிகளைத் தனித்தனியே 40 உள்வகைகளாகப் பகுக்கவில்லை (காரணம் தவறு)."
+  },
+  {
+    "id": 95,
+    "section": "Tamil Paper 2",
+    "question": "பொருத்துக\nபட்டியல் I (காரிகையார் சுட்டும் சீர்கள்)\n(A) ஈரசைச் சீர்\n(B) மூவசைச் சீர் (காய்முன்)\n(C) மூவசைச் சீர் (கனிமுன்)\n(D) நாலசைச் சீர்\nபட்டியல் II (இலக்கணப் பெயர்)\nவஞ்சி உரிச்சீர்\nபொதுச்சீர்\nஇயற்சீர் / ஆசிரிய உரிச்சீர்\nவெண்பா உரிச்சீர்",
+    "options": {
+      "A": "(A)-(I), (B)-(II), (C)-(III), (D)-(IV)",
+      "B": "(A)-(III), (B)-(IV), (C)-(I), (D)-(II)",
+      "C": "(A)-(II), (B)-(I), (C)-(IV), (D)-(III)",
+      "D": "(A)-(IV), (B)-(III), (C)-(II), (D)-(I)"
+    },
+    "correctAnswer": "B",
+    "explanation": "யாப்பருங்கலக்காரிகையில் ஈரசைச் சீர் = இயற்சீர், காய்முன் மூவசை = வெண்பா உரிச்சீர், கனிமுன் மூவசை = வஞ்சி உரிச்சீர், நாலசை = பொதுச்சீர் எனக் குறிப்பிடப்பட்டுள்ளன."
+  },
+  {
+    "id": 96,
+    "section": "Tamil Paper 2",
+    "question": "நிரல்படுத்துக\nதொல்காப்பிய எழுத்ததிகார இயல்களை மூலநூல் வைப்பு முறைப்படி நிரல்படுத்துக:\n(A) மொழிமரபு\n(B) நூன்மரபு\n(C) புணரியல்\n(D) பிறப்பியல்\n4) (D), (C), (B), (A)",
+    "options": {
+      "A": "(A), (B), (C), (D)",
+      "B": "(B), (A), (D), (C)",
+      "C": "(C), (D), (A), (B) (",
+      "D": "என்பதாகும்"
+    },
+    "correctAnswer": "B"
+  },
+  {
+    "id": 97,
+    "section": "Tamil Paper 2",
+    "question": "பல்நோக்குக் கூற்றுத் தேர்வு\nபுறப்பொருள் வெண்பாமாலை பற்றிய பின்வரும் கூற்றுகளை ஆராய்க:\nபுறப்பொருள் வெண்பாமாலை புறத்திணைகளை ஏழு திணைகளாக மட்டுமே வகுத்துக் கூறுகிறது.\nஇந்நூல் தொல்காப்பியப் புறத்திணையியலின் நகல் என்பதால் புதிய திணைப் பிரிவுகள் எதையும் உருவாக்கவில்லை.\nஇந்நூலின் ஆசிரியர் ஐயனாரிதனார் ஆவார்.\nஇந்நூல் ஒவ்வொரு துறைக்கும் கொளு மற்றும் வெண்பாச் சான்றுகளைத் தருகிறது.",
+    "options": {
+      "A": "(i), (ii) மட்டுமே சரி",
+      "B": "(iii), (iv) மட்டுமே சரி",
+      "C": "(i), (ii), (iii), (iv) அனைத்தும் சரி",
+      "D": "(i), (ii), (iii) சரி; (iv) தவறு"
+    },
+    "correctAnswer": "B",
+    "explanation": "புறப்பொருள் வெண்பாமாலை ஐயனாரிதனாரால் இயற்றப்பட்டு 12 திணைகளாகப் பகுக்கப்பட்டது. 7 திணை எனக் கூறுவதும் தொல்காப்பிய நகல் எனக் கூறுவதும் தவறாகும்."
+  },
+  {
+    "id": 98,
+    "section": "Tamil Paper 2",
+    "question": "கூற்று - காரணம்\nஉறுதிக்கூற்று (A): நன்னூலார் \"பகுதி விகுதி இடைநிலை சாரியை சந்தி விகாரம் ஆறினும்...\" எனப் பகுபத உறுப்புகளை ஆறாக வரையறுத்துள்ளார்.\nகாரணம் (R): பவணந்தி முனிவர் தொல்காப்பியக் கோட்பாடுகளைப் பிற்கால மொழி வளர்ச்சிக்கு ஏற்ப எளிமைப்படுத்தி பகுபத உறுப்பிலக்கணத்தைத் தெளிவாகச் செப்பனிட்டார்.",
+    "options": {
+      "A": "(A) சரி, (R) தவறு",
+      "B": "(A), (R) இரண்டும் சரி; (R) என்பது (A)-விற்குச் சரியான விளக்கம்",
+      "C": "(A) தவறு, (R) சரி",
+      "D": "(A), (R) இரண்டும் தவறு"
+    },
+    "correctAnswer": "B",
+    "explanation": "நன்னூலாரே பகுபத உறுப்புகள் ஆறினையும் தெளிவாக வரையறுத்து நூற்பா செய்தவர் ஆவார்."
+  },
+  {
+    "id": 99,
+    "section": "Tamil Paper 2",
+    "question": "பொருத்துக\nபட்டியல் I (தொல்காப்பிய மெய்ப்பாடுகள்)\n(A) நகை\n(B) அழுகை\n(C) இளிவரல்\n(D) மருட்கை\nபட்டியல் II (தோற்றுவாய்கள் / பொருண்மைகள்)\nஇழிவு, இழவு, அசைவு, வறுமை\nஎள்ளல், இளமை, பேதைமை, மடமை\nபுதுமை, பெருமை, சிறுமை, ஆக்கம்\nமூப்பு, பிணி, வருத்தம், மென்மை",
+    "options": {
+      "A": "(A)-(I), (B)-(II), (C)-(III), (D)-(IV)",
+      "B": "(A)-(III), (B)-(IV), (C)-(I), (D)-(II)",
+      "C": "(A)-(II), (B)-(I), (C)-(IV), (D)-(III)",
+      "D": "(A)-(IV), (B)-(III), (C)-(II), (D)-(I)"
+    },
+    "correctAnswer": "C",
+    "explanation": "தொல்காப்பிய மெய்ப்பாட்டியலில் நகை எள்ளலாலும், அழுகை இழப்பாலும், இளிவரல் மூப்பினாலும், மருட்கை புதுமையினாலும் தோன்றும் என வகுக்கப்பட்டுள்ளது."
+  },
+  {
+    "id": 100,
+    "section": "Tamil Paper 2",
+    "question": "நிரல்படுத்துக\nநாற்கவிராச நம்பியின் நம்பியகப்பொருள் இயல்களை மூலநூல் வைப்பு முறைப்படி நிரல்படுத்துக:\n(A) கற்பியல்\n(B) வரைவியல்\n(C) அகத்திணையியல்\n(D) களவியல்",
+    "options": {
+      "A": "(A), (B), (C), (D)",
+      "B": "(B), (A), (D), (C)",
+      "C": "(C), (D), (A), (B)",
+      "D": "(D), (C), (B), (A)"
+    },
+    "correctAnswer": "C"
+  },
+  {
+    "id": 101,
+    "section": "Tamil Paper 2",
+    "question": "உரையாசிரியர்களின் உரைநடை இயல்புகளைப் பொருத்துக\nபட்டியல் I (உரையாசிரியர்)\n(A) நக்கீரர்\n(B) சேனாவரையர்\n(C) பேராசிரியர்\n(D) இளம்பூரணர்\nபட்டியல் II (உரைநடை இயல்பு)\nசெய்யுள் நடை\nகட்டுரைச்சுவை நடை\nபொருட்செறிவு நடை\nவிளக்கம் குறைந்த நடை / எளிமை நடை",
+    "options": {
+      "A": "(A)-(I), (B)-(II), (C)-(III), (D)-(IV)",
+      "B": "(A)-(III), (B)-(IV), (C)-(I), (D)-(II)",
+      "C": "(A)-(II), (B)-(I), (C)-(IV), (D)-(III)",
+      "D": "(A)-(IV), (B)-(III), (C)-(II), (D)-(I)"
+    },
+    "correctAnswer": "A",
+    "explanation": "மு.வை. அரவிந்தனின் வகைப்பாட்டின்படி நக்கீரர் செய்யுள் நடையிலும், சேனாவரையர் தருக்கம் செறிந்த கட்டுரை நடையிலும், பேராசிரியர் பொருட்செறிவு நடையிலும், இளம்பூரணர் எளிமையான காண்டிகை நடையிலும் உரை இயற்றியுள்ளனர்."
+  },
+  {
+    "id": 102,
+    "section": "Tamil Paper 2",
+    "question": "தமிழ் நிகண்டுகளையும் அவற்றின் பாவகைகளையும் பொருத்துக\nபட்டியல் I (நிகண்டு)\n(A) சூடாமணி நிகண்டு\n(B) அகராதி நிகண்டு\n(C) சேந்தன் திவாகரம்\n(D) உரிச்சொல் நிகண்டு\nபட்டியல் II (பாவகை / வைப்புமுறை)\nநூற்பா\nவெண்பா\nவிருத்தப்பா\nஅகரவரிசை வைப்பு",
+    "options": {
+      "A": "(A)-(I), (B)-(II), (C)-(III), (D)-(IV)",
+      "B": "(A)-(III), (B)-(IV), (C)-(I), (D)-(II)",
+      "C": "(A)-(II), (B)-(I), (C)-(IV), (D)-(III)",
+      "D": "(A)-(IV), (B)-(III), (C)-(II), (D)-(I)"
+    },
+    "correctAnswer": "B",
+    "explanation": "மண்டலபுருடரின் சூடாமணி நிகண்டு விருத்தப்பாவாலும், ரேவணசித்தரின் அகராதி நிகண்டு அகரவரிசையிலும், திவாகரம் நூற்பாவிலும், காங்கேயரின் உரிச்சொல் நிகண்டு வெண்பாவிலும் அமைந்தவை."
+  },
+  {
+    "id": 103,
+    "section": "Tamil Paper 2",
+    "question": "20-ஆம் நூற்றாண்டு மொழியியல் நூல்களையும் அவற்றின் ஆசிரியர்களையும் பொருத்துக\nபட்டியல் I (நூல்)\n(A) எழுத்திலக்கணக் கோட்பாடு\n(B) புறநானூற்றுச் சொல்லடைவு\n(C) மாற்று இலக்கணம்\n(D) சொல்லிலக்கணக் கோட்பாடு\nபட்டியல் II (ஆசிரியர்)\nவ. அய். சுப்பிரமணியன்\nசெ.வை. சண்முகம்\nகு. பரமசிவம்\nச. அகத்தியலிங்கம்",
+    "options": {
+      "A": "(A)-(I), (B)-(II), (C)-(III), (D)-(IV)",
+      "B": "(A)-(III), (B)-(IV), (C)-(I), (D)-(II)",
+      "C": "(A)-(II), (B)-(I), (C)-(IV), (D)-(III)",
+      "D": "(A)-(IV), (B)-(III), (C)-(II), (D)-(I)"
+    },
+    "correctAnswer": "C",
+    "explanation": "எழுத்திலக்கணக் கோட்பாட்டைச் செ.வை. சண்முகமும், புறநானூற்றுச் சொல்லடைவை வ.அய். சுப்பிரமணியனும், மாற்று இலக்கணத்தைச் ச. அகத்தியலிங்கமும், சொல்லிலக்கணக் கோட்பாட்டைக் கு. பரமசிவமும் எழுதியுள்ளனர்."
+  },
+  {
+    "id": 104,
+    "section": "Tamil Paper 2",
+    "question": "வட்டார அகராதிகளையும் அவற்றுக்கான தொகுப்பாசிரியர்களையும் பொருத்துக\nபட்டியல் I (வட்டார அகராதி)\n(A) கரிசல் காட்டு வட்டார அகராதி\n(B) கொங்கு நாட்டு வட்டார அகராதி\n(C) நாஞ்சில் நாட்டு அகராதி\n(D) நடு நாட்டு அகராதி\nபட்டியல் II (தொகுப்பாசிரியர்)\nகண்மணி குணசேகரன்\nஅ. கா. பெருமாள்\nபெருமாள் முருகன்\nகி. ராஜநாராயணன்",
+    "options": {
+      "A": "(A)-(I), (B)-(II), (C)-(III), (D)-(IV)",
+      "B": "(A)-(III), (B)-(IV), (C)-(I), (D)-(II)",
+      "C": "(A)-(II), (B)-(I), (C)-(IV), (D)-(III)",
+      "D": "(A)-(IV), (B)-(III), (C)-(II), (D)-(I)"
+    },
+    "correctAnswer": "D",
+    "explanation": "கரிசல்காட்டு அகராதியைக் கி. ராஜநாராயணனும், கொங்கு அகராதியைப் பெருமாள் முருகனும், நாஞ்சில் அகராதியை அ.கா. பெருமாளும், நடுநாட்டு அகராதியைக் கண்மணி குணசேகரனும் தொகுத்தனர்."
+  },
+  {
+    "id": 105,
+    "section": "Tamil Paper 2",
+    "question": "தமிழ் அகராதியியல் மற்றும் லெக்சிகன் நூல்களை அவர்தம் ஆசிரியர்களுடன் பொருத்துக\nபட்டியல் I (நூல்)\n(A) சதுரகராதி\n(B) தமிழ்-ஆங்கில அகராதி (1862)\n(C) அபிதான சிந்தாமணி\n(D) தமிழ் லெக்சிகன் (Tamil Lexicon)\nபட்டியல் II (ஆசிரியர் / தலைமைப் பதிப்பாசிரியர்)\nவீரமாமுனிவர்\nஎம். வின்ஸ்லோ\nஆ. சிங்காரவேலு முதலியார்\nஎஸ். வையாபுரிப் பிள்ளை",
+    "options": {
+      "A": "(A)-(I), (B)-(II), (C)-(III), (D)-(IV)",
+      "B": "(A)-(III), (B)-(IV), (C)-(I), (D)-(II)",
+      "C": "(A)-(II), (B)-(I), (C)-(IV), (D)-(III)",
+      "D": "(A)-(IV), (B)-(III), (C)-(II), (D)-(I)"
+    },
+    "correctAnswer": "A",
+    "explanation": "சதுரகராதியை வீரமாமுனிவரும் (1732), வின்ஸ்லோ அகராதியை வின்ஸ்லோவும் (1862), அபிதான சிந்தாமணியைச் சிங்காரவேலு முதலியாரும் (1910), தமிழ் லெக்சிகனை வையாபுரிப் பிள்ளையும் (1924–36) உருவாக்கினர்."
+  },
+  {
+    "id": 106,
+    "section": "Tamil Paper 2",
+    "question": "தெய்வச்சிலையார் பற்றிய கூற்றுகளை ஆராய்க\nதொல்காப்பியச் சொல்லதிகாரத்திற்கு மட்டும் உரை இயற்றியவர்.\nஎச்சவியலின் இறுதி 3 நூற்பாக்களை வினையியலின் இறுதியில் வைத்து உரை எழுதியவர்.\nதொல்காப்பிய எழுத்ததிகாரத்திற்கும் பொருளதிகாரத்திற்கும் விரிவான உரை இயற்றியவர்.\nநச்சினார்க்கினியருக்குப் பின்வந்த 19-ஆம் நூற்றாண்டு உரையாசிரியர்.",
+    "options": {
+      "A": "(i), (ii) மட்டுமே சரி",
+      "B": "(iii), (iv) மட்டுமே சரி",
+      "C": "(i), (ii), (iii), (iv) அனைத்தும் சரி",
+      "D": "(i), (ii), (iii) சரி; (iv) தவறு"
+    },
+    "correctAnswer": "A",
+    "explanation": "தெய்வச்சிலையார் சொல்லதிகாரத்திற்கு மட்டுமே உரை இயற்றினார்; 13-ஆம் நூற்றாண்டைச் சேர்ந்த இவர் எச்சவியலின் இறுதி 3 நூற்பாக்களை வினையியலில் வைத்தார்."
+  },
+  {
+    "id": 107,
+    "section": "Tamil Paper 2",
+    "question": "சிவஞான முனிவரின் இலக்கணப் பங்களிப்புகள் பற்றிய கூற்றுகளை ஆராய்க\nதொல்காப்பியம் முழுமைக்கும் இளம்பூரணர் பாணியில் எளிய காண்டிகையுரை எழுதினார்.\nநன்னூலுக்கு முதன்முதலில் காண்டிகையுரை இயற்றிப் பதிப்பித்தவர்.\n'இலக்கண விளக்கச் சூறாவளி' என்ற கண்டன நூலை இயற்றியவர்.\nசங்கர நமச்சிவாயரின் நன்னூல் உரையைத் திருத்தியும் விளக்கியும் விருத்தியுரையாக ஆக்கியவர்.",
+    "options": {
+      "A": "(i), (ii) மட்டுமே சரி",
+      "B": "(iii), (iv) மட்டுமே சரி",
+      "C": "(i), (ii), (iii), (iv) அனைத்தும் சரி",
+      "D": "(i), (ii), (iii) சரி; (iv) தவறு"
+    },
+    "correctAnswer": "B",
+    "explanation": "சிவஞான முனிவர் தொல்காப்பியப் பாயிரச் சூத்திர விருத்தியும், 'இலக்கண விளக்கச் சூறாவளி' கண்டன நூலும், சங்கர நமச்சிவாயர் உரையைத் திருத்தி நன்னூல் விருத்தியுரையும் இயற்றினார்."
+  },
+  {
+    "id": 108,
+    "section": "Tamil Paper 2",
+    "question": "ராபர்ட் கால்டுவெல்லின் 'திராவிட மொழிகளின் ஒப்பிலக்கணம்' (1856) பற்றிய கூற்றுகளை ஆராய்க\nதிராவிட மொழிகள் வடமொழியின் துணையின்றித் தனித்து இயங்கும் பேராற்றல் கொண்டவை என்பதை நிறுவினார்.\nவல்லின ஒலிகளின் ஒலிப்பு விதியை (Law of Convertible Surds) முன்வைத்தார்.\nதிராவிட மொழிகளின் ஒட்டுநிலை (Agglutinative) இயல்பை விரிவாக விளக்கி ஆராய்ந்தார்.\nமுதற்பதிப்பில் (1856) தமிழ், தெலுங்கு, கன்னடம், மலையாளம் உள்ளிட்ட ஒன்பது மொழிகளை ஒப்பிட்டார்.",
+    "options": {
+      "A": "(i), (ii) மட்டுமே சரி",
+      "B": "(iii), (iv) மட்டுமே சரி",
+      "C": "(i), (ii), (iii), (iv) அனைத்தும் சரி",
+      "D": "(i), (ii), (iii) சரி; (iv) தவறு"
+    },
+    "correctAnswer": "C",
+    "explanation": "கால்டுவெல் 1856 முதற்பதிப்பில் 9 மொழிகளை ஒப்பிட்டு, வல்லின ஒலிப்பு விதி மற்றும் ஒட்டுநிலை அமைப்பை விளக்கித் தமிழ் வடமொழியின்றித் தனித்தியங்கும் என நிறுவினார்."
+  },
+  {
+    "id": 109,
+    "section": "Tamil Paper 2",
+    "question": "நச்சினார்க்கினியர் உரை இயற்றிய நூல்கள் பற்றிய கூற்றுகளை ஆராய்க\nதொல்காப்பியம் (எழுத்து, சொல், பொருள்).\nபத்துப்பாட்டு முழுவதும்.\nகலித்தொகை மற்றும் சீவகசிந்தாமணி.\nசிலப்பதிகாரத்தின் முப்பது காதைகளுக்கும் முழுமையாக உரை இயற்றினார்.",
+    "options": {
+      "A": "(i), (ii) மட்டுமே சரி",
+      "B": "(iii), (iv) மட்டுமே சரி",
+      "C": "(i), (ii), (iii), (iv) அனைத்தும் சரி",
+      "D": "(i), (ii), (iii) சரி; (iv) தவறு"
+    },
+    "correctAnswer": "D",
+    "explanation": "நச்சினார்க்கினியர் தொல்காப்பியம், பத்துப்பாட்டு, கலித்தொகை, சீவகசிந்தாமணி ஆகியவற்றுக்கு உரை எழுதினார்; சிலப்பதிகாரத்திற்கு அடியார்க்குநல்லாரே உரை எழுதினார்."
+  },
+  {
+    "id": 110,
+    "section": "Tamil Paper 2",
+    "question": "தமிழ் நிகண்டுகளின் தோற்றமும் அமைப்பும் பற்றிய கூற்றுகளை ஆராய்க\nகிடைத்த தமிழ் நிகண்டுகளுள் முதன்மையானது சேந்தன் திவாகரமாகும்.\n'அகராதி' என்னும் சொல்லை முதன்முதலில் தலைப்பில் கையாண்ட நூல் அகராதி நிகண்டாகும்.\nசதுரகராதியை இயற்றியவர் மண்டலபுருடர் ஆவார்.\nசூடாமணி நிகண்டு ஆசிரியப்பாவால் அமைந்த முதல் நிகண்டாகும்.",
+    "options": {
+      "A": "(i), (ii) மட்டுமே சரி",
+      "B": "(iii), (iv) மட்டுமே சரி",
+      "C": "(i), (ii), (iii), (iv) அனைத்தும் சரி",
+      "D": "(i), (ii), (iii) சரி; (iv) தவறு"
+    },
+    "correctAnswer": "A",
+    "explanation": "திவாகரம் முதல் நிகண்டாகும்; 1594-இல் தோப்பிய அகராதி நிகண்டு 'அகராதி' சொல்லை முதன்முதலில் பயன்படுத்தியது. சதுரகராதியை வீரமாமுனிவரும் சூடாமணியை விருத்தப்பாவில் மண்டலபுருடரும் ஆக்கினர்."
+  },
+  {
+    "id": 111,
+    "section": "Tamil Paper 2",
+    "question": "கூற்று – காரணம் வினா\nகூற்று (A): வில்லியம் வேர்ட்ஸ்வொர்த் தனது 'Lyrical Ballads' (1800) முன்னுரையில் கவிதையை \"வலிமையான உணர்ச்சிகளின் தன்னிச்சையான பொங்கிவழிதல்\" என்று வரையறுத்தார்.\nகாரணம் (R): கவிதை ஆக்கத்திற்குச் சாதாரண மனிதர்களின் மொழியைத் தவிர்த்து, செயற்கையான மேட்டிமை மொழியையே பயன்படுத்த வேண்டும் என்று அவர் வாதிட்டார்.",
+    "options": {
+      "A": "(A) சரி, (R) தவறு",
+      "B": "(A), (R) இரண்டும் சரி; (R) என்பது (A)-விற்குச் சரியான விளக்கம்",
+      "C": "(A) தவறு, (R) சரி",
+      "D": "(A), (R) இரண்டும் தவறு"
+    },
+    "correctAnswer": "A",
+    "explanation": "வேர்ட்ஸ்வொர்த் கவிதையை உணர்ச்சிகளின் பொங்கிவழிதல் எனக் கூறியது சரி; ஆனால் செயற்கையான கவிதை மொழியை நிராகரித்து, சாதாரண மனிதர்களின் அன்றாடப் பேச்சு மொழியையே கவிதைக்குக் கையாள வேண்டும் என்று வலியுறுத்தினார்."
+  },
+  {
+    "id": 112,
+    "section": "Tamil Paper 2",
+    "question": "கூற்று – காரணம் வினா\nகூற்று (A): ரஷ்ய உருவவியலில் விக்டர் ஷ்க்லோவ்ஸ்கி முன்வைத்த 'அன்னியப்படுத்துதல்' (Defamiliarization) என்பது வாசிப்புச் செயல்பாட்டைக் கடினமாக்கித் தாமதப்படுத்தும் உத்தியாகும்.\nகாரணம் (R): பழக்கப்பட்ட தானியங்கிப் பார்வையை (Automatization) மாற்றி, பிரதியைப் புதிய அழகியல் உணர்வோடு பார்க்க வைப்பதே கலையின் முதன்மை நோக்கம் என அவர் கருதினார்.",
+    "options": {
+      "A": "(A) சரி, (R) தவறு",
+      "B": "(A), (R) இரண்டும் சரி; (R) என்பது (A)-விற்குச் சரியான விளக்கம்",
+      "C": "(A) தவறு, (R) சரி",
+      "D": "(A), (R) இரண்டும் தவறு"
+    },
+    "correctAnswer": "B",
+    "explanation": "ஷ்க்லோவ்ஸ்கி 'Art as Technique' கட்டுரையில், தானியங்கிப் பழக்கப் பார்வையை மாற்றி வாசிப்புச் செயல்பாட்டைக் கடினமாக்கித் தாமதப்படுத்துவதன் மூலமே புதிய அழகியல் அனுபவம் பிறக்கிறது என்று விளக்குகிறார்."
+  },
+  {
+    "id": 113,
+    "section": "Tamil Paper 2",
+    "question": "கூற்று – காரணம் வினா\nகூற்று (A): ரசிகமணி டி.கே.சி. அவர்களின் கம்பராமாயணப் பதிப்பைச் சுவடி ஆதாரங்களைக் கொண்டு கல்விப்புல ஆய்வாளர்கள் ஏற்றுக் கொண்டனர். காரணம் (R): டி.கே.சி. இலக்கண விதிகளையும் சுவடிச் சான்றுகளையும் புறக்கணித்துத் தன் சொந்த ரசனைக்கு ஏற்பப் பாடல்களை இடைச்செருகல் எனக் கூறி நீக்கினார்.",
+    "options": {
+      "A": "(A) சரி, (R) தவறு",
+      "B": "(A), (R) இரண்டும் சரி; (R) என்பது (A)-விற்குச் சரியான விளக்கம்",
+      "C": "(A) தவறு, (R) சரி",
+      "D": "(A), (R) இரண்டும் தவறு"
+    },
+    "correctAnswer": "C",
+    "explanation": "டி.கே.சியின் ரசனைமுறைத் திறனாய்வு கவிதை இன்பத்திற்கு முதன்மை தந்தாலும், ஆதாரச் சுவடிகளின்றித் தன் விருப்பப்படி செய்யுள்களைத் திருத்தியதால் கல்விப்புல அறிஞர்களால் கடுமையாக விமர்சிக்கப்பட்டு நிராகரிக்கப்பட்டது."
+  },
+  {
+    "id": 114,
+    "section": "Tamil Paper 2",
+    "question": "கூற்று – காரணம் வினா\nகூற்று (A): ரோலான் பார்த் தனது \"எழுத்தாளனின் மரணம்\" (Death of the Author) கோட்பாட்டின் மூலம் ஆசிரியரின் மன நோக்கமே பிரதியின் ஒரே நிலையான பொருள் என்றார்.\nகாரணம் (R): பிரதியின் பொருள் வாசகனின் வாசிப்பில் முடிவடைவதில்லை; மாறாக அது ஆசிரியரின் சுயசரிதையில் மட்டுமே நிலைபெறுகிறது என்பது பார்தின் கருத்தாகும்.",
+    "options": {
+      "A": "(A) சரி, (R) தவறு",
+      "B": "(A), (R) இரண்டும் சரி; (R) என்பது (A)-விற்குச் சரியான விளக்கம்",
+      "C": "(A) தவறு, (R) சரி",
+      "D": "(A), (R) இரண்டும் தவறு"
+    },
+    "correctAnswer": "D",
+    "explanation": "பார்த் ஆசிரியரின் ஆதிக்கத்தையும் சுயசரிதையும் நிராகரித்தார். பிரதியின் பொருள் ஆசிரியனின் மன நோக்கத்திலோ சுயசரிதையிலோ தங்கியிருக்கவில்லை; வாசகனின் வாசிப்பில் நிகழும் பொருளுற்பத்தியிலேயே தங்கியுள்ளது என்று வாதிட்டார்."
+  },
+  {
+    "id": 115,
+    "section": "Tamil Paper 2",
+    "question": "பல்கூற்றுத் தேர்வு வினா\nமேலைநாட்டுக் கவிதையியலும் திறனாய்வுக் கோட்பாடுகளும் பற்றிய கூற்றுகளை ஆராய்க:\nஅரிஸ்டாட்டில் கவிதையியலில் 'கதர்சிஸ்' (Catharsis) என்பதை நாடக உணர்ச்சி மனத்தூய்மையாக்கம் என்றார்.\nடி.எஸ். எலியட் உணர்ச்சிகளுக்கு இணையான சூழலை உருவாக்க 'புறவயப் பொருத்துமை' (Objective Correlative) என்னும் உத்தியைச் சுட்டினார்.\nஜாக் தெரிதா மொழியை 'Langue' மற்றும் 'Parole' என இரு கூறுகளாகப் பிரித்தார்.\nஎலைன் ஷோவால்டர் 'Anatomy of Criticism' நூலை எழுதியவர் ஆவார்.",
+    "options": {
+      "A": "(i), (ii) மட்டுமே சரி",
+      "B": "(iii), (iv) மட்டுமே சரி",
+      "C": "(i), (ii), (iii), (iv) அனைத்தும் சரி",
+      "D": "(i), (ii), (iii) சரி; (iv) தவறு"
+    },
+    "correctAnswer": "A",
+    "explanation": "Langue & Parole எனக் கூறியவர் சொசூர் (தெரிதா அல்ல); 'Anatomy of Criticism' நூலை எழுதியவர் நோர்த்ராப் ஃபிரை (ஷோவால்டர் அல்ல)."
+  },
+  {
+    "id": 116,
+    "section": "Tamil Paper 2",
+    "question": "பல்கூற்றுத் தேர்வு வினா\nதமிழ்த் திறனாய்வாளர்கள் மற்றும் நூல்கள் பற்றிய கூற்றுகளை ஆராய்க:\nசி.சு. செல்லப்பா 'ஆராய்ச்சி' இதழின் வழியே மார்க்சியத் திறனாய்வை வளர்த்தெடுத்தார்.\nதொ.மு.சி. ரகுநாதன் 'விமரிசனக்கலை' என்னும் நூலை எழுதியவர் ஆவார்.\nநா. வானமாமலை 'ஆராய்ச்சி' இதழ் வழியே நாட்டுப்புறவியல் மற்றும் பண்பாட்டு ஆய்வுகளை மேற்கொண்டார்.",
+    "options": {
+      "A": "(i), (ii) மட்டுமே சரி",
+      "B": "(iii) மட்டுமே சரி",
+      "C": "(i), (ii), (iii) அனைத்தும் சரி",
+      "D": "அனைத்தும் தவறானவை"
+    },
+    "correctAnswer": "B",
+    "explanation": "'ஆராய்ச்சி' இதழை நடத்தியவர் நா. வானமாமலை (செல்லப்பா 'எழுத்து' இதழை நடத்தினார்); 'விமரிசனக்கலை' நூலை எழுதியவர் க.நா.சு. (ரகுநாதன் 'இலக்கிய விமரிசனம்' எழுதினார்)."
+  },
+  {
+    "id": 117,
+    "section": "Tamil Paper 2",
+    "question": "பல்கூற்றுத் தேர்வு வினா\nநோர்த்ராப் ஃபிரையின் பருவகாலத் தொல்படிமங்கள் (Anatomy of Criticism) பற்றிய கூற்றுகளை ஆராய்க:\nவசந்த காலம் (Spring) = நகைச்சுவை (Comedy)\nகோடைகாலம் (Summer) = ரொமான்ஸ் (Romance)\nஇலையுதிர்காலம் (Autumn) = சோகவியல் (Tragedy)\nகுளிர்காலம் (Winter) = எள்ளல் மற்றும் முரண் (Satire / Irony)",
+    "options": {
+      "A": "(i), (ii) மட்டுமே சரி",
+      "B": "(iii), (iv) மட்டுமே சரி",
+      "C": "(i), (ii), (iii), (iv) அனைத்தும் சரி",
+      "D": "(i), (ii), (iii) சரி; (iv) தவறு"
+    },
+    "correctAnswer": "C",
+    "explanation": "நோர்த்ராப் ஃபிரை மனித குல இலக்கிய வடிவங்களை நான்கு இயற்கை பருவகாலத் தொல்படிமங்களோடு பொருத்திக் கட்டமைத்துள்ளார்."
+  },
+  {
+    "id": 118,
+    "section": "Tamil Paper 2",
+    "question": "பல்கூற்றுத் தேர்வு வினா\nகல்விப்புலத் தமிழ்த் திறனாய்வாளர்கள் பற்றிய கூற்றுகளை ஆராய்க:\nஎஸ். வையாபுரிப் பிள்ளை பதிப்பியல் மற்றும் மூலபாடத் திறனாய்வில் முன்னோடியாவார்.\nக. கைலாசபதி சங்க இலக்கியத்தைச் சர்வதேச வீரயுகக் கவிதைகளோடு ஒப்பிட்டு 'Tamil Heroic Poetry' எழுதினார்.\nதெ.பொ. மீனாட்சிசுந்தரனார் 'கானல் வரி' நூலில் மொழியியல் மற்றும் உருவவியல் அணுகுமுறையைக் கையாண்டார்.\nஇவர்கள் மூவரும் சிற்றிதழ் சார்ந்த படைப்பாளித் திறனாய்வாளர்கள் மட்டுமே ஆவர்.",
+    "options": {
+      "A": "(i), (ii) மட்டுமே சரி",
+      "B": "(iii), (iv) மட்டுமே சரி",
+      "C": "(i), (ii), (iii), (iv) அனைத்தும் சரி",
+      "D": "(i), (ii), (iii) சரி; (iv) தவறு"
+    },
+    "correctAnswer": "D",
+    "explanation": "மூவரும் பல்கலைக்கழகக் கல்விப்புலத் திறனாய்வுத் துறையில் (Academic Criticism) இயங்கிய முதன்மை முன்னோடிகளாவர்; சிற்றிதழ் சார்ந்த படைப்பாளித் திறனாய்வாளர்கள் அல்லர்."
+  },
+  {
+    "id": 119,
+    "section": "Tamil Paper 2",
+    "question": "நிரல்படுத்துக வினா\nதமிழ்த் திறனாய்வு நூல்களை வெளியீட்டாண்டு அடிப்படையில் சரியான காலவரிசையில் அமைக்குக:",
+    "options": {
+      "A": "இலக்கிய விமரிசனம் (தொ.மு.சி. ரகுநாதன்)",
+      "B": "விமரிசனக்கலை (க.நா. சுப்பிரமணியம்)",
+      "C": "இலக்கியக் கலை (அ.ச. ஞானசம்பந்தன்)",
+      "D": "தமிழ் நாவல் இலக்கியம் (க. கைலாசபதி)"
+    },
+    "correctAnswer": "A",
+    "explanation": "நூல்கள் வெளியான காலவரிசை: இலக்கிய விமரிசனம் (1948) $\\rightarrow$ விமரிசனக்கலை (1951) $\\rightarrow$ இலக்கியக் கலை (1953) $\\rightarrow$ தமிழ் நாவல் இலக்கியம் (1977)."
+  },
+  {
+    "id": 120,
+    "section": "Tamil Paper 2",
+    "question": "நிரல்படுத்துக வினா\nமேலைநாட்டுக் திறனாய்வு நூல்களை வெளியீட்டாண்டு அடிப்படையில் சரியான காலவரிசையில் அமைக்குக:",
+    "options": {
+      "A": "A Contribution to the Critique of Political Economy (Karl Marx)",
+      "B": "The Interpretation of Dreams (Sigmund Freud)",
+      "C": "Course in General Linguistics (Ferdinand de Saussure)",
+      "D": "Anatomy of Criticism (Northrop Frye)"
+    },
+    "correctAnswer": "B",
+    "explanation": "நூல்கள் வெளியான காலவரிசை: Political Economy (1859) $\\rightarrow$ The Interpretation of Dreams (1900) $\\rightarrow$ Course in General Linguistics (1916) $\\rightarrow$ Anatomy of Criticism (1957)."
+  },
+  {
+    "id": 121,
+    "section": "Tamil Paper 2",
+    "question": "(பல்கூற்று வினா / சேரர் வரலாறு & வணிகம்)\nசேர நாட்டின் துறைமுகங்களும் கடல்சார் வணிகமும் தொடர்பான பின்வரும் கூற்றுகளை ஆராய்க:\nமுசிறி சேரர்களின் முதன்மை மேலைக்கடற்கரைத் துறைமுகமாகும்.\n'முசிறி பாப்பிரஸ்' (Muziris Papyrus) ஆவணம் கிரேக்கம்-முசிறி இடையிலான வணிக ஒப்பந்தத்தைக் காட்டுகிறது.\nகொற்கை சேரர்களின் புகழ்பெற்ற இரண்டாம்தர மேலைத் துறைமுகமாகத் திகழ்ந்தது.\nதொண்டி சேர நாட்டின் முதன்மைப் பாண்டிச்சேரி துறைமுகமாக விளங்கியது.",
+    "options": {
+      "A": "(i), (ii) மட்டுமே சரி",
+      "B": "(iii), (iv) மட்டுமே சரி",
+      "C": "(i), (ii), (iii), (iv) அனைத்தும் சரி",
+      "D": "(i), (ii), (iii) சரி; (iv) தவறு"
+    },
+    "correctAnswer": "A",
+    "explanation": "கூற்று (iii) தவறு, ஏனெனில் கொற்கை பாண்டியர்களின் முத்துத் துறைமுகமாகும். கூற்று (iv) தவறு, ஏனெனில் தொண்டி கீழைக் கடற்கரையில் உள்ள பாண்டிச்சேரி அல்ல; அது சேரர்களின் மேலைக்கடற்கரைத் துறைமுகப்பட்டினமாகும்."
+  },
+  {
+    "id": 122,
+    "section": "Tamil Paper 2",
+    "question": "(பல்கூற்று வினா / நாயக்கர் கால இலக்கியங்கள்)\nநாயக்கர் அரசவை இலக்கியங்கள் தொடர்பான பின்வரும் கூற்றுகளை ஆராய்க:\n'இராமப்பையன் அம்மானை' தஞ்சாவூர் நாயக்கர் வரலாற்றை விவரிக்கிறது.\n'தேம்பாவணி' இயற்றிய வீரமாமுனிவர் சோழ அரசவையின் தலைமைப் புலவராவார்.\nகங்காதேவி இயற்றிய 'மதுராவிஜயம்' குமார கம்பணனின் மதுரைப் படையெடுப்பைப் பாடுகிறது.\nதஞ்சை இரகுநாத நாயக்கர் 'சங்கீத சுதா' என்னும் இசை இலக்கண நூலை இயற்றினார்.",
+    "options": {
+      "A": "(i), (ii) மட்டுமே சரி",
+      "B": "(iii), (iv) மட்டுமே சரி",
+      "C": "(i), (ii), (iii), (iv) அனைத்தும் சரி",
+      "D": "(i), (ii), (iii) சரி; (iv) தவறு"
+    },
+    "correctAnswer": "B",
+    "explanation": "கூற்று (i) தவறு, ஏனெனில் 'இராமப்பையன் அம்மானை' மதுரை திருமலை நாயக்கரின் தளபதி இராமப்பையன் சேதுபதியை வென்ற போரைப் பாடுகிறது. கூற்று (ii) தவறு, ஏனெனில் வீரமாமுனிவர் நாயக்கர் காலம்/சந்தா சாகிப் காலகட்டத்தைச் சேர்ந்தவர், சோழர் காலத்தவர் அல்லர்."
+  },
+  {
+    "id": 123,
+    "section": "Tamil Paper 2",
+    "question": "(பல்கூற்று வினா / சோழர் உள்ளாட்சி)\nமுதலாம் பராந்தக சோழனின் உத்திரமேரூர்ச் சதுர்வேதிமங்கலக் கல்வெட்டுகள் தொடர்பான கூற்றுகளை ஆராய்க:\nகிராமப் பெருமக்கள் சபைத் தேர்தலுக்குக் 'குடவோலை முறை' பயன்படுத்தப்பட்டது.\nதேர்தலில் போட்டியிடக் குறைந்தபட்சம் கால்வேலி நில உரிமையும் சொந்த மனையும் இருக்க வேண்டும்.\nபோட்டியிடும் வேட்பாளர் வேதங்களிலும் மந்திர பிராமணங்களிலும் தேர்ச்சி பெற்றிருக்க வேண்டும்.\nகிராம நிர்வாகத்தைச் சிறப்பாக நடத்த ஏரி, தோட்டம், பொன், பஞ்சவார வாரியங்கள் அமைக்கப்பட்டன.",
+    "options": {
+      "A": "(i), (ii) மட்டுமே சரி",
+      "B": "(iii), (iv) மட்டுமே சரி",
+      "C": "(i), (ii), (iii), (iv) அனைத்தும் சரி",
+      "D": "(i), (ii), (iii) சரி; (iv) தவறு"
+    },
+    "correctAnswer": "C",
+    "explanation": "உத்திரமேரூர் கல்வெட்டுகள் (கி.பி. 919, 921) கூறும் வேட்பாளர் தகுதிகள், நில அளவுகள், கல்வித் தகுதிகள் மற்றும் வாரிய அமைப்புகள் அனைத்தும் மேலே சரியாகக் குறிப்பிடப்பட்டுள்ளன."
+  },
+  {
+    "id": 124,
+    "section": "Tamil Paper 2",
+    "question": "களப்பிரர் காலம் தொடர்பான பின்வரும் கூற்றுகளை ஆராய்க:\nபூலாங்குறிச்சிக் கல்வெட்டு 'சேந்தன் கூற்றன்' என்ற அரசனைப் பற்றிக் குறிப்பிடுகிறது.\nவேள்விக்குடிச் செப்பேடு களப்பிரர்களைக் 'கலி அரசன்' எனக் குறிப்பிடுகிறது.\nபுத்ததத்தரின் அச்சுதவிக்கந்தனைக் 'களம்ப குலநந்தன' எனக் குறிப்பிடுகிறது.\nகளப்பிரர் ஆட்சியில் பிராமணர்களின் பிரம்மதேய நிலங்கள் அனைத்தும் எவ்விதத் தடையுமின்றித் தொடர்ந்து பாதுகாக்கப்பட்டன.",
+    "options": {
+      "A": "(i), (ii) மட்டுமே சரி",
+      "B": "(iii), (iv) மட்டுமே சரி",
+      "C": "(i), (ii), (iii), (iv) அனைத்தும் சரி",
+      "D": "(i), (ii), (iii) சரி; (iv) தவறு"
+    },
+    "correctAnswer": "D",
+    "explanation": "கூற்று (iv) தவறானது. வேள்விக்குடிச் செப்பேட்டின்படி களப்பிரர் ஆட்சியில் முந்தைய பிரம்மதேயக் கொடைகள் பறிமுதல் செய்யப்பட்டன ('அளவற மொழியப்பெற்ற களப்ரன என்னும் கலிஅரசன் எனை வேந்தரைக் களைந்து இறக்கிய பிரம்மதேயத்தை...')."
+  },
+  {
+    "id": 125,
+    "section": "Tamil Paper 2",
+    "question": "கூற்று (A): முதலாம் இராஜேந்திர சோழன் 'கடாரம் கொண்டான்' என்று மெய்க்கீர்த்திகளிலும் கல்வெட்டுகளிலும் புகழப்படுகிறான்.\nகாரணம் (R): ஸ்ரீவிஜயப் பேரரசு சோழர்களின் கீழைக்கடல் வணிகப் பாதைகளுக்கும் கடற்படைப் போக்குவரத்திற்கும் எவ்விதத் தடங்கலும் செய்யாமல் முழு ஒத்துழைப்பு நல்கியது.",
+    "options": {
+      "A": "(A) சரி, (R) தவறு",
+      "B": "(A), (R) இரண்டும் சரி; (R) என்பது (A)-விற்குச் சரியான விளக்கம்",
+      "C": "(A) தவறு, (R) சரி",
+      "D": "(A), (R) இரண்டும் தவறு"
+    },
+    "correctAnswer": "A",
+    "explanation": "ஸ்ரீவிஜயம்/கடார அரசு சோழர்களின் சீன வணிகப் பாதையில் தடையை ஏற்படுத்தியதாலேயே இராஜேந்திரன் கி.பி. 1025-இல் மாபெரும் கடற்படையெடுப்பை மேற்கொண்டு கடாரத்தைக் கைப்பற்றினான். எனவே காரணம் (R) தவறானது."
+  },
+  {
+    "id": 126,
+    "section": "Tamil Paper 2",
+    "question": "கூற்று (A): பாண்டியன் பராந்தக நெடும்சடையன் வேள்விக்குடி கிராமத்தை நற்கொற்றன் என்பவனுக்கு மீண்டும் பிரம்மதேயமாகக் கொடையளித்தான். காரணம் (R): களப்பிரர் ஆட்சியில் பறிமுதல் செய்யப்பட்ட கொடை நிலத்தைக் கொற்றன் கிழான் முறையிட்டதை அடுத்து, பழமையான கொடைச் சாசனங்களை ஆய்வு செய்து பாண்டிய மன்னன் நிலத்தை மீட்டு அளித்தான்.",
+    "options": {
+      "A": "(A) சரி, (R) தவறு",
+      "B": "(A), (R) இரண்டும் சரி; (R) என்பது (A)-விற்குச் சரியான விளக்கம்",
+      "C": "(A) தவறு, (R) சரி",
+      "D": "(A), (R) இரண்டும் தவறு"
+    },
+    "correctAnswer": "B",
+    "explanation": "வேள்விக்குடிச் செப்பேடு குறிப்பிடும் முதன்மை வரலாற்றுச் செய்தி இதுவேயாகும். பராந்தகன் நெடும்சடையன் தன் 3-ஆம் ஆட்சியாண்டில் பழமையான ஆவணங்களைச் சரிபார்த்து வேள்விக்குடியை நற்கொற்றனுக்கு வழங்கினான்."
+  },
+  {
+    "id": 127,
+    "section": "Tamil Paper 2",
+    "question": "கூற்று (A): பல்லவர்கள் பாரசீகப் பார்த்தியர்களான 'பஹ்லவர்கள்' வழியில் வந்த அயல்நாட்டு அரசமரபினர் ஆவர்.\nகாரணம் (R): பல்லவர்களின் தொடக்ககாலச் சாசனங்கள் அனைத்தும் பிராகிருதம் மற்றும் சமஸ்கிருத மொழிகளிலேயே வெளியிடப்பட்டுள்ளன.",
+    "options": {
+      "A": "(A) சரி, (R) தவறு",
+      "B": "(A), (R) இரண்டும் சரி; (R) என்பது (A)-விற்குச் சரியான விளக்கம்",
+      "C": "(A) தவறு, (R) சரி",
+      "D": "(A), (R) இரண்டும் தவறு"
+    },
+    "correctAnswer": "C",
+    "explanation": "கூற்று (A) தவறு. வின்சென்ட் ஸ்மித் முன்வைத்த 'பஹ்லவ' அயல்நாட்டுக் கோட்பாடு மறுக்கப்பட்டு, பல்லவர்கள் தொண்டைமண்டல/ஆந்திரச் சாத்தவாகன அதிகாரி வழியினரான தென்னிந்தியர்கள் என்பது ஏற்றுக்கொள்ளப்பட்டுள்ளது. காரணம் (R) சரி, தொடக்க காலப் பட்டயங்கள் பிராகிருதம் மற்றும் சமஸ்கிருதத்தில் உள்ளன."
+  },
+  {
+    "id": 128,
+    "section": "Tamil Paper 2",
+    "question": "கூற்று (A): களப்பிரர் காலம் தமிழ் இலக்கிய வரலாற்றில் எந்தவொரு புதிய நூலும் தோன்றாத முற்றிலும் வறண்ட 'இருண்ட காலம்' ஆகும்.\nகாரணம் (R): களப்பிர மன்னர்கள் தமிழ் மொழியை முற்றிலும் புறக்கணித்துச் சமஸ்கிருதம் மற்றும் பிராகிருத மொழிகளை மட்டுமே அரசாங்க மொழியாகப் பயன்படுத்தினர்.",
+    "options": {
+      "A": "(A) சரி, (R) தவறு",
+      "B": "(A), (R) இரண்டும் சரி; (R) என்பது (A)-விற்குச் சரியான விளக்கம்",
+      "C": "(A) தவறு, (R) சரி",
+      "D": "(A), (R) இரண்டும் தவறு"
+    },
+    "correctAnswer": "D",
+    "explanation": "(A) தவறு, ஏனெனில் பதினெண்கீழ்க் கணக்கு அறநூல்கள் பலவும், காப்பியச் சூழலும் இக்காலகட்டத்திலேயே வளர்ந்தன. (R) தவறு, ஏனெனில் பூலாங்குறிச்சிக் கல்வெட்டுகள் களப்பிரர் காலத்தில் தமிழ் வட்டெழுத்திலும் தமிழிலும் ஆட்சிச் சாசனங்கள் பொறிக்கப்பட்டதை உறுதி செய்கின்றன."
+  },
+  {
+    "id": 129,
+    "section": "Tamil Paper 2",
+    "question": "பிற்காலச் சோழர் காலத்தில் நடைபெற்ற பின்வரும் வரலாற்று முக்கியத்துவம் வாய்ந்த போர்களைக் காலவரிசைப்படி நிரல்படுத்துக:\nகூடல்சங்கமப் போர் (வீரராஜேந்திரன்)\nதக்கோலப் போர் (முதலாம் பராந்தகன்)\nகொப்பத்துப் போர் (முதலாம் இராஜாதிாஜன்)\nகலிங்கத்துப் போர் (முதலாம் குலோத்துங்கன்)",
+    "options": {
+      "A": "(i), (ii), (iii), (iv)",
+      "B": "(ii), (iii), (i), (iv)",
+      "C": "(iii), (i), (iv), (ii)",
+      "D": "(iv), (ii), (i), (iii)"
+    },
+    "correctAnswer": "B",
+    "explanation": "தக்கோலப் போர் (கி.பி. 949) $\\rightarrow$ கொப்பத்துப் போர் (கி.பி. 1054) $\\rightarrow$ கூடல்சங்கமப் போர் (கி.பி. 1062) $\\rightarrow$ கலிங்கத்துப் போர் (கி.பி. 1110)."
+  },
+  {
+    "id": 130,
+    "section": "Tamil Paper 2",
+    "question": "(நிரல்படுத்துக / பல்லவர் போர்கள்)\nபல்லவர் வரலாற்றில் நடைபெற்ற பின்வரும் போர்களைக் காலவரிசைப்படி நிரல்படுத்துக:\nமணிமங்கலப் போர் (முதலாம் நரசிம்மவர்மன்)\nதெள்ளாற்றுப் போர் (மூன்றாம் நந்திவர்மன்)\nபுள்ளலூர்ப் போர் (முதலாம் மகேந்திரவர்மன்)\nபெருவளநல்லூர்ப் போர் (முதலாம் பரமேஸ்வரவர்மன்)",
+    "options": {
+      "A": "(i), (ii), (iii), (iv)",
+      "B": "(ii), (iv), (i), (iii)",
+      "C": "(iii), (i), (iv), (ii)",
+      "D": "(iv), (iii), (ii), (i)"
+    },
+    "correctAnswer": "C",
+    "explanation": "புள்ளலூர்ப் போர் (கி.பி. 610) $\\rightarrow$ மணிமங்கலப் போர் (கி.பி. 640) $\\rightarrow$ பெருவளநல்லூர்ப் போர் (கி.பி. 670) $\\rightarrow$ தெள்ளாற்றுப் போர் (கி.பி. 830-840)."
+  },
+  {
+    "id": 131,
+    "section": "Tamil Paper 2",
+    "question": "பொருத்துக\nபட்டியல் I (கல்வெட்டு அமைந்த இடங்கள்)\n(A) மாங்குளம்\n(B) புகளூர்\n(C) ஜம்பை\n(D) அரச்சலூர்\nபட்டியல் II (தொடர்புடைய நபர் / செய்தி)\nநடனக் கல்வெட்டு\nநெடுஞ்செழியன்\nசேரல் இரும்பொறை\nஅதியமான் நெடுமான் அஞ்சி",
+    "options": {
+      "A": "(A)-(II), (B)-(III), (C)-(IV), (D)-(I)",
+      "B": "(A)-(III), (B)-(II), (C)-(I), (D)-(IV)",
+      "C": "(A)-(IV), (B)-(I), (C)-(III), (D)-(II)",
+      "D": "(A)-(I), (B)-(IV), (C)-(II), (D)-(III)"
+    },
+    "correctAnswer": "A",
+    "explanation": "மாங்குளம் கல்வெட்டு பாண்டியன் நெடுஞ்செழியன் பெயரையும், புகளூர் சேர வம்சாவளியையும், ஜம்பை கல்வெட்டு அதியமான் பெயரையும், அரச்சலூர் இசை-நடன அமைப்பையும் குறிக்கின்றன."
+  },
+  {
+    "id": 132,
+    "section": "Tamil Paper 2",
+    "question": "நிரல்படுத்துக\nதமிழகக் கோயில் கட்டடக்கலையின் பாணிகளை வரலாற்றுத் தோற்றத்தின் அடிப்படையில் (பழமையானதிலிருந்து புதியது வரை) சரியாக நிரல்படுத்துக:\n(A) இராயகோபுரப் பாணி\n(B) மாடக்கோயில் பாணி\n(C) குடவரைக் கோயில் பாணி\n(D) கற்றளிப் பாணி",
+    "options": {
+      "A": "(B), (C), (D), (A)",
+      "B": "(C), (B), (A), (D)",
+      "C": "(B), (D), (C), (A)",
+      "D": "(C), (A), (B), (D)"
+    },
+    "correctAnswer": "A",
+    "explanation": "கட்டடப் பாணிகளின் வரிசை: சங்க கால மரபான மாடக்கோயில் $\\rightarrow$ மகேந்திரவர்மனின் குடவரை $\\rightarrow$ இராஜசிம்மனின் கற்றளி $\\rightarrow$ விஜயநகர/நாயக்கர்களின் இராயகோபுரம் ஆகும்."
+  },
+  {
+    "id": 133,
+    "section": "Tamil Paper 2",
+    "question": "தமிழக அகழாய்வுகள் குறித்த பின்வரும் கூற்றுகளை ஆராய்க:\n(A) கீழடி அகழாய்வு வைகை நதிக்கரை நகர நாகரிகச் சான்றுகளை வெளிப்படுத்தியது.\n(B) கொடுமணல் அகழாய்வு பதிற்றுப்பத்து குறிப்பிடும் மணிசெய்யும் தொழிற்கூடச் சான்றுகளை உறுதிசெய்தது.\n(C) சிவமலை அகழாய்வு முதன்முதலில் நெல் உமி கிடைத்த பெருங்கற்காலக் களமாகும்.\n(D) மயிலாடும்பாறை அகழாய்வு தமிழக இரும்புப் பண்பாட்டின் தொன்மையை உணர்த்துகிறது.",
+    "options": {
+      "A": "(A), (B), (D) மட்டும் சரி",
+      "B": "(A), (B), (C) மட்டும் சரி",
+      "C": "(B), (C), (D) மட்டும் சரி",
+      "D": "(A), (C), (D) மட்டும் சரி"
+    },
+    "correctAnswer": "A",
+    "explanation": "முதுமக்கள் தாழியில் நெல் மணிகள் கண்டறியப்பட்ட பெருங்கற்கால இடம் பொருந்தல் ஆகும் [(C) தவறு]. ஏனைய மூன்றும் சரியானவை."
+  },
+  {
+    "id": 134,
+    "section": "Tamil Paper 2",
+    "question": "கூற்று 1 – கூற்று 2\nகூற்று 1: ஆண்டிப்பட்டி நாணயக் குறியீடுகள் ஆய்வின் மூலம் சேர மன்னர்களின் வெள்ளி முத்திரை நாணயங்கள் முதன்முதலாகக் கண்டறியப்பட்டன.\nகூற்று 2: பண்டைய தமிழகத்தின் பூஞ்சர், வலுவல்லி ஆகிய இடங்களில் உரோமானிய தங்க/வெள்ளி நாணயக் குவியல்கள் கண்டெடுக்கப்பட்டுள்ளன.",
+    "options": {
+      "A": "கூற்று 1 மற்றும் கூற்று 2 ஆகிய இரண்டும் சரியானவை",
+      "B": "கூற்று 1 மற்றும் கூற்று 2 ஆகிய இரண்டும் தவறானவை",
+      "C": "கூற்று 1 சரியானது, ஆனால் கூற்று 2 தவறானது",
+      "D": "கூற்று 1 தவறானது, ஆனால் கூற்று 2 சரியானது"
+    },
+    "correctAnswer": "D",
+    "explanation": "ஆண்டிப்பட்டி நாணயக் குவியல் தமிழ்-பிராமி பொறிப்பு கொண்ட ஈயக் காசுகளாகும் [(கூற்று 1 தவறு)]; பூஞ்சர், வலுவல்லி உரோமானிய நாணயங்கள் கிடைத்த இடங்களாகும் [(கூற்று 2 சரி)]."
+  },
+  {
+    "id": 135,
+    "section": "Tamil Paper 2",
+    "question": "கூற்று – காரணம்\nஉறுதிக்கூற்று (உ): பழந்தமிழரின் பேரியாழ் என்பது இருபத்தொன்று நரம்புகளைக் கொண்ட மிகப்பெரிய இசைக்கருவியாகும்.\nகாரணம் (கா): சிலப்பதிகாரம் அரங்கேற்று காதையில் மாதவி யாழ் வாசித்த போது, செங்கோட்டு யாழின் நரம்புகளையே முதன்முதலாக இசைத்ததாக அடியார்க்குநல்லார் குறிப்பிடுகிறார்.",
+    "options": {
+      "A": "(உ) சரி, (கா) சரி; (கா) என்பது (உ)-விற்குச் சரியான விளக்கம்",
+      "B": "(உ) சரி, (கா) தவறு",
+      "C": "(உ) தவறு, (கா) சரி",
+      "D": "(உ) தவறு, (கா) தவறு"
+    },
+    "correctAnswer": "B",
+    "explanation": "பேரியாழ் 21 நரம்புகளைக் கொண்டது [(உ) சரி]; மாதவி அரங்கேற்றத்தின் போது இசைத்தது 14 நரம்புகள் கொண்ட சகோடயாழ் ஆகும் [(கா) தவறு]."
+  },
+  {
+    "id": 136,
+    "section": "Tamil Paper 2",
+    "question": "பொருத்துக\nபட்டியல் I (கோட்பாடுகள்)\n(A) வாய்மொழி வாய்பாட்டுக் கோட்பாடு\n(B) அமைப்பியலியல் கோட்பாடு\n(C) உளப்பகுப்பாய்வுக் கோட்பாடு\n(D) நிகழ்த்துதற்கோட்பாடு\nபட்டியல் II (முன்மை ஆய்வாளர்கள்)\nரிச்சர்ட் பாவுமன்\nமில்ட்மன் பாரி & ஆல்பர்ட் லார்டு\nகிளாட் லெவி-ஸ்ட்ராஸ்\nசிக்மண்ட் பிராய்டு",
+    "options": {
+      "A": "(A)-(II), (B)-(III), (C)-(IV), (D)-(I)",
+      "B": "(A)-(III), (B)-(II), (C)-(I), (D)-(IV)",
+      "C": "(A)-(IV), (B)-(I), (C)-(II), (D)-(III)",
+      "D": "(A)-(I), (B)-(IV), (C)-(III), (D)-(II)"
+    },
+    "correctAnswer": "A",
+    "explanation": "கோட்பாடுகளும் நிறுவிய ஆய்வாளர்களும்: வாய்மொழி வாய்பாடு - பாரி/லார்டு, அமைப்பியல் - லெவி-ஸ்ட்ராஸ், உளப்பகுப்பாய்வு - பிராய்டு, நிகழ்த்துதற்கோட்பாடு - பாவுமன்."
+  },
+  {
+    "id": 137,
+    "section": "Tamil Paper 2",
+    "question": "நிரல்படுத்துக\nநா. வானமாமலை பதிப்பித்த கதைப்பாடல்களை அவற்றின் வரலாற்று நிகழ்வுகளின் கால அடிப்படையில் (பழையதிலிருந்து புதியது வரை) சரியாக நிரல்படுத்துக:\n(A) கான்சாகிபு சண்டை\n(B) இராமப்பய்யன் அம்மானை\n(C) ஐவர் ராசாக்கள் கதை\n(D) கட்டபொம்மன் கதைப்பாடல்",
+    "options": {
+      "A": "(C), (B), (A), (D)",
+      "B": "(B), (C), (D), (A)",
+      "C": "(C), (A), (B), (D)",
+      "D": "(B), (A), (C), (D)"
+    },
+    "correctAnswer": "A",
+    "explanation": "வரலாற்று நிகழ்வுக் காலம்: ஐவர் ராசாக்கள் (பாண்டியர் காலம்) $\\rightarrow$ இராமப்பய்யன் அம்மானை (நாயக்கர் காலம்) $\\rightarrow$ கான்சாகிபு சண்டை (1764) $\\rightarrow$ கட்டபொம்மன் கதை (1799)."
+  },
+  {
+    "id": 138,
+    "section": "Tamil Paper 2",
+    "question": "பல்நோக்குக் கூற்றுத் தேர்வு\nசுவடியியல் மற்றும் பதிப்பியல் கலைச்சொற்கள் பற்றிய பின்வரும் கூற்றுகளை ஆராய்க:\n(A) மூலச்சுவடியின் பாடத்திலிருந்து படி எடுப்பவரால் ஏற்படும் மாற்றங்கள் பாடவேறுபாடு எனப்படும்.\n(B) மூலச்சுவடி கிடைக்காமல் இடைக்காலப் பிரதியை அடிப்படையாகக் கொண்டு படியெடுக்கப்படும் சுவடி வழியேடு எனப்படும்.\n(C) ஓலைச்சுவடியின் ஓரங்களில் நூலைக் கோர்ப்பதற்காக இடப்படும் துளை சுவடித் துளை எனப்படும்.\n(D) அனைத்துச் சுவடிகளையும் ஒப்பிட்டு, பிழைகளின்றி உருவாக்கப்படும் பதிப்பு செம்பதிப்பு எனப்படும்.",
+    "options": {
+      "A": "(A), (B), (C), (D) அனைத்தும் சரி",
+      "B": "(A), (B), (D) மட்டும் சரி",
+      "C": "(B), (C), (D) மட்டும் சரி",
+      "D": "(A), (C), (D) மட்டும் சரி"
+    },
+    "correctAnswer": "A",
+    "explanation": "மூலபாட ஆய்வின் அடிப்படைச் சொற்களான பாடவேறுபாடு, வழியேடு, சுவடித்தவறு, செம்பதிப்பு குறித்த நான்கு கூற்றுகளும் துல்லியமானவை."
+  },
+  {
+    "id": 139,
+    "section": "Tamil Paper 2",
+    "question": "கூற்று – காரணம்\nஉறுதிக்கூற்று (உ): நாட்டார் வழிபாட்டில் தேவராட்டம் என்பது பெண்களால் மட்டுமே சடங்குப் பூர்வமாக நிகழ்த்தப்படும் வழிபாட்டு நடனமாகும். காரணம் (கா): தேவராட்டம் கம்பளத்து நாயக்கர் சமுதாயத்தினரால் தங்களின் குலதெய்வ வழிபாட்டின் போது ஆண்கள் மட்டுமே ஆடும் மரபுவழி நடனமாகும்.",
+    "options": {
+      "A": "(உ) சரி, (கா) சரி; (கா) என்பது (உ)-விற்குச் சரியான விளக்கம்",
+      "B": "(உ) சரி, (கா) தவறு",
+      "C": "(உ) தவறு, (கா) சரி",
+      "D": "(உ) தவறு, (கா) தவறு"
+    },
+    "correctAnswer": "C",
+    "explanation": "தேவராட்டம் பெண்களால் ஆடப்படுவதன்று; ஆண்கள் மட்டுமே ஆடும் மரபுவழிக் கலையாகும் [(உ) தவறு]. கம்பளத்து நாயக்கர் குலதெய்வச் சடங்கோடு தொடர்புடையது [(கா) சரி]."
+  },
+  {
+    "id": 140,
+    "section": "Tamil Paper 2",
+    "question": "கூற்று 1 – கூற்று 2\nகூற்று 1: மயிலை சீனி. வேங்கடசாமி இயற்றிய தமிழர் வளர்த்த அழகுக் கலைகள் என்னும் நூல் தமிழக அரசின் முதற்பரிசைப் பெற்ற கலை வரலாற்று மூலநூலாகும்.\nகூற்று 2: நா. வானமாமலை நிறுவிய ஆராய்ச்சி காலாண்டிதழ் தமிழியல் மற்றும் நாட்டார் வழக்காற்றியல் ஆய்வுகளுக்கு முதன்மை அடித்தளமாக அமைந்தது.",
+    "options": {
+      "A": "கூற்று 1 மற்றும் கூற்று 2 ஆகிய இரண்டும் சரியானவை",
+      "B": "கூற்று 1 மற்றும் கூற்று 2 ஆகிய இரண்டும் தவறானவை",
+      "C": "கூற்று 1 சரியானது, ஆனால் கூற்று 2 தவறானது",
+      "D": "கூற்று 1 தவறானது, ஆனால் கூற்று 2 சரியானது"
+    },
+    "correctAnswer": "A",
+    "explanation": "தமிழர் வளர்த்த அழகுக் கலைகள் அரசு பரிசு பெற்றது; நா. வானமாமலையின் ஆராய்ச்சி இதழ் தமிழியல் ஆய்வில் திருப்புமுனையாக அமைந்தது. எனவே இரு கூற்றுகளும் சரியானவை."
+  },
+  {
+    "id": 141,
+    "section": "Tamil Paper 2",
+    "question": "கூற்று (A): சி.பா. ஆதித்தனாரின் 'தினத்தந்தி' நாளிதழ் எளிய பேச்சுத்தமிழ் நடையை இதழியல் உலகில் பிரபலப்படுத்தியது.\nகாரணம் (R): பாமர மக்களும் செய்தித்தாள்களை எளிதில் வாசிக்கும் பழக்கத்தை உருவாக்க வேண்டும் என்பதே இதன் முதன்மை நோக்கமாகும்.",
+    "options": {
+      "A": "(A) சரி, (R) தவறு",
+      "B": "(A), (R) இரண்டும் சரி; (R) என்பது (A)-விற்குச் சரியான விளக்கம்",
+      "C": "(A) தவறு, (R) சரி",
+      "D": "(A), (R) இரண்டும் தவறு"
+    },
+    "correctAnswer": "B",
+    "explanation": "சி.பா. ஆதித்தனார் எளிய சொற்கள், குறுகிய வாக்கியங்களைக் கொண்டு 'இதழியல் கையேடு' உருவாக்கிப் பாமர மக்களிடையே வாசிப்புப் பழக்கத்தை ஏற்படுத்தியதால் கூற்றும் அதற்குரிய காரணமும் சரியானவை."
+  },
+  {
+    "id": 142,
+    "section": "Tamil Paper 2",
+    "question": "கூற்று (A): 1997-இல் மலேசியாவில் நடைபெற்ற மாநாட்டில் 'தமிழ்நெட்99' (TamilNet99) விசைப்பலகை முறை தமிழ்நாடு அரசால் அதிகாரப்பூர்வமாக அங்கீகரிக்கப்பட்டது.\nகாரணம் (R): 1999 சென்னை தமிழ் இணைய மாநாட்டில்தான் தமிழ்நெட்99 விசைப்பலகை உருவாக்கம் மற்றும் தரப்படுத்தல் முடிவுகள் எட்டப்பட்டு அரசாணை வெளியிடப்பட்டது.",
+    "options": {
+      "A": "(A) சரி, (R) தவறு",
+      "B": "(A), (R) இரண்டும் சரி; (R) என்பது (A)-விற்குச் சரியான விளக்கம்",
+      "C": "(A) தவறு, (R) சரி",
+      "D": "(A), (R) இரண்டும் தவறு"
+    },
+    "correctAnswer": "C",
+    "explanation": "1997 மலேசிய மாநாட்டில் 8-பிட் 'TSCII' குறியாக்கம் மட்டுமே அங்கீகரிக்கப்பட்டது; 1999 சென்னை மாநாட்டில்தான் 'தமிழ்நெட்99' விசைப்பலகை அரசால் அங்கீகரிக்கப்பட்டது. எனவே (A) தவறு, (R) சரி."
+  },
+  {
+    "id": 143,
+    "section": "Tamil Paper 2",
+    "question": "கூற்று (A): 1970-இல் வெளிவந்த 'கசடதபற' சிற்றிதழ் வணிகச் சார்பற்ற தீவிர இலக்கியத் திறனாய்வையும் படைப்புச் சுதந்திரத்தையும் முதன்மையாகக் கொண்டு செயல்பட்டது.\nகாரணம் (R): இவ்இதழ் முழுக்க முழுக்கத் திரையுலகச் செய்திகளையும் சினிமா விமர்சனங்களையும் மட்டுமே வணிக நோக்கில் வெளியிடும் நோக்கத்திற்காகத் தொடங்கப்பட்டது.",
+    "options": {
+      "A": "(A) சரி, (R) தவறு",
+      "B": "(A), (R) இரண்டும் சரி; (R) என்பது (A)-விற்குச் சரியான விளக்கம்",
+      "C": "(A) தவறு, (R) சரி",
+      "D": "(A), (R) இரண்டும் தவறு"
+    },
+    "correctAnswer": "A",
+    "explanation": "'கசடதபற' வணிகச் சார்பற்ற தீவிர இலக்கியக் குழுவால் நடத்தப்பட்ட சிற்றிதழாகும். இது சினிமா இதழ் அன்று. எனவே (A) சரி, (R) தவறு."
+  },
+  {
+    "id": 144,
+    "section": "Tamil Paper 2",
+    "question": "கூற்று (A): வீரமாமுனிவரின் 'சதுரகராதி' (1732) தமிழின் முதல் அச்சு நாளிதழாகக் கருதப்படுகிறது.\nகாரணம் (R): 'அபிதான சிந்தாமணி' (1910) பேரறிஞர் அண்ணாவால் தொகுத்து வெளியிடப்பட்ட முதல் தமிழ் வார இதழாகும்.",
+    "options": {
+      "A": "(A) சரி, (R) தவறு",
+      "B": "(A), (R) இரண்டும் சரி; (R) என்பது (A)-விற்குச் சரியான விளக்கம்",
+      "C": "(A) தவறு, (R) சரி",
+      "D": "(A), (R) இரண்டும் தவறு"
+    },
+    "correctAnswer": "D",
+    "explanation": "'சதுரகராதி' நாளிதழ் அன்று, அது அகராதி நூலாகும்; 'அபிதான சிந்தாமணி' கலைக்களஞ்சியம், அதைத் தொகுத்தவர் ஆ. சிங்காரவேலு முதலியார். எனவே இரு கூற்றுகளுமே தவறானவை."
+  },
+  {
+    "id": 145,
+    "section": "Tamil Paper 2",
+    "question": "கீழ்க்காணும் கூற்றுகளைக் கருத்தில் கொள்க:\n'காளிதாஸ்' (1931) தமிழின் முதல் பேசும்படமாகும்.\nஇப்படத்தை எச்.எம். ரெட்டி இயக்கினார்.\nஇதில் டி.பி. ராஜலட்சுமி கதாநாயகியாக நடித்தார்.\nபடம் முழுவதும் தூய சமஸ்கிருத மொழியில் மட்டுமே பேசப்பட்டது.",
+    "options": {
+      "A": "(i), (ii) மட்டுமே சரி",
+      "B": "(iii), (iv) மட்டுமே சரி",
+      "C": "(i), (ii), (iii), (iv) அனைத்தும் சரி",
+      "D": "(i), (ii), (iii) சரி; (iv) தவறு"
+    },
+    "correctAnswer": "D",
+    "explanation": "'காளிதாஸ்' படத்தில் தமிழும் தெலுங்கும் கலந்த பன்மொழி உரையாடல்கள் இடம் பெற்றிருந்தன. தூய சமஸ்கிருதப் படம் அன்று. எனவே (iv) தவறானது."
+  },
+  {
+    "id": 146,
+    "section": "Tamil Paper 2",
+    "question": "கீழ்க்காணும் கூற்றுகளைக் கருத்தில் கொள்க:\nதமிழ் இணையக் கல்விக்கழகம் (TVA) கணினிவழித் தமிழ் படிப்புகளையும் மின்னூலகத்தையும் வழங்குகிறது.\n'மதுரை திட்டம்' (Project Madurai) 1998 தைப்பொங்கல் அன்று தொடங்கப்பட்ட இலவசத் தமிழ் மின்னூலக முயற்சியாகும்.\n'ரோஜா முத்தையா ஆராய்ச்சி நூலகம்' (RMRL) பழந்தமிழ்ப் பிரதிகளையும் அரிய நூல்களையும் ஆவணப்படுத்துகிறது.\n'நூலகம் திட்டம்' (Noolaham Project) இலங்கைத் தமிழ் ஆவணங்களைப் பாதுகாக்கும் இணைய முயற்சியாகும்.",
+    "options": {
+      "A": "(i), (ii) மட்டுமே சரி",
+      "B": "(iii), (iv) மட்டுமே சரி",
+      "C": "(i), (ii), (iii), (iv) அனைத்தும் சரி",
+      "D": "(i), (ii), (iii) சரி; (iv) தவறு"
+    },
+    "correctAnswer": "C",
+    "explanation": "இந்நான்கு கூற்றுகளுமே தமிழ் மின்னூலகங்கள் மற்றும் ஆவணக் காப்பகங்கள் குறித்த துல்லியமான வரலாற்று உண்மைகளாகும்."
+  },
+  {
+    "id": 147,
+    "section": "Tamil Paper 2",
+    "question": "கீழ்க்காணும் கூற்றுகளைக் கருத்தில் கொள்க:\n'அபிதான சிந்தாமணி' நூலைத் தொகுத்தவர் பெரியசாமி தூரன் ஆவார்.\n'கணக்கதிகாரம்' என்னும் கணித நூலை இயற்றியவர் கபிலர் ஆவார்.\nவீரமாமுனிவரால் 'சதுரகராதி' 1732-இல் தொகுக்கப்பட்டது.\n'கரிசல் வட்டார வழக்குச் சொல்லகராதி'யைத் தொகுத்தவர் கி. ராஜநாராயணன் ஆவார்.",
+    "options": {
+      "A": "(i), (ii) மட்டுமே சரி",
+      "B": "(iii), (iv) மட்டுமே சரி",
+      "C": "(i), (ii), (iii), (iv) அனைத்தும் சரி",
+      "D": "(i), (ii), (iii) சரி; (iv) தவறு"
+    },
+    "correctAnswer": "B",
+    "explanation": "'அபிதான சிந்தாமணி'யைத் தொகுத்தவர் ஆ. சிங்காரவேலு முதலியார்; 'கணக்கதிகாரம்' இயற்றியவர் காரிநாயனார். எனவே (i), (ii) தவறானவை. (iii), (iv) மட்டுமே சரியானவை."
+  },
+  {
+    "id": 148,
+    "section": "Tamil Paper 2",
+    "question": "கீழ்க்காணும் கூற்றுகளைக் கருத்தில் கொள்க:\n1997-இல் மலேசியாவில் நடைபெற்ற மாநாட்டில் 'TSCII' குறியாக்கத் தரநிலை அங்கீகரிக்கப்பட்டது.\n'எழில்' (Ezhil) என்பது முத்தையா அண்ணாமலையால் உருவாக்கப்பட்ட தமிழ் நிரலாக்க மொழியாகும்.\n'தமிழ்நெட்99' விசைப்பலகையை வடிவமைத்து அளித்தவர் வீரமாமுனிவர் ஆவார்.\n'ஒருங்கமைவு' (Unicode) என்பது 8-பிட் திறன் கொண்ட மட்டுமே இயங்கும் குறியீட்டு முறையாகும்.\nநிரல்படுத்துக வினாக்கள்",
+    "options": {
+      "A": "(i), (ii) மட்டுமே சரி",
+      "B": "(iii), (iv) மட்டுமே சரி",
+      "C": "(i), (ii), (iii), (iv) அனைத்தும் சரி",
+      "D": "(i), (ii), (iii) சரி; (iv) தவறு"
+    },
+    "correctAnswer": "A",
+    "explanation": "தமிழ்நெட்99 1999-இல் தமிழ் இணையக் குழுவால் வடிவமைக்கப்பட்டது; Unicode என்பது 16-பிட்/Multibyte முறையிலானது. எனவே (iii), (iv) தவறானவை. (i), (ii) மட்டுமே சரியானவை."
+  },
+  {
+    "id": 149,
+    "section": "Tamil Paper 2",
+    "question": "இதழ்களை அவை தோன்றிய வரலாற்றுக் கால அடிப்படையில் வரிசைப்படுத்துக:",
+    "options": {
+      "A": "அரசாங்க வர்த்தமானி → சுதேசமித்திரன் → மணிக்கொடி → கசடதபற",
+      "B": "சுதேசமித்திரன் → அரசாங்க வர்த்தமானி → கசடதபற → மணிக்கொடி",
+      "C": "மணிக்கொடி → கசடதபற → அரசாங்க வர்த்தமானி → சுதேசமித்திரன்",
+      "D": "கசடதபற → மணிக்கொடி → சுதேசமித்திரன் → அரசாங்க வர்த்தமானி"
+    },
+    "correctAnswer": "A",
+    "explanation": "அரசாங்க வர்த்தமானி (1802) → சுதேசமித்திரன் (1882) → மணிக்கொடி (1933) → கசடதபற (1970)."
+  },
+  {
+    "id": 150,
+    "section": "Tamil Paper 2",
+    "question": "தமிழ்த் திரைப்படங்களை அவற்றின் வெளியீட்டு ஆண்டின் அடிப்படையில் வரிசைப்படுத்துக:",
+    "options": {
+      "A": "தியாக பூமி → காளிதாஸ் → முள்ளும் மலரும் → விக்ரம்",
+      "B": "காளிதாஸ் → தியாக பூமி → முள்ளும் மலரும் → விக்ரம்",
+      "C": "முள்ளும் மலரும் → காளிதாஸ் → விக்ரம் → தியாக பூமி",
+      "D": "விக்ரம் → முள்ளும் மலரும் → தியாக பூமி → காளிதாஸ்"
+    },
+    "correctAnswer": "B",
+    "explanation": "காளிதாஸ் (1931) → தியாக பூமி (1939) → முள்ளும் மலரும் (1978) → விக்ரம் (1986)."
+  }
+]

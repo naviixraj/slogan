@@ -1,0 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <meta
+        name="description"
+        content="SLOGON ACADEMY Online Examination Result"
+    >
+
+    <title>
+        Examination Result | SLOGON ACADEMY
+    </title>
+
+
+    <!-- ==================================================
+         GOOGLE FONTS
+    =================================================== -->
+
+    <link
+        rel="preconnect"
+        href="https://fonts.googleapis.com"
+    >
+
+    <link
+        rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin
+    >
+
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Tamil:wght@400;500;600;700;800&family=Poppins:wght@500;600;700;800&display=swap"
+        rel="stylesheet"
+    >
+
+
+    <!-- ==================================================
+         MAIN CSS
+    =================================================== -->
+
+    <link
+        rel="stylesheet"
+        href="style.css"
+    >
+
+</head>
+
+
+<body class="result-page">
+
+
+    <!-- ==================================================
+         RESULT HEADER
+    =================================================== -->
+
+    <header class="result-header">
+
+        <div class="result-header-inner">
+
+
+            <!-- BRAND -->
+
+            <div class="result-brand">
+
+                <div class="result-logo">
+                    S
+                </div>
+
+                <div class="result-brand-text">
+
+                    <div class="result-academy-name">
+                        SLOGON ACADEMY
+                    </div>
+
+                    <div class="result-tagline">
+                        Learn • Practice • Qualify
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- HEADER LABEL -->
+
+            <div class="result-header-label">
+
+                <span>
+                    ONLINE EXAMINATION
+                </span>
+
+                <strong>
+                    RESULT
+                </strong>
+
+            </div>
+
+        </div>
+
+    </header>
+
+
+
+    <!-- ==================================================
+         MAIN RESULT CONTENT
+    =================================================== -->
+
+    <main class="result-main">
+
+
+        <!-- ==================================================
+             RESULT TITLE
+        =================================================== -->
+
+        <section class="result-title-section">
+
+            <div class="result-title-icon">
+                ✓
+            </div>
+
+            <div>
+
+                <h1>
+                    Examination Result
+                </h1>
+
+                <p>
+                    Your examination has been successfully submitted.
+                </p>
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ==================================================
+             CANDIDATE INFORMATION
+        =================================================== -->
+
+        <section class="result-card candidate-result-card">
+
+            <div class="result-card-heading">
+
+                <div>
+
+                    <span class="result-section-label">
+                        CANDIDATE INFORMATION
+                    </span>
+
+                    <h2>
+                        Candidate Details
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="candidate-details-grid">
+
+
+                <div class="candidate-detail-item">
+
+                    <span>
+                        Candidate Name
+                    </span>
+
+                    <strong id="resultCandidateName">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="candidate-detail-item">
+
+                    <span>
+                        Register Number
+                    </span>
+
+                    <strong id="resultCandidateRegister">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="candidate-detail-item">
+
+                    <span>
+                        Subject
+                    </span>
+
+                    <strong id="resultCandidateSubject">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="candidate-detail-item">
+
+                    <span>
+                        Examination
+                    </span>
+
+                    <strong id="resultExamName">
+                        —
+                    </strong>
+
+                </div>
+
+
+                <div class="candidate-detail-item">
+
+                    <span>
+                        Submitted On
+                    </span>
+
+                    <strong id="resultSubmittedAt">
+                        —
+                    </strong>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ==================================================
+             MAIN SCORE CARD
+        =================================================== -->
+
+        <section class="result-card main-score-card">
+
+
+            <div class="score-card-left">
+
+
+                <span class="result-section-label">
+                    OVERALL PERFORMANCE
+                </span>
+
+
+                <h2>
+                    Your Score
+                </h2>
+
+
+                <div class="score-display">
+
+                    <div
+                        class="score-value"
+                        id="obtainedMarks"
+                    >
+                        0
+                    </div>
+
+                    <div class="score-divider">
+                        /
+                    </div>
+
+                    <div
+                        class="score-total"
+                        id="totalMarks"
+                    >
+                        0
+                    </div>
+
+                </div>
+
+
+                <div class="score-label">
+                    Marks Obtained
+                </div>
+
+
+                <!-- PROGRESS BAR -->
+
+                <div class="performance-progress">
+
+                    <div
+                        class="performance-progress-fill"
+                        id="performanceProgress"
+                        style="width: 0%;"
+                    >
+                    </div>
+
+                </div>
+
+
+                <div class="percentage-display">
+
+                    <strong id="percentage">
+                        0%
+                    </strong>
+
+                    <span>
+                        Overall Percentage
+                    </span>
+
+                </div>
+
+
+            </div>
+
+
+            <div class="score-card-right">
+
+
+                <div class="performance-badge">
+
+                    <div class="performance-badge-icon">
+                        ★
+                    </div>
+
+                    <div>
+
+                        <span>
+                            PERFORMANCE
+                        </span>
+
+                        <strong id="performanceStatus">
+                            Completed
+                        </strong>
+
+                    </div>
+
+                </div>
+
+
+                <div class="score-note">
+
+                    <strong>
+                        Keep Learning. Keep Practising.
+                    </strong>
+
+                    <p>
+                        Every practice test is a step towards
+                        your examination goal.
+                    </p>
+
+                </div>
+
+
+            </div>
+
+        </section>
+
+
+
+        <!-- ==================================================
+             STATISTICS
+        =================================================== -->
+
+        <section class="result-statistics-grid">
+
+
+            <!-- TOTAL QUESTIONS -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon total-icon">
+                    Q
+                </div>
+
+                <div class="stat-content">
+
+                    <span>
+                        Total Questions
+                    </span>
+
+                    <strong id="totalQuestions">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- ATTEMPTED -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon attempted-icon">
+                    ✓
+                </div>
+
+                <div class="stat-content">
+
+                    <span>
+                        Attempted
+                    </span>
+
+                    <strong id="attempted">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- CORRECT -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon correct-icon">
+                    ✓
+                </div>
+
+                <div class="stat-content">
+
+                    <span>
+                        Correct
+                    </span>
+
+                    <strong id="correct">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- WRONG -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon wrong-icon">
+                    ×
+                </div>
+
+                <div class="stat-content">
+
+                    <span>
+                        Wrong
+                    </span>
+
+                    <strong id="wrong">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- UNANSWERED -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon unanswered-icon">
+                    —
+                </div>
+
+                <div class="stat-content">
+
+                    <span>
+                        Unanswered
+                    </span>
+
+                    <strong id="unanswered">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+            <!-- MARKS -->
+
+            <div class="stat-card">
+
+                <div class="stat-icon marks-icon">
+                    M
+                </div>
+
+                <div class="stat-content">
+
+                    <span>
+                        Marks
+                    </span>
+
+                    <strong id="resultMarks">
+                        0
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- ==================================================
+             PERFORMANCE SUMMARY
+        =================================================== -->
+
+        <section class="result-card performance-summary-card">
+
+
+            <div class="result-card-heading">
+
+                <div>
+
+                    <span class="result-section-label">
+                        PERFORMANCE ANALYSIS
+                    </span>
+
+                    <h2>
+                        Performance Summary
+                    </h2>
+
+                </div>
+
+            </div>
+
+
+            <div class="performance-summary-grid">
+
+
+                <!-- ACCURACY -->
+
+                <div class="summary-item">
+
+                    <div class="summary-item-header">
+
+                        <span>
+                            Accuracy
+                        </span>
+
+                        <strong id="accuracy">
+                            0%
+                        </strong>
+
+                    </div>
+
+                    <div class="summary-bar">
+
+                        <div
+                            id="accuracyBar"
+                            class="summary-bar-fill"
+                            style="width: 0%;"
+                        >
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- ATTEMPT RATE -->
+
+                <div class="summary-item">
+
+                    <div class="summary-item-header">
+
+                        <span>
+                            Attempt Rate
+                        </span>
+
+                        <strong id="attemptRate">
+                            0%
+                        </strong>
+
+                    </div>
+
+                    <div class="summary-bar">
+
+                        <div
+                            id="attemptRateBar"
+                            class="summary-bar-fill"
+                            style="width: 0%;"
+                        >
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- CORRECT ANSWER RATE -->
+
+                <div class="summary-item">
+
+                    <div class="summary-item-header">
+
+                        <span>
+                            Correct Answer Rate
+                        </span>
+
+                        <strong id="correctRate">
+                            0%
+                        </strong>
+
+                    </div>
+
+                    <div class="summary-bar">
+
+                        <div
+                            id="correctRateBar"
+                            class="summary-bar-fill"
+                            style="width: 0%;"
+                        >
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- ==================================================
+             RESULT MESSAGE
+        =================================================== -->
+
+        <section class="result-message-card">
+
+
+            <div class="result-message-icon">
+                !
+            </div>
+
+
+            <div class="result-message-content">
+
+                <h3>
+                    Practice Test Completed
+                </h3>
+
+                <p id="resultMessage">
+
+                    Your result has been generated successfully.
+                    Use this performance data to identify areas
+                    that need more practice.
+
+                </p>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- ==================================================
+             ACTION BUTTONS
+        =================================================== -->
+
+        <section class="result-actions">
+
+           <button
+               type="button"
+               id="reviewAnswersButton"
+               class="result-button primary-result-button"
+            >
+    <span>☷</span>
+    Review Answers
+</button>
+            <button
+                type="button"
+                id="printResultButton"
+                class="result-button secondary-result-button"
+            >
+                <span>
+                    🖨
+                </span>
+
+                Print Result
+            </button>
+
+
+            <button
+                type="button"
+                id="retakeButton"
+                class="result-button outline-result-button"
+            >
+                <span>
+                    ↻
+                </span>
+
+                Retake Test
+            </button>
+
+
+            <button
+                type="button"
+                id="homeButton"
+                class="result-button primary-result-button"
+            >
+                <span>
+                    ⌂
+                </span>
+
+                Back to Home
+            </button>
+
+
+        </section>
+
+
+    </main>
+
+
+
+    <!-- ==================================================
+         FOOTER
+    =================================================== -->
+
+    <footer class="result-footer">
+
+        <div>
+
+            <strong>
+                SLOGON ACADEMY
+            </strong>
+
+            <span>
+                Learn • Practice • Qualify
+            </span>
+
+        </div>
+
+
+        <p>
+            © 2026 SLOGON ACADEMY. All Rights Reserved.
+        </p>
+
+    </footer>
+
+
+
+    <!-- ==================================================
+         RESULT JAVASCRIPT
+    =================================================== -->
+
+    <script src="result.js"></script>
+
+
+</body>
+
+</html>
