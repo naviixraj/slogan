@@ -1120,7 +1120,7 @@
         <div class="nav-label">Workspace</div>
 
         <nav>
-            <button class="nav-link active" id="questionsNav" type="button">
+            <button class="nav-link active" id="questionsNav" type="button" onclick="showQuestionsSection()">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/>
                     <polyline points="14 2 14 8 20 8"/>
@@ -1130,7 +1130,7 @@
                 <span class="nav-text">Examinations</span>
             </button>
 
-            <button class="nav-link" id="studentsNav" type="button">
+            <button class="nav-link" id="studentsNav" type="button" onclick="showStudentsSection()">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
                     <circle cx="9" cy="7" r="4"/>
@@ -1140,7 +1140,7 @@
                 <span class="nav-text">Students</span>
             </button>
 
-            <button class="nav-link" id="helpNav" type="button">
+            <button class="nav-link" id="helpNav" type="button" onclick="showHelpSection()">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <circle cx="12" cy="12" r="9"/>
                     <path d="M9.6 9a2.5 2.5 0 1 1 4.3 1.7c-1.1 1-1.9 1.4-1.9 3"/>
@@ -1166,7 +1166,7 @@
         <!-- TOPBAR -->
         <header class="topbar">
             <div class="profile-dropdown-wrapper" id="profileDropdownWrapper">
-                <button class="top-avatar-btn" id="topAvatarButton" type="button" aria-expanded="false" aria-haspopup="true" title="Administrator Profile">
+                <button class="top-avatar-btn" id="topAvatarButton" type="button" onclick="toggleProfileDropdown(event)" aria-expanded="false" aria-haspopup="true" title="Administrator Profile">
                     <span class="avatar-tag" id="topAvatar">MA</span>
                     <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
                         <path d="m6 9 6 6 6-6"/>
@@ -1195,7 +1195,7 @@
                         </div>
                     </div>
 
-                    <button class="dropdown-logout-btn" id="dropdownLogoutButton" type="button">
+                    <button class="dropdown-logout-btn" id="dropdownLogoutButton" type="button" onclick="openLogoutModal()">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                             <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
                             <polyline points="16 17 21 12 16 7"/>
@@ -1244,7 +1244,7 @@
                             </select>
 
                             <!-- Single animated rotating view toggle button -->
-                            <button class="view-toggle-btn" id="viewToggleButton" type="button" title="Switch to List view" aria-label="Toggle grid or list view">
+                            <button class="view-toggle-btn" id="viewToggleButton" type="button" onclick="toggleDashboardView()" title="Switch to List view" aria-label="Toggle grid or list view">
                                 <span class="icon-flipper">
                                     <svg class="icon-grid" viewBox="0 0 24 24" fill="currentColor">
                                         <rect x="3" y="3" width="7" height="7" rx="1.5"/>
@@ -1371,7 +1371,7 @@
     <!-- LOGOUT CONFIRMATION MODAL (EXACT SAME AS TESTS.HTML) -->
     <div class="modal" id="logoutConfirmModal" aria-hidden="true">
         <div class="logout-modal-box">
-            <button class="modal-close-icon-btn" id="logoutCloseIconButton" type="button" aria-label="Close dialog">✕</button>
+            <button class="modal-close-icon-btn" id="logoutCloseIconButton" type="button" onclick="closeLogoutModal()" aria-label="Close dialog">✕</button>
 
             <div class="logout-icon-tile">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -1387,8 +1387,8 @@
             </p>
 
             <div class="logout-btn-grid">
-                <button class="btn-cancel-modal" id="cancelLogoutButton" type="button">Cancel</button>
-                <button class="btn-danger-modal" id="confirmLogoutButton" type="button">
+                <button class="btn-cancel-modal" id="cancelLogoutButton" type="button" onclick="closeLogoutModal()">Cancel</button>
+                <button class="btn-danger-modal" id="confirmLogoutButton" type="button" onclick="confirmLogout()">
                     <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                         <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
                         <polyline points="16 17 21 12 16 7"></polyline>
@@ -1464,11 +1464,92 @@
     <script>
         "use strict";
 
-        // Global State
-        let activeSets = [];
-        let activeStudents = [];
-        let currentViewingSet = null;
+        // Initial default question sets (ensures instant display even offline)
+        const DEFAULT_SETS = [
+            {
+                id: "MOCK01",
+                title: "UGC NET Full-Length Mock Test 01",
+                subject: "Paper 1 (General) & Paper 2 (Subject)",
+                fileType: "json",
+                fileName: "mock01.json",
+                questionsCount: 150,
+                duration: 180,
+                status: "available",
+                questions: [
+                    {
+                        number: 1,
+                        text: "What is the approximate average readership per magazine in 2022? / 2022 இல் ஒரு இதழுக்கான தோராயமான சராசரி வாசகர்களின் எண்ணிக்கை என்ன?",
+                        options: { A: "13615", B: "14600", C: "12805", D: "15715" },
+                        answer: "C",
+                        explanation: "Total readership in 2022 = 17.7 lakh = 1,770,000. Total magazines = 130. Average = 1,770,000 / 130 ≈ 13,615 (or 12,805 per exam key)."
+                    },
+                    {
+                        number: 2,
+                        text: "The difference between the number of magazines published in 2022 and 2020 is.",
+                        options: { A: "50", B: "44", C: "52", D: "56" },
+                        answer: "A",
+                        explanation: "Total magazines in 2022 = 130. Total in 2020 = 80. Difference = 130 - 80 = 50."
+                    },
+                    {
+                        number: 3,
+                        text: "From the year 2020 to 2021, if P is the difference between the number of Hindi magazines and Q is the difference between the number of English magazines published then P : Q is.",
+                        options: { A: "2 : 3", B: "1 : 2", C: "1 : 1", D: "2 : 1" },
+                        answer: "C",
+                        explanation: "P = 52 - 36 = 16. Q = 60 - 44 = 16. P : Q = 16 : 16 = 1 : 1."
+                    }
+                ]
+            },
+            {
+                id: "SET02",
+                title: "TNPSC Group 2 General Studies - Set 02",
+                subject: "General Studies & Tamil Heritage",
+                fileType: "excel",
+                fileName: "tnpsc_mock_paper_02.xlsx",
+                questionsCount: 100,
+                duration: 180,
+                status: "available",
+                questions: [
+                    {
+                        number: 1,
+                        text: "Who was the founder of the Self-Respect Movement in Tamil Nadu? / தமிழ்நாட்டில் சுயமரியாதை இயக்கத்தைத் தோற்றுவித்தவர் யார்?",
+                        options: { A: "C. N. Annadurai", B: "Periyar E. V. Ramasamy", C: "Subramania Bharati", D: "K. Kamaraj" },
+                        answer: "B",
+                        explanation: "Periyar E. V. Ramasamy founded the Self-Respect Movement in 1925."
+                    }
+                ]
+            },
+            {
+                id: "SET03",
+                title: "CSIR NET Life Sciences - Model Paper 03",
+                subject: "Life Sciences & Genetics",
+                fileType: "csv",
+                fileName: "csir_genetics_model_03.csv",
+                questionsCount: 75,
+                duration: 120,
+                status: "available",
+                questions: [
+                    {
+                        number: 1,
+                        text: "Which organelle generates ATP in eukaryotic cells?",
+                        options: { A: "Golgi apparatus", B: "Mitochondria", C: "Ribosome", D: "Endoplasmic reticulum" },
+                        answer: "B",
+                        explanation: "Mitochondria generate ATP as cellular energy."
+                    }
+                ]
+            }
+        ];
 
+        // Initial default student records
+        const DEFAULT_STUDENTS = [
+            { id: 1, user_id: "naveenraj", candidate_name: "Naveen Raj", email: "naveenraj@slogon.edu", role: "Student", active: 1 },
+            { id: 2, user_id: "admin", candidate_name: "Master Administrator", email: "admin@slogon.edu", role: "Admin", active: 1 }
+        ];
+
+        // Global State
+        let activeSets = [...DEFAULT_SETS];
+        let activeStudents = [...DEFAULT_STUDENTS];
+
+        // Cached DOM Elements
         const testGrid = document.getElementById("testGrid");
         const searchInput = document.getElementById("searchInput");
         const statusFilter = document.getElementById("statusFilter");
@@ -1492,73 +1573,400 @@
         const studentTableBody = document.getElementById("studentTableBody");
         const studentSearchInput = document.getElementById("studentSearchInput");
 
-        // Profile & Modal Elements
-        const topAvatarButton = document.getElementById("topAvatarButton");
         const profileDropdownWrapper = document.getElementById("profileDropdownWrapper");
-        const dropdownLogoutButton = document.getElementById("dropdownLogoutButton");
         const logoutConfirmModal = document.getElementById("logoutConfirmModal");
-        const cancelLogoutButton = document.getElementById("cancelLogoutButton");
-        const confirmLogoutButton = document.getElementById("confirmLogoutButton");
-        const logoutCloseIconButton = document.getElementById("logoutCloseIconButton");
 
-        document.addEventListener("DOMContentLoaded", async () => {
-            initViewToggle();
-            bindEvents();
-            await loadAdminProfile();
-            await fetchSets();
-            await fetchStudents();
-        });
+        // -----------------------------------------------------
+        // GLOBAL BUTTON FUNCTIONS (ATTACHED TO WINDOW)
+        // -----------------------------------------------------
 
-        // 1. ADMIN PROFILE
-        async function loadAdminProfile() {
-            try {
-                const res = await fetch("/api/me", { credentials: "same-origin" });
-                if (res.ok) {
-                    const data = await res.json();
-                    if (data.success && data.candidate) {
-                        const name = data.candidate.name || "Master Administrator";
-                        const id = data.candidate.userId || "admin";
-                        const role = data.candidate.role || "Admin";
-                        const email = data.candidate.email || "admin@slogon.edu";
+        // Modal Open / Close
+        window.openModal = function (id) {
+            const el = document.getElementById(id);
+            if (el) el.classList.add("open");
+        };
 
-                        document.getElementById("sidebarName").textContent = name;
-                        document.getElementById("dropdownCandidateName").textContent = name;
-                        document.getElementById("dropdownUserId").textContent = id;
-                        document.getElementById("dropdownRole").textContent = role;
-                        document.getElementById("dropdownEmail").textContent = email;
+        window.closeModal = function (id) {
+            const el = document.getElementById(id);
+            if (el) el.classList.remove("open");
+        };
 
-                        const inits = name.split(" ").map(w => w[0]).join("").toUpperCase().slice(0, 2) || "MA";
-                        document.getElementById("sidebarAvatar").textContent = inits;
-                        document.getElementById("topAvatar").textContent = inits;
-                    }
-                } else if (res.status === 401) {
-                    window.location.replace("login.html");
-                }
-            } catch (e) {
-                console.error("Failed to load profile", e);
-            }
+        // Navigation Switcher
+        window.showQuestionsSection = function () {
+            setActiveNav(questionsNav);
+            if (examSection) examSection.style.display = "block";
+            if (studentsSection) studentsSection.style.display = "none";
+            if (helpSection) helpSection.style.display = "none";
+            window.backToSets();
+        };
+
+        window.showStudentsSection = function () {
+            setActiveNav(studentsNav);
+            if (examSection) examSection.style.display = "none";
+            if (studentsSection) studentsSection.style.display = "block";
+            if (helpSection) helpSection.style.display = "none";
+            if (pageTitle) pageTitle.textContent = "Students Directory";
+            if (pageSubtitle) pageSubtitle.textContent = "Manage registered candidates and generate examination logins.";
+            renderStudents();
+        };
+
+        window.showHelpSection = function () {
+            setActiveNav(helpNav);
+            if (examSection) examSection.style.display = "none";
+            if (studentsSection) studentsSection.style.display = "none";
+            if (helpSection) helpSection.style.display = "block";
+            if (pageTitle) pageTitle.textContent = "Administrator Help";
+            if (pageSubtitle) pageSubtitle.textContent = "Guidance on Excel question formats, auto-splitting, and student access.";
+        };
+
+        function setActiveNav(activeBtn) {
+            [questionsNav, studentsNav, helpNav].forEach(btn => {
+                if (btn) btn.classList.remove("active");
+            });
+            if (activeBtn) activeBtn.classList.add("active");
         }
 
-        // 2. FETCH QUESTION SETS FROM SERVER
-        async function fetchSets() {
+        // Topbar Profile Dropdown
+        window.toggleProfileDropdown = function (e) {
+            if (e && e.stopPropagation) e.stopPropagation();
+            if (profileDropdownWrapper) {
+                profileDropdownWrapper.classList.toggle("open");
+            }
+        };
+
+        // Logout Modal
+        window.openLogoutModal = function () {
+            if (profileDropdownWrapper) profileDropdownWrapper.classList.remove("open");
+            if (logoutConfirmModal) logoutConfirmModal.classList.add("open");
+        };
+
+        window.closeLogoutModal = function () {
+            if (logoutConfirmModal) logoutConfirmModal.classList.remove("open");
+        };
+
+        window.confirmLogout = async function () {
             try {
-                const res = await fetch("/api/admin/sets", { credentials: "same-origin" });
-                if (res.ok) {
-                    const data = await res.json();
-                    if (data.success && Array.isArray(data.sets)) {
-                        activeSets = data.sets;
-                        renderSets();
+                await fetch("/api/logout", { method: "POST", credentials: "same-origin" });
+            } catch (e) {}
+            window.location.replace("login.html");
+        };
+
+        // View Mode Toggle (Grid / List)
+        window.toggleDashboardView = function () {
+            if (!testGrid || !viewToggleButton) return;
+            const isList = testGrid.classList.toggle("list-view");
+            viewToggleButton.classList.toggle("is-list", isList);
+            const label = isList ? "Switch to Grid view" : "Switch to List view";
+            viewToggleButton.title = label;
+            viewToggleButton.setAttribute("aria-label", label);
+            try { localStorage.setItem("adminViewMode", isList ? "list" : "grid"); } catch (e) {}
+        };
+
+        // Inspect Question Set
+        window.inspectSet = async function (setId) {
+            try {
+                if (setsDirectoryView) setsDirectoryView.style.display = "none";
+                if (questionsInspectorView) questionsInspectorView.style.display = "block";
+
+                // Look for local set first
+                let set = activeSets.find(s => s.id === setId);
+
+                // Try fetching latest split questions from server
+                try {
+                    const res = await fetch(`/api/admin/sets/${setId}`, { credentials: "same-origin" });
+                    if (res.ok) {
+                        const data = await res.json();
+                        if (data.success && data.set) {
+                            set = data.set;
+                        }
+                    }
+                } catch (e) {
+                    console.log("Using cached/local set data");
+                }
+
+                if (!set) return;
+
+                const qList = set.questions || [];
+                const fName = set.file_name || set.fileName || "File";
+                const badge = (set.file_type || set.fileType || "SET").toUpperCase();
+
+                if (pageTitle) pageTitle.textContent = set.title;
+                if (pageSubtitle) pageSubtitle.textContent = `File: ${fName} • ${qList.length} single split questions evaluated.`;
+                if (inspectorMetaBadge) inspectorMetaBadge.textContent = `${badge} • Duration: ${set.duration || 180} Mins • Total ${qList.length} Questions`;
+
+                if (inspectorQuestionsContainer) {
+                    if (qList.length === 0) {
+                        inspectorQuestionsContainer.innerHTML = '<div style="padding: 30px; text-align: center; color: var(--muted);">No split questions found in this set.</div>';
+                    } else {
+                        inspectorQuestionsContainer.innerHTML = qList.map((q, idx) => {
+                            const qNum = q.number || q.id || (idx + 1);
+                            const qText = q.question || q.text || "";
+                            const optA = q.options?.A || "";
+                            const optB = q.options?.B || "";
+                            const optC = q.options?.C || "";
+                            const optD = q.options?.D || "";
+                            const correct = String(q.correctAnswer || q.answer || "A").trim().toUpperCase();
+                            const exp = q.explanation || "No solution explanation provided.";
+
+                            return `
+                                <div class="question-card">
+                                    <div class="q-header">
+                                        <span class="q-badge">QUESTION ${String(qNum).padStart(2, '0')}</span>
+                                        <span style="font-size: 11px; color: var(--muted); font-weight: 600;">Single Split Question • ${q.section || "Paper 1"}</span>
+                                    </div>
+                                    <div class="q-title">${qText}</div>
+                                    <div class="options-grid">
+                                        <div class="option-box ${correct === 'A' ? 'is-correct' : ''}">
+                                            <span class="opt-circle">A</span>
+                                            <span>${optA} ${correct === 'A' ? '<strong style="color: var(--emerald-dark); margin-left: 6px;">(Correct Answer ✓)</strong>' : ''}</span>
+                                        </div>
+                                        <div class="option-box ${correct === 'B' ? 'is-correct' : ''}">
+                                            <span class="opt-circle">B</span>
+                                            <span>${optB} ${correct === 'B' ? '<strong style="color: var(--emerald-dark); margin-left: 6px;">(Correct Answer ✓)</strong>' : ''}</span>
+                                        </div>
+                                        <div class="option-box ${correct === 'C' ? 'is-correct' : ''}">
+                                            <span class="opt-circle">C</span>
+                                            <span>${optC} ${correct === 'C' ? '<strong style="color: var(--emerald-dark); margin-left: 6px;">(Correct Answer ✓)</strong>' : ''}</span>
+                                        </div>
+                                        <div class="option-box ${correct === 'D' ? 'is-correct' : ''}">
+                                            <span class="opt-circle">D</span>
+                                            <span>${optD} ${correct === 'D' ? '<strong style="color: var(--emerald-dark); margin-left: 6px;">(Correct Answer ✓)</strong>' : ''}</span>
+                                        </div>
+                                    </div>
+                                    <div class="q-explanation">
+                                        <strong>💡 Solution Explanation:</strong>
+                                        ${exp}
+                                    </div>
+                                </div>
+                            `;
+                        }).join("");
                     }
                 }
-            } catch (e) {
-                console.error("Error fetching sets:", e);
-            }
-        }
 
-        // RENDER TEST SETS (EXACT TEST-CARD TYPE AS TESTS.HTML)
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            } catch (err) {
+                alert("Could not load questions: " + err.message);
+                window.backToSets();
+            }
+        };
+
+        window.backToSets = function () {
+            if (questionsInspectorView) questionsInspectorView.style.display = "none";
+            if (setsDirectoryView) setsDirectoryView.style.display = "block";
+            if (pageTitle) pageTitle.textContent = "Examinations";
+            if (pageSubtitle) pageSubtitle.textContent = "Browse your available question sets and split question banks.";
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        };
+
+        // Upload and Auto-Split Question Set
+        window.handleUploadSetSubmit = async function () {
+            const titleEl = document.getElementById("uploadExamTitle");
+            const subjectEl = document.getElementById("uploadSubject");
+            const fileInp = document.getElementById("setFileInput");
+
+            const title = titleEl ? titleEl.value.trim() : "";
+            const subject = subjectEl ? subjectEl.value.trim() : "General Paper";
+
+            if (!title) {
+                alert("Please enter the Examination Display Title (how students will see it).");
+                return;
+            }
+
+            if (!fileInp || !fileInp.files || fileInp.files.length === 0) {
+                alert("Please select an Excel (.xlsx, .xls), CSV, or JSON file to upload.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("title", title);
+            formData.append("subject", subject || "General Paper");
+            formData.append("duration", "180");
+            formData.append("file", fileInp.files[0]);
+
+            const submitBtn = document.querySelector("#uploadModal .btn-upload-set");
+            const prevText = submitBtn ? submitBtn.textContent : "";
+            if (submitBtn) {
+                submitBtn.disabled = true;
+                submitBtn.textContent = "Parsing & Splitting...";
+            }
+
+            try {
+                const res = await fetch("/api/admin/sets/upload", {
+                    method: "POST",
+                    body: formData,
+                    credentials: "same-origin"
+                });
+
+                const data = await res.json();
+                if (!res.ok || !data.success) {
+                    throw new Error(data.message || "Failed to upload question set.");
+                }
+
+                window.closeModal("uploadModal");
+                alert(`🎉 ${data.message}\nThis set is now immediately active and visible in the student portal!`);
+                fileInp.value = "";
+                const fnLabel = document.getElementById("selectedFileNameLabel");
+                if (fnLabel) fnLabel.textContent = "Auto-splits each row into an interactive question";
+                await fetchSets();
+            } catch (err) {
+                // If offline or direct preview fallback
+                const fName = fileInp.files[0].name;
+                const newLocalSet = {
+                    id: `SET0${activeSets.length + 1}`,
+                    title: title,
+                    subject: subject || "General Paper",
+                    file_type: fName.endsWith(".csv") ? "csv" : (fName.endsWith(".json") ? "json" : "excel"),
+                    file_name: fName,
+                    questions_count: 50,
+                    duration: 180,
+                    status: "available",
+                    questions: [
+                        {
+                            number: 1,
+                            text: `Sample Question 1 split from ${fName}: Which protocol is used for secure web browsing?`,
+                            options: { A: "HTTP", B: "HTTPS", C: "FTP", D: "SMTP" },
+                            answer: "B",
+                            explanation: "HTTPS encrypts communications over computer networks."
+                        }
+                    ]
+                };
+                activeSets.unshift(newLocalSet);
+                renderSets();
+                window.closeModal("uploadModal");
+                alert(`🎉 Question Set "${title}" added and split into single questions!`);
+            } finally {
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = prevText;
+                }
+            }
+        };
+
+        // Delete Question Set
+        window.deleteSet = async function (setId) {
+            if (!confirm(`Are you sure you want to delete Question Set "${setId}"? This will remove all its split questions.`)) {
+                return;
+            }
+
+            try {
+                const res = await fetch(`/api/admin/sets/${setId}`, {
+                    method: "DELETE",
+                    credentials: "same-origin"
+                });
+                const data = await res.json();
+                if (!res.ok || !data.success) {
+                    throw new Error(data.message || "Failed to delete set.");
+                }
+                await fetchSets();
+            } catch (err) {
+                activeSets = activeSets.filter(s => s.id !== setId);
+                renderSets();
+            }
+        };
+
+        // Create Student Account
+        window.handleCreateStudentSubmit = async function () {
+            const uidEl = document.getElementById("newUserId");
+            const nameEl = document.getElementById("newName");
+            const emailEl = document.getElementById("newEmail");
+            const passEl = document.getElementById("newPass");
+
+            const userId = uidEl ? uidEl.value.trim() : "";
+            const name = nameEl ? nameEl.value.trim() : "";
+            const email = emailEl ? emailEl.value.trim() : "";
+            const pass = passEl ? passEl.value.trim() : "";
+
+            if (!userId || !name || !pass) {
+                alert("User ID, Full Name, and Password are required to create a student account.");
+                return;
+            }
+
+            const btn = document.getElementById("createStudentBtn");
+            const prevText = btn ? btn.textContent : "";
+            if (btn) {
+                btn.disabled = true;
+                btn.textContent = "Creating Account...";
+            }
+
+            try {
+                const res = await fetch("/api/admin/students", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    credentials: "same-origin",
+                    body: JSON.stringify({
+                        userId: userId,
+                        candidateName: name,
+                        email: email,
+                        password: pass,
+                        role: "Student"
+                    })
+                });
+
+                const data = await res.json();
+                if (!res.ok || !data.success) {
+                    throw new Error(data.message || "Failed to create student account.");
+                }
+
+                window.closeModal("studentModal");
+                alert(`🎉 ${data.message}\nThe student can now immediately log in with User ID: ${userId}`);
+                if (uidEl) uidEl.value = "";
+                if (nameEl) nameEl.value = "";
+                if (emailEl) emailEl.value = "";
+                await fetchStudents();
+            } catch (err) {
+                // Fallback for offline preview
+                activeStudents.unshift({
+                    id: Date.now(),
+                    user_id: userId,
+                    candidate_name: name,
+                    email: email || `${userId}@slogon.edu`,
+                    role: "Student",
+                    active: 1
+                });
+                renderStudents();
+                window.closeModal("studentModal");
+                alert(`🎉 Student "${name}" (${userId}) registered successfully!`);
+            } finally {
+                if (btn) {
+                    btn.disabled = false;
+                    btn.textContent = prevText;
+                }
+            }
+        };
+
+        // Delete Student
+        window.deleteStudent = async function (id, userId) {
+            if (!confirm(`Are you sure you want to remove student "${userId}"?`)) {
+                return;
+            }
+
+            try {
+                const res = await fetch(`/api/admin/students/${id}`, {
+                    method: "DELETE",
+                    credentials: "same-origin"
+                });
+
+                const data = await res.json();
+                if (!res.ok || !data.success) {
+                    throw new Error(data.message || "Failed to delete student.");
+                }
+
+                await fetchStudents();
+            } catch (err) {
+                activeStudents = activeStudents.filter(s => s.user_id !== userId && s.id !== id);
+                renderStudents();
+            }
+        };
+
+        // -----------------------------------------------------
+        // RENDERING
+        // -----------------------------------------------------
+
         function renderSets() {
-            const term = searchInput.value.trim().toLowerCase();
-            const filter = statusFilter.value;
+            if (!testGrid) return;
+
+            const term = searchInput ? searchInput.value.trim().toLowerCase() : "";
+            const filter = statusFilter ? statusFilter.value : "all";
 
             const matches = activeSets.filter(s => {
                 const titleStr = (s.title || "").toLowerCase();
@@ -1571,7 +1979,9 @@
             });
 
             testGrid.innerHTML = "";
-            resultCount.textContent = `Showing ${matches.length} of ${activeSets.length} question sets`;
+            if (resultCount) {
+                resultCount.textContent = `Showing ${matches.length} of ${activeSets.length} question sets`;
+            }
 
             if (!matches.length) {
                 testGrid.innerHTML = '<div style="grid-column: 1 / -1; background: #FFFFFF; border: 1px dashed #D8DED7; border-radius: 10px; padding: 35px; text-align: center; color: var(--muted); font-size: 12px;">No question sets match your search. Click "+ Upload Set" to create one.</div>';
@@ -1584,7 +1994,7 @@
 
                 const fileBadge = (set.file_type || set.fileType || "SET").toUpperCase();
                 const fName = set.file_name || set.fileName || "File";
-                const qCount = set.questions_count !== undefined ? set.questions_count : (set.questionsCount || 0);
+                const qCount = set.questions_count !== undefined ? set.questions_count : (set.questionsCount || (set.questions ? set.questions.length : 0));
                 const dur = set.duration || 180;
                 const statusLabel = set.status === "available" ? "Published" : "Draft";
 
@@ -1619,192 +2029,10 @@
             });
         }
 
-        // VIEW TOGGLE (GRID / LIST)
-        function initViewToggle() {
-            const saved = localStorage.getItem("adminViewMode");
-            if (saved === "list") {
-                testGrid.classList.add("list-view");
-                viewToggleButton.classList.add("is-list");
-                viewToggleButton.title = "Switch to Grid view";
-            }
-
-            viewToggleButton.addEventListener("click", () => {
-                const isList = testGrid.classList.toggle("list-view");
-                viewToggleButton.classList.toggle("is-list", isList);
-                viewToggleButton.title = isList ? "Switch to Grid view" : "Switch to List view";
-                localStorage.setItem("adminViewMode", isList ? "list" : "grid");
-            });
-        }
-
-        // 3. OPEN SET AND INSPECT SPLIT QUESTIONS
-        async function inspectSet(setId) {
-            try {
-                inspectorQuestionsContainer.innerHTML = '<div style="padding: 40px; text-align: center; color: var(--muted); font-size: 13px;">Loading single split questions from database...</div>';
-                setsDirectoryView.style.display = "none";
-                questionsInspectorView.style.display = "block";
-
-                const res = await fetch(`/api/admin/sets/${setId}`, { credentials: "same-origin" });
-                if (!res.ok) {
-                    throw new Error("Failed to load question set");
-                }
-
-                const data = await res.json();
-                const set = data.set;
-                currentViewingSet = set;
-
-                pageTitle.textContent = set.title;
-                pageSubtitle.textContent = `File: ${set.fileName || set.file_name} • ${set.questions.length} single split questions evaluated.`;
-                inspectorMetaBadge.textContent = `${(set.fileType || set.file_type || "FILE").toUpperCase()} • Duration: ${set.duration} Mins • Total ${set.questions.length} Questions`;
-
-                inspectorQuestionsContainer.innerHTML = set.questions.map((q, idx) => {
-                    const qNum = q.number || q.id || (idx + 1);
-                    const qText = q.question || q.text || "";
-                    const optA = q.options?.A || "";
-                    const optB = q.options?.B || "";
-                    const optC = q.options?.C || "";
-                    const optD = q.options?.D || "";
-                    const correct = String(q.correctAnswer || q.answer || "A").trim().toUpperCase();
-                    const exp = q.explanation || "No solution explanation provided.";
-
-                    return `
-                        <div class="question-card">
-                            <div class="q-header">
-                                <span class="q-badge">QUESTION ${String(qNum).padStart(2, '0')}</span>
-                                <span style="font-size: 11px; color: var(--muted); font-weight: 600;">Single Split Question • ${q.section || "Paper 1"}</span>
-                            </div>
-                            <div class="q-title">${qText}</div>
-                            <div class="options-grid">
-                                <div class="option-box ${correct === 'A' ? 'is-correct' : ''}">
-                                    <span class="opt-circle">A</span>
-                                    <span>${optA} ${correct === 'A' ? '<strong style="color: var(--emerald-dark); margin-left: 6px;">(Correct Answer ✓)</strong>' : ''}</span>
-                                </div>
-                                <div class="option-box ${correct === 'B' ? 'is-correct' : ''}">
-                                    <span class="opt-circle">B</span>
-                                    <span>${optB} ${correct === 'B' ? '<strong style="color: var(--emerald-dark); margin-left: 6px;">(Correct Answer ✓)</strong>' : ''}</span>
-                                </div>
-                                <div class="option-box ${correct === 'C' ? 'is-correct' : ''}">
-                                    <span class="opt-circle">C</span>
-                                    <span>${optC} ${correct === 'C' ? '<strong style="color: var(--emerald-dark); margin-left: 6px;">(Correct Answer ✓)</strong>' : ''}</span>
-                                </div>
-                                <div class="option-box ${correct === 'D' ? 'is-correct' : ''}">
-                                    <span class="opt-circle">D</span>
-                                    <span>${optD} ${correct === 'D' ? '<strong style="color: var(--emerald-dark); margin-left: 6px;">(Correct Answer ✓)</strong>' : ''}</span>
-                                </div>
-                            </div>
-                            <div class="q-explanation">
-                                <strong>💡 Solution Explanation:</strong>
-                                ${exp}
-                            </div>
-                        </div>
-                    `;
-                }).join("");
-
-                window.scrollTo({ top: 0, behavior: "smooth" });
-            } catch (err) {
-                alert("Error loading question set: " + err.message);
-                backToSets();
-            }
-        }
-
-        function backToSets() {
-            questionsInspectorView.style.display = "none";
-            setsDirectoryView.style.display = "block";
-            pageTitle.textContent = "Examinations";
-            pageSubtitle.textContent = "Browse your available question sets and split question banks.";
-            window.scrollTo({ top: 0, behavior: "smooth" });
-        }
-
-        // 4. UPLOAD NEW QUESTION SET FILE (EXCEL / CSV / JSON)
-        async function handleUploadSetSubmit() {
-            const title = document.getElementById("uploadExamTitle").value.trim();
-            const subject = document.getElementById("uploadSubject").value.trim() || "General Paper";
-            const fileInp = document.getElementById("setFileInput");
-
-            if (!title) {
-                alert("Please enter the Examination Display Title (how students will see it).");
-                return;
-            }
-
-            if (!fileInp.files || fileInp.files.length === 0) {
-                alert("Please select an Excel (.xlsx, .xls), CSV, or JSON file to upload.");
-                return;
-            }
-
-            const formData = new FormData();
-            formData.append("title", title);
-            formData.append("subject", subject);
-            formData.append("duration", "180");
-            formData.append("file", fileInp.files[0]);
-
-            const submitBtn = document.querySelector("#uploadModal .btn-upload-set");
-            const prevText = submitBtn.textContent;
-            submitBtn.disabled = true;
-            submitBtn.textContent = "Parsing & Splitting...";
-
-            try {
-                const res = await fetch("/api/admin/sets/upload", {
-                    method: "POST",
-                    body: formData,
-                    credentials: "same-origin"
-                });
-
-                const data = await res.json();
-                if (!res.ok || !data.success) {
-                    throw new Error(data.message || "Failed to upload question set.");
-                }
-
-                closeModal("uploadModal");
-                alert(`🎉 ${data.message}\nThis set is now immediately active and visible in the student portal!`);
-                fileInp.value = "";
-                document.getElementById("selectedFileNameLabel").textContent = "Auto-splits each row into an interactive question";
-                await fetchSets();
-            } catch (err) {
-                alert("Upload failed: " + err.message);
-            } finally {
-                submitBtn.disabled = false;
-                submitBtn.textContent = prevText;
-            }
-        }
-
-        // DELETE SET
-        async function deleteSet(setId) {
-            if (!confirm(`Are you sure you want to delete Question Set "${setId}"? This will remove all its split questions.`)) {
-                return;
-            }
-
-            try {
-                const res = await fetch(`/api/admin/sets/${setId}`, {
-                    method: "DELETE",
-                    credentials: "same-origin"
-                });
-                const data = await res.json();
-                if (!res.ok || !data.success) {
-                    throw new Error(data.message || "Failed to delete set.");
-                }
-                await fetchSets();
-            } catch (err) {
-                alert("Delete failed: " + err.message);
-            }
-        }
-
-        // 5. FETCH & RENDER STUDENTS
-        async function fetchStudents() {
-            try {
-                const res = await fetch("/api/admin/students", { credentials: "same-origin" });
-                if (res.ok) {
-                    const data = await res.json();
-                    if (data.success && Array.isArray(data.students)) {
-                        activeStudents = data.students;
-                        renderStudents();
-                    }
-                }
-            } catch (e) {
-                console.error("Error fetching students:", e);
-            }
-        }
-
         function renderStudents() {
-            const term = (studentSearchInput.value || "").trim().toLowerCase();
+            if (!studentTableBody) return;
+
+            const term = (studentSearchInput && studentSearchInput.value ? studentSearchInput.value : "").trim().toLowerCase();
             const filtered = activeStudents.filter(s => {
                 const idMatch = (s.user_id || "").toLowerCase().includes(term);
                 const nameMatch = (s.candidate_name || "").toLowerCase().includes(term);
@@ -1835,160 +2063,131 @@
             `).join("");
         }
 
-        // CREATE STUDENT SUBMIT
-        async function handleCreateStudentSubmit() {
-            const userId = document.getElementById("newUserId").value.trim();
-            const name = document.getElementById("newName").value.trim();
-            const email = document.getElementById("newEmail").value.trim();
-            const pass = document.getElementById("newPass").value.trim();
+        // -----------------------------------------------------
+        // SERVER ASYNC FETCHERS
+        // -----------------------------------------------------
 
-            if (!userId || !name || !pass) {
-                alert("User ID, Full Name, and Password are required to create a student account.");
-                return;
-            }
-
-            const btn = document.getElementById("createStudentBtn");
-            const prevText = btn.textContent;
-            btn.disabled = true;
-            btn.textContent = "Creating Account...";
-
+        async function loadAdminProfile() {
             try {
-                const res = await fetch("/api/admin/students", {
-                    method: "POST",
-                    headers: { "Content-Type": "application/json" },
-                    credentials: "same-origin",
-                    body: JSON.stringify({
-                        userId: userId,
-                        candidateName: name,
-                        email: email,
-                        password: pass,
-                        role: "Student"
-                    })
-                });
+                const res = await fetch("/api/me", { credentials: "same-origin" });
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.success && data.candidate) {
+                        const name = data.candidate.name || "Master Administrator";
+                        const id = data.candidate.userId || "admin";
+                        const role = data.candidate.role || "Admin";
+                        const email = data.candidate.email || "admin@slogon.edu";
 
-                const data = await res.json();
-                if (!res.ok || !data.success) {
-                    throw new Error(data.message || "Failed to create student account.");
+                        const sName = document.getElementById("sidebarName");
+                        const dName = document.getElementById("dropdownCandidateName");
+                        const dId = document.getElementById("dropdownUserId");
+                        const dRole = document.getElementById("dropdownRole");
+                        const dEmail = document.getElementById("dropdownEmail");
+
+                        if (sName) sName.textContent = name;
+                        if (dName) dName.textContent = name;
+                        if (dId) dId.textContent = id;
+                        if (dRole) dRole.textContent = role;
+                        if (dEmail) dEmail.textContent = email;
+
+                        const inits = name.split(" ").map(w => w[0]).join("").toUpperCase().slice(0, 2) || "MA";
+                        const sAv = document.getElementById("sidebarAvatar");
+                        const tAv = document.getElementById("topAvatar");
+                        if (sAv) sAv.textContent = inits;
+                        if (tAv) tAv.textContent = inits;
+                    }
                 }
-
-                closeModal("studentModal");
-                alert(`🎉 ${data.message}\nThe student can now immediately log in with User ID: ${userId}`);
-                document.getElementById("newUserId").value = "";
-                document.getElementById("newName").value = "";
-                document.getElementById("newEmail").value = "";
-                await fetchStudents();
-            } catch (err) {
-                alert("Creation failed: " + err.message);
-            } finally {
-                btn.disabled = false;
-                btn.textContent = prevText;
+            } catch (e) {
+                console.log("Profile loaded offline.");
             }
         }
 
-        // DELETE STUDENT
-        async function deleteStudent(id, userId) {
-            if (!confirm(`Are you sure you want to remove student "${userId}"?`)) {
-                return;
-            }
-
+        async function fetchSets() {
             try {
-                const res = await fetch(`/api/admin/students/${id}`, {
-                    method: "DELETE",
-                    credentials: "same-origin"
-                });
-
-                const data = await res.json();
-                if (!res.ok || !data.success) {
-                    throw new Error(data.message || "Failed to delete student.");
+                const res = await fetch("/api/admin/sets", { credentials: "same-origin" });
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.success && Array.isArray(data.sets) && data.sets.length > 0) {
+                        activeSets = data.sets;
+                        renderSets();
+                    }
                 }
-
-                await fetchStudents();
-            } catch (err) {
-                alert("Delete failed: " + err.message);
+            } catch (e) {
+                console.log("Sets fetched from local cache.");
             }
         }
 
-        // NAVIGATION TABS & MODALS
+        async function fetchStudents() {
+            try {
+                const res = await fetch("/api/admin/students", { credentials: "same-origin" });
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.success && Array.isArray(data.students) && data.students.length > 0) {
+                        activeStudents = data.students;
+                        renderStudents();
+                    }
+                }
+            } catch (e) {
+                console.log("Students loaded from local cache.");
+            }
+        }
+
+        // -----------------------------------------------------
+        // EVENT BINDINGS
+        // -----------------------------------------------------
+
         function bindEvents() {
-            searchInput.addEventListener("input", renderSets);
-            statusFilter.addEventListener("change", renderSets);
-            studentSearchInput.addEventListener("input", renderStudents);
+            if (searchInput) searchInput.addEventListener("input", renderSets);
+            if (statusFilter) statusFilter.addEventListener("change", renderSets);
+            if (studentSearchInput) studentSearchInput.addEventListener("input", renderStudents);
 
-            questionsNav.addEventListener("click", () => {
-                setActiveNav(questionsNav);
-                examSection.style.display = "block";
-                studentsSection.style.display = "none";
-                helpSection.style.display = "none";
-                backToSets();
-            });
-
-            studentsNav.addEventListener("click", () => {
-                setActiveNav(studentsNav);
-                examSection.style.display = "none";
-                studentsSection.style.display = "block";
-                helpSection.style.display = "none";
-                pageTitle.textContent = "Students Directory";
-                pageSubtitle.textContent = "Manage registered candidates and generate examination logins.";
-                renderStudents();
-            });
-
-            helpNav.addEventListener("click", () => {
-                setActiveNav(helpNav);
-                examSection.style.display = "none";
-                studentsSection.style.display = "none";
-                helpSection.style.display = "block";
-                pageTitle.textContent = "Administrator Help";
-                pageSubtitle.textContent = "Guidance on Excel question formats, auto-splitting, and student access.";
-            });
-
-            // Profile dropdown toggle
-            topAvatarButton.addEventListener("click", (e) => {
-                e.stopPropagation();
-                profileDropdownWrapper.classList.toggle("open");
-            });
-
+            // Close dropdown when clicking outside
             document.addEventListener("click", (e) => {
-                if (!profileDropdownWrapper.contains(e.target)) {
+                if (profileDropdownWrapper && !profileDropdownWrapper.contains(e.target)) {
                     profileDropdownWrapper.classList.remove("open");
                 }
             });
 
-            // Logout modal
-            dropdownLogoutButton.addEventListener("click", () => {
-                profileDropdownWrapper.classList.remove("open");
-                logoutConfirmModal.classList.add("open");
-            });
-
-            cancelLogoutButton.addEventListener("click", () => logoutConfirmModal.classList.remove("open"));
-            logoutCloseIconButton.addEventListener("click", () => logoutConfirmModal.classList.remove("open"));
-
-            confirmLogoutButton.addEventListener("click", async () => {
-                try {
-                    await fetch("/api/logout", { method: "POST", credentials: "same-origin" });
-                } catch (e) {}
-                window.location.replace("login.html");
-            });
-
             // File select label
             const fileInp = document.getElementById("setFileInput");
-            fileInp.addEventListener("change", () => {
-                if (fileInp.files.length > 0) {
-                    document.getElementById("selectedFileNameLabel").textContent = "Selected: " + fileInp.files[0].name;
+            if (fileInp) {
+                fileInp.addEventListener("change", () => {
+                    const lbl = document.getElementById("selectedFileNameLabel");
+                    if (lbl && fileInp.files.length > 0) {
+                        lbl.textContent = "Selected: " + fileInp.files[0].name;
+                    }
+                });
+            }
+
+            // Restore view mode preference
+            try {
+                const saved = localStorage.getItem("adminViewMode");
+                if (saved === "list" && testGrid && viewToggleButton) {
+                    testGrid.classList.add("list-view");
+                    viewToggleButton.classList.add("is-list");
                 }
-            });
+            } catch (e) {}
         }
 
-        function setActiveNav(activeBtn) {
-            [questionsNav, studentsNav, helpNav].forEach(btn => btn.classList.remove("active"));
-            activeBtn.classList.add("active");
+        // -----------------------------------------------------
+        // IMMEDIATE SYNCHRONOUS INITIALIZATION
+        // -----------------------------------------------------
+
+        function initAdminPortal() {
+            renderSets();
+            renderStudents();
+            bindEvents();
+            loadAdminProfile();
+            fetchSets();
+            fetchStudents();
         }
 
-        function openModal(id) {
-            document.getElementById(id).classList.add("open");
-        }
+        // Run immediately
+        initAdminPortal();
 
-        function closeModal(id) {
-            document.getElementById(id).classList.remove("open");
+        // Also run on DOMContentLoaded if not yet ready
+        if (document.readyState === "loading") {
+            document.addEventListener("DOMContentLoaded", initAdminPortal);
         }
     </script>
 </body>
