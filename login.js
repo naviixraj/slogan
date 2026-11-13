@@ -3,6 +3,29 @@ const loginForm = document.getElementById("loginForm");
 const message = document.getElementById("message");
 const loginButton = document.getElementById("loginButton");
 
+/* PASSWORD VISIBILITY TOGGLE */
+const passwordInput = document.getElementById("password");
+const togglePasswordButton = document.getElementById("togglePassword");
+const eyeOpenIcon = document.getElementById("eyeOpenIcon");
+const eyeClosedIcon = document.getElementById("eyeClosedIcon");
+
+if (togglePasswordButton && passwordInput) {
+    togglePasswordButton.addEventListener("click", () => {
+        const isPassword = passwordInput.type === "password";
+        passwordInput.type = isPassword ? "text" : "password";
+
+        if (eyeOpenIcon && eyeClosedIcon) {
+            eyeOpenIcon.style.display = isPassword ? "none" : "block";
+            eyeClosedIcon.style.display = isPassword ? "block" : "none";
+        }
+
+        const label = isPassword ? "Hide password" : "Show password";
+        togglePasswordButton.setAttribute("aria-label", label);
+        togglePasswordButton.setAttribute("title", label);
+        passwordInput.focus();
+    });
+}
+
 /* GET THE REQUESTED DESTINATION */
 
 const params = new URLSearchParams(window.location.search);
