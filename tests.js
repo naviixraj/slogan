@@ -16,8 +16,7 @@ const pageMessage = document.getElementById("pageMessage");
 const searchInput = document.getElementById("searchInput");
 const statusFilter = document.getElementById("statusFilter");
 const resultCount = document.getElementById("resultCount");
-const gridViewButton = document.getElementById("gridViewButton");
-const listViewButton = document.getElementById("listViewButton");
+const viewToggleButton = document.getElementById("viewToggleButton");
 const examSection = document.getElementById("examSection");
 const helpSection = document.getElementById("helpSection");
 const examinationsNav = document.getElementById("examinationsNav");
@@ -275,24 +274,34 @@ searchInput.addEventListener("input", renderTests);
 statusFilter.addEventListener("change", renderTests);
 
 /* -----------------------------------------------------
-   GRID / LIST VIEW
+   GRID / LIST VIEW TOGGLE (WITH ROTATION)
    ----------------------------------------------------- */
 
-gridViewButton.addEventListener("click", () => {
+function setDashboardView(isList) {
+    if (!testGrid || !viewToggleButton) return;
 
-    testGrid.classList.remove("list-view");
+    testGrid.classList.toggle("list-view", isList);
+    viewToggleButton.classList.toggle("is-list", isList);
 
-    gridViewButton.classList.add("active");
-    listViewButton.classList.remove("active");
-});
+    const label = isList ? "Switch to Grid view" : "Switch to List view";
+    viewToggleButton.title = label;
+    viewToggleButton.setAttribute("aria-label", label);
 
-listViewButton.addEventListener("click", () => {
+    localStorage.setItem("slogonPreferredView", isList ? "list" : "grid");
+}
 
-    testGrid.classList.add("list-view");
+if (viewToggleButton) {
+    viewToggleButton.addEventListener("click", () => {
+        const isCurrentlyList = testGrid.classList.contains("list-view");
+        setDashboardView(!isCurrentlyList);
+    });
 
-    listViewButton.classList.add("active");
-    gridViewButton.classList.remove("active");
-});
+    // Restore saved view preference
+    const savedView = localStorage.getItem("slogonPreferredView");
+    if (savedView === "list") {
+        setDashboardView(true);
+    }
+}
 
 /* -----------------------------------------------------
    SIDEBAR NAVIGATION
