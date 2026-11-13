@@ -93,7 +93,7 @@ body {
 
     background-attachment: fixed;
 
-    background-size: min(440px, 65vw);
+    background-size: min(600px, 75vw);
 
 }
 
@@ -108,11 +108,11 @@ body {
 
     max-width: 520px;
 
-    background: rgba(255, 255, 255, 0.90);
+    background: rgba(255, 255, 255, 0.45);
 
-    backdrop-filter: blur(10px);
+    backdrop-filter: blur(3px);
 
-    -webkit-backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(3px);
 
     border-radius: 16px;
 
@@ -122,7 +122,7 @@ body {
         0 20px 60px rgba(11, 31, 58, 0.12);
 
     border:
-        1px solid rgba(255, 255, 255, 0.6);
+        1px solid rgba(255, 255, 255, 0.75);
 
 }
 
@@ -695,7 +695,7 @@ select:focus-visible {
 
     background-attachment: fixed;
 
-    background-size: min(440px, 65vw);
+    background-size: min(600px, 75vw);
 
     min-height: 100vh;
 
@@ -885,13 +885,13 @@ select:focus-visible {
 
 .candidate-info-card {
 
-    background: rgba(255, 255, 255, 0.88);
+    background: rgba(255, 255, 255, 0.35);
 
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(2px);
 
-    -webkit-backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(2px);
 
-    border: 1px solid rgba(229, 231, 235, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.75);
 
     border-radius: 12px;
 
@@ -1047,13 +1047,13 @@ select:focus-visible {
 
 .instructions-card {
 
-    background: rgba(255, 255, 255, 0.88);
+    background: rgba(255, 255, 255, 0.35);
 
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(2px);
 
-    -webkit-backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(2px);
 
-    border: 1px solid rgba(229, 231, 235, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.75);
 
     border-radius: 12px;
 
@@ -1350,13 +1350,13 @@ select:focus-visible {
 
     gap: 15px;
 
-    background: rgba(255, 252, 242, 0.90);
+    background: rgba(255, 252, 242, 0.55);
 
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(2px);
 
-    -webkit-backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(2px);
 
-    border: 1px solid rgba(212,175,55,0.45);
+    border: 1px solid rgba(212,175,55,0.55);
 
     border-radius: 12px;
 
@@ -1845,7 +1845,7 @@ select:focus-visible {
 
     background-attachment: fixed;
 
-    background-size: min(440px, 65vw);
+    background-size: min(600px, 75vw);
 
     color: #1F2937;
 
@@ -2034,13 +2034,13 @@ select:focus-visible {
 
     padding: 0 24px;
 
-    background: rgba(255, 255, 255, 0.88);
+    background: rgba(255, 255, 255, 0.45);
 
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(3px);
 
-    -webkit-backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(3px);
 
-    border-bottom: 1px solid rgba(229, 231, 235, 0.85);
+    border-bottom: 1px solid rgba(229, 231, 235, 0.75);
 
     display: grid;
 
@@ -2146,18 +2146,18 @@ select:focus-visible {
 
 
 .question-card {
-    background: rgba(255, 255, 255, 0.88);
+    background: rgba(255, 255, 255, 0.35);
 
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(2px);
 
-    -webkit-backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(2px);
 
-    border: 1px solid rgba(229, 231, 235, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.75);
 
     border-radius: 9px;
 
     box-shadow:
-        0 2px 8px rgba(11, 31, 58, 0.04);
+        0 4px 16px rgba(11, 31, 58, 0.05);
 
     overflow: hidden;
 }
@@ -2262,11 +2262,11 @@ select:focus-visible {
 
     border-radius: 7px;
 
-    background: rgba(255, 255, 255, 0.90);
+    background: rgba(255, 255, 255, 0.55);
 
-    backdrop-filter: blur(4px);
+    backdrop-filter: blur(2px);
 
-    -webkit-backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(2px);
 
     display: flex;
 
@@ -2529,13 +2529,13 @@ select:focus-visible {
 
     padding: 11px 14px;
 
-    background: rgba(255, 255, 255, 0.88);
+    background: rgba(255, 255, 255, 0.40);
 
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(2px);
 
-    -webkit-backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(2px);
 
-    border: 1px solid rgba(229, 231, 235, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.75);
 
     border-radius: 8px;
 
@@ -2606,13 +2606,13 @@ select:focus-visible {
 .palette-card,
 .summary-card,
 .legend-card {
-    background: rgba(255, 255, 255, 0.88);
+    background: rgba(255, 255, 255, 0.40);
 
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(2px);
 
-    -webkit-backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(2px);
 
-    border: 1px solid rgba(229, 231, 235, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.75);
 
     border-radius: 8px;
 
@@ -3436,7 +3436,7 @@ select:focus-visible {
     background-repeat: no-repeat;
     background-position: center center;
     background-attachment: fixed;
-    background-size: min(440px, 65vw);
+    background-size: min(600px, 75vw);
     color: #1F2937;
     min-height: 100vh;
 }
@@ -3616,17 +3616,17 @@ select:focus-visible {
 ========================================================= */
 
 .result-card {
-    background: rgba(255, 255, 255, 0.88);
+    background: rgba(255, 255, 255, 0.35);
 
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(2px);
 
-    -webkit-backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(2px);
 
-    border: 1px solid rgba(229, 231, 235, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.75);
     border-radius: 14px;
 
     box-shadow:
-        0 4px 16px rgba(11, 31, 58, 0.05);
+        0 6px 20px rgba(11, 31, 58, 0.05);
 
     margin-bottom: 20px;
 }
@@ -3684,7 +3684,7 @@ select:focus-visible {
 
     padding: 16px 20px;
 
-    background: rgba(255, 255, 255, 0.88);
+    background: rgba(255, 255, 255, 0.35);
 }
 
 
@@ -3966,17 +3966,17 @@ select:focus-visible {
 
     padding: 18px;
 
-    background: rgba(255, 255, 255, 0.88);
+    background: rgba(255, 255, 255, 0.35);
 
-    backdrop-filter: blur(8px);
+    backdrop-filter: blur(2px);
 
-    -webkit-backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(2px);
 
-    border: 1px solid rgba(229, 231, 235, 0.85);
+    border: 1px solid rgba(255, 255, 255, 0.75);
     border-radius: 12px;
 
     box-shadow:
-        0 3px 12px rgba(11, 31, 58, 0.04);
+        0 4px 16px rgba(11, 31, 58, 0.05);
 }
 
 
