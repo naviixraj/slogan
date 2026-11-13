@@ -9,9 +9,18 @@
 const candidateName = document.getElementById("sidebarName");
 const candidateAvatar = document.getElementById("sidebarAvatar");
 const topAvatar = document.getElementById("topAvatar");
-const topbarUserId = document.getElementById("topbarUserId");
+const topAvatarButton = document.getElementById("topAvatarButton");
+const profileDropdownMenu = document.getElementById("profileDropdownMenu");
+const dropdownCandidateName = document.getElementById("dropdownCandidateName");
+const dropdownUserId = document.getElementById("dropdownUserId");
+const dropdownRole = document.getElementById("dropdownRole");
+const dropdownEmail = document.getElementById("dropdownEmail");
+const dropdownLogoutButton = document.getElementById("dropdownLogoutButton");
+const logoutConfirmModal = document.getElementById("logoutConfirmModal");
+const cancelLogoutButton = document.getElementById("cancelLogoutButton");
+const confirmLogoutButton = document.getElementById("confirmLogoutButton");
+
 const testGrid = document.getElementById("testGrid");
-const logoutButton = document.getElementById("logoutButton");
 const pageMessage = document.getElementById("pageMessage");
 const searchInput = document.getElementById("searchInput");
 const statusFilter = document.getElementById("statusFilter");
@@ -212,7 +221,11 @@ async function loadCandidate() {
         candidateAvatar.textContent = tag;
         topAvatar.textContent = tag;
 
-        topbarUserId.textContent = `Candidate ID: ${userId}`;
+        // Populate Profile Dropdown
+        if (dropdownCandidateName) dropdownCandidateName.textContent = name;
+        if (dropdownUserId) dropdownUserId.textContent = userId;
+        if (dropdownRole) dropdownRole.textContent = "Student";
+        if (dropdownEmail) dropdownEmail.textContent = `${userId}@slogon.edu`;
 
         // Save candidate info for instructions and exam pages
         localStorage.setItem("candidateInfo", JSON.stringify({
@@ -234,37 +247,110 @@ async function loadCandidate() {
 }
 
 /* -----------------------------------------------------
-   LOGOUT
+   PROFILE DROPDOWN CONTROLS
    ----------------------------------------------------- */
 
-logoutButton.addEventListener("click", async () => {
+function openProfileDropdown() {
+    if (!profileDropdownMenu) return;
+    profileDropdownMenu.classList.add("open");
+    if (topAvatarButton) {
+        topAvatarButton.classList.add("active");
+        topAvatarButton.setAttribute("aria-expanded", "true");
+    }
+}
 
-    logoutButton.disabled = true;
-    logoutButton.textContent = "Logging out...";
+function closeProfileDropdown() {
+    if (!profileDropdownMenu) return;
+    profileDropdownMenu.classList.remove("open");
+    if (topAvatarButton) {
+        topAvatarButton.classList.remove("active");
+        topAvatarButton.setAttribute("aria-expanded", "false");
+    }
+}
 
-    try {
+function toggleProfileDropdown(e) {
+    if (e) e.stopPropagation();
+    const isOpen = profileDropdownMenu && profileDropdownMenu.classList.contains("open");
+    if (isOpen) {
+        closeProfileDropdown();
+    } else {
+        openProfileDropdown();
+    }
+}
 
-        const response = await fetch("/api/logout", {
-            method: "POST",
-            credentials: "same-origin"
-        });
+if (topAvatarButton) {
+    topAvatarButton.addEventListener("click", toggleProfileDropdown);
+}
 
-        const result = await response.json();
-
-        if (!response.ok || !result.success) {
-            throw new Error(result.message || "Logout failed.");
-        }
-
-        window.location.replace("login.html");
-
-    } catch (error) {
-
-        pageMessage.textContent = error.message;
-
-        logoutButton.disabled = false;
-        logoutButton.textContent = "Log out";
+// Close dropdown on click outside
+document.addEventListener("click", (e) => {
+    if (!profileDropdownMenu || !topAvatarButton) return;
+    if (!profileDropdownMenu.contains(e.target) && !topAvatarButton.contains(e.target)) {
+        closeProfileDropdown();
     }
 });
+
+// Close on Escape key
+document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") {
+        closeProfileDropdown();
+        closeLogoutModal();
+    }
+});
+
+/* -----------------------------------------------------
+   LOGOUT WITH CONFIRMATION MODAL
+   ----------------------------------------------------- */
+
+function openLogoutModal() {
+    closeProfileDropdown();
+    if (logoutConfirmModal) {
+        logoutConfirmModal.classList.add("show");
+        logoutConfirmModal.setAttribute("aria-hidden", "false");
+    }
+}
+
+function closeLogoutModal() {
+    if (logoutConfirmModal) {
+        logoutConfirmModal.classList.remove("show");
+        logoutConfirmModal.setAttribute("aria-hidden", "true");
+    }
+}
+
+if (dropdownLogoutButton) {
+    dropdownLogoutButton.addEventListener("click", openLogoutModal);
+}
+
+if (cancelLogoutButton) {
+    cancelLogoutButton.addEventListener("click", closeLogoutModal);
+}
+
+if (confirmLogoutButton) {
+    confirmLogoutButton.addEventListener("click", async () => {
+        confirmLogoutButton.disabled = true;
+        confirmLogoutButton.textContent = "Logging out...";
+
+        try {
+            const response = await fetch("/api/logout", {
+                method: "POST",
+                credentials: "same-origin"
+            });
+
+            const result = await response.json();
+
+            if (!response.ok || !result.success) {
+                throw new Error(result.message || "Logout failed.");
+            }
+
+            window.location.replace("login.html");
+
+        } catch (error) {
+            alert("Logout error: " + error.message);
+            confirmLogoutButton.disabled = false;
+            confirmLogoutButton.textContent = "Yes, Log out";
+        }
+    });
+}
 
 /* -----------------------------------------------------
    SEARCH AND FILTER

@@ -193,20 +193,170 @@
             padding: 0 36px;
         }
 
-        .topbar-label {
-            font-size: 11px;
-            color: var(--muted);
+        /* TOPBAR PROFILE DROPDOWN */
+
+        .profile-dropdown-wrapper {
+            position: relative;
         }
 
-        .top-avatar {
-            width: 33px;
-            height: 33px;
-            border: 0;
+        .top-avatar-btn {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            border: 1px solid var(--line);
+            border-radius: 24px;
+            padding: 4px 10px 4px 4px;
+            background: #FFFFFF;
+            cursor: pointer;
+            transition: background 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .top-avatar-btn:hover,
+        .top-avatar-btn.active {
+            background: var(--emerald-soft);
+            border-color: #B7D9CC;
+        }
+
+        .avatar-tag {
+            width: 30px;
+            height: 30px;
             border-radius: 50%;
             background: var(--emerald-soft);
             color: var(--emerald-dark);
+            display: grid;
+            place-items: center;
             font-size: 11px;
             font-weight: 800;
+            transition: background 0.2s ease, color 0.2s ease;
+        }
+
+        .top-avatar-btn.active .avatar-tag {
+            background: var(--emerald);
+            color: #FFFFFF;
+        }
+
+        .chevron-icon {
+            width: 13px;
+            height: 13px;
+            color: var(--muted);
+            transition: transform 0.25s ease;
+        }
+
+        .top-avatar-btn.active .chevron-icon {
+            transform: rotate(180deg);
+        }
+
+        .profile-dropdown-menu {
+            position: absolute;
+            top: calc(100% + 10px);
+            right: 0;
+            width: 250px;
+            background: #FFFFFF;
+            border: 1px solid var(--line);
+            border-radius: 12px;
+            box-shadow: 0 14px 35px rgba(37, 54, 45, 0.12);
+            padding: 16px 18px;
+            z-index: 50;
+            opacity: 0;
+            transform: translateY(-8px);
+            pointer-events: none;
+            transition: opacity 0.2s cubic-bezier(0.16, 1, 0.3, 1), transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .profile-dropdown-menu.open {
+            opacity: 1;
+            transform: translateY(0);
+            pointer-events: auto;
+        }
+
+        .dropdown-header {
+            padding-bottom: 11px;
+            border-bottom: 1px solid var(--line);
+            margin-bottom: 11px;
+        }
+
+        .candidate-display-name {
+            display: block;
+            font-size: 13px;
+            font-weight: 800;
+            color: var(--charcoal);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .account-badge {
+            display: inline-block;
+            font-size: 9px;
+            font-weight: 700;
+            color: var(--emerald-dark);
+            background: var(--emerald-soft);
+            border-radius: 12px;
+            padding: 2px 7px;
+            margin-top: 4px;
+        }
+
+        .dropdown-details {
+            display: flex;
+            flex-direction: column;
+            gap: 9px;
+            font-size: 11px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .detail-label {
+            color: var(--muted);
+            font-weight: 600;
+            flex: none;
+        }
+
+        .detail-value {
+            font-weight: 700;
+            color: var(--charcoal);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            text-align: right;
+        }
+
+        .dropdown-divider {
+            height: 1px;
+            background: var(--line);
+            margin: 13px 0 10px;
+        }
+
+        .dropdown-logout-btn {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            padding: 9px 12px;
+            border: 1px solid #FEE2E2;
+            background: #FEF2F2;
+            color: #DC2626;
+            border-radius: 8px;
+            font-size: 11px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: background 0.18s ease, border-color 0.18s ease;
+        }
+
+        .dropdown-logout-btn svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        .dropdown-logout-btn:hover {
+            background: #FEE2E2;
+            border-color: #FCA5A5;
+            color: #B91C1C;
         }
 
         .content {
@@ -235,20 +385,30 @@
             line-height: 1.6;
         }
 
-        .logout-btn {
-            background: #FFFFFF;
-            border: 1px solid var(--line);
-            border-radius: 8px;
-            padding: 10px 15px;
-            font-size: 11px;
-            font-weight: 700;
-            cursor: pointer;
-            color: var(--charcoal);
+        .logout-icon-circle {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: #FEF2F2;
+            color: #DC2626;
+            display: grid;
+            place-items: center;
+            font-size: 22px;
+            margin: 0 auto 14px;
         }
 
-        .logout-btn:hover {
-            border-color: var(--emerald);
-            color: var(--emerald-dark);
+        .logout-modal-box {
+            text-align: center;
+        }
+
+        .btn-danger {
+            background: #DC2626;
+            border: 1px solid #DC2626;
+            color: #FFFFFF;
+        }
+
+        .btn-danger:hover {
+            background: #B91C1C;
         }
 
         /* SEARCH AND FILTER */
@@ -841,8 +1001,49 @@
     <main class="main">
 
         <header class="topbar">
-            <span class="topbar-label" id="topbarUserId">Candidate account</span>
-            <button class="top-avatar" id="topAvatar" type="button" title="Candidate profile">ST</button>
+            <!-- PROFILE DROPDOWN WRAPPER -->
+            <div class="profile-dropdown-wrapper" id="profileDropdownWrapper">
+                <button class="top-avatar-btn" id="topAvatarButton" type="button" aria-expanded="false" aria-haspopup="true" title="Candidate Profile">
+                    <span class="avatar-tag" id="topAvatar">ST</span>
+                    <svg class="chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="m6 9 6 6 6-6"/>
+                    </svg>
+                </button>
+
+                <!-- CONSTRUCTED DROPDOWN CARD -->
+                <div class="profile-dropdown-menu" id="profileDropdownMenu">
+                    <div class="dropdown-header">
+                        <strong class="candidate-display-name" id="dropdownCandidateName">Student</strong>
+                        <span class="account-badge">Candidate Account</span>
+                    </div>
+
+                    <div class="dropdown-details">
+                        <div class="detail-row">
+                            <span class="detail-label">Candidate ID:</span>
+                            <span class="detail-value" id="dropdownUserId">—</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Role:</span>
+                            <span class="detail-value">Student</span>
+                        </div>
+                        <div class="detail-row">
+                            <span class="detail-label">Reg Email:</span>
+                            <span class="detail-value" id="dropdownEmail">—</span>
+                        </div>
+                    </div>
+
+                    <div class="dropdown-divider"></div>
+
+                    <button class="dropdown-logout-btn" id="dropdownLogoutButton" type="button">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
+                            <polyline points="16 17 21 12 16 7"/>
+                            <line x1="21" y1="12" x2="9" y2="12"/>
+                        </svg>
+                        <span>Log out</span>
+                    </button>
+                </div>
+            </div>
         </header>
 
         <div class="content">
@@ -854,10 +1055,6 @@
                         Browse your available examinations and choose a test to begin.
                     </p>
                 </div>
-
-                <button class="logout-btn" id="logoutButton" type="button">
-                    Log out
-                </button>
             </section>
 
             <!-- EXAMINATIONS SECTION -->
@@ -954,7 +1151,21 @@
             © SLOGON ACADEMY 
         </footer>
 
-    </main>
+    <!-- LOGOUT CONFIRMATION MODAL -->
+    <div class="modal" id="logoutConfirmModal" aria-hidden="true">
+        <div class="modal-content logout-modal-box">
+            <div class="logout-icon-circle">⚠️</div>
+            <h3 style="font-size: 16px; margin-bottom: 8px; text-align: center;">Confirm Logout</h3>
+            <p style="font-size: 12px; color: var(--muted); line-height: 1.6; text-align: center; margin-bottom: 22px;">
+                Are you sure you want to end your candidate examination session?
+            </p>
+            <div class="modal-footer" style="justify-content: center; gap: 12px;">
+                <button class="modal-btn btn-outline" id="cancelLogoutButton" type="button">Cancel</button>
+                <button class="modal-btn btn-danger" id="confirmLogoutButton" type="button">Yes, Log out</button>
+            </div>
+        </div>
+    </div>
+
     <!-- CANDIDATE PROFILE MODAL -->
     <div class="modal" id="profileModal" aria-hidden="true">
         <div class="modal-content">
