@@ -619,12 +619,23 @@ function renderStudents() {
         const actionTd = document.createElement("td");
         if (s.role !== "Admin") {
             const delBtn = document.createElement("button");
-            delBtn.style.cssText = "background: #FFF5F5; border: 1px solid #FED7D7; border-radius: 6px; color: #C53030; padding: 4px 10px; font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.2s ease;";
-            delBtn.textContent = "Remove";
+            delBtn.type = "button";
+            delBtn.className = "bin-btn";
+            delBtn.title = `Delete Student Account "${s.user_id}"`;
+            delBtn.setAttribute("aria-label", `Delete Student Account "${s.user_id}"`);
+            delBtn.innerHTML = `
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M3 6h18"></path>
+                    <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                    <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                    <line x1="10" y1="11" x2="10" y2="17"></line>
+                    <line x1="14" y1="11" x2="14" y2="17"></line>
+                </svg>
+            `;
             delBtn.addEventListener("click", () => deleteStudent(s.id, s.user_id));
             actionTd.appendChild(delBtn);
         } else {
-            actionTd.innerHTML = `<span style="font-size: 11px; color: var(--muted);">Master Account</span>`;
+            actionTd.innerHTML = `<span style="font-size: 11px; color: var(--muted); font-weight: 600;">Master Account</span>`;
         }
 
         tr.append(idTd, nameTd, emailTd, roleTd, statusTd, actionTd);
@@ -691,7 +702,7 @@ async function handleCreateStudentSubmit() {
 }
 
 async function deleteStudent(id, userIdStr) {
-    if (!confirm(`Are you sure you want to remove student "${userIdStr}"?`)) {
+    if (!confirm(`Are you sure you want to permanently delete student account "${userIdStr}"? This will remove the student account totally from the system.`)) {
         return;
     }
 
@@ -706,7 +717,7 @@ async function deleteStudent(id, userIdStr) {
             throw new Error(data.message || "Failed to delete student.");
         }
 
-        alert(`Candidate "${userIdStr}" has been removed.`);
+        alert(`Student account "${userIdStr}" has been completely deleted.`);
         await fetchStudents();
     } catch (err) {
         alert("Failed to delete candidate: " + err.message);
