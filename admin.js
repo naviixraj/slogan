@@ -678,6 +678,7 @@ async function handleCreateStudentSubmit() {
         if (newUserId) newUserId.value = "";
         if (newName) newName.value = "";
         if (newEmail) newEmail.value = "";
+        if (newPass) newPass.value = "";
         await fetchStudents();
     } catch (err) {
         alert(`❌ Enrollment Failed: ${err.message}`);

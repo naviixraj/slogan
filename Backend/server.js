@@ -47,7 +47,7 @@ app.use(express.urlencoded({ extended: false }));
 // Login attempt protection
 const loginLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
-    limit: 10,
+    limit: 100,
     standardHeaders: true,
     legacyHeaders: false,
     message: {
@@ -179,22 +179,41 @@ app.post("/api/login", loginLimiter, (req, res) => {
         });
     }
 
+    const cleanUserId = userId.trim();
     const candidate = db.prepare(`
         SELECT id, user_id, password_hash, candidate_name, email, role, active
         FROM candidates
         WHERE LOWER(TRIM(user_id)) = LOWER(TRIM(?))
-    `).get(userId.trim());
+    `).get(cleanUserId);
 
-    if (
-        !candidate ||
-        candidate.active !== 1 ||
-        !bcrypt.compareSync(password, candidate.password_hash)
-    ) {
+    if (!candidate) {
+        console.log(`[LOGIN FAILED] User ID not found in database: "${cleanUserId}"`);
         return res.status(401).json({
             success: false,
             message: "Invalid User ID or password."
         });
     }
+
+    if (candidate.active !== 1) {
+        console.log(`[LOGIN FAILED] Account is deactivated: "${candidate.user_id}"`);
+        return res.status(401).json({
+            success: false,
+            message: "This account has been deactivated."
+        });
+    }
+
+    const isMatch = bcrypt.compareSync(password, candidate.password_hash) ||
+                    bcrypt.compareSync(password.trim(), candidate.password_hash);
+
+    if (!isMatch) {
+        console.log(`[LOGIN FAILED] Password mismatch for User ID: "${candidate.user_id}"`);
+        return res.status(401).json({
+            success: false,
+            message: "Invalid User ID or password."
+        });
+    }
+
+    console.log(`[LOGIN SUCCESS] Authenticated as "${candidate.user_id}" (${candidate.role})`);
 
     req.session.regenerate((error) => {
         if (error) {
