@@ -89,9 +89,16 @@ loginForm.addEventListener("submit", async (event) => {
             );
         }
 
-        /* REDIRECT TO THE REQUESTED PAGE */
+        /* REDIRECT BASED ON USER ROLE */
 
-        window.location.replace(redirectPage);
+        const userRole = (sessionData.candidate && sessionData.candidate.role) || "Student";
+
+        if (userRole === "Admin" || userRole === "Master Admin") {
+            window.location.replace("admin.html");
+        } else {
+            const targetPage = requestedPage && allowedPages.includes(requestedPage) ? requestedPage : redirectPage;
+            window.location.replace(targetPage);
+        }
 
     } catch (error) {
 
