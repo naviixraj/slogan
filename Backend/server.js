@@ -27,9 +27,20 @@ if (!process.env.SESSION_SECRET) {
     process.exit(1);
 }
 
-app.disable("x-powered-by");
-
-app.use(helmet());
+app.use(
+    helmet({
+        contentSecurityPolicy: {
+            directives: {
+                ...helmet.contentSecurityPolicy.getDefaultDirectives(),
+                "script-src": ["'self'", "'unsafe-inline'"],
+                "script-src-attr": ["'self'", "'unsafe-inline'"],
+                "style-src": ["'self'", "https:", "'unsafe-inline'"],
+                "font-src": ["'self'", "https:", "data:"],
+                "img-src": ["'self'", "data:"]
+            }
+        }
+    })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
