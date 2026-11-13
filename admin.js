@@ -27,7 +27,7 @@ const DEFAULT_SETS = [
 
 // Initial default student records
 const DEFAULT_STUDENTS = [
-    { id: 1, user_id: "naveenraj", candidate_name: "Naveen Raj", email: "naveenraj@slogon.edu", role: "Student", active: 1 },
+    { id: 6, user_id: "navi", candidate_name: "Navi", email: "navi@slogon.edu", role: "Student", active: 1 },
     { id: 2, user_id: "admin", candidate_name: "Master Administrator", email: "admin@slogon.edu", role: "Admin", active: 1 }
 ];
 

@@ -34,6 +34,30 @@ try {
     db.exec("ALTER TABLE candidates ADD COLUMN role TEXT DEFAULT 'Student';");
 } catch (e) {}
 
+// Seed default Admin and Student accounts if missing
+const bcrypt = require("bcryptjs");
+try {
+    const adminExists = db.prepare("SELECT id FROM candidates WHERE user_id = 'admin'").get();
+    if (!adminExists) {
+        const adminHash = bcrypt.hashSync("admin123", 12);
+        db.prepare(`
+            INSERT INTO candidates (user_id, password_hash, candidate_name, email, role, active)
+            VALUES (?, ?, ?, ?, ?, 1)
+        `).run("admin", adminHash, "Master Administrator", "admin@slogon.edu", "Admin");
+    }
+
+    const naviExists = db.prepare("SELECT id FROM candidates WHERE user_id = 'navi'").get();
+    if (!naviExists) {
+        const naviHash = bcrypt.hashSync("navii007", 12);
+        db.prepare(`
+            INSERT INTO candidates (user_id, password_hash, candidate_name, email, role, active)
+            VALUES (?, ?, ?, ?, ?, 1)
+        `).run("navi", naviHash, "Navi", "navi@slogon.edu", "Student");
+    }
+} catch (e) {
+    console.error("Account seeding error:", e);
+}
+
 // Create question_sets table
 db.exec(`
     CREATE TABLE IF NOT EXISTS question_sets (
