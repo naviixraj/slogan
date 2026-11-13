@@ -19,6 +19,7 @@ const dropdownLogoutButton = document.getElementById("dropdownLogoutButton");
 const logoutConfirmModal = document.getElementById("logoutConfirmModal");
 const cancelLogoutButton = document.getElementById("cancelLogoutButton");
 const confirmLogoutButton = document.getElementById("confirmLogoutButton");
+const logoutCloseIconButton = document.getElementById("logoutCloseIconButton");
 
 const testGrid = document.getElementById("testGrid");
 const pageMessage = document.getElementById("pageMessage");
@@ -329,6 +330,16 @@ if (cancelLogoutButton) {
     cancelLogoutButton.addEventListener("click", closeLogoutModal);
 }
 
+if (logoutCloseIconButton) {
+    logoutCloseIconButton.addEventListener("click", closeLogoutModal);
+}
+
+if (logoutConfirmModal) {
+    logoutConfirmModal.addEventListener("click", (e) => {
+        if (e.target === logoutConfirmModal) closeLogoutModal();
+    });
+}
+
 if (confirmLogoutButton) {
     confirmLogoutButton.addEventListener("click", async () => {
         confirmLogoutButton.disabled = true;
@@ -351,7 +362,7 @@ if (confirmLogoutButton) {
         } catch (error) {
             alert("Logout error: " + error.message);
             confirmLogoutButton.disabled = false;
-            confirmLogoutButton.textContent = "Yes, Log out";
+            confirmLogoutButton.textContent = "Log out";
         }
     });
 }
