@@ -282,6 +282,7 @@ function renderSets() {
 
         const btnRow = document.createElement("div");
         btnRow.style.display = "flex";
+        btnRow.style.alignItems = "center";
         btnRow.style.gap = "8px";
         btnRow.style.marginTop = "auto";
 
@@ -294,15 +295,22 @@ function renderSets() {
 
         btnRow.appendChild(inspectBtn);
 
-        if (set.id !== "MOCK01") {
-            const delBtn = document.createElement("button");
-            delBtn.type = "button";
-            delBtn.title = "Delete Question Set";
-            delBtn.style.cssText = "padding: 0 12px; background: #FFF5F5; border: 1px solid #FED7D7; border-radius: 8px; color: #C53030; cursor: pointer; font-size: 12px; font-weight: 700; transition: all 0.2s ease;";
-            delBtn.textContent = "✕";
-            delBtn.addEventListener("click", () => deleteSet(set.id));
-            btnRow.appendChild(delBtn);
-        }
+        const delBtn = document.createElement("button");
+        delBtn.type = "button";
+        delBtn.className = "bin-btn";
+        delBtn.title = `Delete Question Set "${set.title}"`;
+        delBtn.setAttribute("aria-label", `Delete Question Set "${set.title}"`);
+        delBtn.innerHTML = `
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M3 6h18"></path>
+                <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                <line x1="10" y1="11" x2="10" y2="17"></line>
+                <line x1="14" y1="11" x2="14" y2="17"></line>
+            </svg>
+        `;
+        delBtn.addEventListener("click", () => deleteSet(set.id));
+        btnRow.appendChild(delBtn);
 
         body.append(top, titleH2, subP, metaDiv, btnRow);
         card.append(accent, body);
@@ -411,6 +419,17 @@ async function inspectSet(setId) {
                             <div class="q-explanation">
                                 <strong>💡 Solution Explanation:</strong>
                                 ${exp}
+                            </div>
+                            <div class="q-footer">
+                                <button type="button" class="bin-btn btn-delete-single-q" data-setid="${set.id}" data-qnum="${qNum}" title="Delete Question ${qNum}" aria-label="Delete Question ${qNum}">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M3 6h18"></path>
+                                        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                                        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                                        <line x1="10" y1="11" x2="10" y2="17"></line>
+                                        <line x1="14" y1="11" x2="14" y2="17"></line>
+                                    </svg>
+                                </button>
                             </div>
                         </div>
                     `;
@@ -532,6 +551,29 @@ async function deleteSet(setId) {
     } catch (err) {
         activeSets = activeSets.filter(s => s.id !== setId);
         renderSets();
+    }
+}
+
+async function deleteSingleQuestion(setId, qNum) {
+    if (!confirm(`Are you sure you want to delete Question ${String(qNum).padStart(2, '0')}?`)) {
+        return;
+    }
+
+    try {
+        const res = await fetch(`/api/admin/sets/${encodeURIComponent(setId)}/questions/${qNum}`, {
+            method: "DELETE",
+            credentials: "same-origin"
+        });
+
+        const data = await res.json();
+        if (!res.ok || !data.success) {
+            throw new Error(data.message || "Failed to delete question.");
+        }
+
+        await inspectSet(setId);
+        await fetchSets();
+    } catch (err) {
+        alert("Failed to delete question: " + err.message);
     }
 }
 
@@ -756,6 +798,17 @@ function bindEventListeners() {
 
     // Inspector
     if (backToSetsButton) backToSetsButton.addEventListener("click", backToSets);
+    if (inspectorQuestionsContainer) {
+        inspectorQuestionsContainer.addEventListener("click", (e) => {
+            const btn = e.target.closest(".btn-delete-single-q");
+            if (!btn) return;
+            const qNum = Number(btn.getAttribute("data-qnum"));
+            const setId = btn.getAttribute("data-setid");
+            if (setId && qNum) {
+                deleteSingleQuestion(setId, qNum);
+            }
+        });
+    }
 
     // Toolbar
     if (searchInput) searchInput.addEventListener("input", renderSets);

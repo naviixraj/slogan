@@ -469,10 +469,6 @@ app.post("/api/admin/sets/upload", requireAdmin, upload.single("file"), (req, re
 app.delete("/api/admin/sets/:id", requireAdmin, (req, res) => {
     try {
         const setId = req.params.id.toUpperCase();
-        if (setId === "MOCK01") {
-            return res.status(400).json({ success: false, message: "Cannot delete the default Mock Test 01." });
-        }
-
         const result = db.prepare("DELETE FROM question_sets WHERE UPPER(id) = ?").run(setId);
         if (result.changes === 0) {
             return res.status(404).json({ success: false, message: "Question set not found." });
@@ -481,6 +477,48 @@ app.delete("/api/admin/sets/:id", requireAdmin, (req, res) => {
         return res.json({ success: true, message: `Question set ${setId} deleted.` });
     } catch (error) {
         return res.status(500).json({ success: false, message: "Failed to delete question set." });
+    }
+});
+
+// Delete a single question from a Question Set
+app.delete("/api/admin/sets/:id/questions/:qNum", requireAdmin, (req, res) => {
+    try {
+        const setId = req.params.id.toUpperCase();
+        const targetNum = Number(req.params.qNum);
+
+        const row = db.prepare("SELECT * FROM question_sets WHERE UPPER(id) = ?").get(setId);
+        if (!row) {
+            return res.status(404).json({ success: false, message: "Question set not found." });
+        }
+
+        let questions = JSON.parse(row.questions_json);
+        const originalCount = questions.length;
+
+        questions = questions.filter((q, idx) => {
+            const currentNum = q.number !== undefined ? q.number : (q.id !== undefined ? q.id : idx + 1);
+            return currentNum !== targetNum && (idx + 1) !== targetNum;
+        });
+
+        if (questions.length === originalCount) {
+            return res.status(404).json({ success: false, message: "Question not found in set." });
+        }
+
+        // Re-index remaining questions cleanly
+        questions.forEach((q, idx) => {
+            q.id = idx + 1;
+            q.number = idx + 1;
+        });
+
+        db.prepare("UPDATE question_sets SET questions_json = ?, questions_count = ? WHERE UPPER(id) = ?")
+          .run(JSON.stringify(questions), questions.length, setId);
+
+        return res.json({
+            success: true,
+            message: `Question ${targetNum} deleted successfully.`,
+            remainingCount: questions.length
+        });
+    } catch (error) {
+        return res.status(500).json({ success: false, message: "Failed to delete question: " + error.message });
     }
 });
 

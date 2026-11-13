@@ -812,6 +812,60 @@
             line-height: 1.6;
         }
 
+        /* BOTTOM RIGHT BIN BUTTON (NO SQUARE, BECOMES RED ON HOVER/FOCUS) */
+        .q-footer {
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            margin-top: 12px;
+            padding-top: 8px;
+        }
+
+        .bin-btn {
+            background: transparent !important;
+            background-color: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            outline: none !important;
+            padding: 4px !important;
+            margin: 0 !important;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            color: #94A3B8 !important;
+            transition: color 0.18s ease, transform 0.18s ease;
+            -webkit-appearance: none;
+            appearance: none;
+            border-radius: 0 !important;
+        }
+
+        .bin-btn svg {
+            display: block;
+            pointer-events: none;
+            stroke: currentColor;
+            fill: none;
+            transition: stroke 0.18s ease;
+        }
+
+        .bin-btn:hover,
+        .bin-btn:focus,
+        .bin-btn:focus-visible {
+            color: #EF4444 !important;
+            background: transparent !important;
+            background-color: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            outline: none !important;
+            transform: scale(1.15);
+        }
+
+        .bin-btn:hover svg,
+        .bin-btn:focus svg,
+        .bin-btn:focus-visible svg {
+            stroke: #EF4444 !important;
+        }
+
         /* STUDENTS SECTION TABLE */
 
         .students-panel {
