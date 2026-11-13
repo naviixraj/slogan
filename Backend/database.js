@@ -50,6 +50,15 @@ db.exec(`
     );
 `);
 
+// Create sessions table for persistent login sessions across restarts
+db.exec(`
+    CREATE TABLE IF NOT EXISTS sessions (
+        sid TEXT PRIMARY KEY,
+        sess TEXT NOT NULL,
+        expire INTEGER NOT NULL
+    );
+`);
+
 // Seed Mock Test 01 if question_sets is empty
 try {
     const countCheck = db.prepare("SELECT COUNT(*) as count FROM question_sets").get();

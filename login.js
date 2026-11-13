@@ -36,7 +36,8 @@ const requestedPage = params.get("next");
 
 const allowedPages = [
     "exam.html",
-    "tests.html"
+    "tests.html",
+    "admin.html"
 ];
 
 const redirectPage = "tests.html";
@@ -119,7 +120,7 @@ loginForm.addEventListener("submit", async (event) => {
         if (userRole === "Admin" || userRole === "Master Admin") {
             window.location.replace("admin.html");
         } else {
-            const targetPage = requestedPage && allowedPages.includes(requestedPage) ? requestedPage : redirectPage;
+            const targetPage = requestedPage && requestedPage !== "admin.html" && allowedPages.includes(requestedPage) ? requestedPage : redirectPage;
             window.location.replace(targetPage);
         }
 

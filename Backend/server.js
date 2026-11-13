@@ -60,11 +60,61 @@ const certKeyPath = path.join(ROOT, "certs", "localhost-key.pem");
 const certPath = path.join(ROOT, "certs", "localhost.pem");
 const hasCerts = fs.existsSync(certKeyPath) && fs.existsSync(certPath);
 
+// Persistent SQLite Session Store
+const Store = session.Store;
+class SqliteSessionStore extends Store {
+    get(sid, cb) {
+        try {
+            const row = db.prepare("SELECT sess, expire FROM sessions WHERE sid = ?").get(sid);
+            if (!row) return cb(null, null);
+            if (row.expire && row.expire < Date.now()) {
+                db.prepare("DELETE FROM sessions WHERE sid = ?").run(sid);
+                return cb(null, null);
+            }
+            return cb(null, JSON.parse(row.sess));
+        } catch (e) {
+            return cb(e);
+        }
+    }
+    set(sid, sess, cb) {
+        try {
+            const maxAge = sess.cookie?.maxAge || 4 * 60 * 60 * 1000;
+            const expire = Date.now() + maxAge;
+            db.prepare(`
+                INSERT INTO sessions (sid, sess, expire) VALUES (?, ?, ?)
+                ON CONFLICT(sid) DO UPDATE SET sess = excluded.sess, expire = excluded.expire
+            `).run(sid, JSON.stringify(sess), expire);
+            if (cb) cb(null);
+        } catch (e) {
+            if (cb) cb(e);
+        }
+    }
+    destroy(sid, cb) {
+        try {
+            db.prepare("DELETE FROM sessions WHERE sid = ?").run(sid);
+            if (cb) cb(null);
+        } catch (e) {
+            if (cb) cb(e);
+        }
+    }
+    touch(sid, sess, cb) {
+        try {
+            const maxAge = sess.cookie?.maxAge || 4 * 60 * 60 * 1000;
+            const expire = Date.now() + maxAge;
+            db.prepare("UPDATE sessions SET expire = ? WHERE sid = ?").run(expire, sid);
+            if (cb) cb(null);
+        } catch (e) {
+            if (cb) cb(e);
+        }
+    }
+}
+
 // Session configuration
 app.use(
     session({
         name: "slogon.sid",
         secret: process.env.SESSION_SECRET,
+        store: new SqliteSessionStore(),
         resave: false,
         saveUninitialized: false,
         cookie: {
@@ -86,6 +136,25 @@ app.use((req, res, next) => {
         return res.sendStatus(404);
     }
 
+    next();
+});
+
+// Guard: Master Admin portal page
+app.get("/admin.html", (req, res, next) => {
+    if (!req.session.candidate) {
+        return res.redirect("/login.html?next=admin.html");
+    }
+    if (req.session.candidate.role !== "Admin") {
+        return res.redirect("/tests.html");
+    }
+    next();
+});
+
+// Guard: Candidate dashboard page
+app.get("/tests.html", (req, res, next) => {
+    if (!req.session.candidate) {
+        return res.redirect("/login.html?next=tests.html");
+    }
     next();
 });
 

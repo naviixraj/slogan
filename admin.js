@@ -653,6 +653,11 @@ async function handleCreateStudentSubmit() {
 
         const data = await res.json();
         if (!res.ok || !data.success) {
+            if (res.status === 401 || res.status === 403) {
+                alert("Session Expired: Master Administrator privileges required. Please log in with your Admin credentials.");
+                window.location.replace("login.html?next=admin.html");
+                return;
+            }
             throw new Error(data.message || "Failed to create student account.");
         }
 
@@ -702,27 +707,40 @@ async function deleteStudent(id, userIdStr) {
 async function loadAdminProfile() {
     try {
         const res = await fetch("/api/me", { credentials: "same-origin" });
-        if (res.ok) {
-            const data = await res.json();
-            if (data.success && data.candidate) {
-                const name = data.candidate.name || "Master Administrator";
-                const id = data.candidate.userId || "admin";
-                const role = data.candidate.role || "Admin";
-                const email = data.candidate.email || "admin@slogon.edu";
-
-                if (sidebarName) sidebarName.textContent = name;
-                if (dropdownCandidateName) dropdownCandidateName.textContent = name;
-                if (dropdownUserId) dropdownUserId.textContent = id;
-                if (dropdownRole) dropdownRole.textContent = role;
-                if (dropdownEmail) dropdownEmail.textContent = email;
-
-                const inits = name.split(" ").map(w => w[0]).join("").toUpperCase().slice(0, 2) || "MA";
-                if (sidebarAvatar) sidebarAvatar.textContent = inits;
-                if (topAvatar) topAvatar.textContent = inits;
-            }
+        if (!res.ok) {
+            window.location.replace("login.html?next=admin.html");
+            return;
         }
+
+        const data = await res.json();
+        if (!data.success || !data.candidate) {
+            window.location.replace("login.html?next=admin.html");
+            return;
+        }
+
+        if (data.candidate.role !== "Admin") {
+            alert("Access restricted: You are currently signed in as a student candidate. Redirecting to Candidate Examination Dashboard.");
+            window.location.replace("tests.html");
+            return;
+        }
+
+        const name = data.candidate.name || "Master Administrator";
+        const id = data.candidate.userId || "admin";
+        const role = data.candidate.role || "Admin";
+        const email = data.candidate.email || "admin@slogon.edu";
+
+        if (sidebarName) sidebarName.textContent = name;
+        if (dropdownCandidateName) dropdownCandidateName.textContent = name;
+        if (dropdownUserId) dropdownUserId.textContent = id;
+        if (dropdownRole) dropdownRole.textContent = role;
+        if (dropdownEmail) dropdownEmail.textContent = email;
+
+        const inits = name.split(" ").map(w => w[0]).join("").toUpperCase().slice(0, 2) || "MA";
+        if (sidebarAvatar) sidebarAvatar.textContent = inits;
+        if (topAvatar) topAvatar.textContent = inits;
     } catch (e) {
-        console.log("Profile offline");
+        console.log("Profile verification error:", e);
+        window.location.replace("login.html?next=admin.html");
     }
 }
 
