@@ -284,12 +284,138 @@ function requireAdmin(req, res, next) {
     next();
 }
 
-// Helper: parse uploaded exam files into single split questions
-function parseUploadedQuestions(file) {
+// Helper: extract raw text from PDF buffer
+async function extractPdfText(buffer) {
+    try {
+        const pdfModule = require("pdf-parse");
+        if (typeof pdfModule === "function") {
+            const data = await pdfModule(buffer);
+            return data.text || "";
+        } else if (pdfModule && pdfModule.PDFParse) {
+            const parser = new pdfModule.PDFParse({ data: buffer });
+            const result = await parser.getText();
+            if (typeof parser.destroy === "function") {
+                await parser.destroy();
+            }
+            return result.text || "";
+        }
+    } catch (err) {
+        console.error("PDF parse extraction error:", err);
+    }
+    return "";
+}
+
+// Helper: robust parser for MCQ questions from text (PDF or plain text)
+function parseMcqText(text) {
+    if (!text || typeof text !== "string") return [];
+
+    // Strip page number markers and normalize linebreaks
+    const normalized = text
+        .replace(/--\s*\d+\s+of\s+\d+\s*--/gi, "")
+        .replace(/Page\s+\d+(?:\s+of\s+\d+)?/gi, "")
+        .replace(/\r\n/g, "\n")
+        .replace(/\r/g, "\n");
+
+    // Split into question blocks by detecting "Question 1", "Q.1", "Q1", or "1." at start of line
+    const regex = /(?:^|\n)(?=(?:(?:Question|Q)\s*[:\.-]?\s*\d+[\.:\)\s\-]+|\d+[\.\)]\s+))/gi;
+    const rawBlocks = normalized.split(regex).map(b => b.trim()).filter(b => b.length > 5);
+
+    const questions = [];
+
+    rawBlocks.forEach((block, idx) => {
+        // Clean leading question numbering: e.g. "Question 1:", "Q1.", "1."
+        let cleanBlock = block.replace(/^(?:(?:Question|Q)\s*[:\.-]?\s*\d+[\.:\)\s\-]*|\d+[\.\)]\s*)/i, "").trim();
+
+        // Extract explanation if present
+        let explanation = "";
+        const expMatch = cleanBlock.match(/(?:Explanation|Solution|Exp|Sol)[:\s\-]+([\s\S]*)$/i);
+        if (expMatch) {
+            explanation = expMatch[1].trim();
+            cleanBlock = cleanBlock.substring(0, expMatch.index).trim();
+        }
+
+        // Extract answer if present
+        let answer = "A";
+        const ansMatch = cleanBlock.match(/(?:Correct\s*Answer|Answer|Ans|Key)[:\s\-]+([A-Da-d1-4]|\([A-Da-d1-4]\)|\[[A-Da-d1-4]\])/i);
+        if (ansMatch) {
+            const rawLetter = ansMatch[1].replace(/[\(\)\[\]\s]/g, "").toUpperCase();
+            const mapped = rawLetter === "1" ? "A" : rawLetter === "2" ? "B" : rawLetter === "3" ? "C" : rawLetter === "4" ? "D" : rawLetter;
+            if (["A", "B", "C", "D"].includes(mapped)) {
+                answer = mapped;
+            }
+            cleanBlock = cleanBlock.substring(0, ansMatch.index).trim();
+        }
+
+        // Parse options A, B, C, D
+        const optPattern = /(?:^|\n|\s{2,})(?:\(?([A-Da-d1-4])[\.\)\:\-\]]\s*|\(([A-Da-d1-4])\)\s*)/g;
+        const matches = [];
+        let m;
+        while ((m = optPattern.exec(cleanBlock)) !== null) {
+            const optKey = (m[1] || m[2]).toUpperCase();
+            const mapKey = optKey === "1" ? "A" : optKey === "2" ? "B" : optKey === "3" ? "C" : optKey === "4" ? "D" : optKey;
+            matches.push({
+                key: mapKey,
+                index: m.index,
+                matchLen: m[0].length
+            });
+        }
+
+        let questionText = cleanBlock;
+        let options = { A: "", B: "", C: "", D: "" };
+
+        if (matches.length >= 4) {
+            questionText = cleanBlock.substring(0, matches[0].index).trim();
+            for (let i = 0; i < matches.length; i++) {
+                const current = matches[i];
+                const nextIndex = (i + 1 < matches.length) ? matches[i + 1].index : cleanBlock.length;
+                const optText = cleanBlock.substring(current.index + current.matchLen, nextIndex).trim();
+                if (options.hasOwnProperty(current.key)) {
+                    options[current.key] = optText;
+                }
+            }
+        } else {
+            const lines = cleanBlock.split("\n").map(l => l.trim()).filter(Boolean);
+            if (lines.length > 0) {
+                questionText = lines[0];
+                if (lines[1]) options.A = lines[1].replace(/^[A-Da-d1-4][\.\)\:\-\]]\s*/, "");
+                if (lines[2]) options.B = lines[2].replace(/^[A-Da-d1-4][\.\)\:\-\]]\s*/, "");
+                if (lines[3]) options.C = lines[3].replace(/^[A-Da-d1-4][\.\)\:\-\]]\s*/, "");
+                if (lines[4]) options.D = lines[4].replace(/^[A-Da-d1-4][\.\)\:\-\]]\s*/, "");
+            }
+        }
+
+        if (!options.A) options.A = "Option A";
+        if (!options.B) options.B = "Option B";
+        if (!options.C) options.C = "Option C";
+        if (!options.D) options.D = "Option D";
+
+        if (questionText.trim()) {
+            questions.push({
+                id: idx + 1,
+                number: idx + 1,
+                section: "Paper 1",
+                question: questionText.trim(),
+                text: questionText.trim(),
+                options: options,
+                correctAnswer: answer,
+                answer: answer,
+                explanation: explanation
+            });
+        }
+    });
+
+    return questions;
+}
+
+// Helper: parse uploaded exam files into single split questions (supports PDF, Excel, CSV, JSON, TXT)
+async function parseUploadedQuestions(file) {
     const ext = path.extname(file.originalname).toLowerCase();
     let questions = [];
 
-    if (ext === ".json") {
+    if (ext === ".pdf") {
+        const text = await extractPdfText(file.buffer);
+        questions = parseMcqText(text);
+    } else if (ext === ".json") {
         const parsed = JSON.parse(file.buffer.toString("utf8"));
         if (Array.isArray(parsed)) {
             questions = parsed.map((q, idx) => ({
@@ -343,31 +469,9 @@ function parseUploadedQuestions(file) {
             };
         });
     } else {
-        // Plain text or PDF text fallback
+        // Plain text fallback
         const textContent = file.buffer.toString("utf8");
-        const rawBlocks = textContent.split(/(?:(?:Question|Q)\s*\d+[:\.]|^\d+[\.\)])/gim).filter(b => b.trim());
-        if (rawBlocks.length > 0) {
-            questions = rawBlocks.map((block, idx) => {
-                const lines = block.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
-                const qText = lines[0] || `Question ${idx + 1}`;
-                return {
-                    id: idx + 1,
-                    number: idx + 1,
-                    section: "Paper 1",
-                    question: qText,
-                    text: qText,
-                    options: {
-                        A: lines[1] || "Option A",
-                        B: lines[2] || "Option B",
-                        C: lines[3] || "Option C",
-                        D: lines[4] || "Option D"
-                    },
-                    correctAnswer: "A",
-                    answer: "A",
-                    explanation: lines.slice(5).join(" ") || ""
-                };
-            });
-        }
+        questions = parseMcqText(textContent);
     }
 
     return questions;
@@ -426,7 +530,7 @@ app.get("/api/admin/sets/:id", requireAdmin, (req, res) => {
 });
 
 // Upload and parse file into a Question Set with single split questions
-app.post("/api/admin/sets/upload", requireAdmin, upload.single("file"), (req, res) => {
+app.post("/api/admin/sets/upload", requireAdmin, upload.single("file"), async (req, res) => {
     try {
         const { title, subject, duration } = req.body;
         const file = req.file;
@@ -439,12 +543,12 @@ app.post("/api/admin/sets/upload", requireAdmin, upload.single("file"), (req, re
             return res.status(400).json({ success: false, message: "Please select an Excel (.xlsx), CSV, JSON, or PDF file to upload." });
         }
 
-        const questions = parseUploadedQuestions(file);
+        const questions = await parseUploadedQuestions(file);
 
         if (!questions || questions.length === 0) {
             return res.status(400).json({
                 success: false,
-                message: "Unable to extract single questions from the uploaded file. Please ensure the file has rows with Question, Option A, Option B, Option C, Option D, and Answer."
+                message: "Unable to extract single questions from the uploaded file. Please ensure the file contains multiple-choice questions with options (A, B, C, D) and answers."
             });
         }
 

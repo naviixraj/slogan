@@ -223,7 +223,7 @@ function renderSets() {
         const subjStr = (s.subject || "").toLowerCase();
         const matchesSearch = titleStr.includes(term) || idStr.includes(term) || subjStr.includes(term);
         const fileType = (s.file_type || s.fileType || "").toLowerCase();
-        const matchesFilter = filter === "all" || fileType === filter;
+        const matchesFilter = filter === "all" || fileType === filter || (filter === "excel" && (fileType === "xlsx" || fileType === "xls"));
         return matchesSearch && matchesFilter;
     });
 
@@ -466,7 +466,7 @@ async function handleUploadSetSubmit() {
     }
 
     if (!setFileInput || !setFileInput.files || setFileInput.files.length === 0) {
-        alert("Please select an Excel (.xlsx, .xls), CSV, or JSON file to upload.");
+        alert("Please select a PDF (.pdf), Excel (.xlsx, .xls), CSV, or JSON file to upload.");
         return;
     }
 

@@ -593,6 +593,12 @@
             border: 1px solid #C7D2FE;
         }
 
+        .status.pdf-tag {
+            background: #FEE2E2;
+            color: #991B1B;
+            border: 1px solid #FECACA;
+        }
+
         .test-card h2 {
             font-size: 13.5px;
             margin-bottom: 8px;
@@ -1309,6 +1315,7 @@
                                 <option value="excel">Excel (.xlsx)</option>
                                 <option value="csv">CSV (.csv)</option>
                                 <option value="json">JSON (.json)</option>
+                                <option value="pdf">PDF (.pdf)</option>
                             </select>
 
                             <!-- Single animated rotating view toggle button -->
@@ -1414,12 +1421,14 @@
 
                 <p>
                     <strong>How do I add a new Examination Set?</strong><br>
-                    Click the <em>+ Upload Set</em> button in the toolbar. Enter the exam title as you want candidates to see it, select an Excel (.xlsx), CSV, or JSON file, and click submit. The system will automatically parse and split every row into separate questions.
+                    Click the <em>+ Upload Set</em> button in the toolbar. Enter the exam title as you want candidates to see it, select an Excel (.xlsx), CSV, JSON, or PDF file, and click submit. The system will automatically parse and split each question.
                 </p>
 
                 <p>
-                    <strong>What is the required Excel format?</strong><br>
-                    Use standard 7 columns: <code>Question</code>, <code>Option A</code>, <code>Option B</code>, <code>Option C</code>, <code>Option D</code>, <code>Answer</code>, and <code>Explanation</code>. Bilingual questions (English and Tamil) in the same cell are fully supported.
+                    <strong>What formats are supported?</strong><br>
+                    • <strong>PDF (.pdf):</strong> Standard MCQ exam papers with numbered questions, options (A, B, C, D), and answers are automatically parsed.<br>
+                    • <strong>Excel (.xlsx) / CSV:</strong> Standard 7 columns (<code>Question</code>, <code>Option A</code>, <code>Option B</code>, <code>Option C</code>, <code>Option D</code>, <code>Answer</code>, <code>Explanation</code>). Bilingual questions (English and Tamil) are fully supported.<br>
+                    • <strong>JSON (.json):</strong> Array of question objects.
                 </p>
 
                 <p>
@@ -1484,11 +1493,11 @@
                 <input type="text" id="uploadSubject" placeholder="e.g. General Paper" value="General Paper">
             </div>
             <div class="form-field">
-                <label>Select Question Bank File (.xlsx, .csv, .json)</label>
+                <label>Select Question Bank File (.pdf, .xlsx, .csv, .json)</label>
                 <div class="drop-box" id="dropBoxArea">
-                    <input type="file" id="setFileInput" accept=".xlsx,.xls,.csv,.json" style="display: none;">
-                    <p style="font-size: 12px; font-weight: 700; color: var(--charcoal); margin-bottom: 4px;">Choose Excel or CSV file</p>
-                    <span id="selectedFileNameLabel" style="font-size: 11px; color: var(--muted);">Auto-splits each row into an interactive question</span>
+                    <input type="file" id="setFileInput" accept=".pdf,.xlsx,.xls,.csv,.json" style="display: none;">
+                    <p style="font-size: 12px; font-weight: 700; color: var(--charcoal); margin-bottom: 4px;">Choose PDF, Excel, CSV, or JSON file</p>
+                    <span id="selectedFileNameLabel" style="font-size: 11px; color: var(--muted);">Auto-splits each question into an interactive exam question</span>
                 </div>
             </div>
             <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px;">
