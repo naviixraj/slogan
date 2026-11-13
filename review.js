@@ -21,8 +21,9 @@ async function loadAnswerReview() {
         const result = JSON.parse(savedResult);
 
         // Load the same question bank used by the exam.
-        const response = await fetch("data/questions.json", {
-            cache: "no-store"
+        const response = await fetch("/api/mock-tests/mock01/questions", {
+            cache: "no-store",
+            credentials: "same-origin"
         });
 
         if (!response.ok) {
@@ -31,9 +32,10 @@ async function loadAnswerReview() {
             );
         }
 
-        const questions = await response.json();
+        const apiResult = await response.json();
+        const questions = Array.isArray(apiResult) ? apiResult : (apiResult.questions || []);
 
-        if (!Array.isArray(questions)) {
+        if (!Array.isArray(questions) || questions.length === 0) {
             throw new Error("The question bank format is invalid.");
         }
 

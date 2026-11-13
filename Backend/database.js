@@ -1,5 +1,4 @@
-
-const Database = require("better-sqlite3");
+const { DatabaseSync } = require("node:sqlite");
 const path = require("path");
 const fs = require("fs");
 
@@ -7,10 +6,10 @@ const fs = require("fs");
 const dbPath = path.join(__dirname, "candidates.sqlite");
 
 // Create or open the database
-const db = new Database(dbPath);
+const db = new DatabaseSync(dbPath);
 
 // Enable foreign keys
-db.pragma("foreign_keys = ON");
+db.exec("PRAGMA foreign_keys = ON;");
 
 // Create candidates table
 db.exec(`

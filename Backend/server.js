@@ -38,6 +38,10 @@ const loginLimiter = rateLimit({
     }
 });
 
+const certKeyPath = path.join(ROOT, "certs", "localhost-key.pem");
+const certPath = path.join(ROOT, "certs", "localhost.pem");
+const hasCerts = fs.existsSync(certKeyPath) && fs.existsSync(certPath);
+
 // Session configuration
 app.use(
     session({
@@ -47,8 +51,8 @@ app.use(
         saveUninitialized: false,
         cookie: {
             httpOnly: true,
-            secure: true,
-            sameSite: "strict",
+            secure: hasCerts && process.env.NODE_ENV === "production",
+            sameSite: "lax",
             maxAge: 4 * 60 * 60 * 1000
         }
     })
@@ -237,20 +241,23 @@ app.post("/api/logout", (req, res) => {
 // Serve existing website files
 app.use(express.static(ROOT, { index: false }));
 
-// Local HTTPS certificate files
-const HTTPS_OPTIONS = {
-    key: fs.readFileSync(
-        path.join(ROOT, "certs", "localhost-key.pem")
-    ),
-    cert: fs.readFileSync(
-        path.join(ROOT, "certs", "localhost.pem")
-    )
-};
-
-// Start secure HTTPS server
-https.createServer(HTTPS_OPTIONS, app).listen(PORT, () => {
-    console.log("----------------------------------");
-    console.log("SLOGON ACADEMY MOCK TEST SERVER");
-    console.log("----------------------------------");
-    console.log(`Secure server running at https://localhost:${PORT}`);
-});
+// Start server (HTTPS if certificates exist, otherwise HTTP for local development)
+if (hasCerts) {
+    const HTTPS_OPTIONS = {
+        key: fs.readFileSync(certKeyPath),
+        cert: fs.readFileSync(certPath)
+    };
+    https.createServer(HTTPS_OPTIONS, app).listen(PORT, () => {
+        console.log("----------------------------------");
+        console.log("SLOGON ACADEMY MOCK TEST SERVER");
+        console.log("----------------------------------");
+        console.log(`Secure server running at https://localhost:${PORT}`);
+    });
+} else {
+    app.listen(PORT, () => {
+        console.log("----------------------------------");
+        console.log("SLOGON ACADEMY MOCK TEST SERVER");
+        console.log("----------------------------------");
+        console.log(`Server running at http://localhost:${PORT}`);
+    });
+}

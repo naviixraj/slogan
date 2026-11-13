@@ -215,6 +215,14 @@ async function loadCandidate() {
 
         topbarUserId.textContent = `Candidate ID: ${userId}`;
 
+        // Save candidate info for instructions and exam pages
+        localStorage.setItem("candidateInfo", JSON.stringify({
+            name: name,
+            registerNumber: userId,
+            subject: "Tamil",
+            exam: "UGC NET Mock Test 01"
+        }));
+
         renderTests();
 
     } catch (error) {
