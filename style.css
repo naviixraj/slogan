@@ -2253,108 +2253,104 @@ select:focus-visible {
 }
 
 
-.option {
-    min-height: 54px;
-
-    padding: 8px 14px;
-
+.option,
+.option-item {
+    min-height: 52px;
+    padding: 12px 18px;
     border: 1px solid #DDE2E8;
-
-    border-radius: 7px;
-
+    border-radius: 9px;
     background: rgba(255, 255, 255, 0.85);
-
-    backdrop-filter: blur(4px);
-
-    -webkit-backdrop-filter: blur(4px);
-
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
     display: flex;
-
+    flex-direction: row;
     align-items: center;
-
-    gap: 12px;
-
+    gap: 14px;
     cursor: pointer;
-
-    transition:
-        border-color 0.15s ease,
-        background 0.15s ease,
-        box-shadow 0.15s ease;
+    transition: border-color 0.18s ease,
+                background 0.18s ease,
+                box-shadow 0.18s ease,
+                transform 0.1s ease;
+    user-select: none;
+    position: relative;
 }
 
-
-.option:hover {
-    border-color: #9AA7B8;
-
-    background: #FAFBFC;
+.option:hover,
+.option-item:hover {
+    border-color: #176B52;
+    background: rgba(240, 253, 244, 0.9);
+    box-shadow: 0 4px 14px rgba(23, 107, 82, 0.08);
 }
 
-
-.option input {
-    position: absolute;
-
-    opacity: 0;
-
-    pointer-events: none;
+.option-radio,
+.option input[type="radio"],
+.option-item input[type="radio"] {
+    position: static;
+    opacity: 1;
+    pointer-events: auto;
+    width: 18px;
+    height: 18px;
+    accent-color: #176B52;
+    margin: 0;
+    cursor: pointer;
+    flex-shrink: 0;
 }
-
 
 .option-letter {
-    width: 31px;
-    height: 31px;
-
-    border: 1px solid #CBD5E1;
-
+    width: 32px;
+    height: 32px;
+    border: 1.5px solid #CBD5E1;
     border-radius: 50%;
-
-    display: flex;
-
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-
     flex-shrink: 0;
-
     color: #475569;
-
-    font-size: 11px;
-
+    font-size: 13px;
     font-weight: 700;
+    background: #F8FAFC;
+    transition: all 0.2s ease;
 }
-
 
 .option-text {
-    color: #374151;
-
+    flex: 1;
+    color: #1F2937;
     font-family:
         "Noto Sans Tamil",
+        "Poppins",
         "Inter",
         sans-serif;
-
-    font-size: 13px;
-
-    line-height: 1.6;
+    font-size: 14.5px;
+    font-weight: 500;
+    line-height: 1.55;
+    word-break: break-word;
 }
 
-
-/* Selected option */
-
-.option:has(input:checked) {
-    border-color: #0B1F3A;
-
-    background: #F4F7FB;
-
-    box-shadow:
-        0 0 0 1px #0B1F3A;
+/* Selected option highlight */
+.option.selected,
+.option-item.selected,
+.option:has(input:checked),
+.option-item:has(input:checked) {
+    border-color: #176B52;
+    background: #E8F5E9;
+    box-shadow: 0 0 0 1.5px #176B52;
 }
 
+.option.selected .option-letter,
+.option-item.selected .option-letter,
+.option:has(input:checked) .option-letter,
+.option-item:has(input:checked) .option-letter {
+    background: #176B52;
+    border-color: #176B52;
+    color: #FFFFFF;
+}
 
-.option:has(input:checked)
-.option-letter {
-    background: #0B1F3A;
-
-    border-color: #0B1F3A;
-
-    color: #D4AF37;
+.option.selected .option-text,
+.option-item.selected .option-text,
+.option:has(input:checked) .option-text,
+.option-item:has(input:checked) .option-text {
+    color: #11563F;
+    font-weight: 600;
 }
 
 
@@ -3304,12 +3300,13 @@ select:focus-visible {
     }
 
 
-    .option {
-        min-height: 50px;
+    .option,
+    .option-item {
+        min-height: 48px;
 
-        padding: 7px 10px;
+        padding: 9px 12px;
 
-        gap: 9px;
+        gap: 10px;
     }
 
 

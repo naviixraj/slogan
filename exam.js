@@ -722,7 +722,7 @@ if (totalNumberEl) {
                     document.createElement("label");
 
                 optionLabel.className =
-                    "option-item";
+                    "option option-item";
 
 
                 const radio =
@@ -863,7 +863,7 @@ if (totalNumberEl) {
 
         const labels =
             optionsContainerEl.querySelectorAll(
-                ".option-item"
+                ".option, .option-item"
             );
 
         labels.forEach(
