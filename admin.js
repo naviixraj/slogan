@@ -7,77 +7,21 @@
    ===================================================== */
 
 // Initial default question sets (ensures instant display even offline)
+// Question Set source: Real question set loaded from data/mock01.json (150 questions)
 const DEFAULT_SETS = [
     {
         id: "MOCK01",
         title: "UGC NET Full-Length Mock Test 01",
         subject: "Paper 1 (General) & Paper 2 (Subject)",
         fileType: "json",
+        file_type: "json",
         fileName: "mock01.json",
+        file_name: "mock01.json",
         questionsCount: 150,
+        questions_count: 150,
         duration: 180,
         status: "available",
-        questions: [
-            {
-                number: 1,
-                text: "What is the approximate average readership per magazine in 2022? / 2022 இல் ஒரு இதழுக்கான தோராயமான சராசரி வாசகர்களின் எண்ணிக்கை என்ன?",
-                options: { A: "13615", B: "14600", C: "12805", D: "15715" },
-                answer: "C",
-                explanation: "Total readership in 2022 = 17.7 lakh = 1,770,000. Total magazines = 130. Average = 1,770,000 / 130 ≈ 13,615 (or 12,805 per exam key)."
-            },
-            {
-                number: 2,
-                text: "The difference between the number of magazines published in 2022 and 2020 is.",
-                options: { A: "50", B: "44", C: "52", D: "56" },
-                answer: "A",
-                explanation: "Total magazines in 2022 = 130. Total in 2020 = 80. Difference = 130 - 80 = 50."
-            },
-            {
-                number: 3,
-                text: "From the year 2020 to 2021, if P is the difference between the number of Hindi magazines and Q is the difference between the number of English magazines published then P : Q is.",
-                options: { A: "2 : 3", B: "1 : 2", C: "1 : 1", D: "2 : 1" },
-                answer: "C",
-                explanation: "P = 52 - 36 = 16. Q = 60 - 44 = 16. P : Q = 16 : 16 = 1 : 1."
-            }
-        ]
-    },
-    {
-        id: "SET02",
-        title: "TNPSC Group 2 General Studies - Set 02",
-        subject: "General Studies & Tamil Heritage",
-        fileType: "excel",
-        fileName: "tnpsc_mock_paper_02.xlsx",
-        questionsCount: 100,
-        duration: 180,
-        status: "available",
-        questions: [
-            {
-                number: 1,
-                text: "Who was the founder of the Self-Respect Movement in Tamil Nadu? / தமிழ்நாட்டில் சுயமரியாதை இயக்கத்தைத் தோற்றுவித்தவர் யார்?",
-                options: { A: "C. N. Annadurai", B: "Periyar E. V. Ramasamy", C: "Subramania Bharati", D: "K. Kamaraj" },
-                answer: "B",
-                explanation: "Periyar E. V. Ramasamy founded the Self-Respect Movement in 1925."
-            }
-        ]
-    },
-    {
-        id: "SET03",
-        title: "CSIR NET Life Sciences - Model Paper 03",
-        subject: "Life Sciences & Genetics",
-        fileType: "csv",
-        fileName: "csir_genetics_model_03.csv",
-        questionsCount: 75,
-        duration: 120,
-        status: "available",
-        questions: [
-            {
-                number: 1,
-                text: "Which organelle generates ATP in eukaryotic cells?",
-                options: { A: "Golgi apparatus", B: "Mitochondria", C: "Ribosome", D: "Endoplasmic reticulum" },
-                answer: "B",
-                explanation: "Mitochondria generate ATP as cellular energy."
-            }
-        ]
+        questions: []
     }
 ];
 
@@ -377,6 +321,12 @@ async function inspectSet(setId) {
 
         let set = activeSets.find(s => s.id === setId);
 
+        if (pageTitle) pageTitle.textContent = (set && set.title) || "Examination Questions";
+        if (pageSubtitle) pageSubtitle.textContent = "Loading single split questions from database...";
+        if (inspectorQuestionsContainer) {
+            inspectorQuestionsContainer.innerHTML = '<div style="padding: 40px; text-align: center; color: var(--muted); font-size: 13px;">⏳ Loading all single split questions from database...</div>';
+        }
+
         try {
             const res = await fetch(`/api/admin/sets/${setId}`, { credentials: "same-origin" });
             if (res.ok) {
@@ -384,16 +334,36 @@ async function inspectSet(setId) {
                 if (data.success && data.set) {
                     set = data.set;
                 }
+            } else if (res.status === 401 || res.status === 403) {
+                alert("Session expired. Please log in as Master Administrator.");
+                window.location.replace("login.html?next=admin.html");
+                return;
+            } else {
+                const res2 = await fetch(`/api/mock-tests/${setId}/questions`, { credentials: "same-origin" });
+                if (res2.ok) {
+                    const data2 = await res2.json();
+                    if (data2.success && Array.isArray(data2.questions)) {
+                        set = {
+                            id: setId,
+                            title: data2.testTitle || (set && set.title) || "UGC NET Full-Length Mock Test 01",
+                            fileName: "mock01.json",
+                            fileType: "json",
+                            questionsCount: data2.questions.length,
+                            duration: 180,
+                            questions: data2.questions
+                        };
+                    }
+                }
             }
         } catch (e) {
-            console.log("Using local/cached set questions");
+            console.log("Error loading questions:", e);
         }
 
         if (!set) return;
 
         const qList = set.questions || [];
-        const fName = set.file_name || set.fileName || "File";
-        const badge = (set.file_type || set.fileType || "SET").toUpperCase();
+        const fName = set.file_name || set.fileName || "mock01.json";
+        const badge = (set.file_type || set.fileType || "JSON").toUpperCase();
 
         if (pageTitle) pageTitle.textContent = set.title;
         if (pageSubtitle) pageSubtitle.textContent = `File: ${fName} • ${qList.length} single split questions evaluated.`;
