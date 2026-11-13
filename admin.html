@@ -515,6 +515,7 @@
         }
 
         .test-card {
+            position: relative;
             background: rgba(255, 255, 255, 0.78);
             backdrop-filter: blur(6px);
             -webkit-backdrop-filter: blur(6px);
@@ -656,6 +657,7 @@
         .list-view .test-card {
             display: grid;
             grid-template-columns: 4px 1fr;
+            position: relative;
         }
 
         .list-view .accent {
@@ -667,6 +669,7 @@
             grid-template-columns: 1.1fr 1fr auto;
             align-items: center;
             gap: 15px;
+            padding-right: 58px;
         }
 
         .list-view .card-top,
@@ -683,6 +686,17 @@
         .list-view .start {
             width: 190px;
             margin: 0;
+        }
+
+        .set-delete-btn {
+            position: absolute !important;
+            right: 18px !important;
+            bottom: 14px !important;
+            z-index: 10;
+        }
+
+        .test-grid:not(.list-view) .card-btn-row {
+            padding-right: 36px;
         }
 
         /* LEVEL 2: SPLIT QUESTIONS INSPECTOR */

@@ -281,6 +281,7 @@ function renderSets() {
         `;
 
         const btnRow = document.createElement("div");
+        btnRow.className = "card-btn-row";
         btnRow.style.display = "flex";
         btnRow.style.alignItems = "center";
         btnRow.style.gap = "8px";
@@ -297,7 +298,7 @@ function renderSets() {
 
         const delBtn = document.createElement("button");
         delBtn.type = "button";
-        delBtn.className = "bin-btn";
+        delBtn.className = "bin-btn set-delete-btn";
         delBtn.title = `Delete Question Set "${set.title}"`;
         delBtn.setAttribute("aria-label", `Delete Question Set "${set.title}"`);
         delBtn.innerHTML = `
@@ -310,10 +311,9 @@ function renderSets() {
             </svg>
         `;
         delBtn.addEventListener("click", () => deleteSet(set.id));
-        btnRow.appendChild(delBtn);
 
         body.append(top, titleH2, subP, metaDiv, btnRow);
-        card.append(accent, body);
+        card.append(accent, body, delBtn);
         testGrid.appendChild(card);
     });
 }
