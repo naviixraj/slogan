@@ -130,6 +130,7 @@ const closeUploadModalButton = document.getElementById("closeUploadModalButton")
 const cancelUploadButton = document.getElementById("cancelUploadButton");
 const submitUploadButton = document.getElementById("submitUploadButton");
 const setFileInput = document.getElementById("setFileInput");
+const dropBoxArea = document.getElementById("dropBoxArea");
 const selectedFileNameLabel = document.getElementById("selectedFileNameLabel");
 const uploadExamTitle = document.getElementById("uploadExamTitle");
 const uploadSubject = document.getElementById("uploadSubject");
@@ -662,17 +663,7 @@ async function handleCreateStudentSubmit() {
         if (newEmail) newEmail.value = "";
         await fetchStudents();
     } catch (err) {
-        activeStudents.unshift({
-            id: Date.now(),
-            user_id: userIdVal,
-            candidate_name: nameVal,
-            email: emailVal || `${userIdVal}@slogon.edu`,
-            role: "Student",
-            active: 1
-        });
-        renderStudents();
-        closeModal(studentModal);
-        alert(`🎉 Student "${nameVal}" (${userIdVal}) registered successfully!`);
+        alert(`❌ Enrollment Failed: ${err.message}`);
     } finally {
         if (createStudentBtn) {
             createStudentBtn.disabled = false;
@@ -697,10 +688,10 @@ async function deleteStudent(id, userIdStr) {
             throw new Error(data.message || "Failed to delete student.");
         }
 
+        alert(`Candidate "${userIdStr}" has been removed.`);
         await fetchStudents();
     } catch (err) {
-        activeStudents = activeStudents.filter(s => s.user_id !== userIdStr && s.id !== id);
-        renderStudents();
+        alert("Failed to delete candidate: " + err.message);
     }
 }
 
@@ -755,7 +746,7 @@ async function fetchStudents() {
         const res = await fetch("/api/admin/students", { credentials: "same-origin" });
         if (res.ok) {
             const data = await res.json();
-            if (data.success && Array.isArray(data.students) && data.students.length > 0) {
+            if (data.success && Array.isArray(data.students)) {
                 activeStudents = data.students;
                 renderStudents();
             }
@@ -789,7 +780,10 @@ function bindEventListeners() {
     if (cancelUploadButton) cancelUploadButton.addEventListener("click", () => closeModal(uploadModal));
     if (submitUploadButton) submitUploadButton.addEventListener("click", handleUploadSetSubmit);
 
-    // File Selector
+    // File Selector & Drop Box
+    if (dropBoxArea && setFileInput) {
+        dropBoxArea.addEventListener("click", () => setFileInput.click());
+    }
     if (setFileInput) {
         setFileInput.addEventListener("change", () => {
             if (selectedFileNameLabel && setFileInput.files.length > 0) {

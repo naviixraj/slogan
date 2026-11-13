@@ -1417,7 +1417,7 @@
             </div>
             <div class="form-field">
                 <label>Select Question Bank File (.xlsx, .csv, .json)</label>
-                <div class="drop-box" onclick="document.getElementById('setFileInput').click()">
+                <div class="drop-box" id="dropBoxArea">
                     <input type="file" id="setFileInput" accept=".xlsx,.xls,.csv,.json" style="display: none;">
                     <p style="font-size: 12px; font-weight: 700; color: var(--charcoal); margin-bottom: 4px;">Choose Excel or CSV file</p>
                     <span id="selectedFileNameLabel" style="font-size: 11px; color: var(--muted);">Auto-splits each row into an interactive question</span>

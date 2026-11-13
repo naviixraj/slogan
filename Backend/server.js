@@ -113,7 +113,7 @@ app.post("/api/login", loginLimiter, (req, res) => {
     const candidate = db.prepare(`
         SELECT id, user_id, password_hash, candidate_name, email, role, active
         FROM candidates
-        WHERE user_id = ?
+        WHERE LOWER(TRIM(user_id)) = LOWER(TRIM(?))
     `).get(userId.trim());
 
     if (
@@ -443,23 +443,32 @@ app.post("/api/admin/students", requireAdmin, (req, res) => {
             return res.status(400).json({ success: false, message: "User ID, Candidate Name, and Password are required." });
         }
 
-        const cleanUserId = userId.trim().toLowerCase();
-        const existing = db.prepare("SELECT id FROM candidates WHERE user_id = ?").get(cleanUserId);
+        const cleanUserId = userId.trim();
+        const existing = db.prepare("SELECT id FROM candidates WHERE LOWER(TRIM(user_id)) = LOWER(TRIM(?))").get(cleanUserId);
         if (existing) {
-            return res.status(400).json({ success: false, message: "Candidate User ID already exists. Choose a unique User ID." });
+            return res.status(400).json({ success: false, message: `Candidate User ID "${cleanUserId}" already exists. Choose a unique User ID.` });
         }
 
         const passwordHash = bcrypt.hashSync(password, 12);
-        const candidateEmail = email && email.trim() ? email.trim() : `${cleanUserId}@slogon.edu`;
+        const candidateEmail = email && email.trim() ? email.trim() : `${cleanUserId.toLowerCase()}@slogon.edu`;
         const candidateRole = role === "Admin" ? "Admin" : "Student";
 
-        db.prepare(`
+        const info = db.prepare(`
             INSERT INTO candidates (user_id, password_hash, candidate_name, email, role, active)
             VALUES (?, ?, ?, ?, ?, 1)
         `).run(cleanUserId, passwordHash, candidateName.trim(), candidateEmail, candidateRole);
 
         return res.json({
             success: true,
+            id: info.lastInsertRowid,
+            student: {
+                id: info.lastInsertRowid,
+                user_id: cleanUserId,
+                candidate_name: candidateName.trim(),
+                email: candidateEmail,
+                role: candidateRole,
+                active: 1
+            },
             message: `Candidate account for "${candidateName.trim()}" (${cleanUserId}) created successfully!`
         });
     } catch (error) {
