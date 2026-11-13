@@ -83,13 +83,17 @@ body {
 
     padding: 30px 20px;
 
-    background:
+    background-color: #F5F6F8;
 
-        linear-gradient(
-            135deg,
-            #F5F6F8 0%,
-            #E9EDF3 100%
-        );
+    background-image: url('slogon-bg.png');
+
+    background-repeat: no-repeat;
+
+    background-position: center center;
+
+    background-attachment: fixed;
+
+    background-size: min(440px, 65vw);
 
 }
 
@@ -677,7 +681,17 @@ select:focus-visible {
 
 .instructions-body {
 
-    background: #F5F6F8;
+    background-color: #F5F6F8;
+
+    background-image: url('slogon-bg.png');
+
+    background-repeat: no-repeat;
+
+    background-position: center center;
+
+    background-attachment: fixed;
+
+    background-size: min(440px, 65vw);
 
     min-height: 100vh;
 
@@ -1805,7 +1819,17 @@ select:focus-visible {
 .exam-body {
     margin: 0;
 
-    background: #F5F6F8;
+    background-color: #F5F6F8;
+
+    background-image: url('slogon-bg.png');
+
+    background-repeat: no-repeat;
+
+    background-position: center center;
+
+    background-attachment: fixed;
+
+    background-size: min(440px, 65vw);
 
     color: #1F2937;
 
@@ -3371,7 +3395,12 @@ select:focus-visible {
 ========================================================= */
 
 .result-page {
-    background: #F5F6F8;
+    background-color: #F5F6F8;
+    background-image: url('slogon-bg.png');
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-attachment: fixed;
+    background-size: min(440px, 65vw);
     color: #1F2937;
     min-height: 100vh;
 }

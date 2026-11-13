@@ -29,10 +29,21 @@
         }
 
         body {
-            background: var(--ivory);
+            background-color: var(--ivory);
+            background-image: url('slogon-bg.png');
+            background-repeat: no-repeat;
+            background-position: calc(50% + 115px) center;
+            background-attachment: fixed;
+            background-size: min(440px, 60vw);
             color: var(--charcoal);
             font-family: Inter, Arial, sans-serif;
             min-height: 100vh;
+        }
+
+        @media (max-width: 900px) {
+            body {
+                background-position: center center;
+            }
         }
 
         button, input, select {
