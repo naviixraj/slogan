@@ -34,6 +34,51 @@ try {
     db.exec("ALTER TABLE candidates ADD COLUMN role TEXT DEFAULT 'Student';");
 } catch (e) {}
 
-console.log("SLOGON candidate database is ready.");
+// Create question_sets table
+db.exec(`
+    CREATE TABLE IF NOT EXISTS question_sets (
+        id TEXT PRIMARY KEY,
+        title TEXT NOT NULL,
+        subject TEXT,
+        file_name TEXT,
+        file_type TEXT,
+        questions_count INTEGER DEFAULT 0,
+        duration INTEGER DEFAULT 180,
+        status TEXT DEFAULT 'available',
+        questions_json TEXT NOT NULL,
+        created_at TEXT DEFAULT CURRENT_TIMESTAMP
+    );
+`);
+
+// Seed Mock Test 01 if question_sets is empty
+try {
+    const countCheck = db.prepare("SELECT COUNT(*) as count FROM question_sets").get();
+    if (countCheck && countCheck.count === 0) {
+        const mock01Path = path.join(__dirname, "..", "data", "mock01.json");
+        if (fs.existsSync(mock01Path)) {
+            const rawMock = fs.readFileSync(mock01Path, "utf8");
+            const parsedMock = JSON.parse(rawMock);
+            db.prepare(`
+                INSERT INTO question_sets (id, title, subject, file_name, file_type, questions_count, duration, status, questions_json)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+            `).run(
+                "MOCK01",
+                "UGC NET Full-Length Mock Test 01",
+                "Paper 1 (General) & Paper 2 (Subject)",
+                "mock01.json",
+                "json",
+                parsedMock.length,
+                180,
+                "available",
+                rawMock
+            );
+            console.log("Seeded initial Mock Test 01 into question_sets.");
+        }
+    }
+} catch (err) {
+    console.error("Error seeding initial question set:", err);
+}
+
+console.log("SLOGON candidate and question database is ready.");
 
 module.exports = db;

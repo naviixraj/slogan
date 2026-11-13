@@ -1455,7 +1455,7 @@
             </div>
             <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px;">
                 <button class="btn-cancel-modal" onclick="closeModal('studentModal')">Cancel</button>
-                <button class="btn-upload-set" style="height: 40px; padding: 0 20px;" onclick="alert('Candidate enrolled in database!'); closeModal('studentModal');">Create Student Login</button>
+                <button class="btn-upload-set" id="createStudentBtn" style="height: 40px; padding: 0 20px;" onclick="handleCreateStudentSubmit()">Create Student Login</button>
             </div>
         </div>
     </div>
@@ -1464,79 +1464,10 @@
     <script>
         "use strict";
 
-        // QUESTION SETS REPOSITORY
-        let mockSets = [
-            {
-                id: "SET01",
-                title: "UGC NET Paper 1 - Mock Test 01",
-                subject: "General Paper 1",
-                fileType: "json",
-                fileBadge: "JSON",
-                fileName: "mock01.json",
-                questionsCount: 150,
-                duration: 180,
-                status: "available",
-                statusLabel: "Published",
-                questions: [
-                    {
-                        number: 1,
-                        text: "What is the approximate average readership per magazine in 2022? / 2022 இல் ஒரு இதழுக்கான தோராயமான சராசரி வாசகர்களின் எண்ணிக்கை என்ன?",
-                        options: { A: "13615", B: "14600", C: "12805", D: "15715" },
-                        answer: "B",
-                        explanation: "Total circulation in 2022 divided by count gives approximately 14,600."
-                    },
-                    {
-                        number: 2,
-                        text: "Which category of research focuses on immediate practical problem solving? / நடைமுறைச் சிக்கல்களைத் தீர்ப்பதில் கவனம் செலுத்தும் ஆய்வு வகை எது?",
-                        options: { A: "Fundamental Research", B: "Action Research", C: "Historical Research", D: "Conceptual Research" },
-                        answer: "B",
-                        explanation: "Action research focuses on immediate application to practical issues."
-                    }
-                ]
-            },
-            {
-                id: "SET02",
-                title: "TNPSC Group 2 General Studies - Set 02",
-                subject: "General Studies & Tamil Heritage",
-                fileType: "excel",
-                fileBadge: "EXCEL (.XLSX)",
-                fileName: "tnpsc_mock_paper_02.xlsx",
-                questionsCount: 100,
-                duration: 180,
-                status: "available",
-                statusLabel: "Published",
-                questions: [
-                    {
-                        number: 1,
-                        text: "Who was the founder of the Self-Respect Movement in Tamil Nadu? / தமிழ்நாட்டில் சுயமரியாதை இயக்கத்தைத் தோற்றுவித்தவர் யார்?",
-                        options: { A: "C. N. Annadurai", B: "Periyar E. V. Ramasamy", C: "Subramania Bharati", D: "K. Kamaraj" },
-                        answer: "B",
-                        explanation: "Periyar E. V. Ramasamy founded the Self-Respect Movement in 1925."
-                    }
-                ]
-            },
-            {
-                id: "SET03",
-                title: "CSIR NET Life Sciences - Model Paper 03",
-                subject: "Life Sciences & Genetics",
-                fileType: "csv",
-                fileBadge: "CSV (.CSV)",
-                fileName: "csir_genetics_model_03.csv",
-                questionsCount: 75,
-                duration: 120,
-                status: "available",
-                statusLabel: "Draft",
-                questions: [
-                    {
-                        number: 1,
-                        text: "Which organelle generates ATP in eukaryotic cells?",
-                        options: { A: "Golgi apparatus", B: "Mitochondria", C: "Ribosome", D: "Endoplasmic reticulum" },
-                        answer: "B",
-                        explanation: "Mitochondria generate ATP as cellular energy."
-                    }
-                ]
-            }
-        ];
+        // Global State
+        let activeSets = [];
+        let activeStudents = [];
+        let currentViewingSet = null;
 
         const testGrid = document.getElementById("testGrid");
         const searchInput = document.getElementById("searchInput");
@@ -1558,7 +1489,10 @@
         const inspectorQuestionsContainer = document.getElementById("inspectorQuestionsContainer");
         const inspectorMetaBadge = document.getElementById("inspectorMetaBadge");
 
-        // PROFILE DROPDOWN & LOGOUT ELEMENTS
+        const studentTableBody = document.getElementById("studentTableBody");
+        const studentSearchInput = document.getElementById("studentSearchInput");
+
+        // Profile & Modal Elements
         const topAvatarButton = document.getElementById("topAvatarButton");
         const profileDropdownWrapper = document.getElementById("profileDropdownWrapper");
         const dropdownLogoutButton = document.getElementById("dropdownLogoutButton");
@@ -1568,11 +1502,15 @@
         const logoutCloseIconButton = document.getElementById("logoutCloseIconButton");
 
         document.addEventListener("DOMContentLoaded", async () => {
-            renderSets();
             initViewToggle();
             bindEvents();
+            await loadAdminProfile();
+            await fetchSets();
+            await fetchStudents();
+        });
 
-            // Load admin profile from server
+        // 1. ADMIN PROFILE
+        async function loadAdminProfile() {
             try {
                 const res = await fetch("/api/me", { credentials: "same-origin" });
                 if (res.ok) {
@@ -1593,28 +1531,50 @@
                         document.getElementById("sidebarAvatar").textContent = inits;
                         document.getElementById("topAvatar").textContent = inits;
                     }
+                } else if (res.status === 401) {
+                    window.location.replace("login.html");
                 }
             } catch (e) {
                 console.error("Failed to load profile", e);
             }
-        });
+        }
+
+        // 2. FETCH QUESTION SETS FROM SERVER
+        async function fetchSets() {
+            try {
+                const res = await fetch("/api/admin/sets", { credentials: "same-origin" });
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.success && Array.isArray(data.sets)) {
+                        activeSets = data.sets;
+                        renderSets();
+                    }
+                }
+            } catch (e) {
+                console.error("Error fetching sets:", e);
+            }
+        }
 
         // RENDER TEST SETS (EXACT TEST-CARD TYPE AS TESTS.HTML)
         function renderSets() {
             const term = searchInput.value.trim().toLowerCase();
             const filter = statusFilter.value;
 
-            const matches = mockSets.filter(s => {
-                const matchesSearch = s.title.toLowerCase().includes(term) || s.id.toLowerCase().includes(term) || s.subject.toLowerCase().includes(term);
-                const matchesFilter = filter === "all" || s.fileType === filter;
+            const matches = activeSets.filter(s => {
+                const titleStr = (s.title || "").toLowerCase();
+                const idStr = (s.id || "").toLowerCase();
+                const subjStr = (s.subject || "").toLowerCase();
+                const matchesSearch = titleStr.includes(term) || idStr.includes(term) || subjStr.includes(term);
+                const fileType = (s.file_type || s.fileType || "").toLowerCase();
+                const matchesFilter = filter === "all" || fileType === filter;
                 return matchesSearch && matchesFilter;
             });
 
             testGrid.innerHTML = "";
-            resultCount.textContent = `Showing ${matches.length} of ${mockSets.length} question sets`;
+            resultCount.textContent = `Showing ${matches.length} of ${activeSets.length} question sets`;
 
             if (!matches.length) {
-                testGrid.innerHTML = '<div style="grid-column: 1 / -1; background: #FFFFFF; border: 1px dashed #D8DED7; border-radius: 10px; padding: 35px; text-align: center; color: var(--muted); font-size: 12px;">No question sets match your search.</div>';
+                testGrid.innerHTML = '<div style="grid-column: 1 / -1; background: #FFFFFF; border: 1px dashed #D8DED7; border-radius: 10px; padding: 35px; text-align: center; color: var(--muted); font-size: 12px;">No question sets match your search. Click "+ Upload Set" to create one.</div>';
                 return;
             }
 
@@ -1622,23 +1582,36 @@
                 const card = document.createElement("article");
                 card.className = "test-card";
 
+                const fileBadge = (set.file_type || set.fileType || "SET").toUpperCase();
+                const fName = set.file_name || set.fileName || "File";
+                const qCount = set.questions_count !== undefined ? set.questions_count : (set.questionsCount || 0);
+                const dur = set.duration || 180;
+                const statusLabel = set.status === "available" ? "Published" : "Draft";
+
                 card.innerHTML = `
                     <div class="accent"></div>
                     <div class="card-body">
                         <div class="card-top">
-                            <span class="test-code">${set.id} • ${set.fileBadge}</span>
-                            <span class="status available">${set.statusLabel}</span>
+                            <span class="test-code">${set.id} • ${fileBadge}</span>
+                            <span class="status available">${statusLabel}</span>
                         </div>
                         <h2>${set.title}</h2>
-                        <p>${set.subject} — Parsed from ${set.fileName}</p>
+                        <p>${set.subject || "General Paper"} — Parsed from ${fName}</p>
                         <div class="meta">
-                            <span>${set.questionsCount} Questions</span>
-                            <span>${set.duration} Mins</span>
+                            <span>${qCount} Questions</span>
+                            <span>${dur} Mins</span>
                             <span>Auto-split ready</span>
                         </div>
-                        <button class="start" type="button" onclick="inspectSet('${set.id}')">
-                            Inspect Questions ➔
-                        </button>
+                        <div style="display: flex; gap: 8px; margin-top: auto;">
+                            <button class="start" style="flex: 1;" type="button" onclick="inspectSet('${set.id}')">
+                                Inspect Questions ➔
+                            </button>
+                            ${set.id !== "MOCK01" ? `
+                            <button type="button" onclick="deleteSet('${set.id}')" title="Delete Question Set" style="padding: 0 12px; background: #FFF5F5; border: 1px solid #FED7D7; border-radius: 8px; color: #C53030; cursor: pointer; font-size: 12px; font-weight: 700; transition: all 0.2s ease;">
+                                ✕
+                            </button>
+                            ` : ''}
+                        </div>
                     </div>
                 `;
 
@@ -1663,51 +1636,74 @@
             });
         }
 
-        // OPEN SET AND INSPECT QUESTIONS
-        function inspectSet(setId) {
-            const set = mockSets.find(s => s.id === setId);
-            if (!set) return;
+        // 3. OPEN SET AND INSPECT SPLIT QUESTIONS
+        async function inspectSet(setId) {
+            try {
+                inspectorQuestionsContainer.innerHTML = '<div style="padding: 40px; text-align: center; color: var(--muted); font-size: 13px;">Loading single split questions from database...</div>';
+                setsDirectoryView.style.display = "none";
+                questionsInspectorView.style.display = "block";
 
-            setsDirectoryView.style.display = "none";
-            questionsInspectorView.style.display = "block";
+                const res = await fetch(`/api/admin/sets/${setId}`, { credentials: "same-origin" });
+                if (!res.ok) {
+                    throw new Error("Failed to load question set");
+                }
 
-            pageTitle.textContent = set.title;
-            pageSubtitle.textContent = `File: ${set.fileName} • ${set.questionsCount} single questions split and evaluated.`;
-            inspectorMetaBadge.textContent = `${set.fileBadge} • Duration: ${set.duration} Mins`;
+                const data = await res.json();
+                const set = data.set;
+                currentViewingSet = set;
 
-            inspectorQuestionsContainer.innerHTML = set.questions.map(q => `
-                <div class="question-card">
-                    <div class="q-header">
-                        <span class="q-badge">QUESTION ${String(q.number).padStart(2, '0')}</span>
-                        <span style="font-size: 11px; color: var(--muted); font-weight: 600;">Single Split Question</span>
-                    </div>
-                    <div class="q-title">${q.text}</div>
-                    <div class="options-grid">
-                        <div class="option-box ${q.answer === 'A' ? 'is-correct' : ''}">
-                            <span class="opt-circle">A</span>
-                            <span>${q.options.A} ${q.answer === 'A' ? '(Correct Answer ✓)' : ''}</span>
-                        </div>
-                        <div class="option-box ${q.answer === 'B' ? 'is-correct' : ''}">
-                            <span class="opt-circle">B</span>
-                            <span>${q.options.B} ${q.answer === 'B' ? '(Correct Answer ✓)' : ''}</span>
-                        </div>
-                        <div class="option-box ${q.answer === 'C' ? 'is-correct' : ''}">
-                            <span class="opt-circle">C</span>
-                            <span>${q.options.C} ${q.answer === 'C' ? '(Correct Answer ✓)' : ''}</span>
-                        </div>
-                        <div class="option-box ${q.answer === 'D' ? 'is-correct' : ''}">
-                            <span class="opt-circle">D</span>
-                            <span>${q.options.D} ${q.answer === 'D' ? '(Correct Answer ✓)' : ''}</span>
-                        </div>
-                    </div>
-                    <div class="q-explanation">
-                        <strong>💡 Solution Explanation:</strong>
-                        ${q.explanation}
-                    </div>
-                </div>
-            `).join("");
+                pageTitle.textContent = set.title;
+                pageSubtitle.textContent = `File: ${set.fileName || set.file_name} • ${set.questions.length} single split questions evaluated.`;
+                inspectorMetaBadge.textContent = `${(set.fileType || set.file_type || "FILE").toUpperCase()} • Duration: ${set.duration} Mins • Total ${set.questions.length} Questions`;
 
-            window.scrollTo({ top: 0, behavior: "smooth" });
+                inspectorQuestionsContainer.innerHTML = set.questions.map((q, idx) => {
+                    const qNum = q.number || q.id || (idx + 1);
+                    const qText = q.question || q.text || "";
+                    const optA = q.options?.A || "";
+                    const optB = q.options?.B || "";
+                    const optC = q.options?.C || "";
+                    const optD = q.options?.D || "";
+                    const correct = String(q.correctAnswer || q.answer || "A").trim().toUpperCase();
+                    const exp = q.explanation || "No solution explanation provided.";
+
+                    return `
+                        <div class="question-card">
+                            <div class="q-header">
+                                <span class="q-badge">QUESTION ${String(qNum).padStart(2, '0')}</span>
+                                <span style="font-size: 11px; color: var(--muted); font-weight: 600;">Single Split Question • ${q.section || "Paper 1"}</span>
+                            </div>
+                            <div class="q-title">${qText}</div>
+                            <div class="options-grid">
+                                <div class="option-box ${correct === 'A' ? 'is-correct' : ''}">
+                                    <span class="opt-circle">A</span>
+                                    <span>${optA} ${correct === 'A' ? '<strong style="color: var(--emerald-dark); margin-left: 6px;">(Correct Answer ✓)</strong>' : ''}</span>
+                                </div>
+                                <div class="option-box ${correct === 'B' ? 'is-correct' : ''}">
+                                    <span class="opt-circle">B</span>
+                                    <span>${optB} ${correct === 'B' ? '<strong style="color: var(--emerald-dark); margin-left: 6px;">(Correct Answer ✓)</strong>' : ''}</span>
+                                </div>
+                                <div class="option-box ${correct === 'C' ? 'is-correct' : ''}">
+                                    <span class="opt-circle">C</span>
+                                    <span>${optC} ${correct === 'C' ? '<strong style="color: var(--emerald-dark); margin-left: 6px;">(Correct Answer ✓)</strong>' : ''}</span>
+                                </div>
+                                <div class="option-box ${correct === 'D' ? 'is-correct' : ''}">
+                                    <span class="opt-circle">D</span>
+                                    <span>${optD} ${correct === 'D' ? '<strong style="color: var(--emerald-dark); margin-left: 6px;">(Correct Answer ✓)</strong>' : ''}</span>
+                                </div>
+                            </div>
+                            <div class="q-explanation">
+                                <strong>💡 Solution Explanation:</strong>
+                                ${exp}
+                            </div>
+                        </div>
+                    `;
+                }).join("");
+
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            } catch (err) {
+                alert("Error loading question set: " + err.message);
+                backToSets();
+            }
         }
 
         function backToSets() {
@@ -1718,10 +1714,205 @@
             window.scrollTo({ top: 0, behavior: "smooth" });
         }
 
-        // NAVIGATION TABS
+        // 4. UPLOAD NEW QUESTION SET FILE (EXCEL / CSV / JSON)
+        async function handleUploadSetSubmit() {
+            const title = document.getElementById("uploadExamTitle").value.trim();
+            const subject = document.getElementById("uploadSubject").value.trim() || "General Paper";
+            const fileInp = document.getElementById("setFileInput");
+
+            if (!title) {
+                alert("Please enter the Examination Display Title (how students will see it).");
+                return;
+            }
+
+            if (!fileInp.files || fileInp.files.length === 0) {
+                alert("Please select an Excel (.xlsx, .xls), CSV, or JSON file to upload.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("title", title);
+            formData.append("subject", subject);
+            formData.append("duration", "180");
+            formData.append("file", fileInp.files[0]);
+
+            const submitBtn = document.querySelector("#uploadModal .btn-upload-set");
+            const prevText = submitBtn.textContent;
+            submitBtn.disabled = true;
+            submitBtn.textContent = "Parsing & Splitting...";
+
+            try {
+                const res = await fetch("/api/admin/sets/upload", {
+                    method: "POST",
+                    body: formData,
+                    credentials: "same-origin"
+                });
+
+                const data = await res.json();
+                if (!res.ok || !data.success) {
+                    throw new Error(data.message || "Failed to upload question set.");
+                }
+
+                closeModal("uploadModal");
+                alert(`🎉 ${data.message}\nThis set is now immediately active and visible in the student portal!`);
+                fileInp.value = "";
+                document.getElementById("selectedFileNameLabel").textContent = "Auto-splits each row into an interactive question";
+                await fetchSets();
+            } catch (err) {
+                alert("Upload failed: " + err.message);
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = prevText;
+            }
+        }
+
+        // DELETE SET
+        async function deleteSet(setId) {
+            if (!confirm(`Are you sure you want to delete Question Set "${setId}"? This will remove all its split questions.`)) {
+                return;
+            }
+
+            try {
+                const res = await fetch(`/api/admin/sets/${setId}`, {
+                    method: "DELETE",
+                    credentials: "same-origin"
+                });
+                const data = await res.json();
+                if (!res.ok || !data.success) {
+                    throw new Error(data.message || "Failed to delete set.");
+                }
+                await fetchSets();
+            } catch (err) {
+                alert("Delete failed: " + err.message);
+            }
+        }
+
+        // 5. FETCH & RENDER STUDENTS
+        async function fetchStudents() {
+            try {
+                const res = await fetch("/api/admin/students", { credentials: "same-origin" });
+                if (res.ok) {
+                    const data = await res.json();
+                    if (data.success && Array.isArray(data.students)) {
+                        activeStudents = data.students;
+                        renderStudents();
+                    }
+                }
+            } catch (e) {
+                console.error("Error fetching students:", e);
+            }
+        }
+
+        function renderStudents() {
+            const term = (studentSearchInput.value || "").trim().toLowerCase();
+            const filtered = activeStudents.filter(s => {
+                const idMatch = (s.user_id || "").toLowerCase().includes(term);
+                const nameMatch = (s.candidate_name || "").toLowerCase().includes(term);
+                const emailMatch = (s.email || "").toLowerCase().includes(term);
+                return idMatch || nameMatch || emailMatch;
+            });
+
+            if (!filtered.length) {
+                studentTableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--muted); padding: 25px;">No students match your query.</td></tr>`;
+                return;
+            }
+
+            studentTableBody.innerHTML = filtered.map(s => `
+                <tr>
+                    <td><strong>${s.user_id}</strong></td>
+                    <td>${s.candidate_name}</td>
+                    <td>${s.email || '—'}</td>
+                    <td><span style="font-size: 11px; font-weight: 700; color: ${s.role === 'Admin' ? '#D97706' : 'var(--emerald-dark)'};">${s.role || 'Student'}</span></td>
+                    <td><span class="status available">${s.active === 1 ? 'Active' : 'Disabled'}</span></td>
+                    <td>
+                        ${s.role !== 'Admin' ? `
+                        <button onclick="deleteStudent(${s.id}, '${s.user_id}')" style="background: #FFF5F5; border: 1px solid #FED7D7; border-radius: 6px; color: #C53030; padding: 4px 10px; font-size: 11px; font-weight: 700; cursor: pointer; transition: all 0.2s ease;">
+                            Remove
+                        </button>
+                        ` : `<span style="font-size: 11px; color: var(--muted);">Master Account</span>`}
+                    </td>
+                </tr>
+            `).join("");
+        }
+
+        // CREATE STUDENT SUBMIT
+        async function handleCreateStudentSubmit() {
+            const userId = document.getElementById("newUserId").value.trim();
+            const name = document.getElementById("newName").value.trim();
+            const email = document.getElementById("newEmail").value.trim();
+            const pass = document.getElementById("newPass").value.trim();
+
+            if (!userId || !name || !pass) {
+                alert("User ID, Full Name, and Password are required to create a student account.");
+                return;
+            }
+
+            const btn = document.getElementById("createStudentBtn");
+            const prevText = btn.textContent;
+            btn.disabled = true;
+            btn.textContent = "Creating Account...";
+
+            try {
+                const res = await fetch("/api/admin/students", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    credentials: "same-origin",
+                    body: JSON.stringify({
+                        userId: userId,
+                        candidateName: name,
+                        email: email,
+                        password: pass,
+                        role: "Student"
+                    })
+                });
+
+                const data = await res.json();
+                if (!res.ok || !data.success) {
+                    throw new Error(data.message || "Failed to create student account.");
+                }
+
+                closeModal("studentModal");
+                alert(`🎉 ${data.message}\nThe student can now immediately log in with User ID: ${userId}`);
+                document.getElementById("newUserId").value = "";
+                document.getElementById("newName").value = "";
+                document.getElementById("newEmail").value = "";
+                await fetchStudents();
+            } catch (err) {
+                alert("Creation failed: " + err.message);
+            } finally {
+                btn.disabled = false;
+                btn.textContent = prevText;
+            }
+        }
+
+        // DELETE STUDENT
+        async function deleteStudent(id, userId) {
+            if (!confirm(`Are you sure you want to remove student "${userId}"?`)) {
+                return;
+            }
+
+            try {
+                const res = await fetch(`/api/admin/students/${id}`, {
+                    method: "DELETE",
+                    credentials: "same-origin"
+                });
+
+                const data = await res.json();
+                if (!res.ok || !data.success) {
+                    throw new Error(data.message || "Failed to delete student.");
+                }
+
+                await fetchStudents();
+            } catch (err) {
+                alert("Delete failed: " + err.message);
+            }
+        }
+
+        // NAVIGATION TABS & MODALS
         function bindEvents() {
             searchInput.addEventListener("input", renderSets);
             statusFilter.addEventListener("change", renderSets);
+            studentSearchInput.addEventListener("input", renderStudents);
 
             questionsNav.addEventListener("click", () => {
                 setActiveNav(questionsNav);
@@ -1738,6 +1929,7 @@
                 helpSection.style.display = "none";
                 pageTitle.textContent = "Students Directory";
                 pageSubtitle.textContent = "Manage registered candidates and generate examination logins.";
+                renderStudents();
             });
 
             helpNav.addEventListener("click", () => {
@@ -1797,49 +1989,6 @@
 
         function closeModal(id) {
             document.getElementById(id).classList.remove("open");
-        }
-
-        function handleUploadSetSubmit() {
-            const title = document.getElementById("uploadExamTitle").value.trim() || "New Question Set";
-            const subject = document.getElementById("uploadSubject").value.trim() || "General Paper";
-            const fileInp = document.getElementById("setFileInput");
-            
-            let fName = "custom_question_bank.xlsx";
-            let fType = "excel";
-            let fBadge = "EXCEL (.XLSX)";
-
-            if (fileInp.files.length > 0) {
-                fName = fileInp.files[0].name;
-                if (fName.endsWith(".csv")) { fType = "csv"; fBadge = "CSV (.CSV)"; }
-                else if (fName.endsWith(".json")) { fType = "json"; fBadge = "JSON"; }
-            }
-
-            const newSet = {
-                id: `SET0${mockSets.length + 1}`,
-                title: title,
-                subject: subject,
-                fileType: fType,
-                fileBadge: fBadge,
-                fileName: fName,
-                questionsCount: 50,
-                duration: 90,
-                status: "available",
-                statusLabel: "Published",
-                questions: [
-                    {
-                        number: 1,
-                        text: `Sample Question 1 split from ${fName}: Which protocol is used for secure web browsing?`,
-                        options: { A: "HTTP", B: "HTTPS", C: "FTP", D: "SMTP" },
-                        answer: "B",
-                        explanation: "HTTPS encrypts communications over computer networks."
-                    }
-                ]
-            };
-
-            mockSets.unshift(newSet);
-            renderSets();
-            closeModal("uploadModal");
-            alert(`🎉 Success! Question Set "${title}" uploaded and split into single questions.\nIt is now published and listed in your examinations catalog!`);
         }
     </script>
 </body>

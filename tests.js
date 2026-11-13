@@ -38,11 +38,36 @@ const pageSubtitle = document.getElementById("pageSubtitle");
    MOCK TEST DATA
    ----------------------------------------------------- */
 
-const mockTests = Array.from({ length: 10 }, (_, i) => ({
+let mockTests = Array.from({ length: 10 }, (_, i) => ({
     id: `MOCK${String(i + 1).padStart(2, "0")}`,
     title: `UGC NET Full-Length Mock Test ${String(i + 1).padStart(2, "0")}`,
     status: i === 0 ? "available" : "coming"
 }));
+
+async function loadStudentTests() {
+    try {
+        const res = await fetch("/api/student/tests");
+        if (res.ok) {
+            const data = await res.json();
+            if (data.success && Array.isArray(data.tests) && data.tests.length > 0) {
+                const dbTests = data.tests.map(t => ({
+                    id: t.id,
+                    title: t.title,
+                    status: t.status || "available",
+                    subject: t.subject,
+                    questionsCount: t.questions_count,
+                    duration: t.duration
+                }));
+                const existingIds = new Set(dbTests.map(t => t.id.toUpperCase()));
+                const upcoming = mockTests.filter(m => !existingIds.has(m.id.toUpperCase()));
+                mockTests = [...dbTests, ...upcoming];
+                renderTests();
+            }
+        }
+    } catch (e) {
+        console.error("Could not load dynamic tests:", e);
+    }
+}
 
 /* -----------------------------------------------------
    CANDIDATE INITIALS
@@ -416,4 +441,5 @@ helpNav.addEventListener("click", showHelp);
    ----------------------------------------------------- */
 
 loadCandidate();
+loadStudentTests();
 
