@@ -3,11 +3,13 @@ const db = require("./database");
 
 const userId = process.argv[2];
 const password = process.argv[3];
-const candidateName = process.argv.slice(4).join(" ");
+const candidateName = process.argv[4];
+const email = process.argv[5] || `${userId}@slogon.edu`;
+const role = process.argv[6] || "Student";
 
 if (!userId || !password || !candidateName) {
     console.log(
-        'Usage: node backend/create-candidate.js USER_ID PASSWORD "CANDIDATE NAME"'
+        'Usage: node backend/create-candidate.js USER_ID PASSWORD "CANDIDATE NAME" [EMAIL] [ROLE]'
     );
     process.exit(1);
 }
@@ -21,15 +23,17 @@ try {
     const passwordHash = bcrypt.hashSync(password, 12);
 
     const insertCandidate = db.prepare(`
-        INSERT INTO candidates (user_id, password_hash, candidate_name)
-        VALUES (?, ?, ?)
+        INSERT INTO candidates (user_id, password_hash, candidate_name, email, role)
+        VALUES (?, ?, ?, ?, ?)
     `);
 
-    insertCandidate.run(userId, passwordHash, candidateName);
+    insertCandidate.run(userId, passwordHash, candidateName, email, role);
 
     console.log("Candidate created successfully!");
     console.log("User ID:", userId);
     console.log("Candidate Name:", candidateName);
+    console.log("Email:", email);
+    console.log("Role:", role);
 } catch (error) {
     if (error.code === "SQLITE_CONSTRAINT_UNIQUE") {
         console.log("This User ID already exists.");

@@ -93,7 +93,7 @@ app.post("/api/login", loginLimiter, (req, res) => {
     }
 
     const candidate = db.prepare(`
-        SELECT id, user_id, password_hash, candidate_name, active
+        SELECT id, user_id, password_hash, candidate_name, email, role, active
         FROM candidates
         WHERE user_id = ?
     `).get(userId.trim());
@@ -118,10 +118,15 @@ app.post("/api/login", loginLimiter, (req, res) => {
             });
         }
 
+        const candidateEmail = candidate.email || `${candidate.user_id}@slogon.edu`;
+        const candidateRole = candidate.role || "Student";
+
         req.session.candidate = {
             id: candidate.id,
             userId: candidate.user_id,
-            name: candidate.candidate_name
+            name: candidate.candidate_name,
+            email: candidateEmail,
+            role: candidateRole
         };
 
         req.session.save((saveError) => {
@@ -138,7 +143,9 @@ app.post("/api/login", loginLimiter, (req, res) => {
                 message: "Login successful.",
                 candidate: {
                     userId: candidate.user_id,
-                    name: candidate.candidate_name
+                    name: candidate.candidate_name,
+                    email: candidateEmail,
+                    role: candidateRole
                 }
             });
         });

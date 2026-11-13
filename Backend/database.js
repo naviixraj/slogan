@@ -18,10 +18,21 @@ db.exec(`
         user_id TEXT NOT NULL UNIQUE,
         password_hash TEXT NOT NULL,
         candidate_name TEXT NOT NULL,
+        email TEXT,
+        role TEXT DEFAULT 'Student',
         active INTEGER NOT NULL DEFAULT 1,
         created_at TEXT DEFAULT CURRENT_TIMESTAMP
     );
 `);
+
+// Migration for existing database columns
+try {
+    db.exec("ALTER TABLE candidates ADD COLUMN email TEXT;");
+} catch (e) {}
+
+try {
+    db.exec("ALTER TABLE candidates ADD COLUMN role TEXT DEFAULT 'Student';");
+} catch (e) {}
 
 console.log("SLOGON candidate database is ready.");
 

@@ -214,6 +214,8 @@ async function loadCandidate() {
 
         const name = result.candidate.name || "Student";
         const userId = result.candidate.userId || "";
+        const role = result.candidate.role || "Student";
+        const email = result.candidate.email || `${userId}@slogon.edu`;
 
         const tag = initials(name);
 
@@ -221,16 +223,18 @@ async function loadCandidate() {
         candidateAvatar.textContent = tag;
         topAvatar.textContent = tag;
 
-        // Populate Profile Dropdown
+        // Populate Profile Dropdown dynamically for any logged-in user
         if (dropdownCandidateName) dropdownCandidateName.textContent = name;
         if (dropdownUserId) dropdownUserId.textContent = userId;
-        if (dropdownRole) dropdownRole.textContent = "Student";
-        if (dropdownEmail) dropdownEmail.textContent = `${userId}@slogon.edu`;
+        if (dropdownRole) dropdownRole.textContent = role;
+        if (dropdownEmail) dropdownEmail.textContent = email;
 
         // Save candidate info for instructions and exam pages
         localStorage.setItem("candidateInfo", JSON.stringify({
             name: name,
             registerNumber: userId,
+            email: email,
+            role: role,
             subject: "Tamil",
             exam: "UGC NET Mock Test 01"
         }));
