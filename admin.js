@@ -692,7 +692,11 @@ async function handleCreateStudentSubmit() {
         if (newPass) newPass.value = "";
         await fetchStudents();
     } catch (err) {
-        alert(`❌ Enrollment Failed: ${err.message}`);
+        if (err.name === "TypeError" && (err.message || "").toLowerCase().includes("fetch")) {
+            alert("❌ Connection Error: Unable to reach the server.\n\nThe server was momentarily restarting to load new PDF capabilities. Please refresh the page (F5) and try again.");
+        } else {
+            alert(`❌ Enrollment Failed: ${err.message}`);
+        }
     } finally {
         if (createStudentBtn) {
             createStudentBtn.disabled = false;
