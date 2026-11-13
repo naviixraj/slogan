@@ -108,7 +108,11 @@ body {
 
     max-width: 520px;
 
-    background: var(--white);
+    background: rgba(255, 255, 255, 0.90);
+
+    backdrop-filter: blur(10px);
+
+    -webkit-backdrop-filter: blur(10px);
 
     border-radius: 16px;
 
@@ -118,7 +122,7 @@ body {
         0 20px 60px rgba(11, 31, 58, 0.12);
 
     border:
-        1px solid rgba(11, 31, 58, 0.08);
+        1px solid rgba(255, 255, 255, 0.6);
 
 }
 
@@ -881,9 +885,13 @@ select:focus-visible {
 
 .candidate-info-card {
 
-    background: #FFFFFF;
+    background: rgba(255, 255, 255, 0.88);
 
-    border: 1px solid #E5E7EB;
+    backdrop-filter: blur(8px);
+
+    -webkit-backdrop-filter: blur(8px);
+
+    border: 1px solid rgba(229, 231, 235, 0.85);
 
     border-radius: 12px;
 
@@ -1039,9 +1047,13 @@ select:focus-visible {
 
 .instructions-card {
 
-    background: #FFFFFF;
+    background: rgba(255, 255, 255, 0.88);
 
-    border: 1px solid #E5E7EB;
+    backdrop-filter: blur(8px);
+
+    -webkit-backdrop-filter: blur(8px);
+
+    border: 1px solid rgba(229, 231, 235, 0.85);
 
     border-radius: 12px;
 
@@ -1338,7 +1350,11 @@ select:focus-visible {
 
     gap: 15px;
 
-    background: #FFFCF2;
+    background: rgba(255, 252, 242, 0.90);
+
+    backdrop-filter: blur(8px);
+
+    -webkit-backdrop-filter: blur(8px);
 
     border: 1px solid rgba(212,175,55,0.45);
 
@@ -2018,9 +2034,13 @@ select:focus-visible {
 
     padding: 0 24px;
 
-    background: #FFFFFF;
+    background: rgba(255, 255, 255, 0.88);
 
-    border-bottom: 1px solid #E5E7EB;
+    backdrop-filter: blur(8px);
+
+    -webkit-backdrop-filter: blur(8px);
+
+    border-bottom: 1px solid rgba(229, 231, 235, 0.85);
 
     display: grid;
 
@@ -2126,9 +2146,13 @@ select:focus-visible {
 
 
 .question-card {
-    background: #FFFFFF;
+    background: rgba(255, 255, 255, 0.88);
 
-    border: 1px solid #E5E7EB;
+    backdrop-filter: blur(8px);
+
+    -webkit-backdrop-filter: blur(8px);
+
+    border: 1px solid rgba(229, 231, 235, 0.85);
 
     border-radius: 9px;
 
@@ -2238,7 +2262,11 @@ select:focus-visible {
 
     border-radius: 7px;
 
-    background: #FFFFFF;
+    background: rgba(255, 255, 255, 0.90);
+
+    backdrop-filter: blur(4px);
+
+    -webkit-backdrop-filter: blur(4px);
 
     display: flex;
 
@@ -2501,9 +2529,13 @@ select:focus-visible {
 
     padding: 11px 14px;
 
-    background: #FFFFFF;
+    background: rgba(255, 255, 255, 0.88);
 
-    border: 1px solid #E5E7EB;
+    backdrop-filter: blur(8px);
+
+    -webkit-backdrop-filter: blur(8px);
+
+    border: 1px solid rgba(229, 231, 235, 0.85);
 
     border-radius: 8px;
 
@@ -2574,9 +2606,13 @@ select:focus-visible {
 .palette-card,
 .summary-card,
 .legend-card {
-    background: #FFFFFF;
+    background: rgba(255, 255, 255, 0.88);
 
-    border: 1px solid #E5E7EB;
+    backdrop-filter: blur(8px);
+
+    -webkit-backdrop-filter: blur(8px);
+
+    border: 1px solid rgba(229, 231, 235, 0.85);
 
     border-radius: 8px;
 
@@ -3580,9 +3616,13 @@ select:focus-visible {
 ========================================================= */
 
 .result-card {
-    background: #FFFFFF;
+    background: rgba(255, 255, 255, 0.88);
 
-    border: 1px solid #E5E7EB;
+    backdrop-filter: blur(8px);
+
+    -webkit-backdrop-filter: blur(8px);
+
+    border: 1px solid rgba(229, 231, 235, 0.85);
     border-radius: 14px;
 
     box-shadow:
@@ -3644,7 +3684,7 @@ select:focus-visible {
 
     padding: 16px 20px;
 
-    background: #FFFFFF;
+    background: rgba(255, 255, 255, 0.88);
 }
 
 
@@ -3926,9 +3966,13 @@ select:focus-visible {
 
     padding: 18px;
 
-    background: #FFFFFF;
+    background: rgba(255, 255, 255, 0.88);
 
-    border: 1px solid #E5E7EB;
+    backdrop-filter: blur(8px);
+
+    -webkit-backdrop-filter: blur(8px);
+
+    border: 1px solid rgba(229, 231, 235, 0.85);
     border-radius: 12px;
 
     box-shadow:

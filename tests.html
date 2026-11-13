@@ -34,7 +34,7 @@
             background-repeat: no-repeat;
             background-position: calc(50% + 115px) center;
             background-attachment: fixed;
-            background-size: min(440px, 60vw);
+            background-size: min(540px, 70vw);
             color: var(--charcoal);
             font-family: Inter, Arial, sans-serif;
             min-height: 100vh;
@@ -56,7 +56,9 @@
             position: fixed;
             inset: 0 auto 0 0;
             width: 230px;
-            background: #FFFFFF;
+            background: rgba(255, 255, 255, 0.92);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border-right: 1px solid var(--line);
             padding: 22px 15px;
             display: flex;
@@ -195,7 +197,9 @@
 
         .topbar {
             height: 66px;
-            background: #FFFFFF;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
             border-bottom: 1px solid var(--line);
             display: flex;
             align-items: center;
@@ -262,7 +266,9 @@
             top: calc(100% + 10px);
             right: 0;
             width: 250px;
-            background: #FFFFFF;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
             border: 1px solid var(--line);
             border-radius: 12px;
             box-shadow: 0 14px 35px rgba(37, 54, 45, 0.12);
@@ -441,7 +447,9 @@
             padding: 0 12px;
             border: 1px solid var(--line);
             border-radius: 8px;
-            background: #FFFFFF;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
         }
 
         .search svg {
@@ -476,7 +484,9 @@
             place-items: center;
             border: 1px solid var(--line);
             border-radius: 7px;
-            background: #FFFFFF;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             color: #737D75;
             cursor: pointer;
             position: relative;
@@ -527,7 +537,9 @@
             padding: 0 10px;
             border: 1px solid var(--line);
             border-radius: 7px;
-            background: #FFFFFF;
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             color: var(--charcoal);
             font-size: 11px;
         }
@@ -547,8 +559,10 @@
         }
 
         .test-card {
-            background: #FFFFFF;
-            border: 1px solid var(--line);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1px solid rgba(230, 233, 226, 0.85);
             border-radius: 10px;
             overflow: hidden;
             box-shadow: 0 5px 18px rgba(37,54,45,.045);
@@ -557,6 +571,7 @@
 
         .test-card:hover {
             transform: translateY(-2px);
+            background: rgba(255, 255, 255, 0.96);
             border-color: #C8DED3;
             box-shadow: 0 9px 22px rgba(37,54,45,.08);
         }
