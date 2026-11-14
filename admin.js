@@ -357,25 +357,23 @@ function renderSets() {
 
         const btnRow = document.createElement("div");
         btnRow.className = "card-btn-row";
-        btnRow.style.display = "flex";
-        btnRow.style.alignItems = "center";
-        btnRow.style.gap = "8px";
-        btnRow.style.marginTop = "auto";
 
         const inspectBtn = document.createElement("button");
         inspectBtn.className = "start";
-        inspectBtn.style.flex = "1";
         inspectBtn.type = "button";
         inspectBtn.textContent = "Inspect Questions ➔";
         inspectBtn.addEventListener("click", () => inspectSet(set.id));
 
+        const actionsCluster = document.createElement("div");
+        actionsCluster.className = "card-actions-cluster";
+
         const editBtn = document.createElement("button");
         editBtn.type = "button";
-        editBtn.className = "card-action-btn card-edit-btn";
+        editBtn.className = "card-icon-action card-icon-edit";
         editBtn.title = `Edit details for "${set.title}"`;
         editBtn.setAttribute("aria-label", `Edit details for "${set.title}"`);
         editBtn.innerHTML = `
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                 <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
             </svg>
@@ -387,11 +385,11 @@ function renderSets() {
 
         const delBtn = document.createElement("button");
         delBtn.type = "button";
-        delBtn.className = "card-action-btn card-delete-btn";
+        delBtn.className = "card-icon-action card-icon-delete bin-btn";
         delBtn.title = `Delete Question Set "${set.title}"`;
         delBtn.setAttribute("aria-label", `Delete Question Set "${set.title}"`);
         delBtn.innerHTML = `
-            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M3 6h18"></path>
                 <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
                 <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
@@ -401,7 +399,8 @@ function renderSets() {
         `;
         delBtn.addEventListener("click", () => deleteSet(set.id));
 
-        btnRow.append(inspectBtn, editBtn, delBtn);
+        actionsCluster.append(editBtn, delBtn);
+        btnRow.append(inspectBtn, actionsCluster);
 
         body.append(top, titleH2, subP, metaDiv, btnRow);
         card.append(accent, body);

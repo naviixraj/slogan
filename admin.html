@@ -708,16 +708,7 @@
             margin: 0;
         }
 
-        .set-delete-btn {
-            position: absolute !important;
-            right: 18px !important;
-            bottom: 14px !important;
-            z-index: 10;
-        }
 
-        .test-grid:not(.list-view) .card-btn-row {
-            padding-right: 36px;
-        }
 
         /* LEVEL 2: SPLIT QUESTIONS INSPECTOR */
 
@@ -1737,12 +1728,13 @@
             border-color: #176B52;
         }
 
-        /* EXAMINATION CARD ACTION BUTTONS */
+        /* EXAMINATION CARD ACTION BUTTONS (CLEAN BORDERLESS ICONS IN STRAIGHT ALIGNMENT) */
         .card-btn-row {
             display: flex;
             align-items: center;
-            gap: 8px;
-            margin-top: 15px;
+            justify-content: space-between;
+            gap: 12px;
+            margin-top: 16px;
             width: 100%;
         }
 
@@ -1754,48 +1746,75 @@
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            padding: 0 14px;
+            padding: 0 16px;
+            border-radius: 6px;
         }
 
-        .card-action-btn {
-            width: 36px !important;
-            height: 36px !important;
-            min-width: 36px !important;
-            min-height: 36px !important;
-            border-radius: 6px !important;
+        .card-actions-cluster {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            flex-shrink: 0;
+        }
+
+        /* Pure borderless icon button - identical feel to original .bin-btn */
+        .card-icon-action {
+            background: transparent !important;
+            background-color: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            outline: none !important;
+            padding: 5px !important;
+            margin: 0 !important;
+            cursor: pointer;
             display: inline-flex !important;
             align-items: center !important;
             justify-content: center !important;
-            cursor: pointer;
-            padding: 0 !important;
-            margin: 0 !important;
-            flex-shrink: 0;
+            color: #94A3B8 !important;
+            transition: color 0.18s ease, transform 0.18s ease;
+            -webkit-appearance: none;
+            appearance: none;
+            border-radius: 0 !important;
+            width: 30px !important;
+            height: 30px !important;
             box-sizing: border-box;
-            transition: all 0.2s ease;
+            flex-shrink: 0;
         }
 
-        .card-edit-btn {
-            border: 1px solid rgba(23, 107, 82, 0.25) !important;
-            background: rgba(23, 107, 82, 0.06) !important;
+        .card-icon-action svg {
+            display: block;
+            pointer-events: none;
+            stroke: currentColor;
+            fill: none;
+            transition: stroke 0.18s ease;
+        }
+
+        .card-icon-edit:hover,
+        .card-icon-edit:focus-visible {
             color: var(--emerald) !important;
+            background: transparent !important;
+            background-color: transparent !important;
+            border: none !important;
+            transform: scale(1.15);
         }
 
-        .card-edit-btn:hover {
-            background: var(--emerald) !important;
-            color: #FFFFFF !important;
-            border-color: var(--emerald) !important;
+        .card-icon-edit:hover svg,
+        .card-icon-edit:focus-visible svg {
+            stroke: var(--emerald) !important;
         }
 
-        .card-delete-btn {
-            border: 1px solid rgba(239, 68, 68, 0.25) !important;
-            background: rgba(239, 68, 68, 0.06) !important;
+        .card-icon-delete:hover,
+        .card-icon-delete:focus-visible {
             color: #EF4444 !important;
+            background: transparent !important;
+            background-color: transparent !important;
+            border: none !important;
+            transform: scale(1.15);
         }
 
-        .card-delete-btn:hover {
-            background: #EF4444 !important;
-            color: #FFFFFF !important;
-            border-color: #EF4444 !important;
+        .card-icon-delete:hover svg,
+        .card-icon-delete:focus-visible svg {
+            stroke: #EF4444 !important;
         }
 
         .btn-edit-set-details {
