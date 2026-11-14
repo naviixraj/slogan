@@ -85,6 +85,18 @@ const dropBoxArea = document.getElementById("dropBoxArea");
 const selectedFileNameLabel = document.getElementById("selectedFileNameLabel");
 const uploadExamTitle = document.getElementById("uploadExamTitle");
 const uploadSubject = document.getElementById("uploadSubject");
+const uploadDuration = document.getElementById("uploadDuration");
+
+// Upload Modal Tabs & Paste Pane
+const tabUploadFileBtn = document.getElementById("tabUploadFileBtn");
+const tabPasteTextBtn = document.getElementById("tabPasteTextBtn");
+const uploadFilePane = document.getElementById("uploadFilePane");
+const pasteTextPane = document.getElementById("pasteTextPane");
+const pasteQuestionsText = document.getElementById("pasteQuestionsText");
+const loadSamplePasteBtn = document.getElementById("loadSamplePasteBtn");
+const pasteDetectSummary = document.getElementById("pasteDetectSummary");
+
+let currentUploadMode = "file"; // "file" or "paste"
 
 // Students Directory
 const studentTableBody = document.getElementById("studentTableBody");
@@ -460,18 +472,159 @@ function backToSets() {
 }
 
 // -----------------------------------------------------
-// UPLOAD QUESTION SET FILE
+// MODAL TABS & BULK PASTE LOGIC
+// -----------------------------------------------------
+
+function switchUploadTab(mode) {
+    currentUploadMode = mode;
+    if (tabUploadFileBtn) tabUploadFileBtn.classList.toggle("active", mode === "file");
+    if (tabPasteTextBtn) tabPasteTextBtn.classList.toggle("active", mode === "paste");
+
+    if (uploadFilePane) uploadFilePane.style.display = mode === "file" ? "block" : "none";
+    if (pasteTextPane) pasteTextPane.style.display = mode === "paste" ? "block" : "none";
+}
+
+function updatePasteDetection() {
+    if (!pasteQuestionsText || !pasteDetectSummary) return;
+    const text = pasteQuestionsText.value.trim();
+    if (!text) {
+        pasteDetectSummary.className = "paste-detect-summary";
+        pasteDetectSummary.innerHTML = "⚡ Live Question Detector: Paste question set text above to preview";
+        return;
+    }
+
+    const regex = /(?:^|\n)(?=(?:(?:Question|Q)\s*[:\.-]?\s*\d+[\.:\)\s\-]+|\d+[\.\)]\s+))/gi;
+    const blocks = text.split(regex).map(b => b.trim()).filter(b => b.length > 5);
+
+    if (blocks.length === 0) {
+        pasteDetectSummary.className = "paste-detect-summary has-error";
+        pasteDetectSummary.innerHTML = "⚠️ No questions detected yet. Please ensure questions start with numbers like '1.' or 'Q1.'";
+        return;
+    }
+
+    let validCount = 0;
+    blocks.forEach(block => {
+        const hasOptions = /(?:^|\n|\s{2,})(?:\(?([A-Da-d1-4])[\.\)\:\-\]]|\(([A-Da-d1-4])\))/g.test(block);
+        if (hasOptions) validCount++;
+    });
+
+    pasteDetectSummary.className = "paste-detect-summary has-questions";
+    pasteDetectSummary.innerHTML = `✅ <strong>${blocks.length} question(s) detected</strong> (${validCount} with verified A-D options)`;
+}
+
+function loadSampleQuestionTemplate() {
+    if (!pasteQuestionsText) return;
+    const sample = `1. Which layer of the OSI model does a router operate on?
+A) Physical Layer
+B) Data Link Layer
+C) Network Layer
+D) Transport Layer
+Answer: C
+Explanation: Routers operate at Layer 3 (Network Layer) to direct IP packet traffic.
+
+2. Which memory type is volatile and loses data when power is turned off?
+A) ROM
+B) RAM
+C) Hard Disk Drive
+D) Flash Memory
+Answer: B
+Explanation: RAM (Random Access Memory) requires continuous electric power to retain data.
+
+3. In computer networking, what is the default port for secure web communications (HTTPS)?
+A. Port 80
+B. Port 21
+C. Port 443
+D. Port 25
+Answer: C
+Explanation: Port 443 is universally standardized for HTTPS encrypted traffic.
+
+4. What is the fundamental functional unit of the human nervous system?
+A. Nephron
+B. Neuron
+C. Alveoli
+D. Axon
+Answer: B
+Explanation: The neuron is the primary excitable cell of the nervous system.
+
+5. Which Indian constitutional amendment introduced the Goods and Services Tax (GST)?
+A. 100th Amendment
+B. 101st Amendment
+C. 102nd Amendment
+D. 103rd Amendment
+Answer: B
+Explanation: The 101st Constitutional Amendment Act, 2016 introduced GST in India.`;
+
+    pasteQuestionsText.value = sample;
+    updatePasteDetection();
+}
+
+// -----------------------------------------------------
+// SAVE QUESTION SET (FILE UPLOAD OR BULK PASTE)
 // -----------------------------------------------------
 
 async function handleUploadSetSubmit() {
     const title = uploadExamTitle ? uploadExamTitle.value.trim() : "";
     const subject = uploadSubject ? uploadSubject.value.trim() : "General Paper";
+    const duration = uploadDuration ? uploadDuration.value.trim() : "180";
 
     if (!title) {
         alert("Please enter the Examination Display Title (how students will see it).");
         return;
     }
 
+    const prevText = submitUploadButton ? submitUploadButton.textContent : "";
+
+    // 1. BULK PASTE MODE
+    if (currentUploadMode === "paste") {
+        const textContent = pasteQuestionsText ? pasteQuestionsText.value.trim() : "";
+        if (!textContent) {
+            alert("Please paste your complete question set text before saving.");
+            return;
+        }
+
+        if (submitUploadButton) {
+            submitUploadButton.disabled = true;
+            submitUploadButton.textContent = "Parsing & Saving Set...";
+        }
+
+        try {
+            const res = await fetch("/api/admin/sets/paste", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    title: title,
+                    subject: subject || "General Paper",
+                    duration: duration || "180",
+                    textContent: textContent
+                }),
+                credentials: "same-origin"
+            });
+
+            const data = await res.json();
+            if (!res.ok || !data.success) {
+                throw new Error(data.message || "Failed to parse and save question set.");
+            }
+
+            closeModal(uploadModal);
+            alert(`🎉 ${data.message}\nThis set is now active and ready for students!`);
+            if (pasteQuestionsText) pasteQuestionsText.value = "";
+            if (pasteDetectSummary) {
+                pasteDetectSummary.className = "paste-detect-summary";
+                pasteDetectSummary.innerHTML = "⚡ Live Question Detector: Paste question set text above to preview";
+            }
+            await fetchSets();
+        } catch (err) {
+            alert("Error saving pasted question set: " + err.message);
+        } finally {
+            if (submitUploadButton) {
+                submitUploadButton.disabled = false;
+                submitUploadButton.textContent = prevText;
+            }
+        }
+        return;
+    }
+
+    // 2. FILE UPLOAD MODE
     if (!setFileInput || !setFileInput.files || setFileInput.files.length === 0) {
         alert("Please select a PDF (.pdf), Excel (.xlsx, .xls), CSV, or JSON file to upload.");
         return;
@@ -480,10 +633,9 @@ async function handleUploadSetSubmit() {
     const formData = new FormData();
     formData.append("title", title);
     formData.append("subject", subject || "General Paper");
-    formData.append("duration", "180");
+    formData.append("duration", duration || "180");
     formData.append("file", setFileInput.files[0]);
 
-    const prevText = submitUploadButton ? submitUploadButton.textContent : "";
     if (submitUploadButton) {
         submitUploadButton.disabled = true;
         submitUploadButton.textContent = "Parsing & Splitting...";
@@ -504,34 +656,10 @@ async function handleUploadSetSubmit() {
         closeModal(uploadModal);
         alert(`🎉 ${data.message}\nThis set is now immediately active and visible in the student portal!`);
         setFileInput.value = "";
-        if (selectedFileNameLabel) selectedFileNameLabel.textContent = "Auto-splits each row into an interactive question";
+        if (selectedFileNameLabel) selectedFileNameLabel.textContent = "Auto-splits each question into an interactive exam question";
         await fetchSets();
     } catch (err) {
-        // Local fallback
-        const fName = setFileInput.files[0].name;
-        const newLocalSet = {
-            id: `SET0${activeSets.length + 1}`,
-            title: title,
-            subject: subject || "General Paper",
-            file_type: fName.endsWith(".csv") ? "csv" : (fName.endsWith(".json") ? "json" : "excel"),
-            file_name: fName,
-            questions_count: 50,
-            duration: 180,
-            status: "available",
-            questions: [
-                {
-                    number: 1,
-                    text: `Sample Question 1 split from ${fName}: Which protocol is used for secure web browsing?`,
-                    options: { A: "HTTP", B: "HTTPS", C: "FTP", D: "SMTP" },
-                    answer: "B",
-                    explanation: "HTTPS encrypts communications over computer networks."
-                }
-            ]
-        };
-        activeSets.unshift(newLocalSet);
-        renderSets();
-        closeModal(uploadModal);
-        alert(`🎉 Question Set "${title}" added and split into single questions!`);
+        alert("Upload failed: " + err.message);
     } finally {
         if (submitUploadButton) {
             submitUploadButton.disabled = false;
@@ -843,6 +971,15 @@ function bindEventListeners() {
     if (closeUploadModalButton) closeUploadModalButton.addEventListener("click", () => closeModal(uploadModal));
     if (cancelUploadButton) cancelUploadButton.addEventListener("click", () => closeModal(uploadModal));
     if (submitUploadButton) submitUploadButton.addEventListener("click", handleUploadSetSubmit);
+
+    // Upload Modal Tabs & Bulk Paste
+    if (tabUploadFileBtn) tabUploadFileBtn.addEventListener("click", () => switchUploadTab("file"));
+    if (tabPasteTextBtn) tabPasteTextBtn.addEventListener("click", () => switchUploadTab("paste"));
+    if (pasteQuestionsText) {
+        pasteQuestionsText.addEventListener("input", updatePasteDetection);
+        pasteQuestionsText.addEventListener("paste", () => setTimeout(updatePasteDetection, 50));
+    }
+    if (loadSamplePasteBtn) loadSamplePasteBtn.addEventListener("click", loadSampleQuestionTemplate);
 
     // File Selector & Drop Box
     if (dropBoxArea && setFileInput) {

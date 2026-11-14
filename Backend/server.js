@@ -307,7 +307,7 @@ function parseMcqText(text) {
         const expMatch = cleanBlock.match(/(?:Explanation|Solution|Exp|Sol)[:\s\-]+([\s\S]*)$/i);
         if (expMatch) {
             explanation = expMatch[1].trim();
-            cleanBlock = cleanBlock.substring(0, expMatch.index).trim();
+            cleanBlock = cleanBlock.replace(expMatch[0], "").trim();
         }
 
         // Extract answer if present
@@ -319,7 +319,7 @@ function parseMcqText(text) {
             if (["A", "B", "C", "D"].includes(mapped)) {
                 answer = mapped;
             }
-            cleanBlock = cleanBlock.substring(0, ansMatch.index).trim();
+            cleanBlock = cleanBlock.replace(ansMatch[0], "").trim();
         }
 
         // Parse options A, B, C, D
@@ -553,6 +553,60 @@ app.post("/api/admin/sets/upload", requireAdmin, upload.single("file"), async (r
     } catch (error) {
         console.error("Upload question set error:", error);
         return res.status(500).json({ success: false, message: "Failed to process and save question set: " + error.message });
+    }
+});
+
+// Bulk Paste & parse raw text into a Question Set
+app.post("/api/admin/sets/paste", requireAdmin, async (req, res) => {
+    try {
+        const { title, subject, duration, textContent } = req.body;
+
+        if (!title || !title.trim()) {
+            return res.status(400).json({ success: false, message: "Please provide an Examination Display Title." });
+        }
+
+        if (!textContent || !textContent.trim()) {
+            return res.status(400).json({ success: false, message: "Please paste your question set text." });
+        }
+
+        const questions = parseMcqText(textContent);
+
+        if (!questions || questions.length === 0) {
+            return res.status(400).json({
+                success: false,
+                message: "No questions could be extracted from the pasted text. Please make sure questions have numbers (e.g. 1. or Q1.), options A, B, C, D, and answer keys (e.g. Answer: C)."
+            });
+        }
+
+        // Generate next ID
+        const currentCount = await unifiedDb.countQuestionSets();
+        const nextNum = currentCount + 1;
+        const setId = `SET${String(nextNum).padStart(2, "0")}`;
+
+        const setDuration = parseInt(duration, 10) || 180;
+        const setSubject = subject && subject.trim() ? subject.trim() : "General Paper";
+
+        await unifiedDb.createQuestionSet({
+            id: setId,
+            title: title.trim(),
+            subject: setSubject,
+            fileName: "Pasted Question Set.txt",
+            fileType: "text",
+            questionsCount: questions.length,
+            duration: setDuration,
+            status: "available",
+            questionsJson: questions
+        });
+
+        return res.json({
+            success: true,
+            message: `Question Set "${title.trim()}" created successfully with ${questions.length} questions from pasted text!`,
+            setId: setId,
+            questionsCount: questions.length
+        });
+    } catch (error) {
+        console.error("Paste question set error:", error);
+        return res.status(500).json({ success: false, message: "Failed to process pasted question set: " + error.message });
     }
 });
 

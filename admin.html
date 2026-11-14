@@ -1182,6 +1182,117 @@
             border-color: var(--emerald);
             background: var(--emerald-soft);
         }
+
+        /* MODAL TABS & BULK PASTE STYLES */
+        #uploadModal .form-modal-box {
+            width: min(620px, 95%);
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-tab-bar {
+            display: flex;
+            gap: 6px;
+            background: #F1F5F9;
+            padding: 4px;
+            border-radius: 8px;
+            margin-bottom: 16px;
+        }
+
+        .modal-tab-btn {
+            flex: 1;
+            padding: 8px 12px;
+            font-size: 11.5px;
+            font-weight: 700;
+            color: #64748B;
+            background: transparent;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .modal-tab-btn.active {
+            background: #FFFFFF;
+            color: var(--emerald-dark);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+        }
+
+        .paste-toolbar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 6px;
+        }
+
+        .btn-sample-template {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--emerald);
+            background: rgba(23, 107, 82, 0.08);
+            border: 1px solid rgba(23, 107, 82, 0.2);
+            padding: 3px 8px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .btn-sample-template:hover {
+            background: var(--emerald);
+            color: #FFFFFF;
+        }
+
+        .paste-textarea {
+            width: 100%;
+            height: 175px;
+            padding: 10px 12px;
+            border: 1px solid var(--line);
+            border-radius: 8px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 11.5px;
+            line-height: 1.5;
+            color: #1E293B;
+            background: #FAFAFA;
+            resize: vertical;
+            outline: none;
+            box-sizing: border-box;
+            transition: border-color 0.2s;
+        }
+
+        .paste-textarea:focus {
+            border-color: var(--emerald);
+            background: #FFFFFF;
+        }
+
+        .paste-detect-summary {
+            margin-top: 8px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 11.5px;
+            font-weight: 600;
+            background: #F1F5F9;
+            color: #475569;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+
+        .paste-detect-summary.has-questions {
+            background: #ECFDF5;
+            color: #047857;
+            border: 1px solid #A7F3D0;
+        }
+
+        .paste-detect-summary.has-error {
+            background: #FEF2F2;
+            color: #B91C1C;
+            border: 1px solid #FECACA;
+        }
     </style>
 </head>
 
@@ -1493,22 +1604,45 @@
         </div>
     </div>
 
-    <!-- MODAL: UPLOAD SET -->
+    <!-- MODAL: ADD / UPLOAD QUESTION SET -->
     <div class="modal" id="uploadModal" aria-hidden="true">
         <div class="form-modal-box">
             <button class="modal-close-icon-btn" id="closeUploadModalButton" type="button" aria-label="Close dialog">✕</button>
             <div class="form-modal-header">
-                <h3>Upload Question Set</h3>
+                <h3>Add Question Set</h3>
+                <p style="font-size: 11.5px; color: var(--muted); margin-top: 3px;">Upload an exam file or copy & paste an entire batch of questions directly.</p>
             </div>
+
+            <!-- TAB SWITCHER -->
+            <div class="modal-tab-bar">
+                <button type="button" class="modal-tab-btn active" id="tabUploadFileBtn">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                    Upload File (.pdf, .xlsx, .csv)
+                </button>
+                <button type="button" class="modal-tab-btn" id="tabPasteTextBtn">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><rect x="8" y="2" width="8" height="4" rx="1" ry="1"/></svg>
+                    Paste Full Question Set
+                </button>
+            </div>
+
             <div class="form-field">
                 <label for="uploadExamTitle">Examination Display Title (How students see it)</label>
                 <input type="text" id="uploadExamTitle" placeholder="e.g. UGC NET Paper 1 - Mock Test 02" value="UGC NET Paper 1 - Mock Test 02">
             </div>
-            <div class="form-field">
-                <label for="uploadSubject">Subject / Stream</label>
-                <input type="text" id="uploadSubject" placeholder="e.g. General Paper" value="General Paper">
+
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
+                <div class="form-field">
+                    <label for="uploadSubject">Subject / Stream</label>
+                    <input type="text" id="uploadSubject" placeholder="e.g. General Paper" value="General Paper">
+                </div>
+                <div class="form-field">
+                    <label for="uploadDuration">Duration (Minutes)</label>
+                    <input type="number" id="uploadDuration" placeholder="180" value="180" min="10" max="360">
+                </div>
             </div>
-            <div class="form-field">
+
+            <!-- PANE 1: FILE UPLOAD -->
+            <div class="form-field" id="uploadFilePane">
                 <label>Select Question Bank File (.pdf, .xlsx, .csv, .json)</label>
                 <div class="drop-box" id="dropBoxArea">
                     <input type="file" id="setFileInput" accept=".pdf,.xlsx,.xls,.csv,.json" style="display: none;">
@@ -1516,9 +1650,38 @@
                     <span id="selectedFileNameLabel" style="font-size: 11px; color: var(--muted);">Auto-splits each question into an interactive exam question</span>
                 </div>
             </div>
+
+            <!-- PANE 2: BULK PASTE TEXT -->
+            <div class="form-field" id="pasteTextPane" style="display: none;">
+                <div class="paste-toolbar">
+                    <label for="pasteQuestionsText" style="margin-bottom: 0;">Paste Complete Question Set Text</label>
+                    <button type="button" class="btn-sample-template" id="loadSamplePasteBtn">Load Sample Format</button>
+                </div>
+                <textarea id="pasteQuestionsText" class="paste-textarea" placeholder="Paste your complete exam paper with all questions here...
+
+1. Which layer of the OSI model does a router operate on?
+A) Physical Layer
+B) Data Link Layer
+C) Network Layer
+D) Transport Layer
+Answer: C
+Explanation: Routers operate at Layer 3 (Network Layer) to route IP packets.
+
+2. What is the chemical symbol for Gold?
+A. Ag
+B. Au
+C. Fe
+D. Pb
+Ans: B
+"></textarea>
+                <div id="pasteDetectSummary" class="paste-detect-summary">
+                    ⚡ Live Question Detector: Paste question set text above to preview
+                </div>
+            </div>
+
             <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px;">
                 <button class="btn-cancel-modal" id="cancelUploadButton" type="button">Cancel</button>
-                <button class="btn-upload-set" id="submitUploadButton" type="button" style="height: 40px; padding: 0 20px;">Split & Save Set</button>
+                <button class="btn-upload-set" id="submitUploadButton" type="button" style="height: 40px; padding: 0 20px;">Save Question Set</button>
             </div>
         </div>
     </div>
