@@ -959,7 +959,7 @@ function handleBackToHome() {
 
 
     window.location.href =
-        "index.html";
+        "tests.html";
 
 }
 
@@ -1134,7 +1134,7 @@ function showResultError(message) {
                 );
 
                 window.location.href =
-                    "index.html";
+                    "tests.html";
 
             }
         );
