@@ -1608,6 +1608,82 @@
             color: #FFFFFF;
             border-color: #176B52;
         }
+
+        /* EDIT BUTTONS & MODALS */
+        .card-edit-btn {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            border: 1px solid rgba(23, 107, 82, 0.25);
+            background: rgba(23, 107, 82, 0.06);
+            color: var(--emerald);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .card-edit-btn:hover {
+            background: var(--emerald);
+            color: #FFFFFF;
+            border-color: var(--emerald);
+        }
+
+        .btn-edit-set-details {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            background: rgba(23, 107, 82, 0.08);
+            border: 1px solid rgba(23, 107, 82, 0.25);
+            color: var(--emerald);
+            border-radius: 6px;
+            font-size: 11.5px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-edit-set-details:hover {
+            background: var(--emerald);
+            color: #FFFFFF;
+            border-color: var(--emerald);
+        }
+
+        .btn-edit-single-q {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            height: 32px;
+            padding: 0 12px;
+            border-radius: 6px;
+            border: 1px solid rgba(23, 107, 82, 0.25);
+            background: rgba(23, 107, 82, 0.06);
+            color: var(--emerald);
+            font-size: 11.5px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .btn-edit-single-q:hover {
+            background: var(--emerald);
+            color: #FFFFFF;
+            border-color: var(--emerald);
+        }
+
+        .edit-options-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        @media (max-width: 640px) {
+            .edit-options-grid {
+                grid-template-columns: 1fr;
+            }
+        }
     </style>
 </head>
 
@@ -1820,6 +1896,14 @@
 
                         <!-- RIGHT ZONE: Normal Question Meta OR Bulk Delete 'Cancel' (Red Circle) -->
                         <div class="inspector-topbar-right">
+                            <button type="button" class="btn-edit-set-details" id="editSetFromInspectorButton" title="Edit Question Set Details (Name, Duration, Subject)">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                </svg>
+                                <span>Edit Details</span>
+                            </button>
+
                             <div style="font-size: 12px; color: var(--muted);" id="inspectorMetaBadge">
                                 Showing split questions
                             </div>
@@ -2079,6 +2163,91 @@ Ans: B
                 <button class="btn-upload-set" id="createStudentBtn" type="button" style="height: 40px; padding: 0 20px;">Create Student Login</button>
             </div>
         </div>
+    </div>
+
+    <!-- MODAL: EDIT QUESTION SET DETAILS -->
+    <div class="modal" id="editSetModal" aria-hidden="true">
+        <div class="form-modal-box" style="width: min(520px, 95%);">
+            <button class="modal-close-icon-btn" id="closeEditSetModalButton" type="button" aria-label="Close dialog">✕</button>
+            <div class="form-modal-header">
+                <h3>Edit Question Set Details</h3>
+            </div>
+            <input type="hidden" id="editSetId">
+            <div class="form-field">
+                <label for="editSetTitle">Examination Display Title</label>
+                <input type="text" id="editSetTitle" placeholder="e.g. UGC NET Paper 1 - Full Mock Test">
+            </div>
+            <div class="form-field">
+                <label for="editSetSubject">Subject / Category</label>
+                <input type="text" id="editSetSubject" placeholder="e.g. Computer Science / General Paper">
+            </div>
+            <div class="form-field">
+                <label for="editSetDuration">Time Duration (Minutes)</label>
+                <input type="number" id="editSetDuration" placeholder="e.g. 60" min="5" max="360">
+            </div>
+            <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px;">
+                <button class="btn-cancel-modal" id="cancelEditSetButton" type="button">Cancel</button>
+                <button class="btn-upload-set" id="saveSetDetailsButton" type="button" style="height: 40px; padding: 0 20px;">Save Changes</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MODAL: EDIT SINGLE QUESTION -->
+    <div class="modal" id="editQuestionModal" aria-hidden="true">
+        <div class="form-modal-box" style="width: min(650px, 95%); max-height: 90vh; overflow-y: auto;">
+            <button class="modal-close-icon-btn" id="closeEditQuestionModalButton" type="button" aria-label="Close dialog">✕</button>
+            <div class="form-modal-header">
+                <h3 id="editQuestionModalTitle">Edit Question</h3>
+            </div>
+            <input type="hidden" id="editQuestionSetId">
+            <input type="hidden" id="editQuestionNum">
+            
+            <div class="form-field">
+                <label for="editQuestionStatement">Question Statement</label>
+                <textarea id="editQuestionStatement" class="paste-textarea" style="height: 100px; font-family: inherit;" placeholder="Enter question text..."></textarea>
+            </div>
+
+            <div class="edit-options-grid">
+                <div class="form-field">
+                    <label for="editOptA">Option A</label>
+                    <input type="text" id="editOptA" placeholder="Text for option A">
+                </div>
+                <div class="form-field">
+                    <label for="editOptB">Option B</label>
+                    <input type="text" id="editOptB" placeholder="Text for option B">
+                </div>
+                <div class="form-field">
+                    <label for="editOptC">Option C</label>
+                    <input type="text" id="editOptC" placeholder="Text for option C">
+                </div>
+                <div class="form-field">
+                    <label for="editOptD">Option D</label>
+                    <input type="text" id="editOptD" placeholder="Text for option D">
+                </div>
+            </div>
+
+            <div class="form-field">
+                <label for="editCorrectAnswer">Correct Answer Key</label>
+                <select id="editCorrectAnswer">
+                    <option value="A">Option A</option>
+                    <option value="B">Option B</option>
+                    <option value="C">Option C</option>
+                    <option value="D">Option D</option>
+                </select>
+            </div>
+
+            <div class="form-field">
+                <label for="editExplanation">Solution Explanation</label>
+                <textarea id="editExplanation" class="paste-textarea" style="height: 80px; font-family: inherit;" placeholder="Explanation for this question..."></textarea>
+            </div>
+
+            <div style="display: flex; justify-content: flex-end; gap: 8px; margin-top: 18px;">
+                <button class="btn-cancel-modal" id="cancelEditQuestionButton" type="button">Cancel</button>
+                <button class="btn-upload-set" id="saveQuestionButton" type="button" style="height: 40px; padding: 0 20px;">Save Question</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Order Saved Toast -->
     <div class="reorder-toast" id="reorderToast">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22C55E" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">

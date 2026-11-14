@@ -233,6 +233,46 @@ async function updateQuestionSetQuestions(id, questionsJson, count) {
     }
 }
 
+async function updateQuestionSetDetails(id, { title, subject, duration }) {
+    const cleanId = String(id || "").trim();
+    const updatePayload = {};
+    if (title !== undefined && title !== null) updatePayload.title = String(title).trim();
+    if (subject !== undefined && subject !== null) updatePayload.subject = String(subject).trim();
+    if (duration !== undefined && duration !== null) updatePayload.duration = parseInt(duration, 10) || 180;
+
+    if (isSupabase) {
+        const { data, error } = await supabase
+            .from("question_sets")
+            .update(updatePayload)
+            .ilike("id", cleanId)
+            .select()
+            .single();
+        if (error) throw new Error(error.message);
+        return data;
+    } else {
+        const setClauses = [];
+        const params = [];
+        if (updatePayload.title !== undefined) {
+            setClauses.push("title = ?");
+            params.push(updatePayload.title);
+        }
+        if (updatePayload.subject !== undefined) {
+            setClauses.push("subject = ?");
+            params.push(updatePayload.subject);
+        }
+        if (updatePayload.duration !== undefined) {
+            setClauses.push("duration = ?");
+            params.push(updatePayload.duration);
+        }
+        if (setClauses.length > 0) {
+            params.push(cleanId.toUpperCase());
+            sqliteDb.prepare(`UPDATE question_sets SET ${setClauses.join(", ")} WHERE UPPER(id) = ?`).run(...params);
+        }
+        return getQuestionSetById(cleanId);
+    }
+}
+
+
 // -------------------------------------------------------------
 // SESSIONS (PERSISTENT LOGIN STORE)
 // -------------------------------------------------------------
@@ -306,6 +346,7 @@ module.exports = {
     createQuestionSet,
     deleteQuestionSet,
     updateQuestionSetQuestions,
+    updateQuestionSetDetails,
     getSession,
     setSession,
     destroySession,

@@ -834,6 +834,105 @@ app.post("/api/admin/sets/:id/questions/reorder", requireAdmin, async (req, res)
     }
 });
 
+// Update Question Set Details (Title, Subject, Duration)
+app.put("/api/admin/sets/:id", requireAdmin, async (req, res) => {
+    try {
+        const setId = req.params.id;
+        const { title, subject, duration } = req.body;
+
+        const row = await unifiedDb.getQuestionSetById(setId);
+        if (!row) {
+            return res.status(404).json({ success: false, message: "Question set not found." });
+        }
+
+        if (title !== undefined && !String(title).trim()) {
+            return res.status(400).json({ success: false, message: "Examination title cannot be blank." });
+        }
+
+        const durNum = duration !== undefined ? parseInt(duration, 10) : undefined;
+        if (durNum !== undefined && (isNaN(durNum) || durNum <= 0)) {
+            return res.status(400).json({ success: false, message: "Duration must be a positive number of minutes." });
+        }
+
+        const updated = await unifiedDb.updateQuestionSetDetails(setId, {
+            title: title ? String(title).trim() : undefined,
+            subject: subject ? String(subject).trim() : undefined,
+            duration: durNum
+        });
+
+        return res.json({
+            success: true,
+            message: "Question set details updated successfully.",
+            set: updated
+        });
+    } catch (error) {
+        console.error("Update question set details error:", error);
+        return res.status(500).json({ success: false, message: "Failed to update question set details: " + error.message });
+    }
+});
+
+// Update an individual question inside a Question Set
+app.put("/api/admin/sets/:id/questions/:qNum", requireAdmin, async (req, res) => {
+    try {
+        const setId = req.params.id;
+        const targetQNum = Number(req.params.qNum);
+        const { question, options, correctAnswer, explanation } = req.body;
+
+        if (!question || !String(question).trim()) {
+            return res.status(400).json({ success: false, message: "Question statement cannot be empty." });
+        }
+
+        const row = await unifiedDb.getQuestionSetById(setId);
+        if (!row) {
+            return res.status(404).json({ success: false, message: "Question set not found." });
+        }
+
+        let questions = typeof row.questions_json === "string" ? JSON.parse(row.questions_json) : row.questions_json;
+        if (!Array.isArray(questions)) {
+            return res.status(500).json({ success: false, message: "Questions payload corrupt." });
+        }
+
+        const qIndex = questions.findIndex((q, idx) => {
+            const num = q.number !== undefined ? q.number : (q.id !== undefined ? q.id : idx + 1);
+            return Number(num) === targetQNum || idx + 1 === targetQNum;
+        });
+
+        if (qIndex === -1) {
+            return res.status(404).json({ success: false, message: `Question ${targetQNum} not found in this set.` });
+        }
+
+        // Update question properties while preserving metadata
+        const existingQ = questions[qIndex];
+        const updatedQ = {
+            ...existingQ,
+            question: String(question).trim(),
+            options: {
+                A: options?.A !== undefined ? String(options.A).trim() : (existingQ.options?.A || ""),
+                B: options?.B !== undefined ? String(options.B).trim() : (existingQ.options?.B || ""),
+                C: options?.C !== undefined ? String(options.C).trim() : (existingQ.options?.C || ""),
+                D: options?.D !== undefined ? String(options.D).trim() : (existingQ.options?.D || "")
+            },
+            correctAnswer: correctAnswer ? String(correctAnswer).trim().toUpperCase() : (existingQ.correctAnswer || "A"),
+            explanation: explanation !== undefined ? String(explanation).trim() : (existingQ.explanation || "")
+        };
+
+        // Also normalize answer field for backwards compatibility
+        updatedQ.answer = updatedQ.correctAnswer;
+        questions[qIndex] = updatedQ;
+
+        await unifiedDb.updateQuestionSetQuestions(setId, questions, questions.length);
+
+        return res.json({
+            success: true,
+            message: `Question ${targetQNum} updated successfully.`,
+            question: updatedQ
+        });
+    } catch (error) {
+        console.error("Update single question error:", error);
+        return res.status(500).json({ success: false, message: "Failed to update question: " + error.message });
+    }
+});
+
 // -----------------------------------------------------
 // MASTER ADMIN: CANDIDATE / STUDENT APIS
 // -----------------------------------------------------

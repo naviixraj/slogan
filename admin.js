@@ -141,6 +141,33 @@ const newName = document.getElementById("newName");
 const newEmail = document.getElementById("newEmail");
 const newPass = document.getElementById("newPass");
 
+// Edit Question Set Modal
+const editSetModal = document.getElementById("editSetModal");
+const closeEditSetModalButton = document.getElementById("closeEditSetModalButton");
+const cancelEditSetButton = document.getElementById("cancelEditSetButton");
+const saveSetDetailsButton = document.getElementById("saveSetDetailsButton");
+const editSetId = document.getElementById("editSetId");
+const editSetTitle = document.getElementById("editSetTitle");
+const editSetSubject = document.getElementById("editSetSubject");
+const editSetDuration = document.getElementById("editSetDuration");
+const editSetFromInspectorButton = document.getElementById("editSetFromInspectorButton");
+
+// Edit Single Question Modal
+const editQuestionModal = document.getElementById("editQuestionModal");
+const closeEditQuestionModalButton = document.getElementById("closeEditQuestionModalButton");
+const cancelEditQuestionButton = document.getElementById("cancelEditQuestionButton");
+const saveQuestionButton = document.getElementById("saveQuestionButton");
+const editQuestionModalTitle = document.getElementById("editQuestionModalTitle");
+const editQuestionSetId = document.getElementById("editQuestionSetId");
+const editQuestionNum = document.getElementById("editQuestionNum");
+const editQuestionStatement = document.getElementById("editQuestionStatement");
+const editOptA = document.getElementById("editOptA");
+const editOptB = document.getElementById("editOptB");
+const editOptC = document.getElementById("editOptC");
+const editOptD = document.getElementById("editOptD");
+const editCorrectAnswer = document.getElementById("editCorrectAnswer");
+const editExplanation = document.getElementById("editExplanation");
+
 // Topbar Profile & Logout
 const topAvatarButton = document.getElementById("topAvatarButton");
 const profileDropdownWrapper = document.getElementById("profileDropdownWrapper");
@@ -343,7 +370,21 @@ function renderSets() {
         inspectBtn.textContent = "Inspect Questions ➔";
         inspectBtn.addEventListener("click", () => inspectSet(set.id));
 
-        btnRow.appendChild(inspectBtn);
+        const editBtn = document.createElement("button");
+        editBtn.type = "button";
+        editBtn.className = "card-edit-btn";
+        editBtn.title = `Edit details for "${set.title}"`;
+        editBtn.setAttribute("aria-label", `Edit details for "${set.title}"`);
+        editBtn.innerHTML = `
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+            </svg>
+        `;
+        editBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            openEditSetModal(set);
+        });
 
         const delBtn = document.createElement("button");
         delBtn.type = "button";
@@ -361,8 +402,10 @@ function renderSets() {
         `;
         delBtn.addEventListener("click", () => deleteSet(set.id));
 
+        btnRow.append(inspectBtn, editBtn, delBtn);
+
         body.append(top, titleH2, subP, metaDiv, btnRow);
-        card.append(accent, body, delBtn);
+        card.append(accent, body);
         testGrid.appendChild(card);
     });
 }
@@ -492,6 +535,13 @@ async function inspectSet(setId) {
                                 ${exp}
                             </div>
                             <div class="q-footer">
+                                <button type="button" class="btn-edit-single-q" data-setid="${set.id}" data-qnum="${qNum}" title="Edit Question ${qNum}" aria-label="Edit Question ${qNum}">
+                                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                                    </svg>
+                                    <span>Edit</span>
+                                </button>
                                 <button type="button" class="bin-btn btn-delete-single-q" data-setid="${set.id}" data-qnum="${qNum}" title="Delete Question ${qNum}" aria-label="Delete Question ${qNum}">
                                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M3 6h18"></path>
@@ -544,6 +594,7 @@ function updateBulkActionBar() {
         if (bulkMoveButton) bulkMoveButton.style.display = "inline-flex";
 
         // Right (red circle): Question details/timing is hidden, Cancel button is shown
+        if (editSetFromInspectorButton) editSetFromInspectorButton.style.display = "none";
         if (inspectorMetaBadge) inspectorMetaBadge.style.display = "none";
         if (bulkCancelButton) bulkCancelButton.style.display = "inline-flex";
     } else {
@@ -554,6 +605,7 @@ function updateBulkActionBar() {
         if (bulkMoveButton) bulkMoveButton.style.display = "none";
 
         // Right: Question details/timing is restored, Cancel button is hidden
+        if (editSetFromInspectorButton) editSetFromInspectorButton.style.display = "inline-flex";
         if (inspectorMetaBadge) inspectorMetaBadge.style.display = "block";
         if (bulkCancelButton) bulkCancelButton.style.display = "none";
     }
@@ -705,6 +757,12 @@ function updateCardNumbersInDom() {
             delBtn.setAttribute("data-qnum", String(newNum));
             delBtn.setAttribute("title", `Delete Question ${newNum}`);
             delBtn.setAttribute("aria-label", `Delete Question ${newNum}`);
+        }
+        const editBtn = card.querySelector(".btn-edit-single-q");
+        if (editBtn) {
+            editBtn.setAttribute("data-qnum", String(newNum));
+            editBtn.setAttribute("title", `Edit Question ${newNum}`);
+            editBtn.setAttribute("aria-label", `Edit Question ${newNum}`);
         }
     });
 }
@@ -1368,6 +1426,222 @@ async function fetchStudents() {
 }
 
 // -----------------------------------------------------
+// EDIT QUESTION SET DETAILS
+// -----------------------------------------------------
+
+function openEditSetModal(setOrId) {
+    let setObj = null;
+    if (typeof setOrId === "object" && setOrId !== null) {
+        setObj = setOrId;
+    } else if (typeof setOrId === "string") {
+        setObj = activeSets.find(s => String(s.id).toUpperCase() === String(setOrId).toUpperCase());
+    }
+
+    if (!setObj && currentInspectedSetId) {
+        setObj = activeSets.find(s => String(s.id).toUpperCase() === String(currentInspectedSetId).toUpperCase());
+    }
+
+    if (!setObj) {
+        alert("Unable to locate question set details.");
+        return;
+    }
+
+    if (editSetId) editSetId.value = setObj.id;
+    if (editSetTitle) editSetTitle.value = setObj.title || "";
+    if (editSetSubject) editSetSubject.value = setObj.subject || "General Paper";
+    if (editSetDuration) editSetDuration.value = setObj.duration || 180;
+
+    openModal(editSetModal);
+}
+
+function closeEditSetModal() {
+    closeModal(editSetModal);
+}
+
+async function handleSaveSetDetails() {
+    const setId = editSetId ? editSetId.value.trim() : "";
+    const newTitle = editSetTitle ? editSetTitle.value.trim() : "";
+    const newSubject = editSetSubject ? editSetSubject.value.trim() : "";
+    const newDuration = editSetDuration ? parseInt(editSetDuration.value, 10) : 180;
+
+    if (!setId) {
+        alert("Missing question set identifier.");
+        return;
+    }
+
+    if (!newTitle) {
+        alert("Examination title cannot be empty.");
+        if (editSetTitle) editSetTitle.focus();
+        return;
+    }
+
+    if (isNaN(newDuration) || newDuration <= 0) {
+        alert("Please specify a valid time duration in minutes (e.g. 60).");
+        if (editSetDuration) editSetDuration.focus();
+        return;
+    }
+
+    const prevBtnText = saveSetDetailsButton ? saveSetDetailsButton.textContent : "Save Changes";
+    if (saveSetDetailsButton) {
+        saveSetDetailsButton.disabled = true;
+        saveSetDetailsButton.textContent = "Saving...";
+    }
+
+    try {
+        const res = await fetch(`/api/admin/sets/${encodeURIComponent(setId)}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            credentials: "same-origin",
+            body: JSON.stringify({
+                title: newTitle,
+                subject: newSubject || "General Paper",
+                duration: newDuration
+            })
+        });
+
+        const data = await res.json();
+        if (!res.ok || !data.success) {
+            throw new Error(data.message || "Failed to update question set details.");
+        }
+
+        // Update local dataset
+        const targetSet = activeSets.find(s => String(s.id).toUpperCase() === String(setId).toUpperCase());
+        if (targetSet) {
+            targetSet.title = newTitle;
+            targetSet.subject = newSubject || "General Paper";
+            targetSet.duration = newDuration;
+        }
+
+        // If currently in inspector view for this set, update page titles and metadata
+        if (currentInspectedSetId && String(currentInspectedSetId).toUpperCase() === String(setId).toUpperCase()) {
+            if (pageTitle) pageTitle.textContent = newTitle;
+            if (pageSubtitle) {
+                const count = currentInspectedQuestions ? currentInspectedQuestions.length : 0;
+                pageSubtitle.textContent = `Set ${setId} • ${count} Questions • ${newDuration} Mins • ${newSubject || "General Paper"}`;
+            }
+        }
+
+        closeEditSetModal();
+        renderSets();
+        showReorderToast("Examination details updated successfully ✓");
+    } catch (err) {
+        alert("Failed to save changes: " + err.message);
+    } finally {
+        if (saveSetDetailsButton) {
+            saveSetDetailsButton.disabled = false;
+            saveSetDetailsButton.textContent = prevBtnText;
+        }
+    }
+}
+
+// -----------------------------------------------------
+// EDIT INDIVIDUAL QUESTION
+// -----------------------------------------------------
+
+function openEditQuestionModal(setId, qNum) {
+    const targetQNum = Number(qNum);
+    const qObj = currentInspectedQuestions.find((q, idx) => {
+        const num = q.number !== undefined ? q.number : (q.id !== undefined ? q.id : idx + 1);
+        return Number(num) === targetQNum || idx + 1 === targetQNum;
+    });
+
+    if (!qObj) {
+        alert(`Question ${targetQNum} not found.`);
+        return;
+    }
+
+    if (editQuestionSetId) editQuestionSetId.value = setId;
+    if (editQuestionNum) editQuestionNum.value = String(targetQNum);
+    if (editQuestionModalTitle) editQuestionModalTitle.textContent = `Edit Question ${String(targetQNum).padStart(2, "0")}`;
+
+    if (editQuestionStatement) editQuestionStatement.value = qObj.question || "";
+    if (editOptA) editOptA.value = qObj.options?.A || "";
+    if (editOptB) editOptB.value = qObj.options?.B || "";
+    if (editOptC) editOptC.value = qObj.options?.C || "";
+    if (editOptD) editOptD.value = qObj.options?.D || "";
+
+    const correct = String(qObj.correctAnswer || qObj.answer || "A").trim().toUpperCase();
+    if (editCorrectAnswer) editCorrectAnswer.value = ["A", "B", "C", "D"].includes(correct) ? correct : "A";
+
+    if (editExplanation) editExplanation.value = qObj.explanation || "";
+
+    openModal(editQuestionModal);
+}
+
+function closeEditQuestionModal() {
+    closeModal(editQuestionModal);
+}
+
+async function handleSaveQuestion() {
+    const setId = editQuestionSetId ? editQuestionSetId.value.trim() : currentInspectedSetId;
+    const qNum = editQuestionNum ? Number(editQuestionNum.value) : 0;
+    const qStatement = editQuestionStatement ? editQuestionStatement.value.trim() : "";
+    const optA = editOptA ? editOptA.value.trim() : "";
+    const optB = editOptB ? editOptB.value.trim() : "";
+    const optC = editOptC ? editOptC.value.trim() : "";
+    const optD = editOptD ? editOptD.value.trim() : "";
+    const correctAns = editCorrectAnswer ? editCorrectAnswer.value : "A";
+    const explanation = editExplanation ? editExplanation.value.trim() : "";
+
+    if (!setId || !qNum) {
+        alert("Missing question identifier.");
+        return;
+    }
+
+    if (!qStatement) {
+        alert("Question statement cannot be empty.");
+        if (editQuestionStatement) editQuestionStatement.focus();
+        return;
+    }
+
+    const prevBtnText = saveQuestionButton ? saveQuestionButton.textContent : "Save Question";
+    if (saveQuestionButton) {
+        saveQuestionButton.disabled = true;
+        saveQuestionButton.textContent = "Saving...";
+    }
+
+    try {
+        const res = await fetch(`/api/admin/sets/${encodeURIComponent(setId)}/questions/${encodeURIComponent(qNum)}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            credentials: "same-origin",
+            body: JSON.stringify({
+                question: qStatement,
+                options: { A: optA, B: optB, C: optC, D: optD },
+                correctAnswer: correctAns,
+                explanation: explanation
+            })
+        });
+
+        const data = await res.json();
+        if (!res.ok || !data.success) {
+            throw new Error(data.message || "Failed to update question.");
+        }
+
+        // Update local object in currentInspectedQuestions
+        const qIndex = currentInspectedQuestions.findIndex((q, idx) => {
+            const num = q.number !== undefined ? q.number : (q.id !== undefined ? q.id : idx + 1);
+            return Number(num) === qNum || idx + 1 === qNum;
+        });
+
+        if (qIndex !== -1 && data.question) {
+            currentInspectedQuestions[qIndex] = data.question;
+        }
+
+        closeEditQuestionModal();
+        await inspectSet(setId);
+        showReorderToast(`Question ${qNum} updated successfully ✓`);
+    } catch (err) {
+        alert("Failed to save question: " + err.message);
+    } finally {
+        if (saveQuestionButton) {
+            saveQuestionButton.disabled = false;
+            saveQuestionButton.textContent = prevBtnText;
+        }
+    }
+}
+
+// -----------------------------------------------------
 // EVENT LISTENERS BINDING
 // -----------------------------------------------------
 
@@ -1402,6 +1676,17 @@ function bindEventListeners() {
                 return;
             }
 
+            // Single question edit
+            const editBtn = e.target.closest(".btn-edit-single-q");
+            if (editBtn) {
+                const qNum = Number(editBtn.getAttribute("data-qnum"));
+                const setId = editBtn.getAttribute("data-setid") || currentInspectedSetId;
+                if (setId && qNum) {
+                    openEditQuestionModal(setId, qNum);
+                }
+                return;
+            }
+
             // Ignore drag handle clicks
             if (e.target.closest(".q-drag-handle")) {
                 return;
@@ -1429,8 +1714,8 @@ function bindEventListeners() {
             const card = e.target.closest(".question-card");
             if (!card) return;
 
-            // Don't drag if initiated on delete button
-            if (e.target.closest(".btn-delete-single-q") || e.target.closest(".bin-btn")) {
+            // Don't drag if initiated on action buttons
+            if (e.target.closest(".btn-delete-single-q") || e.target.closest(".btn-edit-single-q") || e.target.closest(".bin-btn")) {
                 e.preventDefault();
                 return;
             }
@@ -1590,7 +1875,7 @@ function bindEventListeners() {
             }
 
             const card = e.target.closest(".question-card");
-            if (!card || e.target.closest(".btn-delete-single-q")) return;
+            if (!card || e.target.closest(".btn-delete-single-q") || e.target.closest(".btn-edit-single-q")) return;
 
             didLongPress = false;
             const touch = e.touches[0];
@@ -1719,6 +2004,17 @@ function bindEventListeners() {
     if (cancelStudentButton) cancelStudentButton.addEventListener("click", () => closeModal(studentModal));
     if (createStudentBtn) createStudentBtn.addEventListener("click", handleCreateStudentSubmit);
     if (studentSearchInput) studentSearchInput.addEventListener("input", renderStudents);
+
+    // Edit Question Set Modal
+    if (editSetFromInspectorButton) editSetFromInspectorButton.addEventListener("click", () => openEditSetModal(currentInspectedSetId));
+    if (closeEditSetModalButton) closeEditSetModalButton.addEventListener("click", closeEditSetModal);
+    if (cancelEditSetButton) cancelEditSetButton.addEventListener("click", closeEditSetModal);
+    if (saveSetDetailsButton) saveSetDetailsButton.addEventListener("click", handleSaveSetDetails);
+
+    // Edit Question Modal
+    if (closeEditQuestionModalButton) closeEditQuestionModalButton.addEventListener("click", closeEditQuestionModal);
+    if (cancelEditQuestionButton) cancelEditQuestionButton.addEventListener("click", closeEditQuestionModal);
+    if (saveQuestionButton) saveQuestionButton.addEventListener("click", handleSaveQuestion);
 
     // Profile & Logout
     if (topAvatarButton) topAvatarButton.addEventListener("click", toggleProfileDropdown);

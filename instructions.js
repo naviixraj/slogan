@@ -1,19 +1,58 @@
-
 /* =====================================================
    SLOGON ACADEMY - INSTRUCTIONS PAGE
 ===================================================== */
 
 /* LOAD CANDIDATE & SELECTED TEST INFORMATION */
 
-const candidateData = JSON.parse(
+let candidateData = JSON.parse(
     localStorage.getItem("candidateInfo") || "null"
 );
 
-const testDetails = JSON.parse(
+let testDetails = JSON.parse(
     localStorage.getItem("selectedTestDetails") || "null"
 );
 
-/* DISPLAY CANDIDATE & TEST INFORMATION */
+// Fallback test ID
+let activeTestId = localStorage.getItem("selectedMockTest") || (testDetails ? testDetails.id : "MOCK01");
+
+function updateInstructionsUI(details) {
+    if (!details) return;
+
+    const examTitle = details.title || "Mock Test";
+    const examSubject = details.subject || "General Paper";
+    const questionsCount = Number(details.questionsCount) || (details.questions ? details.questions.length : 150);
+    const durationMinutes = Number(details.duration) || 180;
+
+    // Header and top candidate info
+    const examDisplay = document.getElementById("examDisplay");
+    if (examDisplay) examDisplay.textContent = examTitle;
+
+    const headerExamName = document.getElementById("headerExamName");
+    if (headerExamName) headerExamName.textContent = examTitle;
+
+    const subjectDisplay = document.getElementById("subjectDisplay");
+    if (subjectDisplay) subjectDisplay.textContent = examSubject;
+
+    // Overview cards
+    const qCountEl = document.getElementById("instructionsTotalQuestions");
+    if (qCountEl) qCountEl.textContent = String(questionsCount);
+
+    const durEl = document.getElementById("instructionsDuration");
+    if (durEl) durEl.textContent = `${durationMinutes} Minutes`;
+
+    // Detailed instruction paragraphs (Instruction 1 & 2)
+    const detailQCountEl = document.getElementById("instructionDetailQuestions");
+    if (detailQCountEl) {
+        detailQCountEl.textContent = `${questionsCount} questions`;
+    }
+
+    const detailDurEl = document.getElementById("instructionDetailDuration");
+    if (detailDurEl) {
+        detailDurEl.textContent = `${durationMinutes} minutes`;
+    }
+}
+
+/* INITIAL DISPLAY CANDIDATE & TEST INFORMATION */
 
 if (candidateData) {
     const candEl = document.getElementById("candidateDisplay");
@@ -24,30 +63,51 @@ if (candidateData) {
 }
 
 if (testDetails) {
-    const examDisplay = document.getElementById("examDisplay");
-    if (examDisplay) examDisplay.textContent = testDetails.title || "Mock Test";
-
-    const headerExamName = document.getElementById("headerExamName");
-    if (headerExamName) headerExamName.textContent = testDetails.title || "Mock Test";
-
-    const subjectDisplay = document.getElementById("subjectDisplay");
-    if (subjectDisplay) subjectDisplay.textContent = testDetails.subject || "General Paper";
-
-    const qCountEl = document.getElementById("instructionsTotalQuestions");
-    if (qCountEl) qCountEl.textContent = String(testDetails.questionsCount || 150);
-
-    const durEl = document.getElementById("instructionsDuration");
-    if (durEl) durEl.textContent = `${testDetails.duration || 180} Minutes`;
+    updateInstructionsUI(testDetails);
 } else if (candidateData) {
     const subjEl = document.getElementById("subjectDisplay");
-    if (subjEl) subjEl.textContent = candidateData.subject || "—";
+    if (subjEl) subjEl.textContent = candidateData.subject || "General Paper";
 
     const exEl = document.getElementById("examDisplay");
-    if (exEl) exEl.textContent = candidateData.exam || "—";
+    if (exEl) exEl.textContent = candidateData.exam || "Mock Test";
 
     const headEl = document.getElementById("headerExamName");
     if (headEl) headEl.textContent = candidateData.exam || "Mock Test";
 }
+
+/* LIVE SERVER SYNC: FETCH LATEST TEST SPECS FROM DATABASE */
+async function syncLatestTestDetails() {
+    if (!activeTestId) return;
+
+    try {
+        const cleanId = String(activeTestId).toLowerCase();
+        const res = await fetch(`/api/mock-tests/${encodeURIComponent(cleanId)}/questions`);
+        if (res.ok) {
+            const data = await res.json();
+            if (data.success) {
+                const refreshed = {
+                    id: data.testId || activeTestId,
+                    title: data.testTitle || (testDetails ? testDetails.title : "Mock Test"),
+                    subject: data.subject || (testDetails ? testDetails.subject : "General Paper"),
+                    duration: Number(data.duration) || (testDetails ? testDetails.duration : 180),
+                    questionsCount: Number(data.totalQuestions) || (data.questions ? data.questions.length : (testDetails ? testDetails.questionsCount : 150))
+                };
+
+                testDetails = refreshed;
+                localStorage.setItem("selectedTestDetails", JSON.stringify(refreshed));
+                localStorage.setItem("examDuration", String(refreshed.duration * 60));
+                localStorage.setItem("currentExamTitle", refreshed.title);
+                localStorage.setItem("currentExamSubject", refreshed.subject);
+
+                updateInstructionsUI(refreshed);
+            }
+        }
+    } catch (err) {
+        console.warn("Could not sync test details with server, using cached:", err);
+    }
+}
+
+syncLatestTestDetails();
 
 /* DECLARATION CHECKBOX */
 
@@ -102,7 +162,7 @@ if (instructionCheckbox && proceedButton) {
 
         localStorage.setItem("examStarted", "true");
 
-       window.location.href = "exam.html";
+        window.location.href = "exam.html";
     });
 }
 
