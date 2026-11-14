@@ -63,7 +63,8 @@ async function loadStudentTests() {
                     status: t.status || "available",
                     subject: t.subject,
                     questionsCount: t.questions_count,
-                    duration: t.duration
+                    duration: t.duration,
+                    isDb: true
                 }));
                 const existingIds = new Set(dbTests.map(t => t.id.toUpperCase()));
                 const upcoming = mockTests.filter(m => !existingIds.has(m.id.toUpperCase()));
@@ -112,8 +113,23 @@ function renderTests() {
         return matchesSearch && matchesFilter;
     });
 
-    // Sort examinations in constructed sequential order (SET01, SET02, SET03...)
+    // Sort examinations:
+    // 1. Currently AVAILABLE questions/tests ALWAYS show on the TOP
+    // 2. Database question sets uploaded by admin show before static mock tests
+    // 3. Within each group, clean sequential order (SET01, SET02... / MOCK01, MOCK02...)
     matches.sort((a, b) => {
+        const isAvailA = a.status === "available" ? 1 : 0;
+        const isAvailB = b.status === "available" ? 1 : 0;
+        if (isAvailA !== isAvailB) {
+            return isAvailB - isAvailA;
+        }
+
+        const isDbA = a.isDb ? 1 : 0;
+        const isDbB = b.isDb ? 1 : 0;
+        if (isDbA !== isDbB) {
+            return isDbB - isDbA;
+        }
+
         const idA = String(a.id || "").trim();
         const idB = String(b.id || "").trim();
         return idA.localeCompare(idB, undefined, { numeric: true, sensitivity: 'base' });
