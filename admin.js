@@ -63,13 +63,10 @@ const backToSetsButton = document.getElementById("backToSetsButton");
 const inspectorQuestionsContainer = document.getElementById("inspectorQuestionsContainer");
 const inspectorMetaBadge = document.getElementById("inspectorMetaBadge");
 
-// Bulk Action Bar & Selection State
-const bulkActionBar = document.getElementById("bulkActionBar");
-const bulkCountBadge = document.getElementById("bulkCountBadge");
-const bulkDeleteCountText = document.getElementById("bulkDeleteCountText");
-const btnSelectAllQuestions = document.getElementById("btnSelectAllQuestions");
-const btnDeselectAllQuestions = document.getElementById("btnDeselectAllQuestions");
-const btnDeleteSelectedQuestions = document.getElementById("btnDeleteSelectedQuestions");
+// Bulk Delete In-Place Topbar Controls & Selection State
+const bulkDeleteBinButton = document.getElementById("bulkDeleteBinButton");
+const bulkBinCountBadge = document.getElementById("bulkBinCountBadge");
+const bulkCancelButton = document.getElementById("bulkCancelButton");
 
 let currentInspectedSetId = null;
 let currentInspectedQuestions = [];
@@ -514,14 +511,26 @@ function backToSets() {
 // -----------------------------------------------------
 
 function updateBulkActionBar() {
-    if (!bulkActionBar) return;
     const count = selectedQuestionNumbers.size;
     if (count > 0) {
-        bulkActionBar.style.display = "flex";
-        if (bulkCountBadge) bulkCountBadge.textContent = String(count);
-        if (bulkDeleteCountText) bulkDeleteCountText.textContent = String(count);
+        // Bulk Delete Mode active:
+        // Left (black circle): Back to Sets is hidden, Bin button is shown with count badge
+        if (backToSetsButton) backToSetsButton.style.display = "none";
+        if (bulkDeleteBinButton) bulkDeleteBinButton.style.display = "inline-flex";
+        if (bulkBinCountBadge) bulkBinCountBadge.textContent = String(count);
+
+        // Right (red circle): Question details/timing is hidden, Cancel button is shown
+        if (inspectorMetaBadge) inspectorMetaBadge.style.display = "none";
+        if (bulkCancelButton) bulkCancelButton.style.display = "inline-flex";
     } else {
-        bulkActionBar.style.display = "none";
+        // Normal Mode:
+        // Left: Back to Sets is restored, Bin button is hidden
+        if (backToSetsButton) backToSetsButton.style.display = "inline-flex";
+        if (bulkDeleteBinButton) bulkDeleteBinButton.style.display = "none";
+
+        // Right: Question details/timing is restored, Cancel button is hidden
+        if (inspectorMetaBadge) inspectorMetaBadge.style.display = "block";
+        if (bulkCancelButton) bulkCancelButton.style.display = "none";
     }
 }
 
@@ -571,9 +580,9 @@ async function deleteSelectedQuestions() {
     const confirmed = confirm(`Are you sure you want to delete the ${count} selected question${count > 1 ? "s" : ""} from this set? This cannot be undone.`);
     if (!confirmed) return;
 
-    if (btnDeleteSelectedQuestions) {
-        btnDeleteSelectedQuestions.disabled = true;
-        btnDeleteSelectedQuestions.style.opacity = "0.6";
+    if (bulkDeleteBinButton) {
+        bulkDeleteBinButton.disabled = true;
+        bulkDeleteBinButton.style.opacity = "0.5";
     }
 
     try {
@@ -597,9 +606,9 @@ async function deleteSelectedQuestions() {
     } catch (err) {
         alert("Bulk delete failed: " + err.message);
     } finally {
-        if (btnDeleteSelectedQuestions) {
-            btnDeleteSelectedQuestions.disabled = false;
-            btnDeleteSelectedQuestions.style.opacity = "1";
+        if (bulkDeleteBinButton) {
+            bulkDeleteBinButton.disabled = false;
+            bulkDeleteBinButton.style.opacity = "1";
         }
     }
 }
@@ -1177,9 +1186,8 @@ function bindEventListeners() {
     // Inspector & Bulk Actions
     if (backToSetsButton) backToSetsButton.addEventListener("click", backToSets);
 
-    if (btnSelectAllQuestions) btnSelectAllQuestions.addEventListener("click", selectAllQuestions);
-    if (btnDeselectAllQuestions) btnDeselectAllQuestions.addEventListener("click", clearSelection);
-    if (btnDeleteSelectedQuestions) btnDeleteSelectedQuestions.addEventListener("click", deleteSelectedQuestions);
+    if (bulkDeleteBinButton) bulkDeleteBinButton.addEventListener("click", deleteSelectedQuestions);
+    if (bulkCancelButton) bulkCancelButton.addEventListener("click", clearSelection);
 
     if (inspectorQuestionsContainer) {
         // Desktop left-click selection & single delete
