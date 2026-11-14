@@ -76,6 +76,12 @@ let touchTimer = null;
 let touchStartX = 0;
 let touchStartY = 0;
 
+// Reorder & Drag State
+let draggedCard = null;
+let isDraggingQuestion = false;
+let reorderToastTimer = null;
+let touchDragActive = false;
+
 // Headings
 const pageTitle = document.getElementById("pageTitle");
 const pageSubtitle = document.getElementById("pageSubtitle");
@@ -417,7 +423,7 @@ async function inspectSet(setId) {
         const badge = (set.file_type || set.fileType || "JSON").toUpperCase();
 
         if (pageTitle) pageTitle.textContent = set.title;
-        if (pageSubtitle) pageSubtitle.textContent = `File: ${fName} • ${qList.length} single split questions evaluated. (Click or long-press cards to select for bulk deletion)`;
+        if (pageSubtitle) pageSubtitle.textContent = `File: ${fName} • ${qList.length} single split questions. (Click to select for bulk delete, or hold & drag to reorder)`;
         if (inspectorMetaBadge) inspectorMetaBadge.textContent = `${badge} • Duration: ${set.duration || 180} Mins • Total ${qList.length} Questions`;
 
         if (inspectorQuestionsContainer) {
@@ -436,9 +442,19 @@ async function inspectSet(setId) {
                     const isSelected = selectedQuestionNumbers.has(Number(qNum));
 
                     return `
-                        <div class="question-card ${isSelected ? 'is-selected' : ''}" data-qnum="${qNum}" data-setid="${set.id}">
+                        <div class="question-card ${isSelected ? 'is-selected' : ''}" data-qnum="${qNum}" data-original-qnum="${qNum}" data-setid="${set.id}" draggable="true">
                             <div class="q-header">
                                 <div class="q-header-left">
+                                    <div class="q-drag-handle" title="Hold and drag to reorder questions" aria-label="Hold and drag to reorder">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+                                            <circle cx="9" cy="5" r="2"></circle>
+                                            <circle cx="15" cy="5" r="2"></circle>
+                                            <circle cx="9" cy="12" r="2"></circle>
+                                            <circle cx="15" cy="12" r="2"></circle>
+                                            <circle cx="9" cy="19" r="2"></circle>
+                                            <circle cx="15" cy="19" r="2"></circle>
+                                        </svg>
+                                    </div>
                                     <div class="q-select-indicator" title="Click to select for bulk deletion">
                                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
                                             <polyline points="20 6 9 17 4 12"></polyline>
@@ -610,6 +626,82 @@ async function deleteSelectedQuestions() {
             bulkDeleteBinButton.disabled = false;
             bulkDeleteBinButton.style.opacity = "1";
         }
+    }
+}
+
+// -----------------------------------------------------
+// DRAG & DROP QUESTION REORDERING LOGIC
+// -----------------------------------------------------
+
+function showReorderToast(msg = "Question order saved") {
+    const toast = document.getElementById("reorderToast");
+    if (!toast) return;
+    const span = toast.querySelector("span");
+    if (span) span.textContent = msg;
+    toast.classList.add("show");
+    if (reorderToastTimer) clearTimeout(reorderToastTimer);
+    reorderToastTimer = setTimeout(() => {
+        toast.classList.remove("show");
+    }, 2200);
+}
+
+function updateCardNumbersInDom() {
+    if (!inspectorQuestionsContainer) return;
+    const cards = inspectorQuestionsContainer.querySelectorAll(".question-card");
+    cards.forEach((card, idx) => {
+        const newNum = idx + 1;
+        card.setAttribute("data-qnum", String(newNum));
+        const badge = card.querySelector(".q-badge");
+        if (badge) badge.textContent = `QUESTION ${String(newNum).padStart(2, "0")}`;
+        const delBtn = card.querySelector(".btn-delete-single-q");
+        if (delBtn) {
+            delBtn.setAttribute("data-qnum", String(newNum));
+            delBtn.setAttribute("title", `Delete Question ${newNum}`);
+            delBtn.setAttribute("aria-label", `Delete Question ${newNum}`);
+        }
+    });
+}
+
+async function saveQuestionOrder() {
+    if (!currentInspectedSetId || !inspectorQuestionsContainer) return;
+    const cards = inspectorQuestionsContainer.querySelectorAll(".question-card");
+    if (cards.length === 0) return;
+
+    // Read the current DOM sequence using original question numbers
+    const orderedQuestionNumbers = Array.from(cards).map(card => {
+        return Number(card.getAttribute("data-original-qnum") || card.getAttribute("data-qnum"));
+    });
+
+    // Re-index UI numbers immediately to 1, 2, 3...
+    updateCardNumbersInDom();
+
+    try {
+        const res = await fetch(`/api/admin/sets/${encodeURIComponent(currentInspectedSetId)}/questions/reorder`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "same-origin",
+            body: JSON.stringify({ orderedQuestionNumbers })
+        });
+
+        const data = await res.json();
+        if (!res.ok || !data.success) {
+            throw new Error(data.message || "Failed to save reordered questions.");
+        }
+
+        if (Array.isArray(data.questions)) {
+            currentInspectedQuestions = data.questions;
+            // Update data-original-qnum to reflect the saved reindexed order
+            const updatedCards = inspectorQuestionsContainer.querySelectorAll(".question-card");
+            updatedCards.forEach((c, idx) => {
+                c.setAttribute("data-original-qnum", String(idx + 1));
+                c.setAttribute("data-qnum", String(idx + 1));
+            });
+        }
+
+        showReorderToast("Question sequence saved ✓");
+    } catch (err) {
+        console.error("Save question order failed:", err);
+        showReorderToast("Failed to save order: " + err.message);
     }
 }
 
@@ -1192,6 +1284,11 @@ function bindEventListeners() {
     if (inspectorQuestionsContainer) {
         // Desktop left-click selection & single delete
         inspectorQuestionsContainer.addEventListener("click", (e) => {
+            // Ignore click if user was dragging
+            if (isDraggingQuestion) {
+                return;
+            }
+
             const deleteBtn = e.target.closest(".btn-delete-single-q");
             if (deleteBtn) {
                 const qNum = Number(deleteBtn.getAttribute("data-qnum"));
@@ -1199,6 +1296,11 @@ function bindEventListeners() {
                 if (setId && qNum) {
                     deleteSingleQuestion(setId, qNum);
                 }
+                return;
+            }
+
+            // Ignore drag handle clicks
+            if (e.target.closest(".q-drag-handle")) {
                 return;
             }
 
@@ -1216,8 +1318,121 @@ function bindEventListeners() {
             }
         });
 
-        // Touch & Mobile long-press detection (500ms hold)
+        // -----------------------------------------------------
+        // DESKTOP HTML5 DRAG & DROP REORDERING
+        // -----------------------------------------------------
+
+        inspectorQuestionsContainer.addEventListener("dragstart", (e) => {
+            const card = e.target.closest(".question-card");
+            if (!card) return;
+
+            // Don't drag if initiated on delete button
+            if (e.target.closest(".btn-delete-single-q") || e.target.closest(".bin-btn")) {
+                e.preventDefault();
+                return;
+            }
+
+            draggedCard = card;
+            isDraggingQuestion = true;
+            e.dataTransfer.effectAllowed = "move";
+            e.dataTransfer.setData("text/plain", card.getAttribute("data-qnum") || "");
+
+            setTimeout(() => {
+                if (draggedCard) draggedCard.classList.add("is-dragging");
+            }, 0);
+        });
+
+        inspectorQuestionsContainer.addEventListener("dragover", (e) => {
+            if (!draggedCard) return;
+            e.preventDefault();
+            e.dataTransfer.dropEffect = "move";
+
+            const targetCard = e.target.closest(".question-card");
+            if (!targetCard || targetCard === draggedCard) return;
+
+            // Clear previous hover indicators on other cards
+            const allCards = inspectorQuestionsContainer.querySelectorAll(".question-card");
+            allCards.forEach(c => {
+                if (c !== targetCard) {
+                    c.classList.remove("drag-over-above", "drag-over-below");
+                }
+            });
+
+            const rect = targetCard.getBoundingClientRect();
+            const mid = rect.top + rect.height / 2;
+            if (e.clientY < mid) {
+                targetCard.classList.add("drag-over-above");
+                targetCard.classList.remove("drag-over-below");
+            } else {
+                targetCard.classList.add("drag-over-below");
+                targetCard.classList.remove("drag-over-above");
+            }
+        });
+
+        inspectorQuestionsContainer.addEventListener("dragleave", (e) => {
+            const targetCard = e.target.closest(".question-card");
+            if (targetCard) {
+                targetCard.classList.remove("drag-over-above", "drag-over-below");
+            }
+        });
+
+        inspectorQuestionsContainer.addEventListener("drop", (e) => {
+            if (!draggedCard) return;
+            e.preventDefault();
+
+            const targetCard = e.target.closest(".question-card");
+            if (targetCard && targetCard !== draggedCard) {
+                const rect = targetCard.getBoundingClientRect();
+                const mid = rect.top + rect.height / 2;
+                if (e.clientY < mid) {
+                    inspectorQuestionsContainer.insertBefore(draggedCard, targetCard);
+                } else {
+                    inspectorQuestionsContainer.insertBefore(draggedCard, targetCard.nextSibling);
+                }
+                saveQuestionOrder();
+            }
+
+            const allCards = inspectorQuestionsContainer.querySelectorAll(".question-card");
+            allCards.forEach(c => c.classList.remove("drag-over-above", "drag-over-below", "is-dragging"));
+
+            setTimeout(() => {
+                isDraggingQuestion = false;
+                draggedCard = null;
+            }, 100);
+        });
+
+        inspectorQuestionsContainer.addEventListener("dragend", () => {
+            if (draggedCard) draggedCard.classList.remove("is-dragging");
+            const allCards = inspectorQuestionsContainer.querySelectorAll(".question-card");
+            allCards.forEach(c => c.classList.remove("drag-over-above", "drag-over-below", "is-dragging"));
+
+            setTimeout(() => {
+                isDraggingQuestion = false;
+                draggedCard = null;
+            }, 100);
+        });
+
+        // -----------------------------------------------------
+        // TOUCH & MOBILE: HOLD & MOVE REORDERING + 500ms SELECTION
+        // -----------------------------------------------------
+
         inspectorQuestionsContainer.addEventListener("touchstart", (e) => {
+            // Check if user specifically touched the drag handle
+            const handle = e.target.closest(".q-drag-handle");
+            if (handle) {
+                const card = handle.closest(".question-card");
+                if (card) {
+                    touchDragActive = true;
+                    isDraggingQuestion = true;
+                    draggedCard = card;
+                    card.classList.add("is-dragging");
+                    if (navigator.vibrate) {
+                        try { navigator.vibrate(40); } catch (_) {}
+                    }
+                }
+                return;
+            }
+
             const card = e.target.closest(".question-card");
             if (!card || e.target.closest(".btn-delete-single-q")) return;
 
@@ -1237,18 +1452,46 @@ function bindEventListeners() {
                     }
                 }
             }, 500);
-        }, { passive: true });
+        }, { passive: false });
 
         inspectorQuestionsContainer.addEventListener("touchmove", (e) => {
+            if (touchDragActive && draggedCard) {
+                e.preventDefault(); // Prevent native scroll while reordering
+                const touch = e.touches[0];
+                const elem = document.elementFromPoint(touch.clientX, touch.clientY);
+                const targetCard = elem ? elem.closest(".question-card") : null;
+                if (targetCard && targetCard !== draggedCard) {
+                    const rect = targetCard.getBoundingClientRect();
+                    const mid = rect.top + rect.height / 2;
+                    if (touch.clientY < mid) {
+                        inspectorQuestionsContainer.insertBefore(draggedCard, targetCard);
+                    } else {
+                        inspectorQuestionsContainer.insertBefore(draggedCard, targetCard.nextSibling);
+                    }
+                }
+                return;
+            }
+
             if (!touchTimer) return;
             const touch = e.touches[0];
             if (Math.abs(touch.clientX - touchStartX) > 10 || Math.abs(touch.clientY - touchStartY) > 10) {
                 clearTimeout(touchTimer);
                 touchTimer = null;
             }
-        }, { passive: true });
+        }, { passive: false });
 
         inspectorQuestionsContainer.addEventListener("touchend", () => {
+            if (touchDragActive && draggedCard) {
+                touchDragActive = false;
+                draggedCard.classList.remove("is-dragging");
+                saveQuestionOrder();
+                setTimeout(() => {
+                    isDraggingQuestion = false;
+                    draggedCard = null;
+                }, 100);
+                return;
+            }
+
             if (touchTimer) {
                 clearTimeout(touchTimer);
                 touchTimer = null;
@@ -1256,6 +1499,14 @@ function bindEventListeners() {
         }, { passive: true });
 
         inspectorQuestionsContainer.addEventListener("touchcancel", () => {
+            if (touchDragActive && draggedCard) {
+                touchDragActive = false;
+                draggedCard.classList.remove("is-dragging");
+                setTimeout(() => {
+                    isDraggingQuestion = false;
+                    draggedCard = null;
+                }, 100);
+            }
             if (touchTimer) {
                 clearTimeout(touchTimer);
                 touchTimer = null;

@@ -768,6 +768,72 @@ app.post("/api/admin/sets/:id/questions/bulk-delete", requireAdmin, async (req, 
     }
 });
 
+// Reorder questions in a Question Set
+app.post("/api/admin/sets/:id/questions/reorder", requireAdmin, async (req, res) => {
+    try {
+        const setId = req.params.id;
+        const { orderedQuestionNumbers } = req.body;
+
+        if (!Array.isArray(orderedQuestionNumbers) || orderedQuestionNumbers.length === 0) {
+            return res.status(400).json({ success: false, message: "Ordered question numbers array is required." });
+        }
+
+        const row = await unifiedDb.getQuestionSetById(setId);
+        if (!row) {
+            return res.status(404).json({ success: false, message: "Question set not found." });
+        }
+
+        let questions = typeof row.questions_json === "string" ? JSON.parse(row.questions_json) : row.questions_json;
+        if (!Array.isArray(questions)) {
+            return res.status(500).json({ success: false, message: "Questions payload corrupt." });
+        }
+
+        // Map existing questions by their current number / id
+        const questionMap = new Map();
+        questions.forEach((q, idx) => {
+            const num = q.number !== undefined ? q.number : (q.id !== undefined ? q.id : idx + 1);
+            questionMap.set(Number(num), q);
+        });
+
+        // Reorder questions according to orderedQuestionNumbers
+        const newQuestions = [];
+        const seen = new Set();
+        orderedQuestionNumbers.forEach(num => {
+            const n = Number(num);
+            if (questionMap.has(n) && !seen.has(n)) {
+                newQuestions.push(questionMap.get(n));
+                seen.add(n);
+            }
+        });
+
+        // Safety fallback: append any questions that were omitted
+        questions.forEach((q, idx) => {
+            const num = q.number !== undefined ? q.number : (q.id !== undefined ? q.id : idx + 1);
+            if (!seen.has(Number(num))) {
+                newQuestions.push(q);
+                seen.add(Number(num));
+            }
+        });
+
+        // Re-index remaining questions cleanly (1, 2, 3...)
+        newQuestions.forEach((q, idx) => {
+            q.id = idx + 1;
+            q.number = idx + 1;
+        });
+
+        await unifiedDb.updateQuestionSetQuestions(setId, newQuestions, newQuestions.length);
+
+        return res.json({
+            success: true,
+            message: "Questions reordered successfully.",
+            questions: newQuestions
+        });
+    } catch (error) {
+        console.error("Reorder questions error:", error);
+        return res.status(500).json({ success: false, message: "Failed to reorder questions: " + error.message });
+    }
+});
+
 // -----------------------------------------------------
 // MASTER ADMIN: CANDIDATE / STUDENT APIS
 // -----------------------------------------------------
