@@ -2647,7 +2647,8 @@ select:focus-visible {
 
     overflow-y: auto;
 
-    padding-right: 2px;
+    padding: 6px;
+    box-sizing: border-box;
 }
 
 
@@ -4526,10 +4527,10 @@ select:focus-visible {
 }
 /* Current question in the palette */
 .question-palette .palette-btn.active {
-    outline: 3px solid #0B1F3A !important;
-    outline-offset: 2px;
+    outline: none !important;
     border: 2px solid #D4AF37 !important;
-    font-weight: 700;
+    box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4.5px #0B1F3A !important;
+    font-weight: 800;
     position: relative;
     z-index: 2;
 }
@@ -4596,9 +4597,9 @@ select:focus-visible {
 
 /* Current question — highlight without hiding its status colour */
 .palette-btn.active {
-    outline: 3px solid #0B1F3A !important;
-    outline-offset: 2px;
+    outline: none !important;
     border: 2px solid #D4AF37 !important;
+    box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4.5px #0B1F3A !important;
     font-weight: 800;
     position: relative;
     z-index: 2;
@@ -4606,8 +4607,10 @@ select:focus-visible {
 
 /* Keyboard accessibility */
 .palette-btn:focus-visible {
-    outline: 3px solid #0B1F3A;
-    outline-offset: 3px;
+    outline: none !important;
+    box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4.5px #0B1F3A !important;
+    position: relative;
+    z-index: 2;
 }
 
 
