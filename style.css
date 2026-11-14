@@ -33,17 +33,41 @@
 
 
 /* =========================================================
-   RESET
+   RESET & UNIVERSAL DEDICATED TYPING / CARET LOCKDOWN
 ========================================================= */
 
-* {
-
+*,
+*::before,
+*::after {
     margin: 0;
-
     padding: 0;
-
     box-sizing: border-box;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    user-select: none;
+    caret-color: transparent;
+}
 
+/* Dedicated editable inputs whitelist - ONLY ALLOWED TYPING AREAS */
+input,
+textarea,
+input[type="text"],
+input[type="search"],
+input[type="number"],
+input[type="password"],
+input[type="email"],
+[contenteditable="true"] {
+    -webkit-user-select: text !important;
+    user-select: text !important;
+    caret-color: auto !important;
+    cursor: text !important;
+}
+
+button,
+a,
+select,
+[role="button"] {
+    cursor: pointer;
 }
 
 

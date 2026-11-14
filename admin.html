@@ -22,10 +22,16 @@
             --soft: #F4F5F0;
         }
 
-        * {
+        *,
+        *::before,
+        *::after {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+            caret-color: transparent;
         }
 
         body {

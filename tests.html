@@ -22,10 +22,16 @@
             --soft: #F4F5F0;
         }
 
-        * {
+        *,
+        *::before,
+        *::after {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+            caret-color: transparent;
         }
 
         body {
@@ -38,6 +44,10 @@
             color: var(--charcoal);
             font-family: Inter, Arial, sans-serif;
             min-height: 100vh;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+            caret-color: transparent;
         }
 
         @media (max-width: 900px) {
@@ -46,8 +56,30 @@
             }
         }
 
-        button, input, select {
+        button, input, select, textarea {
             font: inherit;
+        }
+
+        /* DEDICATED INPUTS & EDITABLE FIELDS WHITELIST (THE ONLY TYPING AREAS) */
+        input,
+        textarea,
+        input[type="text"],
+        input[type="search"],
+        input[type="number"],
+        input[type="password"],
+        input[type="email"],
+        [contenteditable="true"] {
+            -webkit-user-select: text !important;
+            user-select: text !important;
+            caret-color: auto !important;
+            cursor: text !important;
+        }
+
+        button,
+        a,
+        select,
+        [role="button"] {
+            cursor: pointer;
         }
 
         /* LEFT SIDEBAR */
@@ -667,6 +699,11 @@
             overflow: hidden;
             box-shadow: 0 6px 20px rgba(37, 54, 45, 0.05);
             transition: .18s;
+            user-select: none !important;
+            -webkit-user-select: none !important;
+            -webkit-touch-callout: none !important;
+            cursor: default;
+            caret-color: transparent !important;
         }
 
         .test-card:hover {
@@ -726,6 +763,11 @@
         .test-card h2 {
             font-size: 13px;
             margin-bottom: 8px;
+            user-select: none !important;
+            -webkit-user-select: none !important;
+            -webkit-touch-callout: none !important;
+            cursor: default !important;
+            caret-color: transparent !important;
         }
 
         .test-card p {
@@ -733,6 +775,11 @@
             color: var(--muted);
             line-height: 1.6;
             min-height: 32px;
+            user-select: none !important;
+            -webkit-user-select: none !important;
+            -webkit-touch-callout: none !important;
+            cursor: default !important;
+            caret-color: transparent !important;
         }
 
         .meta {
@@ -744,7 +791,13 @@
             padding-top: 12px;
             color: #788078;
             font-size: 9px;
+            user-select: none !important;
+            -webkit-user-select: none !important;
+            -webkit-touch-callout: none !important;
+            cursor: default !important;
+            caret-color: transparent !important;
         }
+
 
         .meta span::before {
             content: "";
