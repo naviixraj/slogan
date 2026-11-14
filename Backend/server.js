@@ -9,7 +9,7 @@ const session = require("express-session");
 const helmet = require("helmet");
 const rateLimit = require("express-rate-limit");
 
-const db = require("./database");
+const unifiedDb = require("./db");
 const multer = require("multer");
 const xlsx = require("xlsx");
 
@@ -60,52 +60,32 @@ const certKeyPath = path.join(ROOT, "certs", "localhost-key.pem");
 const certPath = path.join(ROOT, "certs", "localhost.pem");
 const hasCerts = fs.existsSync(certKeyPath) && fs.existsSync(certPath);
 
-// Persistent SQLite Session Store
+// Persistent Session Store (Supabase Cloud PostgreSQL with SQLite fallback)
 const Store = session.Store;
-class SqliteSessionStore extends Store {
+class AppSessionStore extends Store {
     get(sid, cb) {
-        try {
-            const row = db.prepare("SELECT sess, expire FROM sessions WHERE sid = ?").get(sid);
-            if (!row) return cb(null, null);
-            if (row.expire && row.expire < Date.now()) {
-                db.prepare("DELETE FROM sessions WHERE sid = ?").run(sid);
-                return cb(null, null);
-            }
-            return cb(null, JSON.parse(row.sess));
-        } catch (e) {
-            return cb(e);
-        }
+        unifiedDb.getSession(sid)
+            .then(sess => cb(null, sess))
+            .catch(err => cb(err));
     }
     set(sid, sess, cb) {
-        try {
-            const maxAge = sess.cookie?.maxAge || 4 * 60 * 60 * 1000;
-            const expire = Date.now() + maxAge;
-            db.prepare(`
-                INSERT INTO sessions (sid, sess, expire) VALUES (?, ?, ?)
-                ON CONFLICT(sid) DO UPDATE SET sess = excluded.sess, expire = excluded.expire
-            `).run(sid, JSON.stringify(sess), expire);
-            if (cb) cb(null);
-        } catch (e) {
-            if (cb) cb(e);
-        }
+        const maxAge = sess.cookie?.maxAge || 4 * 60 * 60 * 1000;
+        const expire = Date.now() + maxAge;
+        unifiedDb.setSession(sid, sess, expire)
+            .then(() => cb && cb(null))
+            .catch(err => cb && cb(err));
     }
     destroy(sid, cb) {
-        try {
-            db.prepare("DELETE FROM sessions WHERE sid = ?").run(sid);
-            if (cb) cb(null);
-        } catch (e) {
-            if (cb) cb(e);
-        }
+        unifiedDb.destroySession(sid)
+            .then(() => cb && cb(null))
+            .catch(err => cb && cb(err));
     }
     touch(sid, sess, cb) {
-        try {
-            const maxAge = sess.cookie?.maxAge || 4 * 60 * 60 * 1000;
-            const expire = Date.now() + maxAge;
-            db.prepare("UPDATE sessions SET expire = ? WHERE sid = ?").run(expire, sid);
-            if (cb) cb(null);
-        } catch (e) {
-            if (cb) cb(e);
-        }
+        const maxAge = sess.cookie?.maxAge || 4 * 60 * 60 * 1000;
+        const expire = Date.now() + maxAge;
+        unifiedDb.touchSession(sid, expire)
+            .then(() => cb && cb(null))
+            .catch(err => cb && cb(err));
     }
 }
 
@@ -114,7 +94,7 @@ app.use(
     session({
         name: "slogon.sid",
         secret: process.env.SESSION_SECRET,
-        store: new SqliteSessionStore(),
+        store: new AppSessionStore(),
         resave: false,
         saveUninitialized: false,
         cookie: {
@@ -164,7 +144,7 @@ app.get("/", (req, res) => {
 });
 
 // Login API
-app.post("/api/login", loginLimiter, (req, res) => {
+app.post("/api/login", loginLimiter, async (req, res) => {
     const { userId, password } = req.body;
 
     if (
@@ -180,11 +160,7 @@ app.post("/api/login", loginLimiter, (req, res) => {
     }
 
     const cleanUserId = userId.trim();
-    const candidate = db.prepare(`
-        SELECT id, user_id, password_hash, candidate_name, email, role, active
-        FROM candidates
-        WHERE LOWER(TRIM(user_id)) = LOWER(TRIM(?))
-    `).get(cleanUserId);
+    const candidate = await unifiedDb.findCandidateByUserId(cleanUserId);
 
     if (!candidate) {
         console.log(`[LOGIN FAILED] User ID not found in database: "${cleanUserId}"`);
@@ -482,14 +458,9 @@ async function parseUploadedQuestions(file) {
 // -----------------------------------------------------
 
 // Get all Question Sets
-app.get("/api/admin/sets", requireAdmin, (req, res) => {
+app.get("/api/admin/sets", requireAdmin, async (req, res) => {
     try {
-        const sets = db.prepare(`
-            SELECT id, title, subject, file_name, file_type, questions_count, duration, status, created_at
-            FROM question_sets
-            ORDER BY created_at DESC
-        `).all();
-
+        const sets = await unifiedDb.listQuestionSets();
         return res.json({ success: true, sets });
     } catch (error) {
         console.error("Admin fetch sets error:", error);
@@ -498,16 +469,16 @@ app.get("/api/admin/sets", requireAdmin, (req, res) => {
 });
 
 // Get a specific Question Set with all single split questions
-app.get("/api/admin/sets/:id", requireAdmin, (req, res) => {
+app.get("/api/admin/sets/:id", requireAdmin, async (req, res) => {
     try {
         const setId = req.params.id;
-        const row = db.prepare("SELECT * FROM question_sets WHERE UPPER(id) = ?").get(setId.toUpperCase());
+        const row = await unifiedDb.getQuestionSetById(setId);
 
         if (!row) {
             return res.status(404).json({ success: false, message: "Question set not found." });
         }
 
-        const questions = JSON.parse(row.questions_json);
+        const questions = typeof row.questions_json === "string" ? JSON.parse(row.questions_json) : row.questions_json;
         return res.json({
             success: true,
             set: {
@@ -554,27 +525,24 @@ app.post("/api/admin/sets/upload", requireAdmin, upload.single("file"), async (r
 
         // Generate next ID
         const ext = path.extname(file.originalname).toLowerCase().replace(".", "");
-        const countRow = db.prepare("SELECT COUNT(*) as count FROM question_sets").get();
-        const nextNum = (countRow ? countRow.count : 0) + 1;
+        const currentCount = await unifiedDb.countQuestionSets();
+        const nextNum = currentCount + 1;
         const setId = `SET${String(nextNum).padStart(2, "0")}`;
 
         const setDuration = parseInt(duration, 10) || 180;
         const setSubject = subject && subject.trim() ? subject.trim() : "General Paper";
-        const questionsJson = JSON.stringify(questions);
 
-        db.prepare(`
-            INSERT INTO question_sets (id, title, subject, file_name, file_type, questions_count, duration, status, questions_json)
-            VALUES (?, ?, ?, ?, ?, ?, ?, 'available', ?)
-        `).run(
-            setId,
-            title.trim(),
-            setSubject,
-            file.originalname,
-            ext,
-            questions.length,
-            setDuration,
-            questionsJson
-        );
+        await unifiedDb.createQuestionSet({
+            id: setId,
+            title: title.trim(),
+            subject: setSubject,
+            fileName: file.originalname,
+            fileType: ext,
+            questionsCount: questions.length,
+            duration: setDuration,
+            status: "available",
+            questionsJson: questions
+        });
 
         return res.json({
             success: true,
@@ -589,11 +557,11 @@ app.post("/api/admin/sets/upload", requireAdmin, upload.single("file"), async (r
 });
 
 // Delete a Question Set
-app.delete("/api/admin/sets/:id", requireAdmin, (req, res) => {
+app.delete("/api/admin/sets/:id", requireAdmin, async (req, res) => {
     try {
-        const setId = req.params.id.toUpperCase();
-        const result = db.prepare("DELETE FROM question_sets WHERE UPPER(id) = ?").run(setId);
-        if (result.changes === 0) {
+        const setId = req.params.id;
+        const deleted = await unifiedDb.deleteQuestionSet(setId);
+        if (!deleted) {
             return res.status(404).json({ success: false, message: "Question set not found." });
         }
 
@@ -604,17 +572,17 @@ app.delete("/api/admin/sets/:id", requireAdmin, (req, res) => {
 });
 
 // Delete a single question from a Question Set
-app.delete("/api/admin/sets/:id/questions/:qNum", requireAdmin, (req, res) => {
+app.delete("/api/admin/sets/:id/questions/:qNum", requireAdmin, async (req, res) => {
     try {
-        const setId = req.params.id.toUpperCase();
+        const setId = req.params.id;
         const targetNum = Number(req.params.qNum);
 
-        const row = db.prepare("SELECT * FROM question_sets WHERE UPPER(id) = ?").get(setId);
+        const row = await unifiedDb.getQuestionSetById(setId);
         if (!row) {
             return res.status(404).json({ success: false, message: "Question set not found." });
         }
 
-        let questions = JSON.parse(row.questions_json);
+        let questions = typeof row.questions_json === "string" ? JSON.parse(row.questions_json) : row.questions_json;
         const originalCount = questions.length;
 
         questions = questions.filter((q, idx) => {
@@ -632,8 +600,7 @@ app.delete("/api/admin/sets/:id/questions/:qNum", requireAdmin, (req, res) => {
             q.number = idx + 1;
         });
 
-        db.prepare("UPDATE question_sets SET questions_json = ?, questions_count = ? WHERE UPPER(id) = ?")
-          .run(JSON.stringify(questions), questions.length, setId);
+        await unifiedDb.updateQuestionSetQuestions(setId, questions, questions.length);
 
         return res.json({
             success: true,
@@ -650,14 +617,9 @@ app.delete("/api/admin/sets/:id/questions/:qNum", requireAdmin, (req, res) => {
 // -----------------------------------------------------
 
 // Get all Candidates
-app.get("/api/admin/students", requireAdmin, (req, res) => {
+app.get("/api/admin/students", requireAdmin, async (req, res) => {
     try {
-        const candidates = db.prepare(`
-            SELECT id, user_id, candidate_name, email, role, active, created_at
-            FROM candidates
-            ORDER BY id ASC
-        `).all();
-
+        const candidates = await unifiedDb.listCandidates();
         return res.json({ success: true, students: candidates });
     } catch (error) {
         return res.status(500).json({ success: false, message: "Failed to load candidate list." });
@@ -665,7 +627,7 @@ app.get("/api/admin/students", requireAdmin, (req, res) => {
 });
 
 // Add new Student
-app.post("/api/admin/students", requireAdmin, (req, res) => {
+app.post("/api/admin/students", requireAdmin, async (req, res) => {
     try {
         const { userId, password, candidateName, email, role } = req.body;
 
@@ -674,7 +636,7 @@ app.post("/api/admin/students", requireAdmin, (req, res) => {
         }
 
         const cleanUserId = userId.trim();
-        const existing = db.prepare("SELECT id FROM candidates WHERE LOWER(TRIM(user_id)) = LOWER(TRIM(?))").get(cleanUserId);
+        const existing = await unifiedDb.findCandidateByUserId(cleanUserId);
         if (existing) {
             return res.status(400).json({ success: false, message: `Candidate User ID "${cleanUserId}" already exists. Choose a unique User ID.` });
         }
@@ -683,22 +645,18 @@ app.post("/api/admin/students", requireAdmin, (req, res) => {
         const candidateEmail = email && email.trim() ? email.trim() : `${cleanUserId.toLowerCase()}@slogon.edu`;
         const candidateRole = role === "Admin" ? "Admin" : "Student";
 
-        const info = db.prepare(`
-            INSERT INTO candidates (user_id, password_hash, candidate_name, email, role, active)
-            VALUES (?, ?, ?, ?, ?, 1)
-        `).run(cleanUserId, passwordHash, candidateName.trim(), candidateEmail, candidateRole);
+        const created = await unifiedDb.createCandidate({
+            userId: cleanUserId,
+            passwordHash,
+            candidateName: candidateName.trim(),
+            email: candidateEmail,
+            role: candidateRole
+        });
 
         return res.json({
             success: true,
-            id: info.lastInsertRowid,
-            student: {
-                id: info.lastInsertRowid,
-                user_id: cleanUserId,
-                candidate_name: candidateName.trim(),
-                email: candidateEmail,
-                role: candidateRole,
-                active: 1
-            },
+            id: created.id,
+            student: created,
             message: `Candidate account for "${candidateName.trim()}" (${cleanUserId}) created successfully!`
         });
     } catch (error) {
@@ -707,10 +665,10 @@ app.post("/api/admin/students", requireAdmin, (req, res) => {
 });
 
 // Delete a Candidate
-app.delete("/api/admin/students/:id", requireAdmin, (req, res) => {
+app.delete("/api/admin/students/:id", requireAdmin, async (req, res) => {
     try {
         const id = Number(req.params.id);
-        const candidate = db.prepare("SELECT user_id, role FROM candidates WHERE id = ?").get(id);
+        const candidate = await unifiedDb.findCandidateById(id);
 
         if (!candidate) {
             return res.status(404).json({ success: false, message: "Candidate not found." });
@@ -720,7 +678,7 @@ app.delete("/api/admin/students/:id", requireAdmin, (req, res) => {
             return res.status(400).json({ success: false, message: "Cannot delete the currently logged in administrator." });
         }
 
-        db.prepare("DELETE FROM candidates WHERE id = ?").run(id);
+        await unifiedDb.deleteCandidate(id);
         return res.json({ success: true, message: `Candidate ${candidate.user_id} deleted.` });
     } catch (error) {
         return res.status(500).json({ success: false, message: "Failed to delete candidate." });
@@ -732,14 +690,9 @@ app.delete("/api/admin/students/:id", requireAdmin, (req, res) => {
 // -----------------------------------------------------
 
 // Get dynamic test catalog for student tests.html
-app.get("/api/student/tests", (req, res) => {
+app.get("/api/student/tests", async (req, res) => {
     try {
-        const tests = db.prepare(`
-            SELECT id, title, subject, file_type, questions_count, duration, status
-            FROM question_sets
-            ORDER BY id ASC
-        `).all();
-
+        const tests = await unifiedDb.listQuestionSets();
         return res.json({ success: true, tests });
     } catch (error) {
         return res.status(500).json({ success: false, message: "Failed to load examination catalog." });
@@ -761,9 +714,9 @@ app.get("/api/mock-tests/:testId/questions", async (req, res) => {
         let testTitle = "";
 
         // Look up in database
-        const row = db.prepare("SELECT id, title, questions_json FROM question_sets WHERE UPPER(id) = ?").get(rawId);
+        const row = await unifiedDb.getQuestionSetById(rawId);
         if (row && row.questions_json) {
-            questions = JSON.parse(row.questions_json);
+            questions = typeof row.questions_json === "string" ? JSON.parse(row.questions_json) : row.questions_json;
             testTitle = row.title;
         } else if (rawId === "MOCK01") {
             const questionsPath = path.join(ROOT, "data", "mock01.json");
