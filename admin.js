@@ -591,9 +591,8 @@ function updateBulkActionBar() {
         if (bulkDeleteBinButton) bulkDeleteBinButton.style.display = "inline-flex";
         if (bulkBinCountBadge) bulkBinCountBadge.textContent = String(count);
 
-        // Right (red circle): Question details/timing is hidden, Cancel button is shown
+        // Right (red circle): Edit Details is hidden, Cancel button is shown
         if (editSetFromInspectorButton) editSetFromInspectorButton.style.display = "none";
-        if (inspectorMetaBadge) inspectorMetaBadge.style.display = "none";
         if (bulkCancelButton) bulkCancelButton.style.display = "inline-flex";
     } else {
         // Normal Mode:
@@ -601,9 +600,8 @@ function updateBulkActionBar() {
         if (backToSetsButton) backToSetsButton.style.display = "inline-flex";
         if (bulkDeleteBinButton) bulkDeleteBinButton.style.display = "none";
 
-        // Right: Question details/timing is restored, Cancel button is hidden
+        // Right: Edit Details is restored, Cancel button is hidden
         if (editSetFromInspectorButton) editSetFromInspectorButton.style.display = "inline-flex";
-        if (inspectorMetaBadge) inspectorMetaBadge.style.display = "block";
         if (bulkCancelButton) bulkCancelButton.style.display = "none";
     }
 }
