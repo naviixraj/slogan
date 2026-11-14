@@ -324,6 +324,13 @@ function renderSets() {
         return matchesSearch && matchesFilter;
     });
 
+    // Sort question sets in constructed sequential order (SET01, SET02, SET03, ...)
+    matches.sort((a, b) => {
+        const idA = String(a.id || "").trim();
+        const idB = String(b.id || "").trim();
+        return idA.localeCompare(idB, undefined, { numeric: true, sensitivity: 'base' });
+    });
+
     testGrid.innerHTML = "";
     if (resultCount) {
         resultCount.textContent = `Showing ${matches.length} of ${activeSets.length} question sets`;

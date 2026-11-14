@@ -731,9 +731,9 @@
 
         .list-view .card-body {
             display: grid;
-            grid-template-columns: 1.1fr 1fr auto;
+            grid-template-columns: 280px 1fr auto;
             align-items: center;
-            gap: 15px;
+            gap: 15px 24px;
             padding: 17px 24px;
         }
 
@@ -744,10 +744,28 @@
             border: 0;
         }
 
+        .list-view .meta {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 8px 12px;
+            white-space: nowrap;
+        }
+
+        .list-view .test-card h2 {
+            margin-bottom: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
         .list-view .test-card p {
             min-height: 0;
             justify-self: end;
             text-align: right;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 320px;
         }
 
         .list-view .start {

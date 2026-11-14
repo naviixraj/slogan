@@ -122,14 +122,14 @@ async function listQuestionSets() {
         const { data, error } = await supabase
             .from("question_sets")
             .select("id, title, subject, file_name, file_type, questions_count, duration, status, created_at")
-            .order("created_at", { ascending: false });
+            .order("id", { ascending: true });
         if (error) console.error("Supabase listQuestionSets error:", error.message);
         return data || [];
     } else {
         return sqliteDb.prepare(`
             SELECT id, title, subject, file_name, file_type, questions_count, duration, status, created_at
             FROM question_sets
-            ORDER BY datetime(created_at) DESC
+            ORDER BY id ASC
         `).all() || [];
     }
 }

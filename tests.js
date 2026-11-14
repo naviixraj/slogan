@@ -112,6 +112,13 @@ function renderTests() {
         return matchesSearch && matchesFilter;
     });
 
+    // Sort examinations in constructed sequential order (SET01, SET02, SET03...)
+    matches.sort((a, b) => {
+        const idA = String(a.id || "").trim();
+        const idB = String(b.id || "").trim();
+        return idA.localeCompare(idB, undefined, { numeric: true, sensitivity: 'base' });
+    });
+
     testGrid.innerHTML = "";
 
     resultCount.textContent =
