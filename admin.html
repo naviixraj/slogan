@@ -1131,36 +1131,164 @@
             background: rgba(255, 255, 255, 0.95);
         }
 
-        /* HELP PANEL (EXACT TESTS.HTML MATCH) */
+        /* HELP PANEL (STRUCTURED ENTERPRISE DOCUMENTATION) */
 
         .help-panel {
             display: none;
-            background: rgba(255, 255, 255, 0.78);
-            backdrop-filter: blur(6px);
-            -webkit-backdrop-filter: blur(6px);
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
             border: 1px solid rgba(230, 233, 226, 0.9);
-            border-radius: 10px;
-            padding: 24px;
-            box-shadow: 0 6px 20px rgba(37, 54, 45, 0.05);
+            border-radius: 12px;
+            padding: 28px;
+            box-shadow: 0 6px 24px rgba(37, 54, 45, 0.05);
         }
 
-        .help-panel h2 {
-            font-size: 15px;
+        .help-hero {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #E2E8F0;
+            padding-bottom: 18px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .help-hero-title h2 {
+            font-size: 18px;
             font-weight: 800;
-            margin-bottom: 16px;
             color: var(--charcoal);
+            margin: 0 0 4px 0;
+            display: flex;
+            align-items: center;
+            gap: 8px;
         }
 
-        .help-panel p {
+        .help-hero-title p {
+            font-size: 12px;
+            color: #64748B;
+            margin: 0;
+        }
+
+        .help-badge-pill {
+            font-size: 11px;
+            font-weight: 700;
+            padding: 5px 12px;
+            border-radius: 999px;
+            background: #E8F5E9;
+            color: #1B5E20;
+            border: 1px solid #C8E6C9;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .help-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+            gap: 20px;
+        }
+
+        .help-card {
+            background: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+
+        .help-card:hover {
+            box-shadow: 0 6px 20px rgba(0,0,0,0.06);
+            transform: translateY(-2px);
+        }
+
+        .help-card-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            border-bottom: 1px solid #F1F5F9;
+            padding-bottom: 12px;
+        }
+
+        .help-card-icon {
+            width: 36px;
+            height: 36px;
+            border-radius: 8px;
+            background: #F1F5F9;
+            color: var(--emerald-dark);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .help-card-title {
+            font-size: 13.5px;
+            font-weight: 800;
+            color: var(--charcoal);
+            margin: 0;
+        }
+
+        .help-card-subtitle {
+            font-size: 11px;
+            color: #94A3B8;
+            margin: 2px 0 0 0;
+        }
+
+        .help-card-body {
+            font-size: 12px;
+            color: #475569;
+            line-height: 1.65;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .help-step-list {
+            margin: 0;
+            padding-left: 18px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .help-step-list li {
+            padding-left: 4px;
+        }
+
+        .help-step-list strong {
+            color: var(--charcoal);
+            font-size: 12px;
+        }
+
+        .help-code-chip {
+            background: #F8FAFC;
+            border: 1px solid #E2E8F0;
+            border-radius: 4px;
+            padding: 2px 6px;
+            font-family: monospace;
+            font-size: 11px;
+            color: #0F172A;
+        }
+
+        .help-tip-box {
+            background: #F0FDF4;
+            border-left: 3px solid #22C55E;
+            padding: 10px 12px;
+            border-radius: 0 6px 6px 0;
             font-size: 11.5px;
-            color: #68716B;
-            line-height: 1.8;
-            margin-bottom: 16px;
+            color: #15803D;
+            line-height: 1.5;
+            margin-top: 4px;
         }
 
-        .help-panel strong {
-            color: var(--charcoal);
-            font-size: 12.5px;
+        .help-tip-box strong {
+            color: #14532D;
         }
 
         .footer {
@@ -1997,27 +2125,167 @@
             </section>
 
             <!-- ==============================================
-                 SECTION 3: HELP PANEL (EXACT TESTS.HTML MATCH)
+                 SECTION 3: HELP PANEL (STRUCTURED ENTERPRISE GUIDE)
             =============================================== -->
             <section class="help-panel" id="helpSection">
-                <h2>Master Administrator Help</h2>
+                <div class="help-hero">
+                    <div class="help-hero-title">
+                        <h2>
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            </svg>
+                            Master Administrator Knowledge Base
+                        </h2>
+                        <p>Complete operational guide for managing examination papers, dynamic question banks, candidate security, and cloud sync.</p>
+                    </div>
+                    <span class="help-badge-pill">
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg>
+                        Engine v2.4 Production Standard
+                    </span>
+                </div>
 
-                <p>
-                    <strong>How do I add a new Examination Set?</strong><br>
-                    Click the <em>+ Upload Set</em> button in the toolbar. Enter the exam title as you want candidates to see it, select an Excel (.xlsx), CSV, JSON, or PDF file, and click submit. The system will automatically parse and split each question.
-                </p>
+                <div class="help-grid">
+                    <!-- MODULE 1 -->
+                    <div class="help-card">
+                        <div class="help-card-header">
+                            <div class="help-card-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
+                            </div>
+                            <div>
+                                <h3 class="help-card-title">1. Examination Set Management</h3>
+                                <p class="help-card-subtitle">Creating, uploading & customizing test papers</p>
+                            </div>
+                        </div>
+                        <div class="help-card-body">
+                            <ol class="help-step-list">
+                                <li><strong>File Uploads:</strong> Click <span class="help-code-chip">+ Upload Set</span>. Upload Excel (<span class="help-code-chip">.xlsx</span>), CSV, JSON, or PDF exam papers. Columns and question numbers are automatically parsed.</li>
+                                <li><strong>Bulk Text Pasting:</strong> Switch to the <em>Paste Full Question Set</em> tab to paste raw unformatted text. The live question counter validates questions prior to upload.</li>
+                                <li><strong>Editing Metadata:</strong> Click <span class="help-code-chip">✏️</span> on any test card to update Title, Subject, or Duration (minutes).</li>
+                                <li><strong>Deleting Test Sets:</strong> Click <span class="help-code-chip">🗑️</span> on any test card to remove the set and all associated questions.</li>
+                            </ol>
+                            <div class="help-tip-box">
+                                <strong>Pro Tip:</strong> Changing an exam's duration or question count automatically synchronizes the candidate instructions screen in real time.
+                            </div>
+                        </div>
+                    </div>
 
-                <p>
-                    <strong>What formats are supported?</strong><br>
-                    • <strong>PDF (.pdf):</strong> Standard MCQ exam papers with numbered questions, options (A, B, C, D), and answers are automatically parsed.<br>
-                    • <strong>Excel (.xlsx) / CSV:</strong> Standard 7 columns (<code>Question</code>, <code>Option A</code>, <code>Option B</code>, <code>Option C</code>, <code>Option D</code>, <code>Answer</code>, <code>Explanation</code>). Bilingual questions (English and Tamil) are fully supported.<br>
-                    • <strong>JSON (.json):</strong> Array of question objects.
-                </p>
+                    <!-- MODULE 2 -->
+                    <div class="help-card">
+                        <div class="help-card-header">
+                            <div class="help-card-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                            </div>
+                            <div>
+                                <h3 class="help-card-title">2. Question Inspector & Bank Editor</h3>
+                                <p class="help-card-subtitle">Visual reordering, in-place editing & bulk tools</p>
+                            </div>
+                        </div>
+                        <div class="help-card-body">
+                            <ol class="help-step-list">
+                                <li><strong>Hold & Drag Reordering:</strong> Press and hold any question card to drag it to a new position. The viewport smoothly auto-scrolls when dragging near the top or bottom edge.</li>
+                                <li><strong>Single Question Editing:</strong> Click <span class="help-code-chip">✏️ Edit</span> on any question card to edit the question statement, choices A–D, correct answer key, and explanation.</li>
+                                <li><strong>Multi-Select & Bulk Delete:</strong> Tick question checkboxes to activate the floating bulk action bar. Click <em>Delete Selected</em> to remove multiple questions at once.</li>
+                                <li><strong>Open Space Deselection:</strong> Click or tap anywhere in the empty/blank space outside cards to instantly clear all selected questions.</li>
+                            </ol>
+                            <div class="help-tip-box">
+                                <strong>Auto-Scroll:</strong> Dragging a card to within 80px of the screen top/bottom scrolls the page continuously until dropped.
+                            </div>
+                        </div>
+                    </div>
 
-                <p>
-                    <strong>How are candidate logins managed?</strong><br>
-                    Go to the <em>Students</em> tab from the sidebar. You can enroll candidates by creating their unique User ID and password. Passwords are saved with BCrypt encryption.
-                </p>
+                    <!-- MODULE 3 -->
+                    <div class="help-card">
+                        <div class="help-card-header">
+                            <div class="help-card-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                            </div>
+                            <div>
+                                <h3 class="help-card-title">3. Live Exam Engine & Evaluation</h3>
+                                <p class="help-card-subtitle">Dynamic instructions, timer & anti-cheat</p>
+                            </div>
+                        </div>
+                        <div class="help-card-body">
+                            <ol class="help-step-list">
+                                <li><strong>Dynamic Exam Instructions:</strong> The instructions screen dynamically pulls live question counts and duration directly from the test paper configuration.</li>
+                                <li><strong>Tamper-Proof Timer:</strong> The live countdown timer persists across browser refreshes and forces automatic submission when time expires.</li>
+                                <li><strong>Anti-Cheat Shield:</strong> Automatically logs and warns candidates if fullscreen mode is exited or focus is switched away from the exam tab.</li>
+                                <li><strong>Immediate Evaluation:</strong> Instant scorecard calculation with accuracy percentage, negative marking support, and question-by-question review.</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <!-- MODULE 4 -->
+                    <div class="help-card">
+                        <div class="help-card-header">
+                            <div class="help-card-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+                            </div>
+                            <div>
+                                <h3 class="help-card-title">4. Candidate & Student Administration</h3>
+                                <p class="help-card-subtitle">User credentials, access levels & security</p>
+                            </div>
+                        </div>
+                        <div class="help-card-body">
+                            <ol class="help-step-list">
+                                <li><strong>Enrolling Candidates:</strong> Navigate to the <em>Students</em> tab from the sidebar to register candidate usernames, names, and emails.</li>
+                                <li><strong>BCrypt Security:</strong> All candidate passwords are encrypted using salted BCrypt hashing before database persistence.</li>
+                                <li><strong>JWT Session Control:</strong> Authentication uses tamper-proof bearer tokens with strict role-based access checks.</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <!-- MODULE 5 -->
+                    <div class="help-card">
+                        <div class="help-card-header">
+                            <div class="help-card-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 10h-1.26A8 8 0 1 0 9 20h9a5 5 0 0 0 0-10z"/></svg>
+                            </div>
+                            <div>
+                                <h3 class="help-card-title">5. Database Architecture & Cloud Sync</h3>
+                                <p class="help-card-subtitle">Supabase PostgreSQL cloud with SQLite fallback</p>
+                            </div>
+                        </div>
+                        <div class="help-card-body">
+                            <ol class="help-step-list">
+                                <li><strong>Cloud Persistence:</strong> Production runs on Supabase PostgreSQL with automated schema migration and real-time updates.</li>
+                                <li><strong>High-Availability Fallback:</strong> If cloud network drops, the backend automatically transitions to an embedded SQLite engine for zero downtime.</li>
+                                <li><strong>Data Integrity:</strong> All question updates and set deletions use transactional cascades to preserve relational integrity.</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <!-- MODULE 6 -->
+                    <div class="help-card">
+                        <div class="help-card-header">
+                            <div class="help-card-icon">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+                            </div>
+                            <div>
+                                <h3 class="help-card-title">6. Standard Formats & Syntax</h3>
+                                <p class="help-card-subtitle">Excel columns, text paste patterns & bilingual text</p>
+                            </div>
+                        </div>
+                        <div class="help-card-body">
+                            <p style="margin: 0; font-size: 11.5px;"><strong>Excel / CSV 7-Column Standard:</strong></p>
+                            <div style="font-family: monospace; font-size: 10.5px; background: #F8FAFC; border: 1px solid #E2E8F0; padding: 6px 10px; border-radius: 6px; line-height: 1.5; color: #334155;">
+                                Question | Option A | Option B | Option C | Option D | Answer | Explanation
+                            </div>
+                            <p style="margin: 6px 0 0 0; font-size: 11.5px;"><strong>Bulk Text Paste Pattern:</strong></p>
+                            <div style="font-family: monospace; font-size: 10.5px; background: #F8FAFC; border: 1px solid #E2E8F0; padding: 6px 10px; border-radius: 6px; line-height: 1.5; color: #334155;">
+                                1. Question Statement?<br>
+                                A) Choice 1 &nbsp; B) Choice 2<br>
+                                C) Choice 3 &nbsp; D) Choice 4<br>
+                                Answer: A<br>
+                                Explanation: Solution rationale.
+                            </div>
+                            <div class="help-tip-box">
+                                <strong>Bilingual Ready:</strong> UTF-8 characters for Tamil, English, and scientific formulas are supported automatically.
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </section>
 
         </div>
