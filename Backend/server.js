@@ -816,6 +816,8 @@ app.get("/api/mock-tests/:testId/questions", async (req, res) => {
             success: true,
             testId: rawId,
             testTitle: testTitle,
+            subject: (row && row.subject) ? row.subject : "General Paper",
+            duration: (row && row.duration) ? row.duration : 180,
             totalQuestions: questions.length,
             questions: questions
         });

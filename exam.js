@@ -246,12 +246,19 @@ async function loadCandidateInfo() {
                 candidate.userId || "-";
         }
 
-        /* DISPLAY SUBJECT */
+        /* DISPLAY EXAM TITLE & SUBJECT FROM SELECTED QUESTION SET */
+
+        const currentTitle = localStorage.getItem("currentExamTitle");
+        const currentSubject = localStorage.getItem("currentExamSubject");
+
+        const examTitleEl = document.getElementById("examTitle");
+        if (examTitleEl && currentTitle) {
+            examTitleEl.textContent = currentTitle;
+        }
 
         if (candidateSubjectEl) {
-
             candidateSubjectEl.textContent =
-                candidate.subject || "Tamil";
+                currentSubject || candidate.subject || "General Paper";
         }
 
         /* SAVE AUTHENTICATED CANDIDATE */

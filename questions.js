@@ -18,7 +18,8 @@
        CONFIGURATION
        ----------------------------------------------------- */
 
-    const QUESTIONS_FILE = "/api/mock-tests/mock01/questions";
+    const selectedTestId = (localStorage.getItem("selectedMockTest") || "mock01").toLowerCase();
+    const QUESTIONS_FILE = `/api/mock-tests/${selectedTestId}/questions`;
 
 
     /* -----------------------------------------------------
@@ -38,7 +39,7 @@
 
         try {
 
-            console.log("SLOGON ACADEMY: Loading question data...");
+            console.log(`SLOGON ACADEMY: Loading question data for ${selectedTestId}...`);
 
             const response = await fetch(QUESTIONS_FILE, {
                 cache: "no-store"
@@ -52,7 +53,7 @@
             if (!response.ok) {
 
                 throw new Error(
-                    `Unable to load questions.json. HTTP Status: ${response.status}`
+                    `Unable to load question set "${selectedTestId}". HTTP Status: ${response.status}`
                 );
 
             }
@@ -64,13 +65,23 @@
 
             const result = await response.json();
 
-                if (!result.success || !Array.isArray(result.questions)) {
+            if (!result.success || !Array.isArray(result.questions)) {
                 throw new Error(
-                result.message || "Unable to load Mock Test 01."
-               );
+                    result.message || `Unable to load question set "${selectedTestId}".`
+                );
             }
 
-const questions = result.questions;
+            if (result.duration) {
+                localStorage.setItem("examDuration", String(result.duration * 60));
+            }
+            if (result.testTitle) {
+                localStorage.setItem("currentExamTitle", result.testTitle);
+            }
+            if (result.subject) {
+                localStorage.setItem("currentExamSubject", result.subject);
+            }
+
+            const questions = result.questions;
 
 
             /* ---------------------------------------------

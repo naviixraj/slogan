@@ -22,12 +22,19 @@
    SLOGON ACADEMY
 ===================================================== */
 
-// Total examination duration: 180 minutes
-const EXAM_DURATION_MINUTES = 180;
+// Dynamic examination duration: configured by admin for each test set (fallback: 180 mins)
+function getExamDurationMinutes() {
+    try {
+        const storedSec = parseInt(localStorage.getItem("examDuration"), 10);
+        if (!isNaN(storedSec) && storedSec > 0) {
+            return Math.floor(storedSec / 60);
+        }
+    } catch (e) {}
+    return 180;
+}
 
-// Convert minutes into milliseconds
-const EXAM_DURATION_MS =
-    EXAM_DURATION_MINUTES * 60 * 1000;
+const EXAM_DURATION_MINUTES = getExamDurationMinutes();
+const EXAM_DURATION_MS = EXAM_DURATION_MINUTES * 60 * 1000;
 
 
     const STORAGE_KEYS = {

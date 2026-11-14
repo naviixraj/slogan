@@ -162,7 +162,11 @@ function renderTests() {
         const meta = document.createElement("div");
         meta.className = "meta";
 
-        ["150 Questions", "Paper 1 + Paper 2", "180 Minutes"].forEach(text => {
+        const qCount = test.questionsCount || test.questions_count || 150;
+        const subj = test.subject || "General Paper";
+        const dur = test.duration || 180;
+
+        [`${qCount} Questions`, subj, `${dur} Minutes`].forEach(text => {
             const item = document.createElement("span");
             item.textContent = text;
             meta.appendChild(item);
@@ -179,13 +183,23 @@ function renderTests() {
 
         if (isAvailable) {
             start.addEventListener("click", () => {
-
-                // Store the selected examination.
-                localStorage.setItem("selectedMockTest", "mock01");
+                // Store the selected examination details
+                const testIdClean = String(test.id || "MOCK01").toLowerCase();
+                localStorage.setItem("selectedMockTest", testIdClean);
+                localStorage.setItem("selectedTestDetails", JSON.stringify({
+                    id: test.id,
+                    title: test.title,
+                    subject: subj,
+                    duration: dur,
+                    questionsCount: qCount
+                }));
+                // Set exact exam duration in seconds
+                localStorage.setItem("examDuration", String(dur * 60));
+                localStorage.setItem("currentExamTitle", test.title);
+                localStorage.setItem("currentExamSubject", subj);
 
                 // Continue to the examination instructions.
                 window.location.href = "instructions.html";
-
             });
         }
 

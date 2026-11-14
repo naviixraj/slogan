@@ -3,29 +3,50 @@
    SLOGON ACADEMY - INSTRUCTIONS PAGE
 ===================================================== */
 
-/* LOAD CANDIDATE INFORMATION */
+/* LOAD CANDIDATE & SELECTED TEST INFORMATION */
 
 const candidateData = JSON.parse(
     localStorage.getItem("candidateInfo") || "null"
 );
 
-/* DISPLAY CANDIDATE INFORMATION */
+const testDetails = JSON.parse(
+    localStorage.getItem("selectedTestDetails") || "null"
+);
+
+/* DISPLAY CANDIDATE & TEST INFORMATION */
 
 if (candidateData) {
-    document.getElementById("candidateDisplay").textContent =
-        candidateData.name || "—";
+    const candEl = document.getElementById("candidateDisplay");
+    if (candEl) candEl.textContent = candidateData.name || "—";
 
-    document.getElementById("registerDisplay").textContent =
-        candidateData.registerNumber || "—";
+    const regEl = document.getElementById("registerDisplay");
+    if (regEl) regEl.textContent = candidateData.registerNumber || candidateData.userId || "—";
+}
 
-    document.getElementById("subjectDisplay").textContent =
-        candidateData.subject || "—";
+if (testDetails) {
+    const examDisplay = document.getElementById("examDisplay");
+    if (examDisplay) examDisplay.textContent = testDetails.title || "Mock Test";
 
-    document.getElementById("examDisplay").textContent =
-        candidateData.exam || "—";
+    const headerExamName = document.getElementById("headerExamName");
+    if (headerExamName) headerExamName.textContent = testDetails.title || "Mock Test";
 
-    document.getElementById("headerExamName").textContent =
-        candidateData.exam || "Mock Test";
+    const subjectDisplay = document.getElementById("subjectDisplay");
+    if (subjectDisplay) subjectDisplay.textContent = testDetails.subject || "General Paper";
+
+    const qCountEl = document.getElementById("instructionsTotalQuestions");
+    if (qCountEl) qCountEl.textContent = String(testDetails.questionsCount || 150);
+
+    const durEl = document.getElementById("instructionsDuration");
+    if (durEl) durEl.textContent = `${testDetails.duration || 180} Minutes`;
+} else if (candidateData) {
+    const subjEl = document.getElementById("subjectDisplay");
+    if (subjEl) subjEl.textContent = candidateData.subject || "—";
+
+    const exEl = document.getElementById("examDisplay");
+    if (exEl) exEl.textContent = candidateData.exam || "—";
+
+    const headEl = document.getElementById("headerExamName");
+    if (headEl) headEl.textContent = candidateData.exam || "Mock Test";
 }
 
 /* DECLARATION CHECKBOX */
@@ -57,9 +78,9 @@ if (instructionCheckbox && proceedButton) {
             Date.now().toString()
         );
 
-        /* 180 MINUTES = 10800 SECONDS */
-
-        localStorage.setItem("examDuration", "10800");
+        /* EXACT EXAMINATION DURATION IN SECONDS */
+        const durMinutes = testDetails?.duration || 180;
+        localStorage.setItem("examDuration", String(durMinutes * 60));
 
         /* CLEAR PREVIOUS EXAM DATA */
 
