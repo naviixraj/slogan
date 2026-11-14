@@ -377,9 +377,6 @@ function renderSets() {
             <span>Auto-split ready</span>
         `;
 
-        const btnRow = document.createElement("div");
-        btnRow.className = "card-btn-row";
-
         const inspectBtn = document.createElement("button");
         inspectBtn.className = "start";
         inspectBtn.type = "button";
@@ -422,9 +419,8 @@ function renderSets() {
         delBtn.addEventListener("click", () => deleteSet(set.id));
 
         actionsCluster.append(editBtn, delBtn);
-        btnRow.append(inspectBtn, actionsCluster);
 
-        body.append(top, titleH2, subP, metaDiv, btnRow);
+        body.append(top, titleH2, subP, metaDiv, inspectBtn, actionsCluster);
         card.append(accent, body);
         testGrid.appendChild(card);
     });

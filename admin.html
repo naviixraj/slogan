@@ -734,7 +734,7 @@
             grid-template-columns: 1.1fr 1fr auto;
             align-items: center;
             gap: 15px;
-            padding-right: 58px;
+            padding: 17px 24px;
         }
 
         .list-view .card-top,
@@ -746,11 +746,28 @@
 
         .list-view .test-card p {
             min-height: 0;
+            justify-self: end;
+            text-align: right;
         }
 
         .list-view .start {
             width: 190px;
             margin: 0;
+            justify-self: start;
+        }
+
+        .list-view .card-actions-cluster {
+            justify-self: end;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .test-grid:not(.list-view) .card-actions-cluster {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 10px;
+            gap: 8px;
         }
 
 
