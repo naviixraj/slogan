@@ -639,7 +639,7 @@ async function handleUploadSetSubmit() {
 
     // 2. FILE UPLOAD MODE
     if (!setFileInput || !setFileInput.files || setFileInput.files.length === 0) {
-        alert("Please select a PDF (.pdf), Excel (.xlsx, .xls), CSV, or JSON file to upload.");
+        alert("Please select a question file (Word, PDF, Excel, CSV, TXT, or JSON) to upload.");
         return;
     }
 

@@ -12,6 +12,7 @@ const rateLimit = require("express-rate-limit");
 const unifiedDb = require("./db");
 const multer = require("multer");
 const xlsx = require("xlsx");
+const mammoth = require("mammoth");
 
 const upload = multer({
     storage: multer.memoryStorage(),
@@ -408,6 +409,14 @@ async function parseUploadedQuestions(file) {
     if (ext === ".pdf") {
         const text = await extractPdfText(file.buffer);
         questions = parseMcqText(text);
+    } else if (ext === ".docx") {
+        try {
+            const docxResult = await mammoth.extractRawText({ buffer: file.buffer });
+            questions = parseMcqText(docxResult.value);
+        } catch (docxErr) {
+            console.error("DOCX parsing error:", docxErr);
+            questions = parseMcqText(file.buffer.toString("utf8"));
+        }
     } else if (ext === ".json") {
         const parsed = JSON.parse(file.buffer.toString("utf8"));
         if (Array.isArray(parsed)) {
@@ -428,7 +437,7 @@ async function parseUploadedQuestions(file) {
                 explanation: q.explanation || ""
             }));
         }
-    } else if (ext === ".xlsx" || ext === ".xls" || ext === ".csv") {
+    } else if (ext === ".xlsx" || ext === ".xls" || ext === ".csv" || ext === ".tsv") {
         const workbook = xlsx.read(file.buffer, { type: "buffer" });
         const sheetName = workbook.SheetNames[0];
         const rows = xlsx.utils.sheet_to_json(workbook.Sheets[sheetName], { defval: "" });
