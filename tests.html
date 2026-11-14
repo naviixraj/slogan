@@ -713,6 +713,39 @@
             box-shadow: 0 9px 22px rgba(37,54,45,.08);
         }
 
+        .test-card.is-clickable {
+            cursor: pointer;
+            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, background 0.2s ease;
+        }
+
+        .test-card.is-clickable:hover {
+            transform: translateY(-3px);
+            background: rgba(255, 255, 255, 0.98);
+            border-color: #0F8B6D;
+            box-shadow: 0 12px 28px rgba(15, 139, 109, 0.14);
+        }
+
+        .test-card.is-clickable:active {
+            transform: translateY(0);
+        }
+
+        .test-card.is-clickable:focus-visible {
+            outline: 2px solid #0F8B6D;
+            outline-offset: 3px;
+        }
+
+        .test-card.is-clickable:hover .start {
+            background: #087357;
+            border-color: #087357;
+            transform: translateY(-1px);
+        }
+
+        .list-view .test-card.is-clickable:hover {
+            transform: translateY(-2px);
+            border-color: #0F8B6D;
+            box-shadow: 0 10px 24px rgba(15, 139, 109, 0.12);
+        }
+
         .accent {
             height: 4px;
             background: var(--emerald);

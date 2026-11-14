@@ -388,7 +388,10 @@ function renderSets() {
         inspectBtn.className = "start";
         inspectBtn.type = "button";
         inspectBtn.textContent = "Inspect Questions ➔";
-        inspectBtn.addEventListener("click", () => inspectSet(set.id));
+        inspectBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            inspectSet(set.id);
+        });
 
         const actionsCluster = document.createElement("div");
         actionsCluster.className = "card-actions-cluster";
@@ -423,12 +426,35 @@ function renderSets() {
                 <line x1="14" y1="11" x2="14" y2="17"></line>
             </svg>
         `;
-        delBtn.addEventListener("click", () => deleteSet(set.id));
+        delBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            deleteSet(set.id);
+        });
 
         actionsCluster.append(editBtn, delBtn);
 
         body.append(top, titleH2, subP, metaDiv, inspectBtn, actionsCluster);
         card.append(accent, body);
+
+        // Enable clicking anywhere on the card/tab in both grid and list views
+        card.classList.add("is-clickable");
+        card.style.cursor = "pointer";
+        card.setAttribute("role", "button");
+        card.setAttribute("tabindex", "0");
+        card.setAttribute("title", `Click anywhere to inspect questions in "${set.title}"`);
+
+        card.addEventListener("click", (e) => {
+            if (e.target.closest(".card-icon-action")) return;
+            inspectSet(set.id);
+        });
+
+        card.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                inspectSet(set.id);
+            }
+        });
+
         testGrid.appendChild(card);
     });
 }

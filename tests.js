@@ -205,7 +205,7 @@ function renderTests() {
             : "COMING SOON";
 
         if (isAvailable) {
-            start.addEventListener("click", () => {
+            const launchExam = () => {
                 // Store the selected examination details
                 const testIdClean = String(test.id || "MOCK01").toLowerCase();
                 localStorage.setItem("selectedMockTest", testIdClean);
@@ -223,6 +223,26 @@ function renderTests() {
 
                 // Continue to the examination instructions.
                 window.location.href = "instructions.html";
+            };
+
+            // Enable whole-card clicking across grid and list views
+            card.classList.add("is-clickable");
+            card.style.cursor = "pointer";
+            card.setAttribute("role", "button");
+            card.setAttribute("tabindex", "0");
+            card.setAttribute("title", `Click to start ${test.title}`);
+
+            card.addEventListener("click", launchExam);
+            card.addEventListener("keydown", (e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    launchExam();
+                }
+            });
+
+            start.addEventListener("click", (e) => {
+                e.stopPropagation();
+                launchExam();
             });
         }
 
