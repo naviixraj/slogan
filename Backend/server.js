@@ -20,6 +20,7 @@ const upload = multer({
 });
 
 const app = express();
+app.set("trust proxy", 1);
 const PORT = process.env.PORT || 3000;
 const ROOT = path.join(__dirname, "..");
 
@@ -117,7 +118,7 @@ app.use(
         saveUninitialized: false,
         cookie: {
             httpOnly: true,
-            secure: hasCerts && process.env.NODE_ENV === "production",
+            secure: process.env.NODE_ENV === "production" || hasCerts,
             sameSite: "lax",
             maxAge: 4 * 60 * 60 * 1000
         }
@@ -1094,22 +1095,26 @@ app.post("/api/logout", (req, res) => {
 app.use(express.static(ROOT, { index: false }));
 
 // Start server (HTTPS if certificates exist, otherwise HTTP for local development)
-if (hasCerts) {
-    const HTTPS_OPTIONS = {
-        key: fs.readFileSync(certKeyPath),
-        cert: fs.readFileSync(certPath)
-    };
-    https.createServer(HTTPS_OPTIONS, app).listen(PORT, () => {
-        console.log("----------------------------------");
-        console.log("SLOGON ACADEMY MOCK TEST SERVER");
-        console.log("----------------------------------");
-        console.log(`Secure server running at https://localhost:${PORT}`);
-    });
-} else {
-    app.listen(PORT, () => {
-        console.log("----------------------------------");
-        console.log("SLOGON ACADEMY MOCK TEST SERVER");
-        console.log("----------------------------------");
-        console.log(`Server running at http://localhost:${PORT}`);
-    });
+if (!process.env.VERCEL) {
+    if (hasCerts) {
+        const HTTPS_OPTIONS = {
+            key: fs.readFileSync(certKeyPath),
+            cert: fs.readFileSync(certPath)
+        };
+        https.createServer(HTTPS_OPTIONS, app).listen(PORT, () => {
+            console.log("----------------------------------");
+            console.log("SLOGON ACADEMY MOCK TEST SERVER");
+            console.log("----------------------------------");
+            console.log(`Secure server running at https://localhost:${PORT}`);
+        });
+    } else {
+        app.listen(PORT, () => {
+            console.log("----------------------------------");
+            console.log("SLOGON ACADEMY MOCK TEST SERVER");
+            console.log("----------------------------------");
+            console.log(`Server running at http://localhost:${PORT}`);
+        });
+    }
 }
+
+module.exports = app;
