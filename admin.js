@@ -636,6 +636,49 @@ function clearSelection() {
     updateBulkActionBar();
 }
 
+function isClickOnInteractiveControl(target) {
+    if (!target) return false;
+
+    // Active modal dialogs and their controls
+    if (target.closest(".modal")) return true;
+
+    // Topbar bulk action buttons (Bin button & Cancel button)
+    if (target.closest("#bulkDeleteBinButton") || target.closest("#bulkCancelButton")) return true;
+
+    // Topbar inspector navigation & edit details buttons
+    if (target.closest("#backToSetsButton") || target.closest("#editSetFromInspectorButton")) return true;
+
+    // Card-level action buttons (single delete, single edit, drag handle)
+    if (target.closest(".btn-delete-single-q") || 
+        target.closest(".btn-edit-single-q") || 
+        target.closest(".bin-btn") || 
+        target.closest(".q-drag-handle")) {
+        return true;
+    }
+
+    // Profile dropdown
+    if (target.closest("#profileDropdownWrapper")) return true;
+
+    // Form inputs, textareas, selects, or modal submit buttons
+    if (target.closest("input, textarea, select, button[type='submit']")) return true;
+
+    return false;
+}
+
+function handleUniversalOpenSpaceDeselect(e) {
+    if (!selectedQuestionNumbers || selectedQuestionNumbers.size === 0) return;
+
+    // Don't deselect if clicking interactive action controls
+    if (isClickOnInteractiveControl(e.target)) return;
+
+    // Don't deselect if clicking inside a question card (card handles its own toggle)
+    if (e.target.closest(".question-card")) return;
+
+    // Clicking ANY open space on the screen (page background, body, main, content,
+    // topbar title/empty area, inspector empty canvas, sidebar, margins, headers):
+    clearSelection();
+}
+
 function selectAllQuestions() {
     if (!currentInspectedQuestions || currentInspectedQuestions.length === 0) return;
     currentInspectedQuestions.forEach((q, idx) => {
@@ -1858,7 +1901,7 @@ function bindEventListeners() {
 
             const card = e.target.closest(".question-card");
             if (!card) {
-                if (selectedQuestionNumbers.size > 0 && !e.target.closest(".inspector-topbar") && !e.target.closest(".modal")) {
+                if (selectedQuestionNumbers.size > 0 && !isClickOnInteractiveControl(e.target)) {
                     clearSelection();
                 }
                 return;
@@ -2025,18 +2068,44 @@ function bindEventListeners() {
     if (logoutCloseIconButton) logoutCloseIconButton.addEventListener("click", closeLogoutModal);
     if (confirmLogoutButton) confirmLogoutButton.addEventListener("click", confirmLogout);
 
+    // Universal Open-Space Deselection across all canvas/viewport areas
+    let globalTouchMoved = false;
+    let globalTouchStartX = 0;
+    let globalTouchStartY = 0;
+
+    document.addEventListener("touchstart", (e) => {
+        if (e.touches && e.touches.length === 1) {
+            globalTouchStartX = e.touches[0].clientX;
+            globalTouchStartY = e.touches[0].clientY;
+            globalTouchMoved = false;
+        }
+    }, { passive: true });
+
+    document.addEventListener("touchmove", (e) => {
+        if (e.touches && e.touches.length === 1) {
+            const dx = Math.abs(e.touches[0].clientX - globalTouchStartX);
+            const dy = Math.abs(e.touches[0].clientY - globalTouchStartY);
+            if (dx > 8 || dy > 8) {
+                globalTouchMoved = true;
+            }
+        }
+    }, { passive: true });
+
+    document.addEventListener("touchend", (e) => {
+        if (globalTouchMoved) return; // User was scrolling/swiping
+        handleUniversalOpenSpaceDeselect(e);
+    }, { passive: true });
+
     document.addEventListener("click", (e) => {
         if (profileDropdownWrapper && !profileDropdownWrapper.contains(e.target)) {
             profileDropdownWrapper.classList.remove("open");
         }
+        handleUniversalOpenSpaceDeselect(e);
+    });
 
-        // Unselect questions when clicking anywhere in open space outside question cards and topbar controls
-        if (selectedQuestionNumbers.size > 0) {
-            if (!e.target.closest(".question-card") && 
-                !e.target.closest(".inspector-topbar") && 
-                !e.target.closest(".modal")) {
-                clearSelection();
-            }
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && selectedQuestionNumbers && selectedQuestionNumbers.size > 0) {
+            clearSelection();
         }
     });
 
