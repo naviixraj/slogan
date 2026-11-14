@@ -1429,36 +1429,30 @@ if (totalNumberEl) {
                 : 0;
 
 
+        const activeTestId = (localStorage.getItem("selectedMockTest") || "mock01").toLowerCase();
+        let storedDetails = null;
+        try {
+            storedDetails = JSON.parse(localStorage.getItem("selectedTestDetails") || "null");
+        } catch (e) {}
+
         const examResult = {
-
+            testId: activeTestId,
+            testTitle: localStorage.getItem("currentExamTitle") || (storedDetails && storedDetails.title) || (candidateData && candidateData.exam) || "Mock Test",
+            subject: localStorage.getItem("currentExamSubject") || (storedDetails && storedDetails.subject) || (candidateData && candidateData.subject) || "General Paper",
             candidate: candidateData,
-
             totalQuestions: total,
-
             attempted: attempted,
-
             correct: correct,
-
             wrong: wrong,
-
             unanswered: unanswered,
-
-            marksPerQuestion:
-                marksPerQuestion,
-
+            marksPerQuestion: marksPerQuestion,
             totalMarks: totalMarks,
-
             obtainedMarks: obtainedMarks,
-
             percentage: percentage,
-
             answers: answers,
-
-            questionStatus:
-                questionStatus,
-
-            submittedAt:
-                new Date().toISOString()
+            questionStatus: questionStatus,
+            questions: questions,
+            submittedAt: new Date().toISOString()
         };
 
 

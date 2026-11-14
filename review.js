@@ -20,20 +20,25 @@ async function loadAnswerReview() {
 
         const result = JSON.parse(savedResult);
 
-        // Load the same question bank used by the exam.
-        const response = await fetch("/api/mock-tests/mock01/questions", {
-            cache: "no-store",
-            credentials: "same-origin"
-        });
+        // Use questions snapshot from exam result if available; otherwise fetch the specific test dynamically
+        let questions = Array.isArray(result.questions) && result.questions.length > 0 ? result.questions : null;
 
-        if (!response.ok) {
-            throw new Error(
-                "The question bank could not be loaded."
-            );
+        if (!questions) {
+            const activeTestId = (result.testId || localStorage.getItem("selectedMockTest") || "mock01").toLowerCase();
+            const response = await fetch(`/api/mock-tests/${encodeURIComponent(activeTestId)}/questions`, {
+                cache: "no-store",
+                credentials: "same-origin"
+            });
+
+            if (!response.ok) {
+                throw new Error(
+                    "The question bank could not be loaded."
+                );
+            }
+
+            const apiResult = await response.json();
+            questions = Array.isArray(apiResult) ? apiResult : (apiResult.questions || []);
         }
-
-        const apiResult = await response.json();
-        const questions = Array.isArray(apiResult) ? apiResult : (apiResult.questions || []);
 
         if (!Array.isArray(questions) || questions.length === 0) {
             throw new Error("The question bank format is invalid.");
@@ -41,13 +46,15 @@ async function loadAnswerReview() {
 
         const answers = result.answers || {};
         const candidate = result.candidate || {};
+        const examTitle = result.testTitle || (candidate && candidate.exam) || localStorage.getItem("currentExamTitle") || "Mock Test";
+        const examSubject = result.subject || (candidate && candidate.subject) || localStorage.getItem("currentExamSubject") || "General Paper";
 
         document.getElementById("reviewCandidate").textContent =
             "Candidate: " + (candidate.name || "Not available") +
             " | Register Number: " +
-            (candidate.registerNumber || "Not available") +
-            " | Subject: " + (candidate.subject || "Not available") +
-            " | Exam: " + (candidate.exam || "Not available");
+            (candidate.registerNumber || candidate.userId || "Not available") +
+            " | Subject: " + examSubject +
+            " | Exam: " + examTitle;
 
         document.getElementById("reviewSummary").textContent =
             "Total: " + result.totalQuestions +
@@ -65,13 +72,13 @@ async function loadAnswerReview() {
 
         // Display questions in their original order.
         questions.forEach(function (question, index) {
-            const questionId = String(question.id);
+            const questionId = String(question.id !== undefined ? question.id : (question.number !== undefined ? question.number : index + 1));
             const correctAnswer = String(
-                question.correctAnswer || ""
+                question.correctAnswer || question.answer || ""
             ).trim().toUpperCase();
 
             const selectedAnswer = String(
-                answers[questionId] || ""
+                answers[questionId] !== undefined ? answers[questionId] : (answers[String(index + 1)] || "")
             ).trim().toUpperCase();
 
             let status;
