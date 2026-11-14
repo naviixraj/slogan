@@ -87,19 +87,33 @@
                 continue;
             }
 
-            // Detect pipe-separated table rows (contains '|')
-            if (line.includes("|")) {
+            // Helper to tokenize table row (supports both pipe '|' and space-separated table lines)
+            function tokenizeRow(str) {
+                if (str.includes("|")) {
+                    return str.split("|").map(c => c.trim()).filter((c, idx, arr) => {
+                        if ((idx === 0 || idx === arr.length - 1) && c === "") return false;
+                        return true;
+                    });
+                }
+                const tokens = [];
+                // Matches either "2020 (E)" or single words/numbers
+                const rowRegex = /(\S+\s+\([A-Za-z0-9]+\)|\S+)/g;
+                let rm;
+                while ((rm = rowRegex.exec(str)) !== null) {
+                    tokens.push(rm[1].trim());
+                }
+                return tokens;
+            }
+
+            // Detect table rows: either contains '|' or follows a Table caption
+            if (line.includes("|") || (currentTable && !line.includes("?") && !/^(?:What|Which|Find|Calculate|From the year|Considering|In the year|The difference|Table\s*[-:\s]\s*\d+|Q\d|Question)/i.test(line))) {
                 // Ignore standard markdown divider rows like |---|---|
                 if (/^\|?[\s\-:]+(\|[\s\-:]+)+\|?$/.test(line)) {
                     i++;
                     continue;
                 }
 
-                const cells = line.split("|").map(c => c.trim()).filter((c, idx, arr) => {
-                    // Ignore leading/trailing empty cells from formatted markdown | Cell | Cell |
-                    if ((idx === 0 || idx === arr.length - 1) && c === "") return false;
-                    return true;
-                });
+                const cells = tokenizeRow(line);
 
                 if (cells.length > 1) {
                     flushPassage();
@@ -120,7 +134,7 @@
                 }
             }
 
-            // If we were parsing a table and encounter a non-pipe line, flush table
+            // If we were parsing a table and encounter a non-table line, flush table
             if (currentTable) {
                 flushTable();
             }

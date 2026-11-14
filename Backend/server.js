@@ -308,19 +308,34 @@ function parseMcqText(text) {
         .replace(/\r\n/g, "\n")
         .replace(/\r/g, "\n");
 
-    // Split into question blocks by detecting "Question 1", "Q.1", "Q1", or "1." at start of line
-    const regex = /(?:^|\n)(?=(?:(?:Question|Q)\s*[:\.-]?\s*\d+[\.:\)\s\-]+|\d+[\.\)]\s+))/gi;
-    const rawBlocks = normalized.split(regex).map(b => b.trim()).filter(b => b.length > 5);
+    // Split strictly by Question markers: e.g. "Question 1", "Q.1", "Q1.", "Q 1:"
+    const qSplitter = /(?:^|\n)(?=(?:(?:Question|Q)\s*[:\.-]?\s*\d+[\.:\)\s\-]+))/gi;
+    let parts = normalized.split(qSplitter);
+    let sharedContext = "";
+    let questionBlocks = [];
+
+    // Fallback if questions are numbered with digits like "1. Question"
+    if (parts.length <= 1) {
+        const numSplitter = /(?:^|\n)(?=\d+[\.\)]\s+[^\d])/gi;
+        parts = normalized.split(numSplitter);
+    }
+
+    if (parts.length > 1 && !/^(?:Question|Q)\s*[:\.-]?\s*\d+/i.test(parts[0].trim())) {
+        // First part is shared passage/tables before Q1
+        sharedContext = parts[0].trim();
+        questionBlocks = parts.slice(1);
+    } else {
+        questionBlocks = parts.filter(p => p.trim().length > 0);
+    }
 
     const questions = [];
 
-    rawBlocks.forEach((block, idx) => {
-        // Clean leading question numbering: e.g. "Question 1:", "Q1.", "1."
-        let cleanBlock = block.replace(/^(?:(?:Question|Q)\s*[:\.-]?\s*\d+[\.:\)\s\-]*|\d+[\.\)]\s*)/i, "").trim();
+    questionBlocks.forEach((block, idx) => {
+        let cleanBlock = block.trim();
 
         // Extract explanation if present
         let explanation = "";
-        const expMatch = cleanBlock.match(/(?:Explanation|Solution|Exp|Sol)[:\s\-]+([\s\S]*)$/i);
+        const expMatch = cleanBlock.match(/(?:Explanation|Solution|Short Explanation|Exp|Sol)[:\s\-]+([\s\S]*)$/i);
         if (expMatch) {
             explanation = expMatch[1].trim();
             cleanBlock = cleanBlock.replace(expMatch[0], "").trim();
@@ -338,43 +353,44 @@ function parseMcqText(text) {
             cleanBlock = cleanBlock.replace(ansMatch[0], "").trim();
         }
 
-        // Parse options A, B, C, D
-        const optPattern = /(?:^|\n|\s{2,})(?:\(?([A-Da-d1-4])[\.\)\:\-\]]\s*|\(([A-Da-d1-4])\)\s*)/g;
-        const matches = [];
-        let m;
-        while ((m = optPattern.exec(cleanBlock)) !== null) {
-            const optKey = (m[1] || m[2]).toUpperCase();
-            const mapKey = optKey === "1" ? "A" : optKey === "2" ? "B" : optKey === "3" ? "C" : optKey === "4" ? "D" : optKey;
-            matches.push({
-                key: mapKey,
-                index: m.index,
-                matchLen: m[0].length
-            });
+        // Clean leading question tag: e.g. "Q1.What...", "Question 1: ..."
+        let qBody = cleanBlock.replace(/^(?:(?:Question|Q)\s*[:\.-]?\s*\d+[\.:\)\s\-]*|\d+[\.\)]\s*)/i, "").trim();
+
+        // Parse options A, B, C, D or 1, 2, 3, 4
+        // Line-based matching that never collides with decimal numbers like 2.0 or 1.2
+        const lines = qBody.split("\n");
+        const optLines = [];
+        const questionLines = [];
+        let inOptions = false;
+
+        for (let l of lines) {
+            const lineTrim = l.trim();
+            const optMatch = lineTrim.match(/^(\(?([A-Da-d1-4])[\.\)\:\-\]]|\(([A-Da-d1-4])\))\s+(?!\d{1,2}\.)(.*)/);
+            if (optMatch) {
+                inOptions = true;
+                const optKey = (optMatch[2] || optMatch[3]).toUpperCase();
+                const mapKey = optKey === "1" ? "A" : optKey === "2" ? "B" : optKey === "3" ? "C" : optKey === "4" ? "D" : optKey;
+                optLines.push({ key: mapKey, text: optMatch[4].trim() });
+            } else if (!inOptions) {
+                questionLines.push(l);
+            } else if (inOptions && optLines.length > 0 && !lineTrim.match(/^(?:Question|Q\d|Correct|Answer|Explanation)/i)) {
+                optLines[optLines.length - 1].text += " " + lineTrim;
+            }
         }
 
-        let questionText = cleanBlock;
+        let questionText = questionLines.join("\n").trim();
+        
+        // If there was shared context (tables/passage before Q1), attach to question
+        if (sharedContext) {
+            questionText = sharedContext + "\n\n" + questionText;
+        }
+
         let options = { A: "", B: "", C: "", D: "" };
-
-        if (matches.length >= 4) {
-            questionText = cleanBlock.substring(0, matches[0].index).trim();
-            for (let i = 0; i < matches.length; i++) {
-                const current = matches[i];
-                const nextIndex = (i + 1 < matches.length) ? matches[i + 1].index : cleanBlock.length;
-                const optText = cleanBlock.substring(current.index + current.matchLen, nextIndex).trim();
-                if (options.hasOwnProperty(current.key)) {
-                    options[current.key] = optText;
-                }
+        optLines.forEach(o => {
+            if (options.hasOwnProperty(o.key)) {
+                options[o.key] = o.text;
             }
-        } else {
-            const lines = cleanBlock.split("\n").map(l => l.trim()).filter(Boolean);
-            if (lines.length > 0) {
-                questionText = lines[0];
-                if (lines[1]) options.A = lines[1].replace(/^[A-Da-d1-4][\.\)\:\-\]]\s*/, "");
-                if (lines[2]) options.B = lines[2].replace(/^[A-Da-d1-4][\.\)\:\-\]]\s*/, "");
-                if (lines[3]) options.C = lines[3].replace(/^[A-Da-d1-4][\.\)\:\-\]]\s*/, "");
-                if (lines[4]) options.D = lines[4].replace(/^[A-Da-d1-4][\.\)\:\-\]]\s*/, "");
-            }
-        }
+        });
 
         if (!options.A) options.A = "Option A";
         if (!options.B) options.B = "Option B";
