@@ -1,5 +1,12 @@
 "use strict";
 
+// If opened via VS Code Live Server (port 5500/5501/etc.), auto-redirect to the Express server on port 3000
+if (window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost") {
+    if (window.location.port === "5500" || window.location.port === "5501" || window.location.port === "5502") {
+        window.location.replace(`http://localhost:3000${window.location.pathname}${window.location.search}`);
+    }
+}
+
 /*
 =========================================================
  SLOGON ACADEMY — ONLINE EXAMINATION SYSTEM

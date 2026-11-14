@@ -1,4 +1,11 @@
 
+// If opened via VS Code Live Server (port 5500/5501/etc.), auto-redirect to the Express server on port 3000
+if (window.location.hostname === "127.0.0.1" || window.location.hostname === "localhost") {
+    if (window.location.port === "5500" || window.location.port === "5501" || window.location.port === "5502") {
+        window.location.replace(`http://localhost:3000${window.location.pathname}${window.location.search}`);
+    }
+}
+
 const loginForm = document.getElementById("loginForm");
 const message = document.getElementById("message");
 const loginButton = document.getElementById("loginButton");
@@ -129,7 +136,14 @@ loginForm.addEventListener("submit", async (event) => {
         console.error("Login error:", error);
 
         message.style.color = "#C0392B";
-        message.textContent = error.message;
+
+        if (error.message && (error.message.includes("405") || error.message.includes("404"))) {
+            message.innerHTML = `⚠️ <strong>Port Mismatch:</strong> You are browsing via VS Code Live Server (port ${window.location.port || '5500'}), which cannot process login requests.<br><a href="http://localhost:3000/login.html" style="display: inline-block; margin-top: 8px; color: #176B52; font-weight: 700; text-decoration: underline;">👉 Click here to open on http://localhost:3000/login.html</a>`;
+        } else if (error.message && error.message.toLowerCase().includes("failed to fetch")) {
+            message.innerHTML = `⚠️ <strong>Server Offline:</strong> The backend server is not reachable on port 3000.<br>Please ensure <code>npm start</code> or <code>node Backend/server.js</code> is running.`;
+        } else {
+            message.textContent = error.message;
+        }
 
         loginButton.disabled = false;
         loginButton.textContent = "LOGIN";
