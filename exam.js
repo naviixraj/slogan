@@ -676,9 +676,11 @@ if (totalNumberEl) {
         /* ---------- Question text ---------- */
 
         if (questionTextEl) {
-
-            questionTextEl.textContent =
-                question.question || "";
+            if (typeof window.renderNeatQuestion === "function") {
+                questionTextEl.innerHTML = window.renderNeatQuestion(question.question || "");
+            } else {
+                questionTextEl.textContent = question.question || "";
+            }
         }
 
 

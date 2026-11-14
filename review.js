@@ -104,11 +104,19 @@ async function loadAnswerReview() {
             statusBadge.textContent = status;
             card.appendChild(statusBadge);
 
-            const heading = document.createElement("h2");
-            heading.textContent =
-                "Question " + (index + 1) + ": " +
-                (question.question || "");
-            card.appendChild(heading);
+            const qHeader = document.createElement("div");
+            qHeader.style.cssText = "font-size: 11px; font-weight: 800; color: #0F8B6D; letter-spacing: 0.8px; margin: 10px 0 6px; text-transform: uppercase;";
+            qHeader.textContent = "Question " + (index + 1);
+            card.appendChild(qHeader);
+
+            const qBody = document.createElement("div");
+            qBody.className = "review-question-body";
+            if (typeof window.renderNeatQuestion === "function") {
+                qBody.innerHTML = window.renderNeatQuestion(question.question || "");
+            } else {
+                qBody.textContent = question.question || "";
+            }
+            card.appendChild(qBody);
 
             // Show all options, highlighting the correct one
             // and the candidate's incorrect selection.
