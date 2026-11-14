@@ -41,8 +41,25 @@ app.use(
         }
     })
 );
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(express.json({ limit: "50mb" }));
+app.use(express.urlencoded({ extended: true, limit: "50mb" }));
+
+// Handle JSON body parser errors gracefully
+app.use((err, req, res, next) => {
+    if (err && err.type === "entity.too.large") {
+        return res.status(413).json({
+            success: false,
+            message: "The pasted text or question file exceeds the size limit. Please reduce the batch size."
+        });
+    }
+    if (err instanceof SyntaxError && err.status === 400 && "body" in err) {
+        return res.status(400).json({
+            success: false,
+            message: "Malformed data payload received."
+        });
+    }
+    next(err);
+});
 
 // Login attempt protection
 const loginLimiter = rateLimit({

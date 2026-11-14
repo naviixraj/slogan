@@ -600,7 +600,20 @@ async function handleUploadSetSubmit() {
                 credentials: "same-origin"
             });
 
-            const data = await res.json();
+            const rawText = await res.text();
+            let data;
+            try {
+                data = JSON.parse(rawText);
+            } catch (e) {
+                if (res.status === 413) {
+                    throw new Error("The pasted question set exceeds the allowed payload size.");
+                }
+                if (res.status === 401 || res.status === 403) {
+                    throw new Error("Your session has expired. Please refresh the page and log in again.");
+                }
+                throw new Error(`Server returned unexpected response (${res.status}). Please make sure you are logged in.`);
+            }
+
             if (!res.ok || !data.success) {
                 throw new Error(data.message || "Failed to parse and save question set.");
             }
@@ -648,7 +661,20 @@ async function handleUploadSetSubmit() {
             credentials: "same-origin"
         });
 
-        const data = await res.json();
+        const rawText = await res.text();
+        let data;
+        try {
+            data = JSON.parse(rawText);
+        } catch (e) {
+            if (res.status === 413) {
+                throw new Error("The uploaded file exceeds the allowed payload size.");
+            }
+            if (res.status === 401 || res.status === 403) {
+                throw new Error("Your session has expired. Please refresh the page and log in again.");
+            }
+            throw new Error(`Server returned unexpected response (${res.status}). Please make sure you are logged in.`);
+        }
+
         if (!res.ok || !data.success) {
             throw new Error(data.message || "Failed to upload question set.");
         }
