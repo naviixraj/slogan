@@ -63,6 +63,22 @@ const backToSetsButton = document.getElementById("backToSetsButton");
 const inspectorQuestionsContainer = document.getElementById("inspectorQuestionsContainer");
 const inspectorMetaBadge = document.getElementById("inspectorMetaBadge");
 
+// Bulk Action Bar & Selection State
+const bulkActionBar = document.getElementById("bulkActionBar");
+const bulkCountBadge = document.getElementById("bulkCountBadge");
+const bulkDeleteCountText = document.getElementById("bulkDeleteCountText");
+const btnSelectAllQuestions = document.getElementById("btnSelectAllQuestions");
+const btnDeselectAllQuestions = document.getElementById("btnDeselectAllQuestions");
+const btnDeleteSelectedQuestions = document.getElementById("btnDeleteSelectedQuestions");
+
+let currentInspectedSetId = null;
+let currentInspectedQuestions = [];
+let selectedQuestionNumbers = new Set();
+let didLongPress = false;
+let touchTimer = null;
+let touchStartX = 0;
+let touchStartY = 0;
+
 // Headings
 const pageTitle = document.getElementById("pageTitle");
 const pageSubtitle = document.getElementById("pageSubtitle");
@@ -350,6 +366,9 @@ function renderSets() {
 
 async function inspectSet(setId) {
     try {
+        currentInspectedSetId = setId;
+        clearSelection();
+
         if (setsDirectoryView) setsDirectoryView.style.display = "none";
         if (questionsInspectorView) questionsInspectorView.style.display = "block";
 
@@ -396,11 +415,12 @@ async function inspectSet(setId) {
         if (!set) return;
 
         const qList = set.questions || [];
+        currentInspectedQuestions = qList;
         const fName = set.file_name || set.fileName || "mock01.json";
         const badge = (set.file_type || set.fileType || "JSON").toUpperCase();
 
         if (pageTitle) pageTitle.textContent = set.title;
-        if (pageSubtitle) pageSubtitle.textContent = `File: ${fName} • ${qList.length} single split questions evaluated.`;
+        if (pageSubtitle) pageSubtitle.textContent = `File: ${fName} • ${qList.length} single split questions evaluated. (Click or long-press cards to select for bulk deletion)`;
         if (inspectorMetaBadge) inspectorMetaBadge.textContent = `${badge} • Duration: ${set.duration || 180} Mins • Total ${qList.length} Questions`;
 
         if (inspectorQuestionsContainer) {
@@ -416,11 +436,19 @@ async function inspectSet(setId) {
                     const optD = q.options?.D || "";
                     const correct = String(q.correctAnswer || q.answer || "A").trim().toUpperCase();
                     const exp = q.explanation || "No solution explanation provided.";
+                    const isSelected = selectedQuestionNumbers.has(Number(qNum));
 
                     return `
-                        <div class="question-card">
+                        <div class="question-card ${isSelected ? 'is-selected' : ''}" data-qnum="${qNum}" data-setid="${set.id}">
                             <div class="q-header">
-                                <span class="q-badge">QUESTION ${String(qNum).padStart(2, '0')}</span>
+                                <div class="q-header-left">
+                                    <div class="q-select-indicator" title="Click to select for bulk deletion">
+                                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                            <polyline points="20 6 9 17 4 12"></polyline>
+                                        </svg>
+                                    </div>
+                                    <span class="q-badge">QUESTION ${String(qNum).padStart(2, '0')}</span>
+                                </div>
                                 <span style="font-size: 11px; color: var(--muted); font-weight: 600;">Single Split Question • ${q.section || "Paper 1"}</span>
                             </div>
                             <div class="q-title">${qText}</div>
@@ -471,11 +499,109 @@ async function inspectSet(setId) {
 }
 
 function backToSets() {
+    clearSelection();
+    currentInspectedSetId = null;
+    currentInspectedQuestions = [];
     if (questionsInspectorView) questionsInspectorView.style.display = "none";
     if (setsDirectoryView) setsDirectoryView.style.display = "block";
     if (pageTitle) pageTitle.textContent = "Examinations";
     if (pageSubtitle) pageSubtitle.textContent = "Browse your available question sets and split question banks.";
     window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+// -----------------------------------------------------
+// BULK QUESTION SELECTION & DELETION LOGIC
+// -----------------------------------------------------
+
+function updateBulkActionBar() {
+    if (!bulkActionBar) return;
+    const count = selectedQuestionNumbers.size;
+    if (count > 0) {
+        bulkActionBar.style.display = "flex";
+        if (bulkCountBadge) bulkCountBadge.textContent = String(count);
+        if (bulkDeleteCountText) bulkDeleteCountText.textContent = String(count);
+    } else {
+        bulkActionBar.style.display = "none";
+    }
+}
+
+function clearSelection() {
+    selectedQuestionNumbers.clear();
+    if (inspectorQuestionsContainer) {
+        const cards = inspectorQuestionsContainer.querySelectorAll(".question-card");
+        cards.forEach(card => card.classList.remove("is-selected"));
+    }
+    updateBulkActionBar();
+}
+
+function selectAllQuestions() {
+    if (!currentInspectedQuestions || currentInspectedQuestions.length === 0) return;
+    currentInspectedQuestions.forEach((q, idx) => {
+        const qNum = q.number || q.id || (idx + 1);
+        selectedQuestionNumbers.add(Number(qNum));
+    });
+    if (inspectorQuestionsContainer) {
+        const cards = inspectorQuestionsContainer.querySelectorAll(".question-card");
+        cards.forEach(card => card.classList.add("is-selected"));
+    }
+    updateBulkActionBar();
+}
+
+function toggleQuestionSelection(qNum, cardEl) {
+    const num = Number(qNum);
+    if (!num) return;
+
+    if (selectedQuestionNumbers.has(num)) {
+        selectedQuestionNumbers.delete(num);
+        if (cardEl) cardEl.classList.remove("is-selected");
+    } else {
+        selectedQuestionNumbers.add(num);
+        if (cardEl) cardEl.classList.add("is-selected");
+    }
+    updateBulkActionBar();
+}
+
+async function deleteSelectedQuestions() {
+    const count = selectedQuestionNumbers.size;
+    if (count === 0 || !currentInspectedSetId) {
+        alert("Please select at least one question to delete.");
+        return;
+    }
+
+    const confirmed = confirm(`Are you sure you want to delete the ${count} selected question${count > 1 ? "s" : ""} from this set? This cannot be undone.`);
+    if (!confirmed) return;
+
+    if (btnDeleteSelectedQuestions) {
+        btnDeleteSelectedQuestions.disabled = true;
+        btnDeleteSelectedQuestions.style.opacity = "0.6";
+    }
+
+    try {
+        const res = await fetch(`/api/admin/sets/${encodeURIComponent(currentInspectedSetId)}/questions/bulk-delete`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "same-origin",
+            body: JSON.stringify({ questionNumbers: Array.from(selectedQuestionNumbers) })
+        });
+
+        const data = await res.json();
+        if (!res.ok || !data.success) {
+            throw new Error(data.message || "Failed to bulk delete questions.");
+        }
+
+        selectedQuestionNumbers.clear();
+        updateBulkActionBar();
+
+        await inspectSet(currentInspectedSetId);
+        await fetchSets();
+    } catch (err) {
+        alert("Bulk delete failed: " + err.message);
+    } finally {
+        if (btnDeleteSelectedQuestions) {
+            btnDeleteSelectedQuestions.disabled = false;
+            btnDeleteSelectedQuestions.style.opacity = "1";
+        }
+    }
 }
 
 // -----------------------------------------------------
@@ -1048,18 +1174,85 @@ function bindEventListeners() {
     if (studentsNav) studentsNav.addEventListener("click", showStudentsSection);
     if (helpNav) helpNav.addEventListener("click", showHelpSection);
 
-    // Inspector
+    // Inspector & Bulk Actions
     if (backToSetsButton) backToSetsButton.addEventListener("click", backToSets);
+
+    if (btnSelectAllQuestions) btnSelectAllQuestions.addEventListener("click", selectAllQuestions);
+    if (btnDeselectAllQuestions) btnDeselectAllQuestions.addEventListener("click", clearSelection);
+    if (btnDeleteSelectedQuestions) btnDeleteSelectedQuestions.addEventListener("click", deleteSelectedQuestions);
+
     if (inspectorQuestionsContainer) {
+        // Desktop left-click selection & single delete
         inspectorQuestionsContainer.addEventListener("click", (e) => {
-            const btn = e.target.closest(".btn-delete-single-q");
-            if (!btn) return;
-            const qNum = Number(btn.getAttribute("data-qnum"));
-            const setId = btn.getAttribute("data-setid");
-            if (setId && qNum) {
-                deleteSingleQuestion(setId, qNum);
+            const deleteBtn = e.target.closest(".btn-delete-single-q");
+            if (deleteBtn) {
+                const qNum = Number(deleteBtn.getAttribute("data-qnum"));
+                const setId = deleteBtn.getAttribute("data-setid");
+                if (setId && qNum) {
+                    deleteSingleQuestion(setId, qNum);
+                }
+                return;
+            }
+
+            if (didLongPress) {
+                didLongPress = false;
+                return;
+            }
+
+            const card = e.target.closest(".question-card");
+            if (card) {
+                const qNum = Number(card.getAttribute("data-qnum"));
+                if (qNum) {
+                    toggleQuestionSelection(qNum, card);
+                }
             }
         });
+
+        // Touch & Mobile long-press detection (500ms hold)
+        inspectorQuestionsContainer.addEventListener("touchstart", (e) => {
+            const card = e.target.closest(".question-card");
+            if (!card || e.target.closest(".btn-delete-single-q")) return;
+
+            didLongPress = false;
+            const touch = e.touches[0];
+            touchStartX = touch.clientX;
+            touchStartY = touch.clientY;
+
+            if (touchTimer) clearTimeout(touchTimer);
+            touchTimer = setTimeout(() => {
+                didLongPress = true;
+                const qNum = Number(card.getAttribute("data-qnum"));
+                if (qNum) {
+                    toggleQuestionSelection(qNum, card);
+                    if (navigator.vibrate) {
+                        try { navigator.vibrate(50); } catch (_) {}
+                    }
+                }
+            }, 500);
+        }, { passive: true });
+
+        inspectorQuestionsContainer.addEventListener("touchmove", (e) => {
+            if (!touchTimer) return;
+            const touch = e.touches[0];
+            if (Math.abs(touch.clientX - touchStartX) > 10 || Math.abs(touch.clientY - touchStartY) > 10) {
+                clearTimeout(touchTimer);
+                touchTimer = null;
+            }
+        }, { passive: true });
+
+        inspectorQuestionsContainer.addEventListener("touchend", () => {
+            if (touchTimer) {
+                clearTimeout(touchTimer);
+                touchTimer = null;
+            }
+        }, { passive: true });
+
+        inspectorQuestionsContainer.addEventListener("touchcancel", () => {
+            if (touchTimer) {
+                clearTimeout(touchTimer);
+                touchTimer = null;
+            }
+        }, { passive: true });
     }
 
     // Toolbar

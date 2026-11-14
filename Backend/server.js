@@ -483,6 +483,36 @@ async function parseUploadedQuestions(file) {
 // MASTER ADMIN: QUESTION SETS APIS
 // -----------------------------------------------------
 
+// Helper: generate guaranteed unique Question Set ID that avoids primary key collisions
+async function getNextUniqueSetId() {
+    try {
+        const sets = await unifiedDb.listQuestionSets();
+        const existingIds = new Set((sets || []).map(s => String(s.id || "").trim().toUpperCase()));
+
+        let maxNum = 0;
+        for (const id of existingIds) {
+            const match = id.match(/^SET(\d+)$/i);
+            if (match) {
+                const num = parseInt(match[1], 10);
+                if (!isNaN(num) && num > maxNum) {
+                    maxNum = num;
+                }
+            }
+        }
+
+        let candidateNum = maxNum + 1;
+        let candidateId = `SET${String(candidateNum).padStart(2, "0")}`;
+        while (existingIds.has(candidateId.toUpperCase())) {
+            candidateNum++;
+            candidateId = `SET${String(candidateNum).padStart(2, "0")}`;
+        }
+        return candidateId;
+    } catch (e) {
+        console.error("Error generating unique set ID:", e);
+        return `SET_${Date.now()}`;
+    }
+}
+
 // Get all Question Sets
 app.get("/api/admin/sets", requireAdmin, async (req, res) => {
     try {
@@ -549,11 +579,9 @@ app.post("/api/admin/sets/upload", requireAdmin, upload.single("file"), async (r
             });
         }
 
-        // Generate next ID
+        // Generate collision-free next ID
         const ext = path.extname(file.originalname).toLowerCase().replace(".", "");
-        const currentCount = await unifiedDb.countQuestionSets();
-        const nextNum = currentCount + 1;
-        const setId = `SET${String(nextNum).padStart(2, "0")}`;
+        const setId = await getNextUniqueSetId();
 
         const setDuration = parseInt(duration, 10) || 180;
         const setSubject = subject && subject.trim() ? subject.trim() : "General Paper";
@@ -604,10 +632,8 @@ app.post("/api/admin/sets/paste", requireAdmin, async (req, res) => {
             });
         }
 
-        // Generate next ID
-        const currentCount = await unifiedDb.countQuestionSets();
-        const nextNum = currentCount + 1;
-        const setId = `SET${String(nextNum).padStart(2, "0")}`;
+        // Generate collision-free next ID
+        const setId = await getNextUniqueSetId();
 
         const setDuration = parseInt(duration, 10) || 180;
         const setSubject = subject && subject.trim() ? subject.trim() : "General Paper";
@@ -689,6 +715,56 @@ app.delete("/api/admin/sets/:id/questions/:qNum", requireAdmin, async (req, res)
         });
     } catch (error) {
         return res.status(500).json({ success: false, message: "Failed to delete question: " + error.message });
+    }
+});
+
+// Bulk delete multiple questions from a Question Set
+app.post("/api/admin/sets/:id/questions/bulk-delete", requireAdmin, async (req, res) => {
+    try {
+        const setId = req.params.id;
+        const { questionNumbers } = req.body;
+
+        if (!Array.isArray(questionNumbers) || questionNumbers.length === 0) {
+            return res.status(400).json({ success: false, message: "No question numbers provided for bulk deletion." });
+        }
+
+        const deleteSet = new Set(questionNumbers.map(n => Number(n)));
+
+        const row = await unifiedDb.getQuestionSetById(setId);
+        if (!row) {
+            return res.status(404).json({ success: false, message: "Question set not found." });
+        }
+
+        let questions = typeof row.questions_json === "string" ? JSON.parse(row.questions_json) : row.questions_json;
+        const originalCount = questions.length;
+
+        questions = questions.filter((q, idx) => {
+            const currentNum = q.number !== undefined ? q.number : (q.id !== undefined ? q.id : idx + 1);
+            return !deleteSet.has(currentNum) && !deleteSet.has(idx + 1);
+        });
+
+        const deletedCount = originalCount - questions.length;
+        if (deletedCount === 0) {
+            return res.status(404).json({ success: false, message: "None of the selected questions were found in the set." });
+        }
+
+        // Re-index remaining questions cleanly
+        questions.forEach((q, idx) => {
+            q.id = idx + 1;
+            q.number = idx + 1;
+        });
+
+        await unifiedDb.updateQuestionSetQuestions(setId, questions, questions.length);
+
+        return res.json({
+            success: true,
+            message: `Successfully deleted ${deletedCount} questions. Remaining: ${questions.length}`,
+            deletedCount: deletedCount,
+            remainingCount: questions.length
+        });
+    } catch (error) {
+        console.error("Bulk delete questions error:", error);
+        return res.status(500).json({ success: false, message: "Failed to delete questions: " + error.message });
     }
 });
 
