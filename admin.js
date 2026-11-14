@@ -81,6 +81,8 @@ let draggedCard = null;
 let isDraggingQuestion = false;
 let reorderToastTimer = null;
 let touchDragActive = false;
+let autoScrollRaf = null;
+let autoScrollSpeed = 0;
 
 // Headings
 const pageTitle = document.getElementById("pageTitle");
@@ -512,6 +514,9 @@ async function inspectSet(setId) {
 }
 
 function backToSets() {
+    stopAutoScroll();
+    isDraggingQuestion = false;
+    draggedCard = null;
     clearSelection();
     currentInspectedSetId = null;
     currentInspectedQuestions = [];
@@ -702,6 +707,61 @@ async function saveQuestionOrder() {
     } catch (err) {
         console.error("Save question order failed:", err);
         showReorderToast("Failed to save order: " + err.message);
+    }
+}
+
+// -----------------------------------------------------
+// AUTO-SCROLL DURING DRAG & DROP (EDGE SCROLLING)
+// -----------------------------------------------------
+
+function handleDragAutoScroll(clientY) {
+    if (!isDraggingQuestion) {
+        stopAutoScroll();
+        return;
+    }
+
+    const viewportHeight = window.innerHeight;
+    const threshold = 140; // 140px zone from top or bottom of viewport
+
+    if (clientY < threshold) {
+        // Dragging near top edge -> scroll page up
+        const distance = Math.max(0, threshold - clientY);
+        const intensity = Math.min(1, distance / threshold);
+        // Scaled speed: -6px up to -28px per animation frame
+        autoScrollSpeed = -Math.round(6 + intensity * 22);
+    } else if (clientY > viewportHeight - threshold) {
+        // Dragging near bottom edge -> scroll page down
+        const distance = Math.max(0, clientY - (viewportHeight - threshold));
+        const intensity = Math.min(1, distance / threshold);
+        // Scaled speed: +6px up to +28px per animation frame
+        autoScrollSpeed = Math.round(6 + intensity * 22);
+    } else {
+        autoScrollSpeed = 0;
+    }
+
+    if (autoScrollSpeed !== 0) {
+        if (!autoScrollRaf) {
+            autoScrollStep();
+        }
+    } else {
+        stopAutoScroll();
+    }
+}
+
+function autoScrollStep() {
+    if (autoScrollSpeed !== 0 && isDraggingQuestion) {
+        window.scrollBy(0, autoScrollSpeed);
+        autoScrollRaf = requestAnimationFrame(autoScrollStep);
+    } else {
+        stopAutoScroll();
+    }
+}
+
+function stopAutoScroll() {
+    autoScrollSpeed = 0;
+    if (autoScrollRaf) {
+        cancelAnimationFrame(autoScrollRaf);
+        autoScrollRaf = null;
     }
 }
 
@@ -1347,6 +1407,9 @@ function bindEventListeners() {
             e.preventDefault();
             e.dataTransfer.dropEffect = "move";
 
+            // Trigger smooth auto-scroll when near top or bottom viewport edges
+            handleDragAutoScroll(e.clientY);
+
             const targetCard = e.target.closest(".question-card");
             if (!targetCard || targetCard === draggedCard) return;
 
@@ -1379,6 +1442,7 @@ function bindEventListeners() {
         inspectorQuestionsContainer.addEventListener("drop", (e) => {
             if (!draggedCard) return;
             e.preventDefault();
+            stopAutoScroll();
 
             const targetCard = e.target.closest(".question-card");
             if (targetCard && targetCard !== draggedCard) {
@@ -1402,6 +1466,7 @@ function bindEventListeners() {
         });
 
         inspectorQuestionsContainer.addEventListener("dragend", () => {
+            stopAutoScroll();
             if (draggedCard) draggedCard.classList.remove("is-dragging");
             const allCards = inspectorQuestionsContainer.querySelectorAll(".question-card");
             allCards.forEach(c => c.classList.remove("drag-over-above", "drag-over-below", "is-dragging"));
@@ -1410,6 +1475,17 @@ function bindEventListeners() {
                 isDraggingQuestion = false;
                 draggedCard = null;
             }, 100);
+        });
+
+        // Global window drag listeners to ensure smooth scrolling anywhere in the viewport
+        window.addEventListener("dragover", (e) => {
+            if (isDraggingQuestion) {
+                handleDragAutoScroll(e.clientY);
+            }
+        });
+
+        window.addEventListener("dragend", () => {
+            stopAutoScroll();
         });
 
         // -----------------------------------------------------
@@ -1458,6 +1534,7 @@ function bindEventListeners() {
             if (touchDragActive && draggedCard) {
                 e.preventDefault(); // Prevent native scroll while reordering
                 const touch = e.touches[0];
+                handleDragAutoScroll(touch.clientY);
                 const elem = document.elementFromPoint(touch.clientX, touch.clientY);
                 const targetCard = elem ? elem.closest(".question-card") : null;
                 if (targetCard && targetCard !== draggedCard) {
@@ -1481,6 +1558,7 @@ function bindEventListeners() {
         }, { passive: false });
 
         inspectorQuestionsContainer.addEventListener("touchend", () => {
+            stopAutoScroll();
             if (touchDragActive && draggedCard) {
                 touchDragActive = false;
                 draggedCard.classList.remove("is-dragging");
@@ -1499,6 +1577,7 @@ function bindEventListeners() {
         }, { passive: true });
 
         inspectorQuestionsContainer.addEventListener("touchcancel", () => {
+            stopAutoScroll();
             if (touchDragActive && draggedCard) {
                 touchDragActive = false;
                 draggedCard.classList.remove("is-dragging");
