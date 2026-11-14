@@ -1024,13 +1024,14 @@
             line-height: 1.6;
         }
 
-        /* BOTTOM RIGHT BIN BUTTON (NO SQUARE, BECOMES RED ON HOVER/FOCUS) */
+        /* BOTTOM RIGHT ACTION BUTTONS (CLEAN BORDERLESS ICONS) */
         .q-footer {
             display: flex;
             align-items: center;
             justify-content: flex-end;
             margin-top: 12px;
             padding-top: 8px;
+            gap: 8px;
         }
 
         .bin-btn {
@@ -1839,25 +1840,48 @@
         }
 
         .btn-edit-single-q {
+            background: transparent !important;
+            background-color: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            outline: none !important;
+            padding: 4px !important;
+            margin: 0 !important;
+            cursor: pointer;
             display: inline-flex;
             align-items: center;
-            gap: 5px;
-            height: 32px;
-            padding: 0 12px;
-            border-radius: 6px;
-            border: 1px solid rgba(23, 107, 82, 0.25);
-            background: rgba(23, 107, 82, 0.06);
-            color: var(--emerald);
-            font-size: 11.5px;
-            font-weight: 700;
-            cursor: pointer;
-            transition: all 0.2s ease;
+            justify-content: center;
+            color: #94A3B8 !important;
+            transition: color 0.18s ease, transform 0.18s ease;
+            -webkit-appearance: none;
+            appearance: none;
+            border-radius: 0 !important;
         }
 
-        .btn-edit-single-q:hover {
-            background: var(--emerald);
-            color: #FFFFFF;
-            border-color: var(--emerald);
+        .btn-edit-single-q svg {
+            display: block;
+            pointer-events: none;
+            stroke: currentColor;
+            fill: none;
+            transition: stroke 0.18s ease;
+        }
+
+        .btn-edit-single-q:hover,
+        .btn-edit-single-q:focus,
+        .btn-edit-single-q:focus-visible {
+            color: var(--emerald) !important;
+            background: transparent !important;
+            background-color: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            outline: none !important;
+            transform: scale(1.15);
+        }
+
+        .btn-edit-single-q:hover svg,
+        .btn-edit-single-q:focus svg,
+        .btn-edit-single-q:focus-visible svg {
+            stroke: var(--emerald) !important;
         }
 
         .edit-options-grid {
