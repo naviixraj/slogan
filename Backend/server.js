@@ -24,10 +24,7 @@ app.set("trust proxy", 1);
 const PORT = process.env.PORT || 3000;
 const ROOT = path.join(__dirname, "..");
 
-if (!process.env.SESSION_SECRET) {
-    console.error("SESSION_SECRET is missing. Check your .env file.");
-    process.exit(1);
-}
+const SESSION_SECRET = process.env.SESSION_SECRET || "slogon_secure_secret_key_2026_exam_platform_dev";
 
 app.use(
     helmet({
@@ -112,7 +109,7 @@ class AppSessionStore extends Store {
 app.use(
     session({
         name: "slogon.sid",
-        secret: process.env.SESSION_SECRET,
+        secret: SESSION_SECRET,
         store: new AppSessionStore(),
         resave: false,
         saveUninitialized: false,

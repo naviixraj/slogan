@@ -4,11 +4,18 @@
  */
 require("dotenv").config();
 const { createClient } = require("@supabase/supabase-js");
-const sqliteDb = require("./database");
-
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_SERVICE_KEY;
 const isSupabase = Boolean(supabaseUrl && supabaseKey);
+
+let sqliteDb = null;
+if (!isSupabase) {
+    try {
+        sqliteDb = require("./database");
+    } catch (e) {
+        console.warn("SQLite fallback unavailable:", e.message);
+    }
+}
 
 let supabase = null;
 if (isSupabase) {
