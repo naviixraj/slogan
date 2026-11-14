@@ -1609,25 +1609,65 @@
             border-color: #176B52;
         }
 
-        /* EDIT BUTTONS & MODALS */
-        .card-edit-btn {
-            width: 36px;
-            height: 36px;
-            border-radius: 8px;
-            border: 1px solid rgba(23, 107, 82, 0.25);
-            background: rgba(23, 107, 82, 0.06);
-            color: var(--emerald);
+        /* EXAMINATION CARD ACTION BUTTONS */
+        .card-btn-row {
             display: flex;
             align-items: center;
+            gap: 8px;
+            margin-top: 15px;
+            width: 100%;
+        }
+
+        .card-btn-row .start {
+            margin-top: 0 !important;
+            height: 36px !important;
+            min-height: 36px !important;
+            flex: 1;
+            display: inline-flex;
+            align-items: center;
             justify-content: center;
+            padding: 0 14px;
+        }
+
+        .card-action-btn {
+            width: 36px !important;
+            height: 36px !important;
+            min-width: 36px !important;
+            min-height: 36px !important;
+            border-radius: 6px !important;
+            display: inline-flex !important;
+            align-items: center !important;
+            justify-content: center !important;
             cursor: pointer;
+            padding: 0 !important;
+            margin: 0 !important;
+            flex-shrink: 0;
+            box-sizing: border-box;
             transition: all 0.2s ease;
         }
 
+        .card-edit-btn {
+            border: 1px solid rgba(23, 107, 82, 0.25) !important;
+            background: rgba(23, 107, 82, 0.06) !important;
+            color: var(--emerald) !important;
+        }
+
         .card-edit-btn:hover {
-            background: var(--emerald);
-            color: #FFFFFF;
-            border-color: var(--emerald);
+            background: var(--emerald) !important;
+            color: #FFFFFF !important;
+            border-color: var(--emerald) !important;
+        }
+
+        .card-delete-btn {
+            border: 1px solid rgba(239, 68, 68, 0.25) !important;
+            background: rgba(239, 68, 68, 0.06) !important;
+            color: #EF4444 !important;
+        }
+
+        .card-delete-btn:hover {
+            background: #EF4444 !important;
+            color: #FFFFFF !important;
+            border-color: #EF4444 !important;
         }
 
         .btn-edit-set-details {

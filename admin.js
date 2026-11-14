@@ -371,7 +371,7 @@ function renderSets() {
 
         const editBtn = document.createElement("button");
         editBtn.type = "button";
-        editBtn.className = "card-edit-btn";
+        editBtn.className = "card-action-btn card-edit-btn";
         editBtn.title = `Edit details for "${set.title}"`;
         editBtn.setAttribute("aria-label", `Edit details for "${set.title}"`);
         editBtn.innerHTML = `
@@ -387,11 +387,11 @@ function renderSets() {
 
         const delBtn = document.createElement("button");
         delBtn.type = "button";
-        delBtn.className = "bin-btn set-delete-btn";
+        delBtn.className = "card-action-btn card-delete-btn";
         delBtn.title = `Delete Question Set "${set.title}"`;
         delBtn.setAttribute("aria-label", `Delete Question Set "${set.title}"`);
         delBtn.innerHTML = `
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M3 6h18"></path>
                 <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
                 <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
