@@ -38,6 +38,10 @@
             color: var(--charcoal);
             font-family: Inter, Arial, sans-serif;
             min-height: 100vh;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            user-select: none;
+            caret-color: transparent;
         }
 
         @media (max-width: 900px) {
@@ -46,8 +50,23 @@
             }
         }
 
-        button, input, select {
+        button, input, select, textarea {
             font: inherit;
+        }
+
+        /* DEDICATED INPUTS & EDITABLE FIELDS WHITELIST */
+        input,
+        textarea,
+        input[type="text"],
+        input[type="search"],
+        input[type="number"],
+        input[type="password"],
+        input[type="email"],
+        [contenteditable="true"] {
+            -webkit-user-select: text !important;
+            user-select: text !important;
+            caret-color: auto !important;
+            cursor: text !important;
         }
 
         /* LEFT SIDEBAR */
@@ -540,6 +559,11 @@
             transition: .18s;
             display: flex;
             flex-direction: column;
+            user-select: none !important;
+            -webkit-user-select: none !important;
+            -webkit-touch-callout: none !important;
+            cursor: default;
+            caret-color: transparent !important;
         }
 
         .test-card:hover {
@@ -618,6 +642,11 @@
             margin-bottom: 8px;
             font-weight: 700;
             color: var(--charcoal);
+            user-select: none !important;
+            -webkit-user-select: none !important;
+            -webkit-touch-callout: none !important;
+            cursor: default !important;
+            caret-color: transparent !important;
         }
 
         .test-card p {
@@ -625,6 +654,11 @@
             color: var(--muted);
             line-height: 1.6;
             min-height: 32px;
+            user-select: none !important;
+            -webkit-user-select: none !important;
+            -webkit-touch-callout: none !important;
+            cursor: default !important;
+            caret-color: transparent !important;
         }
 
         .meta {
@@ -636,6 +670,11 @@
             padding-top: 12px;
             color: #788078;
             font-size: 9.5px;
+            user-select: none !important;
+            -webkit-user-select: none !important;
+            -webkit-touch-callout: none !important;
+            cursor: default !important;
+            caret-color: transparent !important;
         }
 
         .meta span::before {
