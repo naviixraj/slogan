@@ -196,8 +196,26 @@ function setActiveNav(activeBtn) {
     if (activeBtn) activeBtn.classList.add("active");
 }
 
+/**
+ * Universal Search Bar Reset Standard
+ * Erases query string and restores full unfiltered dataset.
+ * @param {HTMLInputElement} inputEl 
+ * @param {Function} renderFn 
+ */
+function resetSearchBar(inputEl, renderFn) {
+    if (inputEl) {
+        const hadValue = inputEl.value !== "";
+        inputEl.value = "";
+        if (hadValue && typeof renderFn === "function") {
+            renderFn();
+        }
+    }
+}
+
 function showQuestionsSection() {
     setActiveNav(questionsNav);
+    resetSearchBar(studentSearchInput, renderStudents);
+    resetSearchBar(searchInput, renderSets);
     if (examSection) examSection.style.display = "block";
     if (studentsSection) studentsSection.style.display = "none";
     if (helpSection) helpSection.style.display = "none";
@@ -206,6 +224,8 @@ function showQuestionsSection() {
 
 function showStudentsSection() {
     setActiveNav(studentsNav);
+    resetSearchBar(searchInput, renderSets);
+    resetSearchBar(studentSearchInput, renderStudents);
     if (examSection) examSection.style.display = "none";
     if (studentsSection) studentsSection.style.display = "block";
     if (helpSection) helpSection.style.display = "none";
@@ -216,6 +236,8 @@ function showStudentsSection() {
 
 function showHelpSection() {
     setActiveNav(helpNav);
+    resetSearchBar(searchInput, renderSets);
+    resetSearchBar(studentSearchInput, renderStudents);
     if (examSection) examSection.style.display = "none";
     if (studentsSection) studentsSection.style.display = "none";
     if (helpSection) helpSection.style.display = "block";
@@ -569,6 +591,7 @@ function backToSets() {
     clearSelection();
     currentInspectedSetId = null;
     currentInspectedQuestions = [];
+    resetSearchBar(searchInput, renderSets);
     if (questionsInspectorView) questionsInspectorView.style.display = "none";
     if (setsDirectoryView) setsDirectoryView.style.display = "block";
     if (pageTitle) pageTitle.textContent = "Examinations";
@@ -1924,7 +1947,14 @@ function bindEventListeners() {
     }
 
     // Toolbar
-    if (searchInput) searchInput.addEventListener("input", renderSets);
+    if (searchInput) {
+        searchInput.addEventListener("input", renderSets);
+        searchInput.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") {
+                resetSearchBar(searchInput, renderSets);
+            }
+        });
+    }
     if (statusFilter) statusFilter.addEventListener("change", renderSets);
     if (viewToggleButton) viewToggleButton.addEventListener("click", toggleDashboardView);
 
@@ -1968,7 +1998,14 @@ function bindEventListeners() {
     if (closeStudentModalButton) closeStudentModalButton.addEventListener("click", () => closeModal(studentModal));
     if (cancelStudentButton) cancelStudentButton.addEventListener("click", () => closeModal(studentModal));
     if (createStudentBtn) createStudentBtn.addEventListener("click", handleCreateStudentSubmit);
-    if (studentSearchInput) studentSearchInput.addEventListener("input", renderStudents);
+    if (studentSearchInput) {
+        studentSearchInput.addEventListener("input", renderStudents);
+        studentSearchInput.addEventListener("keydown", (e) => {
+            if (e.key === "Escape") {
+                resetSearchBar(studentSearchInput, renderStudents);
+            }
+        });
+    }
 
     // Edit Question Set Modal
     if (editSetFromInspectorButton) editSetFromInspectorButton.addEventListener("click", () => openEditSetModal(currentInspectedSetId));
