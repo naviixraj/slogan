@@ -96,6 +96,13 @@ const pasteQuestionsText = document.getElementById("pasteQuestionsText");
 const loadSamplePasteBtn = document.getElementById("loadSamplePasteBtn");
 const pasteDetectSummary = document.getElementById("pasteDetectSummary");
 
+// Rich Selected File Card
+const selectedFileCard = document.getElementById("selectedFileCard");
+const fileTypeBadge = document.getElementById("fileTypeBadge");
+const fileCardName = document.getElementById("fileCardName");
+const fileCardSize = document.getElementById("fileCardSize");
+const changeFileBtn = document.getElementById("changeFileBtn");
+
 let currentUploadMode = "file"; // "file" or "paste"
 
 // Students Directory
@@ -484,6 +491,75 @@ function switchUploadTab(mode) {
     if (pasteTextPane) pasteTextPane.style.display = mode === "paste" ? "block" : "none";
 }
 
+function handleFileSelected() {
+    if (!setFileInput || !setFileInput.files || setFileInput.files.length === 0) {
+        resetFileInputUI();
+        return;
+    }
+
+    const file = setFileInput.files[0];
+    const fileName = file.name;
+    const parts = fileName.split(".");
+    const ext = parts.length > 1 ? parts.pop().toLowerCase() : "txt";
+
+    // Format file size
+    let formattedSize = "";
+    if (file.size < 1024) {
+        formattedSize = `${file.size} B`;
+    } else if (file.size < 1024 * 1024) {
+        formattedSize = `${(file.size / 1024).toFixed(1)} KB`;
+    } else {
+        formattedSize = `${(file.size / (1024 * 1024)).toFixed(1)} MB`;
+    }
+
+    // Determine badge text and class
+    let badgeText = ext.toUpperCase().slice(0, 5);
+    let badgeClass = `badge-${ext}`;
+
+    if (ext === "docx" || ext === "doc") {
+        badgeText = "DOCX";
+        badgeClass = "badge-docx";
+    } else if (ext === "xlsx" || ext === "xls") {
+        badgeText = "XLSX";
+        badgeClass = "badge-xlsx";
+    } else if (ext === "csv" || ext === "tsv") {
+        badgeText = "CSV";
+        badgeClass = "badge-csv";
+    } else if (ext === "pdf") {
+        badgeText = "PDF";
+        badgeClass = "badge-pdf";
+    } else if (ext === "json") {
+        badgeText = "JSON";
+        badgeClass = "badge-json";
+    } else if (ext === "txt" || ext === "text" || ext === "md" || ext === "rtf") {
+        badgeText = "TXT";
+        badgeClass = "badge-txt";
+    }
+
+    if (fileTypeBadge) {
+        fileTypeBadge.textContent = badgeText;
+        fileTypeBadge.className = `file-type-badge ${badgeClass}`;
+    }
+
+    if (fileCardName) {
+        fileCardName.textContent = fileName;
+        fileCardName.title = fileName;
+    }
+
+    if (fileCardSize) {
+        fileCardSize.textContent = formattedSize;
+    }
+
+    if (dropBoxArea) dropBoxArea.style.display = "none";
+    if (selectedFileCard) selectedFileCard.style.display = "flex";
+}
+
+function resetFileInputUI() {
+    if (setFileInput) setFileInput.value = "";
+    if (selectedFileCard) selectedFileCard.style.display = "none";
+    if (dropBoxArea) dropBoxArea.style.display = "block";
+}
+
 function updatePasteDetection() {
     if (!pasteQuestionsText || !pasteDetectSummary) return;
     const text = pasteQuestionsText.value.trim();
@@ -681,8 +757,7 @@ async function handleUploadSetSubmit() {
 
         closeModal(uploadModal);
         alert(`🎉 ${data.message}\nThis set is now immediately active and visible in the student portal!`);
-        setFileInput.value = "";
-        if (selectedFileNameLabel) selectedFileNameLabel.textContent = "Auto-splits each question into an interactive exam question";
+        resetFileInputUI();
         await fetchSets();
     } catch (err) {
         alert("Upload failed: " + err.message);
@@ -994,8 +1069,14 @@ function bindEventListeners() {
 
     // Upload Modal
     if (openUploadModalButton) openUploadModalButton.addEventListener("click", () => openModal(uploadModal));
-    if (closeUploadModalButton) closeUploadModalButton.addEventListener("click", () => closeModal(uploadModal));
-    if (cancelUploadButton) cancelUploadButton.addEventListener("click", () => closeModal(uploadModal));
+    if (closeUploadModalButton) closeUploadModalButton.addEventListener("click", () => {
+        closeModal(uploadModal);
+        resetFileInputUI();
+    });
+    if (cancelUploadButton) cancelUploadButton.addEventListener("click", () => {
+        closeModal(uploadModal);
+        resetFileInputUI();
+    });
     if (submitUploadButton) submitUploadButton.addEventListener("click", handleUploadSetSubmit);
 
     // Upload Modal Tabs & Bulk Paste
@@ -1007,15 +1088,17 @@ function bindEventListeners() {
     }
     if (loadSamplePasteBtn) loadSamplePasteBtn.addEventListener("click", loadSampleQuestionTemplate);
 
-    // File Selector & Drop Box
+    // File Selector, Drop Box & Rich Selected Card
     if (dropBoxArea && setFileInput) {
         dropBoxArea.addEventListener("click", () => setFileInput.click());
     }
     if (setFileInput) {
-        setFileInput.addEventListener("change", () => {
-            if (selectedFileNameLabel && setFileInput.files.length > 0) {
-                selectedFileNameLabel.textContent = "Selected: " + setFileInput.files[0].name;
-            }
+        setFileInput.addEventListener("change", handleFileSelected);
+    }
+    if (changeFileBtn && setFileInput) {
+        changeFileBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            setFileInput.click();
         });
     }
 

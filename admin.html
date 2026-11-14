@@ -1293,6 +1293,134 @@
             color: #B91C1C;
             border: 1px solid #FECACA;
         }
+
+        /* RICH SELECTED FILE CARD */
+        .selected-file-card {
+            display: flex;
+            align-items: center;
+            background: #FFFFFF;
+            border: 1.5px solid #CBD5E1;
+            border-radius: 10px;
+            padding: 12px 14px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+            transition: all 0.2s ease;
+        }
+
+        .selected-file-card:hover {
+            border-color: var(--emerald);
+            box-shadow: 0 4px 12px rgba(23, 107, 82, 0.08);
+        }
+
+        .file-card-left {
+            flex-shrink: 0;
+        }
+
+        .file-type-badge {
+            width: 54px;
+            height: 48px;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-size: 11.5px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            border: 1.5px solid transparent;
+            box-sizing: border-box;
+        }
+
+        .badge-docx, .badge-doc {
+            background: #EFF6FF;
+            color: #1D4ED8;
+            border-color: #BFDBFE;
+        }
+
+        .badge-pdf {
+            background: #FEF2F2;
+            color: #DC2626;
+            border-color: #FECACA;
+        }
+
+        .badge-xlsx, .badge-xls, .badge-excel {
+            background: #ECFDF5;
+            color: #059669;
+            border-color: #A7F3D0;
+        }
+
+        .badge-csv, .badge-tsv {
+            background: #F0FDFA;
+            color: #0D9488;
+            border-color: #99F6E4;
+        }
+
+        .badge-json {
+            background: #FFFBEB;
+            color: #D97706;
+            border-color: #FDE68A;
+        }
+
+        .badge-txt, .badge-text {
+            background: #F1F5F9;
+            color: #475569;
+            border-color: #CBD5E1;
+        }
+
+        .file-card-details {
+            flex: 1;
+            min-width: 0;
+            margin-left: 12px;
+            margin-right: 12px;
+        }
+
+        .file-card-name {
+            font-size: 13px;
+            font-weight: 700;
+            color: #1E293B;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .file-card-meta {
+            font-size: 11px;
+            color: #64748B;
+            margin-top: 3px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .file-card-meta .status-ready {
+            color: #059669;
+            font-weight: 600;
+            display: inline-flex;
+            align-items: center;
+            gap: 3px;
+        }
+
+        .btn-change-file {
+            flex-shrink: 0;
+            padding: 7px 12px;
+            font-size: 11px;
+            font-weight: 700;
+            color: #176B52;
+            background: rgba(23, 107, 82, 0.08);
+            border: 1px solid rgba(23, 107, 82, 0.25);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .btn-change-file:hover {
+            background: #176B52;
+            color: #FFFFFF;
+            border-color: #176B52;
+        }
     </style>
 </head>
 
@@ -1643,11 +1771,32 @@
 
             <!-- PANE 1: FILE UPLOAD -->
             <div class="form-field" id="uploadFilePane">
-                <label>Select Question Bank File (All files supported: Word, PDF, Excel, CSV, TXT, JSON)</label>
+                <label>Select Question Bank File (Word, PDF, Excel, CSV, TXT, JSON)</label>
+                <input type="file" id="setFileInput" style="display: none;">
+
+                <!-- DROP BOX (Shown when no file is chosen) -->
                 <div class="drop-box" id="dropBoxArea">
-                    <input type="file" id="setFileInput" style="display: none;">
-                    <p style="font-size: 12px; font-weight: 700; color: var(--charcoal); margin-bottom: 4px;">Choose any file from your computer</p>
-                    <span id="selectedFileNameLabel" style="font-size: 11px; color: var(--muted);">Supports Word (.docx), PDF (.pdf), Excel (.xlsx, .xls), CSV, Text (.txt), or JSON</span>
+                    <p style="font-size: 13px; font-weight: 700; color: var(--charcoal); margin-bottom: 4px;">Choose any file from your computer</p>
+                    <span id="selectedFileNameLabel" style="font-size: 11px; color: var(--muted);">Click to browse Word (.docx), PDF, Excel, CSV, TXT, or JSON</span>
+                </div>
+
+                <!-- RICH FILE CARD (Immediately shown after selecting a file) -->
+                <div class="selected-file-card" id="selectedFileCard" style="display: none;">
+                    <div class="file-card-left">
+                        <div class="file-type-badge badge-docx" id="fileTypeBadge">DOCX</div>
+                    </div>
+                    <div class="file-card-details">
+                        <div class="file-card-name" id="fileCardName">file_name.docx</div>
+                        <div class="file-card-meta" id="fileCardMeta">
+                            <span id="fileCardSize">0 KB</span>
+                            <span>•</span>
+                            <span class="status-ready">● Ready to split & save</span>
+                        </div>
+                    </div>
+                    <button type="button" class="btn-change-file" id="changeFileBtn" title="Change file">
+                        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
+                        Change
+                    </button>
                 </div>
             </div>
 
