@@ -67,6 +67,7 @@ const inspectorMetaBadge = document.getElementById("inspectorMetaBadge");
 const bulkDeleteBinButton = document.getElementById("bulkDeleteBinButton");
 const bulkBinCountBadge = document.getElementById("bulkBinCountBadge");
 const bulkCancelButton = document.getElementById("bulkCancelButton");
+const bulkMoveButton = document.getElementById("bulkMoveButton");
 
 let currentInspectedSetId = null;
 let currentInspectedQuestions = [];
@@ -79,6 +80,7 @@ let touchStartY = 0;
 // Reorder & Drag State
 let draggedCard = null;
 let isDraggingQuestion = false;
+let isGroupDrag = false;
 let reorderToastTimer = null;
 let touchDragActive = false;
 let autoScrollRaf = null;
@@ -535,19 +537,21 @@ function updateBulkActionBar() {
     const count = selectedQuestionNumbers.size;
     if (count > 0) {
         // Bulk Delete Mode active:
-        // Left (black circle): Back to Sets is hidden, Bin button is shown with count badge
+        // Left (black circle): Back to Sets is hidden, Bin button is shown with count badge, Move To button is shown
         if (backToSetsButton) backToSetsButton.style.display = "none";
         if (bulkDeleteBinButton) bulkDeleteBinButton.style.display = "inline-flex";
         if (bulkBinCountBadge) bulkBinCountBadge.textContent = String(count);
+        if (bulkMoveButton) bulkMoveButton.style.display = "inline-flex";
 
         // Right (red circle): Question details/timing is hidden, Cancel button is shown
         if (inspectorMetaBadge) inspectorMetaBadge.style.display = "none";
         if (bulkCancelButton) bulkCancelButton.style.display = "inline-flex";
     } else {
         // Normal Mode:
-        // Left: Back to Sets is restored, Bin button is hidden
+        // Left: Back to Sets is restored, Bin button and Move To button are hidden
         if (backToSetsButton) backToSetsButton.style.display = "inline-flex";
         if (bulkDeleteBinButton) bulkDeleteBinButton.style.display = "none";
+        if (bulkMoveButton) bulkMoveButton.style.display = "none";
 
         // Right: Question details/timing is restored, Cancel button is hidden
         if (inspectorMetaBadge) inspectorMetaBadge.style.display = "block";
@@ -632,6 +636,44 @@ async function deleteSelectedQuestions() {
             bulkDeleteBinButton.style.opacity = "1";
         }
     }
+}
+
+function handleBulkMoveToPrompt() {
+    const count = selectedQuestionNumbers.size;
+    if (count === 0 || !inspectorQuestionsContainer) return;
+    const allCards = inspectorQuestionsContainer.querySelectorAll(".question-card");
+    const total = allCards.length;
+    if (total === 0) return;
+
+    const inputVal = prompt(`Move the ${count} selected questions before which Question number? (Enter 1 to ${total}):`, "1");
+    if (!inputVal) return;
+    const targetNum = parseInt(inputVal.trim(), 10);
+    if (isNaN(targetNum) || targetNum < 1 || targetNum > total + 1) {
+        alert("Please enter a valid question number between 1 and " + total + ".");
+        return;
+    }
+
+    // Collect all selected card elements in their existing relative order
+    const selectedCards = Array.from(inspectorQuestionsContainer.querySelectorAll(".question-card.is-selected"));
+    if (selectedCards.length === 0) return;
+
+    // Find the target reference card
+    let targetCard = null;
+    if (targetNum <= total) {
+        targetCard = Array.from(allCards).find(c => Number(c.getAttribute("data-qnum")) === targetNum) || allCards[targetNum - 1];
+    }
+
+    // Insert all selected cards contiguously before targetCard (or at end if past total)
+    selectedCards.forEach(card => {
+        if (targetCard) {
+            inspectorQuestionsContainer.insertBefore(card, targetCard);
+        } else {
+            inspectorQuestionsContainer.appendChild(card);
+        }
+    });
+
+    saveQuestionOrder();
+    showReorderToast(`Moved ${count} questions before Question ${targetNum} ✓`);
 }
 
 // -----------------------------------------------------
@@ -1340,6 +1382,7 @@ function bindEventListeners() {
 
     if (bulkDeleteBinButton) bulkDeleteBinButton.addEventListener("click", deleteSelectedQuestions);
     if (bulkCancelButton) bulkCancelButton.addEventListener("click", clearSelection);
+    if (bulkMoveButton) bulkMoveButton.addEventListener("click", handleBulkMoveToPrompt);
 
     if (inspectorQuestionsContainer) {
         // Desktop left-click selection & single delete
@@ -1394,11 +1437,29 @@ function bindEventListeners() {
 
             draggedCard = card;
             isDraggingQuestion = true;
+
+            const qNum = Number(card.getAttribute("data-qnum"));
+            // Check if user is dragging a card that is part of a selected multi-question group
+            if (card.classList.contains("is-selected") || selectedQuestionNumbers.has(qNum)) {
+                if (selectedQuestionNumbers.size > 1) {
+                    isGroupDrag = true;
+                } else {
+                    isGroupDrag = false;
+                }
+            } else {
+                isGroupDrag = false;
+            }
+
             e.dataTransfer.effectAllowed = "move";
             e.dataTransfer.setData("text/plain", card.getAttribute("data-qnum") || "");
 
             setTimeout(() => {
-                if (draggedCard) draggedCard.classList.add("is-dragging");
+                if (isGroupDrag) {
+                    const selectedCards = inspectorQuestionsContainer.querySelectorAll(".question-card.is-selected");
+                    selectedCards.forEach(c => c.classList.add("is-dragging"));
+                } else if (draggedCard) {
+                    draggedCard.classList.add("is-dragging");
+                }
             }, 0);
         });
 
@@ -1412,6 +1473,9 @@ function bindEventListeners() {
 
             const targetCard = e.target.closest(".question-card");
             if (!targetCard || targetCard === draggedCard) return;
+
+            // If group dragging, don't show insertion lines over other selected cards
+            if (isGroupDrag && targetCard.classList.contains("is-selected")) return;
 
             // Clear previous hover indicators on other cards
             const allCards = inspectorQuestionsContainer.querySelectorAll(".question-card");
@@ -1448,12 +1512,27 @@ function bindEventListeners() {
             if (targetCard && targetCard !== draggedCard) {
                 const rect = targetCard.getBoundingClientRect();
                 const mid = rect.top + rect.height / 2;
-                if (e.clientY < mid) {
-                    inspectorQuestionsContainer.insertBefore(draggedCard, targetCard);
+                const isAbove = e.clientY < mid;
+
+                if (isGroupDrag) {
+                    // Move entire selected group together in their current relative order
+                    const selectedCards = Array.from(inspectorQuestionsContainer.querySelectorAll(".question-card.is-selected"));
+                    if (!selectedCards.includes(targetCard)) {
+                        const insertRef = isAbove ? targetCard : targetCard.nextSibling;
+                        selectedCards.forEach(c => {
+                            inspectorQuestionsContainer.insertBefore(c, insertRef);
+                        });
+                        saveQuestionOrder();
+                    }
                 } else {
-                    inspectorQuestionsContainer.insertBefore(draggedCard, targetCard.nextSibling);
+                    // Single card drop
+                    if (isAbove) {
+                        inspectorQuestionsContainer.insertBefore(draggedCard, targetCard);
+                    } else {
+                        inspectorQuestionsContainer.insertBefore(draggedCard, targetCard.nextSibling);
+                    }
+                    saveQuestionOrder();
                 }
-                saveQuestionOrder();
             }
 
             const allCards = inspectorQuestionsContainer.querySelectorAll(".question-card");
@@ -1461,18 +1540,19 @@ function bindEventListeners() {
 
             setTimeout(() => {
                 isDraggingQuestion = false;
+                isGroupDrag = false;
                 draggedCard = null;
             }, 100);
         });
 
         inspectorQuestionsContainer.addEventListener("dragend", () => {
             stopAutoScroll();
-            if (draggedCard) draggedCard.classList.remove("is-dragging");
             const allCards = inspectorQuestionsContainer.querySelectorAll(".question-card");
             allCards.forEach(c => c.classList.remove("drag-over-above", "drag-over-below", "is-dragging"));
 
             setTimeout(() => {
                 isDraggingQuestion = false;
+                isGroupDrag = false;
                 draggedCard = null;
             }, 100);
         });
