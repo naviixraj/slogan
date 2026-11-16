@@ -456,8 +456,8 @@ function parseMcqText(rawText) {
         passageBeforeQ1 = cleanDoc.slice(0, q1Idx).trim();
     }
 
-    // 4. Match question headers
-    const qHeaderRegex = /(?:^|\n)(?:Q\s*(\d+)[\.:\)]|Question\s*(\d+)[\.:\)]|(\d+)\s*[:\.]\s*(?:பொருத்துக|பல்நோக்கு|பல்கூற்று|காலவரிசை|நிரல்படுத்துக|சரியான|கூற்று|வினா|உறுதிக்கூற்று)|(?:வினா(?:\s*எண்)?)\s*(\d+)(?:\s*(?:\[[^\]]+\]|\([^\)]+\)))?[:\.]?|(\d+)\.\s+[A-Za-z])/gi;
+    // 4. Match question headers (supports Q1., Question 1:, வினா 1:, 1: தலைப்பு, 1. கேள்வி)
+    const qHeaderRegex = /(?:^|\n)\s*(?:Q\s*(\d+)[\.:\)]|Question\s*(\d+)[\.:\)]|(?:வினா(?:\s*எண்)?)\s*(\d+)(?:\s*(?:\[[^\]]+\]|\([^\)]+\)))?[:\.]?|(\d+)\s*[:\.]\s*(?:பொருத்துக|பல்நோக்கு|பல்கூற்று|காலவரிசை|நிரல்படுத்துக|சரியான|கூற்று|வினா|உறுதிக்கூற்று)|(\d+)[\.:\)]\s+)/gi;
 
     const matches = [];
     let m;
@@ -468,6 +468,18 @@ function parseMcqText(rawText) {
 
     // Filter sublabel (வினா 1 after question 50)
     const validMatches = matches.filter((item, idx) => !(item.num === 1 && idx > 5));
+
+    // Dynamic Passage and Directions scanner (e.g. Questions 16-20, Questions 1-5, வினாக்கள் 1 முதல் 5)
+    const passageList = [];
+    const passageFinderRegex = /(?:Directions[:\s]+[^\n]*?(?:Questions?|வினாக்கள்?)\s*(\d+)\s*(?:to|[-–—]|முதல்)\s*(\d+)[^\n]*|Passage\s*[:\n])[^\n]*\n([\s\S]*?)(?=(?:^|\n)\s*(?:Q\s*\d+|Question\s*\d+|(?:வினா(?:\s*எண்)?)\s*\d+|\d+[\.:\)]))/gi;
+    let pm;
+    while ((pm = passageFinderRegex.exec(cleanDoc)) !== null) {
+        const startQ = parseInt(pm[1], 10);
+        const endQ = parseInt(pm[2], 10);
+        if (startQ && endQ) {
+            passageList.push({ startQ, endQ, text: pm[0].trim() });
+        }
+    }
 
     const questions = [];
 
@@ -519,9 +531,16 @@ function parseMcqText(rawText) {
             questionPrompt = headerInfo + "\n\n" + questionPrompt;
         }
 
-        // Attach passageBeforeQ1 only to Q1–Q5
-        if (qNum <= 5 && passageBeforeQ1) {
+        // Attach passageBeforeQ1 only to Q1–Q5 (or matched range)
+        if (qNum <= 5 && passageBeforeQ1 && !questionPrompt.includes(passageBeforeQ1.slice(0, 50))) {
             questionPrompt = passageBeforeQ1 + "\n\n" + questionPrompt;
+        }
+
+        // Attach any dynamically found passage that covers this question
+        for (const p of passageList) {
+            if (qNum >= p.startQ && qNum <= p.endQ && !questionPrompt.includes(p.text.slice(0, 50))) {
+                questionPrompt = p.text + "\n\n" + questionPrompt;
+            }
         }
 
         // Clean out any trailing SECTION headers
@@ -543,7 +562,7 @@ function parseMcqText(rawText) {
         });
     }
 
-    // Attach reading passage to Q16-Q20 if present
+    // Attach reading passage between Q15 and Q16 if present in doc
     const q15Match = validMatches.find(x => x.num === 15);
     const q16Match = validMatches.find(x => x.num === 16);
     if (q15Match && q16Match) {

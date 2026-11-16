@@ -89,7 +89,37 @@
 
     function parseMatchLists(text) {
         if (!text || typeof text !== "string") return null;
-        const listRegex = /(?:^|\n)\s*(List\s*[-–—:]?\s*(?:I|1|A|One)|பட்டியல்\s*[-–—:]?\s*(?:I|1|ஒன்று|முதல்)(?:\s*\([^A-Da-dI|V|X\d\)]+\))?)([\s\S]*?)(?:^|\n)\s*(List\s*[-–—:]?\s*(?:II|2|B|Two)|பட்டியல்\s*[-–—:]?\s*(?:II|2|இரண்டு)(?:\s*\([^A-Da-dI|V|X\d\)]+\))?)([\s\S]*?)(?=(?:Choose\s+the\s+correct|கீழே\s+தரப்பெற்றுள்ள|விருப்பங்கள்|தெரிவுகள்|\([1-4A-Dஅஆஇஈ]\)|$))/i;
+
+        // 1. Check for side-by-side header format: "List I    List II" followed by paired rows
+        const sbsHeaderRegex = /(?:^|\n)\s*(List\s*[-–—:]?\s*(?:I|1|A|One)|பட்டியல்\s*[-–—:]?\s*(?:I|1|ஒன்று|முதல்)[^\n]*?)(?:\s{2,}|\t|\s+)(List\s*[-–—:]?\s*(?:II|2|B|Two)|பட்டியல்\s*[-–—:]?\s*(?:II|2|இரண்டு)[^\n]*)\s*\n([\s\S]*?)(?=(?:\n\s*(?:Options|விருப்பங்கள்|தெரிவுகள்|Choose\s+the\s+correct|கீழே\s+தரப்பெற்றுள்ள)|$))/i;
+        const sbsMatch = text.match(sbsHeaderRegex);
+        if (sbsMatch) {
+            const titleI = sbsMatch[1].trim();
+            const titleII = sbsMatch[2].trim();
+            const body = sbsMatch[3].trim();
+            const lines = body.split("\n").map(l => l.trim()).filter(Boolean);
+            const rowRegex = /^\(?([A-Da-d\d]+)\)?[\.:\-\)]?\s*([^\n\(\)]+?)\s+\(?([A-Da-dI|V|X\d]+)\)?[\.:\-\)]?\s*([^\n]+)$/i;
+            const sbsItemsI = [];
+            const sbsItemsII = [];
+            for (const l of lines) {
+                const rm = l.match(rowRegex);
+                if (rm) {
+                    sbsItemsI.push({ key: rm[1].toUpperCase(), text: rm[2].trim() });
+                    sbsItemsII.push({ key: rm[3].toUpperCase(), text: rm[4].trim() });
+                }
+            }
+            if (sbsItemsI.length >= 2 && sbsItemsII.length >= 2) {
+                return {
+                    preamble: text.slice(0, sbsMatch.index).trim(),
+                    listI: { title: titleI, items: sbsItemsI },
+                    listII: { title: titleII, items: sbsItemsII },
+                    postamble: text.slice(sbsMatch.index + sbsMatch[0].length).trim()
+                };
+            }
+        }
+
+        // 2. Check for sequential format: "List I ... List II ..."
+        const listRegex = /(?:^|\n)\s*(List\s*[-–—:]?\s*(?:I|1|A|One)|பட்டியல்\s*[-–—:]?\s*(?:I|1|ஒன்று|முதல்)(?:\s*\([^A-Da-dI|V|X\d\)]+\))?)([\s\S]*?)(?:^|\n)\s*(List\s*[-–—:]?\s*(?:II|2|B|Two)|பட்டியல்\s*[-–—:]?\s*(?:II|2|இரண்டு)(?:\s*\([^A-Da-dI|V|X\d\)]+\))?)([\s\S]*?)(?=(?:\n\s*(?:Choose\s+the\s+correct|கீழே\s+தரப்பெற்றுள்ள|விருப்பங்கள்|தெரிவுகள்|Options)|$))/i;
         const match = text.match(listRegex);
         if (!match) return null;
 
