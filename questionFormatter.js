@@ -245,6 +245,153 @@
         };
     }
 
+    function parseMultiStatements(text) {
+        if (!text || typeof text !== "string") return null;
+
+        // Skip if this is a match-the-following or assertion-reason block
+        if (/(?:List\s*[-–—:]?\s*(?:I|1|A|One)|பட்டியல்\s*[-–—:]?\s*(?:I|1|ஒன்று|முதல்))/i.test(text) &&
+            /(?:List\s*[-–—:]?\s*(?:II|2|B|Two)|பட்டியல்\s*[-–—:]?\s*(?:II|2|இரண்டு))/i.test(text)) {
+            return null;
+        }
+        if (/(?:Assertion\s*\(?[A-Z]?\)?|கூற்று\s*\(?[A-Za-z0-9]?\)?|உறுதிக்கூற்று)/i.test(text) &&
+            /(?:Reason\s*\(?[A-Z]?\)?|காரணம்\s*\(?[A-Za-z0-9]?\)?)/i.test(text)) {
+            return null;
+        }
+
+        const postMatchRegex = /(?:^|\n\s*|\s{2,}|\.\s+)(?:Which\s+(?:of\s+(?:the\s+)?(?:above|statements?|these)|statements?|one\s+of)|Choose\s+(?:the\s+)?correct|In\s+the\s+light\s+of\s+the\s+above|மேற்கண்டவற்றுள்|கீழ்க்கண்டவற்றுள்|கீழே\s+கொடுக்கப்பட்டுள்ள|சரியான\s*விடை)[\s\S]*$/i;
+
+        // 1. Letters: A, B, C, D (or A., B., C., D. or (A), (B), (C), (D))
+        const letterRegex = /(?:^|\n|\s{2,}|\s)(?:\(([A-D])\)|([A-D])[\.:\-\)])\s+/g;
+        const lMatches = [];
+        let lm;
+        while ((lm = letterRegex.exec(text)) !== null) {
+            lMatches.push({
+                label: `(${lm[1] || lm[2]})`.toUpperCase(),
+                raw: (lm[1] || lm[2]).toUpperCase(),
+                index: lm.index,
+                contentStart: lm.index + lm[0].length
+            });
+        }
+
+        let startL = -1;
+        for (let i = 0; i < lMatches.length; i++) {
+            if (lMatches[i].raw === "A" && lMatches[i + 1] && lMatches[i + 1].raw === "B" && lMatches[i + 2] && lMatches[i + 2].raw === "C") {
+                startL = i;
+                break;
+            }
+        }
+
+        if (startL !== -1) {
+            const preamble = text.slice(0, lMatches[startL].index).trim().replace(/\n\s*/g, " ");
+            const stmts = [];
+            const chosen = lMatches.slice(startL);
+            let postamble = "";
+
+            for (let i = 0; i < chosen.length; i++) {
+                const curr = chosen[i];
+                const next = chosen[i + 1];
+                let rawChunk = text.slice(curr.contentStart, next ? next.index : text.length).trim();
+                
+                if (!next) {
+                    const pm = rawChunk.match(postMatchRegex);
+                    if (pm) {
+                        postamble = pm[0].replace(/^\.\s+/, "").trim().replace(/\n\s*/g, " ");
+                        rawChunk = rawChunk.slice(0, pm.index).trim();
+                    }
+                }
+
+                rawChunk = rawChunk.replace(/\s+/g, " ").trim();
+                stmts.push({
+                    badge: curr.label,
+                    text: rawChunk
+                });
+            }
+            return { preamble, statements: stmts, postamble };
+        }
+
+        // 2. Statements: Statement I, Statement II or கூற்று 1, கூற்று 2
+        const stmtWordRegex = /(?:^|\n|\s{2,}|\s)(Statement\s+(?:I|II|III|IV|1|2|3|4)|கூற்று\s*(?:I|II|III|IV|1|2|3|4|ஒன்று|இரண்டு))[:\s\-]+/gi;
+        const sMatches = [];
+        let sm;
+        while ((sm = stmtWordRegex.exec(text)) !== null) {
+            sMatches.push({
+                label: sm[1].trim(),
+                index: sm.index,
+                contentStart: sm.index + sm[0].length
+            });
+        }
+        if (sMatches.length >= 2) {
+            const preamble = text.slice(0, sMatches[0].index).trim().replace(/\n\s*/g, " ");
+            const stmts = [];
+            let postamble = "";
+            for (let i = 0; i < sMatches.length; i++) {
+                const curr = sMatches[i];
+                const next = sMatches[i + 1];
+                let rawChunk = text.slice(curr.contentStart, next ? next.index : text.length).trim();
+                if (!next) {
+                    const pm = rawChunk.match(postMatchRegex);
+                    if (pm) {
+                        postamble = pm[0].replace(/^\.\s+/, "").trim().replace(/\n\s*/g, " ");
+                        rawChunk = rawChunk.slice(0, pm.index).trim();
+                    }
+                }
+                rawChunk = rawChunk.replace(/\s+/g, " ").trim();
+                stmts.push({
+                    badge: curr.label,
+                    text: rawChunk
+                });
+            }
+            return { preamble, statements: stmts, postamble };
+        }
+
+        // 3. Roman numerals: (i), (ii), (iii), (iv)
+        const romanRegex = /(?:^|\n|\s{2,}|\s)(?:\(([i|v|x]+)\)|([i|v|x]+)[\.:\-\)])\s+/gi;
+        const rMatches = [];
+        let rm;
+        while ((rm = romanRegex.exec(text)) !== null) {
+            const val = (rm[1] || rm[2]).toLowerCase();
+            rMatches.push({
+                label: `(${val})`,
+                raw: val,
+                index: rm.index,
+                contentStart: rm.index + rm[0].length
+            });
+        }
+        let startR = -1;
+        for (let i = 0; i < rMatches.length; i++) {
+            if (rMatches[i].raw === "i" && rMatches[i + 1] && rMatches[i + 1].raw === "ii") {
+                startR = i;
+                break;
+            }
+        }
+        if (startR !== -1) {
+            const preamble = text.slice(0, rMatches[startR].index).trim().replace(/\n\s*/g, " ");
+            const stmts = [];
+            const chosen = rMatches.slice(startR);
+            let postamble = "";
+            for (let i = 0; i < chosen.length; i++) {
+                const curr = chosen[i];
+                const next = chosen[i + 1];
+                let rawChunk = text.slice(curr.contentStart, next ? next.index : text.length).trim();
+                if (!next) {
+                    const pm = rawChunk.match(postMatchRegex);
+                    if (pm) {
+                        postamble = pm[0].replace(/^\.\s+/, "").trim().replace(/\n\s*/g, " ");
+                        rawChunk = rawChunk.slice(0, pm.index).trim();
+                    }
+                }
+                rawChunk = rawChunk.replace(/\s+/g, " ").trim();
+                stmts.push({
+                    badge: curr.label,
+                    text: rawChunk
+                });
+            }
+            return { preamble, statements: stmts, postamble };
+        }
+
+        return null;
+    }
+
     function renderNeatQuestion(raw, options) {
         if (!raw || typeof raw !== "string") return "";
 
@@ -445,6 +592,7 @@
                 const blockText = block.lines.join("\n");
                 const matchLists = parseMatchLists(blockText) || parseArrowMatch(blockText);
                 const ar = !matchLists ? parseAssertionReason(blockText) : null;
+                const multiStmts = (!matchLists && !ar) ? parseMultiStatements(blockText) : null;
 
                 if (matchLists) {
                     if (matchLists.preamble) {
@@ -502,6 +650,23 @@
                     `;
                     if (ar.postamble) {
                         html += `<div class="neat-question-query">${escapeHtml(ar.postamble)}</div>`;
+                    }
+                } else if (multiStmts) {
+                    if (multiStmts.preamble) {
+                        html += `<div class="neat-question-query">${escapeHtml(multiStmts.preamble)}</div>`;
+                    }
+                    html += `<div class="neat-statements-container" style="display: flex; flex-direction: column; gap: 8px; margin: 12px 0;">`;
+                    multiStmts.statements.forEach(stmt => {
+                        html += `
+                            <div class="neat-statement-box">
+                                <span class="neat-statement-badge">${escapeHtml(stmt.badge)}</span>
+                                <span class="neat-statement-text">${escapeHtml(stmt.text)}</span>
+                            </div>
+                        `;
+                    });
+                    html += `</div>`;
+                    if (multiStmts.postamble) {
+                        html += `<div class="neat-question-query">${escapeHtml(multiStmts.postamble)}</div>`;
                     }
                 } else {
                     const rawLines = block.lines;
