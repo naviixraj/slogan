@@ -4971,8 +4971,7 @@ input:focus-visible,
   font-family: Inter, Arial, sans-serif;
   font-size: 13.5px;
   line-height: 1.5;
-  text-align: center;
-  white-space: nowrap;
+  text-align: left;
 }
 
 .neat-exam-table thead tr {
@@ -4987,6 +4986,7 @@ input:focus-visible,
   border-right: 1px solid #CBD5E1;
   font-size: 13px;
   letter-spacing: 0.2px;
+  text-align: left;
 }
 
 .neat-exam-table th:last-child {
@@ -5022,8 +5022,10 @@ input:focus-visible,
   padding: 12px 18px;
   color: #334155;
   border-right: 1px solid #E2E8F0;
-  font-variant-numeric: tabular-nums;
   font-size: 13.5px;
+  line-height: 1.5;
+  word-break: break-word;
+  vertical-align: top;
 }
 
 .neat-exam-table td:last-child {
@@ -5035,11 +5037,13 @@ input:focus-visible,
   font-weight: 600;
   color: #0F172A;
   background: rgba(241, 245, 249, 0.5);
+  width: 48%;
 }
 
 .neat-exam-table td.col-val {
   font-weight: 500;
-  text-align: center;
+  text-align: left;
+  width: 52%;
 }
 
 /* 3. STATEMENT & ASSERTION CALLOUTS */

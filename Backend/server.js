@@ -318,7 +318,10 @@ function convertHtmlTablesToMarkdown(html) {
             return "\n\n" + rows.join("\n") + "\n\n";
         }
         return "";
-    }).replace(/<[^>]+>/g, "\n");
+    })
+    .replace(/<br\s*\/?>/gi, "\n")
+    .replace(/<\/(?:p|div|tr|li|h[1-6])>/gi, "\n")
+    .replace(/<[^>]+>/g, "");
 }
 
 // Helper: smart option splitter for numeric (1-4), letter (A-D), and Tamil (அ-ஈ) choices

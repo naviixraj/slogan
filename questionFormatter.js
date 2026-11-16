@@ -89,7 +89,7 @@
 
     function parseMatchLists(text) {
         if (!text || typeof text !== "string") return null;
-        const listRegex = /(?:^|\n)\s*(List\s+I|பட்டியல்\s*[-–—]?\s*(?:I|ஒன்று|1|முதல்))(?:\s*[:\-]|\s+(?=\([A-Za-z\d]\)|[A-Za-z]\.))([\s\S]*?)(?:^|\n)\s*(List\s+II|பட்டியல்\s*[-–—]?\s*(?:II|இரண்டு|2))(?:\s*[:\-]|\s+(?=\([A-Za-z\d]\)|[I|V|X\d]\.))([\s\S]*?)(?=(?:Choose\s+the\s+correct|விருப்பங்கள்|தெரிவுகள்|\([1-4A-Dஅஆஇஈ]\)|$))/i;
+        const listRegex = /(?:^|\n)\s*(List\s*[-–—:]?\s*(?:I|1|A|One)|பட்டியல்\s*[-–—:]?\s*(?:I|1|ஒன்று|முதல்)(?:\s*\([^A-Da-dI|V|X\d\)]+\))?)([\s\S]*?)(?:^|\n)\s*(List\s*[-–—:]?\s*(?:II|2|B|Two)|பட்டியல்\s*[-–—:]?\s*(?:II|2|இரண்டு)(?:\s*\([^A-Da-dI|V|X\d\)]+\))?)([\s\S]*?)(?=(?:Choose\s+the\s+correct|கீழே\s+தரப்பெற்றுள்ள|விருப்பங்கள்|தெரிவுகள்|\([1-4A-Dஅஆஇஈ]\)|$))/i;
         const match = text.match(listRegex);
         if (!match) return null;
 
@@ -99,30 +99,55 @@
         const bodyII = match[4].trim();
 
         function splitItems(str) {
-            const itemRegex = /(?:^|\n|\s{2,}|\s)(?:\(?([A-Da-dI|V|X|\d]+)\)?[\.:\-\)]|\(([A-Da-dI|V|X|\d]+)\))\s+/g;
-            const matches = [];
-            let m;
-            while ((m = itemRegex.exec(str)) !== null) {
-                matches.push({ key: (m[1] || m[2]).toUpperCase(), index: m.index, len: m[0].length });
-            }
-            if (matches.length === 0) {
-                return str.split("\n").map(l => l.trim()).filter(Boolean).map((t, idx) => ({ key: String(idx + 1), text: t }));
-            }
+            // First check line-by-line
+            const lines = str.split("\n").map(l => l.trim()).filter(Boolean);
             const items = [];
-            for (let i = 0; i < matches.length; i++) {
-                const nextIdx = matches[i + 1] ? matches[i + 1].index : str.length;
-                items.push({
-                    key: matches[i].key,
-                    text: str.slice(matches[i].index + matches[i].len, nextIdx).trim()
-                });
+
+            for (const line of lines) {
+                let m = line.match(/^\(?([A-Da-dI|V|X|\d]+)\)?[\.:\-\)]\s*(.*)/i);
+                if (!m) {
+                    m = line.match(/^([A-Da-dI|V|X|\d]+)\s+(.*)/i);
+                }
+                if (m) {
+                    items.push({ key: m[1].toUpperCase(), text: m[2].trim() });
+                } else if (line.length > 0) {
+                    items.push({ key: "", text: line });
+                }
             }
+
+            if (items.length >= 2) return items;
+
+            // Fallback for inline items: (A) Text (B) Text
+            const inlineRegex = /(?:^|\n|\s{2,}|\s)(?:\(?([A-Da-dI|V|X|\d]+)\)?[\.:\-\)]|\(([A-Da-dI|V|X|\d]+)\))\s+/g;
+            const matches = [];
+            let im;
+            while ((im = inlineRegex.exec(str)) !== null) {
+                matches.push({ key: (im[1] || im[2]).toUpperCase(), index: im.index, len: im[0].length });
+            }
+            if (matches.length >= 2) {
+                const inlineItems = [];
+                for (let i = 0; i < matches.length; i++) {
+                    const nextIdx = matches[i + 1] ? matches[i + 1].index : str.length;
+                    inlineItems.push({
+                        key: matches[i].key,
+                        text: str.slice(matches[i].index + matches[i].len, nextIdx).trim()
+                    });
+                }
+                return inlineItems;
+            }
+
             return items;
         }
 
+        const itemsI = splitItems(bodyI);
+        const itemsII = splitItems(bodyII);
+
+        if (itemsI.length < 2 || itemsII.length < 2) return null;
+
         return {
             preamble: text.slice(0, match.index).trim(),
-            listI: { title: titleI, items: splitItems(bodyI) },
-            listII: { title: titleII, items: splitItems(bodyII) },
+            listI: { title: titleI, items: itemsI },
+            listII: { title: titleII, items: itemsII },
             postamble: text.slice(match.index + match[0].length).trim()
         };
     }
@@ -395,25 +420,34 @@
                     if (matchLists.preamble) {
                         html += `<div class="neat-question-query">${escapeHtml(matchLists.preamble)}</div>`;
                     }
+                    const maxRows = Math.max(matchLists.listI.items.length, matchLists.listII.items.length);
                     html += `
-                        <div class="neat-match-container">
-                            <div class="neat-match-col">
-                                <div class="neat-match-header">${escapeHtml(matchLists.listI.title)}</div>
-                                ${matchLists.listI.items.map(it => `
-                                    <div class="neat-match-item">
-                                        <span class="neat-match-badge">${escapeHtml(it.key)}</span>
-                                        <span class="neat-match-text">${escapeHtml(it.text)}</span>
-                                    </div>
-                                `).join("")}
-                            </div>
-                            <div class="neat-match-col">
-                                <div class="neat-match-header">${escapeHtml(matchLists.listII.title)}</div>
-                                ${matchLists.listII.items.map(it => `
-                                    <div class="neat-match-item">
-                                        <span class="neat-match-badge">${escapeHtml(it.key)}</span>
-                                        <span class="neat-match-text">${escapeHtml(it.text)}</span>
-                                    </div>
-                                `).join("")}
+                        <div class="neat-table-section">
+                            <div class="neat-table-scroll-wrapper">
+                                <table class="neat-exam-table">
+                                    <thead>
+                                        <tr>
+                                            <th class="col-first">${escapeHtml(matchLists.listI.title)}</th>
+                                            <th class="col-val">${escapeHtml(matchLists.listII.title)}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                    `;
+                    for (let r = 0; r < maxRows; r++) {
+                        const item1 = matchLists.listI.items[r];
+                        const item2 = matchLists.listII.items[r];
+                        const text1 = item1 ? (item1.key ? `<strong>(${escapeHtml(item1.key)})</strong> ${escapeHtml(item1.text)}` : escapeHtml(item1.text)) : "";
+                        const text2 = item2 ? (item2.key ? `<strong>(${escapeHtml(item2.key)})</strong> ${escapeHtml(item2.text)}` : escapeHtml(item2.text)) : "";
+                        html += `
+                            <tr>
+                                <td class="col-first">${text1}</td>
+                                <td class="col-val">${text2}</td>
+                            </tr>
+                        `;
+                    }
+                    html += `
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     `;

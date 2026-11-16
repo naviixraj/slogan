@@ -537,6 +537,11 @@ async function inspectSet(setId) {
                     const exp = q.explanation || "No solution explanation provided.";
                     const isSelected = selectedQuestionNumbers.has(Number(qNum));
 
+                    const labelA = q.optionLabels?.A || "A";
+                    const labelB = q.optionLabels?.B || "B";
+                    const labelC = q.optionLabels?.C || "C";
+                    const labelD = q.optionLabels?.D || "D";
+
                     return `
                         <div class="question-card ${isSelected ? 'is-selected' : ''}" data-qnum="${qNum}" data-original-qnum="${qNum}" data-setid="${set.id}" draggable="true">
                             <div class="q-header">
@@ -563,19 +568,19 @@ async function inspectSet(setId) {
                             <div class="q-title">${typeof window.renderNeatQuestion === "function" ? window.renderNeatQuestion(qText, q.options || { A: optA, B: optB, C: optC, D: optD }) : qText}</div>
                             <div class="options-grid">
                                 <div class="option-box ${correct === 'A' ? 'is-correct' : ''}">
-                                    <span class="opt-circle">A</span>
+                                    <span class="opt-circle">${labelA}</span>
                                     <span>${optA} ${correct === 'A' ? '<strong style="color: var(--emerald-dark); margin-left: 6px;">(Correct Answer ✓)</strong>' : ''}</span>
                                 </div>
                                 <div class="option-box ${correct === 'B' ? 'is-correct' : ''}">
-                                    <span class="opt-circle">B</span>
+                                    <span class="opt-circle">${labelB}</span>
                                     <span>${optB} ${correct === 'B' ? '<strong style="color: var(--emerald-dark); margin-left: 6px;">(Correct Answer ✓)</strong>' : ''}</span>
                                 </div>
                                 <div class="option-box ${correct === 'C' ? 'is-correct' : ''}">
-                                    <span class="opt-circle">C</span>
+                                    <span class="opt-circle">${labelC}</span>
                                     <span>${optC} ${correct === 'C' ? '<strong style="color: var(--emerald-dark); margin-left: 6px;">(Correct Answer ✓)</strong>' : ''}</span>
                                 </div>
                                 <div class="option-box ${correct === 'D' ? 'is-correct' : ''}">
-                                    <span class="opt-circle">D</span>
+                                    <span class="opt-circle">${labelD}</span>
                                     <span>${optD} ${correct === 'D' ? '<strong style="color: var(--emerald-dark); margin-left: 6px;">(Correct Answer ✓)</strong>' : ''}</span>
                                 </div>
                             </div>
