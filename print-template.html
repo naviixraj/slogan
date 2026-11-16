@@ -19,8 +19,8 @@
             font-family: 'Segoe UI', -apple-system, 'Nirmala UI', Roboto, Helvetica, Arial, sans-serif;
             color: #0F172A;
             background: #FFFFFF;
-            line-height: 1.55;
-            font-size: 12px;
+            line-height: 1.5;
+            font-size: 11.5px;
             -webkit-print-color-adjust: exact;
             print-color-adjust: exact;
         }
@@ -36,21 +36,21 @@
         }
 
         .doc-title h1 {
-            font-size: 20px;
+            font-size: 19px;
             font-weight: 800;
             color: #0F172A;
             letter-spacing: -0.3px;
         }
 
         .doc-title p {
-            font-size: 12px;
+            font-size: 11.5px;
             color: #475569;
             font-weight: 600;
             margin-top: 2px;
         }
 
         .doc-tag {
-            font-size: 11px;
+            font-size: 10.5px;
             font-weight: 700;
             background: #F1F5F9;
             color: #0F172A;
@@ -82,7 +82,7 @@
         }
 
         .type-name {
-            font-size: 14px;
+            font-size: 13.5px;
             font-weight: 800;
             color: #0F172A;
             display: flex;
@@ -96,7 +96,7 @@
             font-weight: 500;
         }
 
-        /* TOP SECTION: 2-COLUMN AUTHORING TABLES (LEFT: ENGLISH, RIGHT: TAMIL) */
+        /* 2-COLUMN AUTHORING TABLES (LEFT: ENGLISH, RIGHT: TAMIL) */
         .authoring-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -121,7 +121,7 @@
         }
 
         .lang-title {
-            font-size: 11.5px;
+            font-size: 11px;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -139,9 +139,9 @@
         }
 
         .lang-pill {
-            font-size: 9.5px;
+            font-size: 9px;
             font-weight: 700;
-            padding: 2px 7px;
+            padding: 2px 6px;
             border-radius: 3px;
         }
 
@@ -157,7 +157,7 @@
             border: 1px solid #A7F3D0;
         }
 
-        /* SPURRED & ENLARGED AUTHORING CODE BOX */
+        /* AUTHORING CODE BOX */
         .code-box {
             background: #F8FAFC;
             border: 1px solid #CBD5E1;
@@ -165,10 +165,10 @@
             border-radius: 6px;
             padding: 12px 14px;
             font-family: 'Consolas', 'Menlo', 'Nirmala UI', monospace;
-            font-size: 12.5px;
+            font-size: 12px;
             color: #0F172A;
             white-space: pre-wrap;
-            line-height: 1.6;
+            line-height: 1.55;
             letter-spacing: 0.1px;
         }
 
@@ -176,81 +176,61 @@
             border-left-color: #059669;
         }
 
-        /* BOTTOM SECTION: STUDENT VIEW (CANDIDATE EXAM SCREEN) */
-        .student-preview-section {
+        /* 2-COLUMN STUDENT VIEW SECTION (LEFT: ENGLISH, RIGHT: TAMIL) */
+        .student-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
             padding: 12px 16px 16px 16px;
             background: #FDFEFE;
-        }
-
-        .student-preview-header {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 8px;
-        }
-
-        .student-preview-label {
-            font-size: 11px;
-            font-weight: 800;
-            color: #475569;
-            text-transform: uppercase;
-            letter-spacing: 0.6px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        .student-preview-label::before {
-            content: "●";
-            color: #10B981;
-            font-size: 9px;
         }
 
         .student-box {
             background: #FFFFFF;
             border: 1px solid #CBD5E1;
             border-radius: 6px;
-            padding: 14px 16px;
+            padding: 12px 14px;
             display: flex;
             flex-direction: column;
-            gap: 10px;
+            gap: 8px;
             box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+            height: 100%;
         }
 
         .student-badge-row {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 6px;
         }
 
         .student-q-badge {
-            font-size: 10.5px;
+            font-size: 9.5px;
             font-weight: 700;
             background: #0F172A;
             color: #FFFFFF;
-            padding: 3px 9px;
-            border-radius: 4px;
+            padding: 2px 8px;
+            border-radius: 3px;
         }
 
         .student-type-badge {
-            font-size: 10px;
+            font-size: 9px;
             font-weight: 700;
             background: #F1F5F9;
             color: #475569;
-            padding: 3px 8px;
-            border-radius: 4px;
+            padding: 2px 6px;
+            border-radius: 3px;
             border: 1px solid #E2E8F0;
         }
 
         .student-q-prompt {
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 700;
             color: #0F172A;
             line-height: 1.45;
         }
 
         .student-q-query {
-            font-size: 12px;
+            font-size: 11px;
             color: #334155;
             font-weight: 600;
         }
@@ -259,20 +239,20 @@
         .student-statements {
             display: flex;
             flex-direction: column;
-            gap: 5px;
-            margin: 4px 0;
+            gap: 4px;
+            margin: 2px 0;
         }
 
         .student-statement-row {
             display: flex;
-            gap: 8px;
-            font-size: 11.5px;
+            gap: 6px;
+            font-size: 11px;
             background: #F8FAFC;
             border: 1px solid #E2E8F0;
             border-radius: 4px;
-            padding: 6px 10px;
+            padding: 5px 8px;
             color: #1E293B;
-            line-height: 1.45;
+            line-height: 1.4;
         }
 
         .student-statement-num {
@@ -285,22 +265,22 @@
         .student-match-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 11.5px;
-            margin: 4px 0;
+            font-size: 10.5px;
+            margin: 2px 0;
             border: 1px solid #CBD5E1;
-            border-radius: 5px;
+            border-radius: 4px;
             overflow: hidden;
         }
 
         .student-match-table th {
             background: #F1F5F9;
-            padding: 7px 10px;
+            padding: 5px 8px;
             text-align: left;
             font-weight: 700;
             color: #0F172A;
             border-bottom: 1px solid #CBD5E1;
             border-right: 1px solid #CBD5E1;
-            font-size: 11.5px;
+            font-size: 10.5px;
         }
 
         .student-match-table th:last-child {
@@ -308,11 +288,11 @@
         }
 
         .student-match-table td {
-            padding: 7px 10px;
+            padding: 5px 8px;
             border-bottom: 1px solid #E2E8F0;
             border-right: 1px solid #E2E8F0;
             color: #334155;
-            font-size: 11.5px;
+            font-size: 10.5px;
         }
 
         .student-match-table td:last-child {
@@ -326,24 +306,20 @@
         /* CANDIDATE OPTION TILES */
         .student-options-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 8px;
-            margin-top: 4px;
-        }
-
-        .student-options-grid.single-col {
             grid-template-columns: 1fr;
+            gap: 5px;
+            margin-top: 4px;
         }
 
         .student-option-tile {
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: 7px;
             background: #FFFFFF;
             border: 1px solid #CBD5E1;
-            border-radius: 5px;
-            padding: 7px 12px;
-            font-size: 11.5px;
+            border-radius: 4px;
+            padding: 5px 10px;
+            font-size: 11px;
             color: #1E293B;
             transition: all 0.15s ease;
         }
@@ -357,8 +333,8 @@
         }
 
         .radio-circle {
-            width: 13px;
-            height: 13px;
+            width: 12px;
+            height: 12px;
             border-radius: 50%;
             border: 1.5px solid #64748B;
             flex: none;
@@ -372,8 +348,8 @@
         }
 
         .radio-dot {
-            width: 5px;
-            height: 5px;
+            width: 4px;
+            height: 4px;
             border-radius: 50%;
             background: #FFFFFF;
         }
@@ -454,7 +430,7 @@
     <header class="doc-header">
         <div class="doc-title">
             <h1>SLOGAN ACADEMY • QUESTION AUTHORING SPECIFICATION</h1>
-            <p>Official Format Specification (English & Tamil) & Candidate Exam Screen View</p>
+            <p>Official Format Specification & Candidate Exam View for English and Tamil</p>
         </div>
         <span class="doc-tag">100% Parsing Accuracy</span>
     </header>
@@ -465,11 +441,11 @@
             <span class="type-name">1. Multiple Choice Questions (Standard MCQ)</span>
             <span class="type-rule">Direct question • 4 Choices (A-D or 1-4) • Answer line</span>
         </div>
-        <!-- TOP: ENGLISH (LEFT) & TAMIL (RIGHT) -->
+        <!-- ROW 1: AUTHORING FORMAT (LEFT: ENGLISH, RIGHT: TAMIL) -->
         <div class="authoring-grid">
             <div class="lang-card">
                 <div class="lang-card-header">
-                    <span class="lang-title english">English Format</span>
+                    <span class="lang-title english">English Authoring Format</span>
                     <span class="lang-pill english">Input Source</span>
                 </div>
                 <div class="code-box">1. Which layer of the OSI model does a router operate on?
@@ -484,7 +460,7 @@ Explanation: Routers operate at Layer 3 (Network Layer).</div>
             </div>
             <div class="lang-card tamil">
                 <div class="lang-card-header">
-                    <span class="lang-title tamil">Tamil Format</span>
+                    <span class="lang-title tamil">Tamil Authoring Format</span>
                     <span class="lang-pill tamil">உள்ளீட்டு வடிவம்</span>
                 </div>
                 <div class="code-box">வினா 1:
@@ -499,33 +475,67 @@ Explanation: Routers operate at Layer 3 (Network Layer).</div>
 விளக்கம்: ஒவ்வோர் ஆண்டும் ஜூன் 5 அன்று அனுசரிக்கப்படுகிறது.</div>
             </div>
         </div>
-        <!-- BELOW: STUDENT VIEW -->
-        <div class="student-preview-section">
-            <div class="student-preview-header">
-                <span class="student-preview-label">Student View (Candidate Exam Screen)</span>
-            </div>
-            <div class="student-box">
-                <div class="student-badge-row">
-                    <span class="student-q-badge">வினா 1 • வினாத்தாள்</span>
-                    <span class="student-type-badge">பொது வினா (MCQ)</span>
+        <!-- ROW 2: STUDENT EXAM SCREEN (LEFT: ENGLISH, RIGHT: TAMIL) -->
+        <div class="student-grid">
+            <div class="lang-card">
+                <div class="lang-card-header">
+                    <span class="lang-title english">English Student View</span>
+                    <span class="lang-pill english">Exam Screen UI</span>
                 </div>
-                <p class="student-q-prompt">உலக சுற்றுச்சூழல் தினம் கொண்டாடப்படும் நாள் எது?</p>
-                <div class="student-options-grid">
-                    <div class="student-option-tile selected">
-                        <span class="radio-circle"><span class="radio-dot"></span></span>
-                        <span class="opt-key">(A)</span> ஜூன் 5
+                <div class="student-box">
+                    <div class="student-badge-row">
+                        <span class="student-q-badge">Question 1</span>
+                        <span class="student-type-badge">Multiple Choice (MCQ)</span>
                     </div>
-                    <div class="student-option-tile">
-                        <span class="radio-circle"></span>
-                        <span class="opt-key">(B)</span> ஜூலை 11
+                    <p class="student-q-prompt">Which layer of the OSI model does a router operate on?</p>
+                    <div class="student-options-grid">
+                        <div class="student-option-tile">
+                            <span class="radio-circle"></span>
+                            <span class="opt-key">(A)</span> Physical Layer
+                        </div>
+                        <div class="student-option-tile">
+                            <span class="radio-circle"></span>
+                            <span class="opt-key">(B)</span> Data Link Layer
+                        </div>
+                        <div class="student-option-tile selected">
+                            <span class="radio-circle"><span class="radio-dot"></span></span>
+                            <span class="opt-key">(C)</span> Network Layer
+                        </div>
+                        <div class="student-option-tile">
+                            <span class="radio-circle"></span>
+                            <span class="opt-key">(D)</span> Transport Layer
+                        </div>
                     </div>
-                    <div class="student-option-tile">
-                        <span class="radio-circle"></span>
-                        <span class="opt-key">(C)</span> செப்டம்பர் 16
+                </div>
+            </div>
+            <div class="lang-card tamil">
+                <div class="lang-card-header">
+                    <span class="lang-title tamil">Tamil Student View</span>
+                    <span class="lang-pill tamil">தேர்வுத் திரை</span>
+                </div>
+                <div class="student-box">
+                    <div class="student-badge-row">
+                        <span class="student-q-badge">வினா 1</span>
+                        <span class="student-type-badge">பொது வினா (MCQ)</span>
                     </div>
-                    <div class="student-option-tile">
-                        <span class="radio-circle"></span>
-                        <span class="opt-key">(D)</span> டிசம்பர் 1
+                    <p class="student-q-prompt">உலக சுற்றுச்சூழல் தினம் கொண்டாடப்படும் நாள் எது?</p>
+                    <div class="student-options-grid">
+                        <div class="student-option-tile selected">
+                            <span class="radio-circle"><span class="radio-dot"></span></span>
+                            <span class="opt-key">(A)</span> ஜூன் 5
+                        </div>
+                        <div class="student-option-tile">
+                            <span class="radio-circle"></span>
+                            <span class="opt-key">(B)</span> ஜூலை 11
+                        </div>
+                        <div class="student-option-tile">
+                            <span class="radio-circle"></span>
+                            <span class="opt-key">(C)</span> செப்டம்பர் 16
+                        </div>
+                        <div class="student-option-tile">
+                            <span class="radio-circle"></span>
+                            <span class="opt-key">(D)</span> டிசம்பர் 1
+                        </div>
                     </div>
                 </div>
             </div>
@@ -538,11 +548,11 @@ Explanation: Routers operate at Layer 3 (Network Layer).</div>
             <span class="type-name">2. Match the Following (பொருத்துக வினா)</span>
             <span class="type-rule">Requires "List I" & "List II" (or "பட்டியல் I" & "பட்டியல் II") • 2-Column Comparative Table</span>
         </div>
-        <!-- TOP: ENGLISH (LEFT) & TAMIL (RIGHT) -->
+        <!-- ROW 1: AUTHORING FORMAT -->
         <div class="authoring-grid">
             <div class="lang-card">
                 <div class="lang-card-header">
-                    <span class="lang-title english">English Format</span>
+                    <span class="lang-title english">English Authoring Format</span>
                     <span class="lang-pill english">Input Source</span>
                 </div>
                 <div class="code-box">2. Match Protocols in List I with Ports in List II:
@@ -567,7 +577,7 @@ Answer: A</div>
             </div>
             <div class="lang-card tamil">
                 <div class="lang-card-header">
-                    <span class="lang-title tamil">Tamil Format</span>
+                    <span class="lang-title tamil">Tamil Authoring Format</span>
                     <span class="lang-pill tamil">உள்ளீட்டு வடிவம்</span>
                 </div>
                 <div class="code-box">வினா 2 [பொருத்துக வினா]:
@@ -592,40 +602,79 @@ Answer: A</div>
 சரியான விடை: B</div>
             </div>
         </div>
-        <!-- BELOW: STUDENT VIEW -->
-        <div class="student-preview-section">
-            <div class="student-preview-header">
-                <span class="student-preview-label">Student View (Candidate Exam Screen)</span>
-            </div>
-            <div class="student-box">
-                <div class="student-badge-row">
-                    <span class="student-q-badge">வினா 2</span>
-                    <span class="student-type-badge">பொருத்துக வினா • Match Columns</span>
+        <!-- ROW 2: STUDENT EXAM SCREEN -->
+        <div class="student-grid">
+            <div class="lang-card">
+                <div class="lang-card-header">
+                    <span class="lang-title english">English Student View</span>
+                    <span class="lang-pill english">Exam Screen UI</span>
                 </div>
-                <p class="student-q-prompt">தமிழ் அகராதியியல் நூல்களை ஆசிரியர்களுடன் பொருத்துக:</p>
-                <table class="student-match-table">
-                    <thead>
-                        <tr>
-                            <th style="width: 50%;">பட்டியல் I (நூல்)</th>
-                            <th style="width: 50%;">பட்டியல் II (ஆசிரியர்)</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td><strong>(A)</strong> சதுரகராதி</td><td><strong>(I)</strong> வீரமாமுனிவர்</td></tr>
-                        <tr><td><strong>(B)</strong> தமிழ்-ஆங்கில அகராதி</td><td><strong>(II)</strong> எம். வின்ஸ்லோ</td></tr>
-                        <tr><td><strong>(C)</strong> அபிதான சிந்தாமணி</td><td><strong>(III)</strong> ஆ. சிங்காரவேலு முதலியார்</td></tr>
-                        <tr><td><strong>(D)</strong> தமிழ் லெக்சிகன்</td><td><strong>(IV)</strong> எஸ். வையாபுரிப் பிள்ளை</td></tr>
-                    </tbody>
-                </table>
-                <p class="student-q-query">சரியான பொருத்தத்தைத் தேர்ந்தெடுக்க:</p>
-                <div class="student-options-grid single-col">
-                    <div class="student-option-tile">
-                        <span class="radio-circle"></span>
-                        <span class="opt-key">(A)</span> (A)-(I), (B)-(II), (C)-(III), (D)-(IV)
+                <div class="student-box">
+                    <div class="student-badge-row">
+                        <span class="student-q-badge">Question 2</span>
+                        <span class="student-type-badge">Match Columns</span>
                     </div>
-                    <div class="student-option-tile selected">
-                        <span class="radio-circle"><span class="radio-dot"></span></span>
-                        <span class="opt-key">(B)</span> (A)-(III), (B)-(IV), (C)-(I), (D)-(II)
+                    <p class="student-q-prompt">Match Protocols in List I with Ports in List II:</p>
+                    <table class="student-match-table">
+                        <thead>
+                            <tr>
+                                <th>List I (Protocols)</th>
+                                <th>List II (Port Numbers)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>(A)</strong> HTTP</td><td><strong>(I)</strong> 22</td></tr>
+                            <tr><td><strong>(B)</strong> HTTPS</td><td><strong>(II)</strong> 53</td></tr>
+                            <tr><td><strong>(C)</strong> SSH</td><td><strong>(III)</strong> 80</td></tr>
+                            <tr><td><strong>(D)</strong> DNS</td><td><strong>(IV)</strong> 443</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="student-options-grid">
+                        <div class="student-option-tile selected">
+                            <span class="radio-circle"><span class="radio-dot"></span></span>
+                            <span class="opt-key">(A)</span> (A)-(III), (B)-(IV), (C)-(I), (D)-(II)
+                        </div>
+                        <div class="student-option-tile">
+                            <span class="radio-circle"></span>
+                            <span class="opt-key">(B)</span> (A)-(I), (B)-(II), (C)-(III), (D)-(IV)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="lang-card tamil">
+                <div class="lang-card-header">
+                    <span class="lang-title tamil">Tamil Student View</span>
+                    <span class="lang-pill tamil">தேர்வுத் திரை</span>
+                </div>
+                <div class="student-box">
+                    <div class="student-badge-row">
+                        <span class="student-q-badge">வினா 2</span>
+                        <span class="student-type-badge">பொருத்துக வினா</span>
+                    </div>
+                    <p class="student-q-prompt">தமிழ் அகராதியியல் நூல்களை ஆசிரியர்களுடன் பொருத்துக:</p>
+                    <table class="student-match-table">
+                        <thead>
+                            <tr>
+                                <th>பட்டியல் I (நூல்)</th>
+                                <th>பட்டியல் II (ஆசிரியர்)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>(A)</strong> சதுரகராதி</td><td><strong>(I)</strong> வீரமாமுனிவர்</td></tr>
+                            <tr><td><strong>(B)</strong> தமிழ்-ஆங்கில அகராதி</td><td><strong>(II)</strong> எம். வின்ஸ்லோ</td></tr>
+                            <tr><td><strong>(C)</strong> அபிதான சிந்தாமணி</td><td><strong>(III)</strong> ஆ. சிங்காரவேலு முதலியார்</td></tr>
+                            <tr><td><strong>(D)</strong> தமிழ் லெக்சிகன்</td><td><strong>(IV)</strong> எஸ். வையாபுரிப் பிள்ளை</td></tr>
+                        </tbody>
+                    </table>
+                    <div class="student-options-grid">
+                        <div class="student-option-tile">
+                            <span class="radio-circle"></span>
+                            <span class="opt-key">(A)</span> (A)-(I), (B)-(II), (C)-(III), (D)-(IV)
+                        </div>
+                        <div class="student-option-tile selected">
+                            <span class="radio-circle"><span class="radio-dot"></span></span>
+                            <span class="opt-key">(B)</span> (A)-(III), (B)-(IV), (C)-(I), (D)-(II)
+                        </div>
                     </div>
                 </div>
             </div>
@@ -638,11 +687,11 @@ Answer: A</div>
             <span class="type-name">3. Assertion & Reason (உறுதிக்கூற்று - காரணம்)</span>
             <span class="type-rule">Must use "Assertion (A):" & "Reason (R):" OR "உறுதிக்கூற்று (உ):" & "காரணம் (கா):"</span>
         </div>
-        <!-- TOP: ENGLISH (LEFT) & TAMIL (RIGHT) -->
+        <!-- ROW 1: AUTHORING FORMAT -->
         <div class="authoring-grid">
             <div class="lang-card">
                 <div class="lang-card-header">
-                    <span class="lang-title english">English Format</span>
+                    <span class="lang-title english">English Authoring Format</span>
                     <span class="lang-pill english">Input Source</span>
                 </div>
                 <div class="code-box">3. Assertion and Reason:
@@ -653,14 +702,12 @@ Reason (R): Refractive index of vacuum is less than glass.
 Choose the most appropriate answer:
 (A) Both (A) and (R) are correct, and (R) is correct explanation.
 (B) Both (A) and (R) are correct, but (R) is NOT correct explanation.
-(C) (A) is correct, but (R) is incorrect.
-(D) (A) is incorrect, but (R) is correct.
 
 Answer: A</div>
             </div>
             <div class="lang-card tamil">
                 <div class="lang-card-header">
-                    <span class="lang-title tamil">Tamil Format</span>
+                    <span class="lang-title tamil">Tamil Authoring Format</span>
                     <span class="lang-pill tamil">உள்ளீட்டு வடிவம்</span>
                 </div>
                 <div class="code-box">வினா 3 [உறுதிக்கூற்று - காரணம்].
@@ -671,41 +718,75 @@ Answer: A</div>
 கீழே தரப்பெற்றுள்ள விருப்பங்களிலிருந்து தேர்ந்தெடுக்க:
 (1) (உ) சரி, (கா) சரி; (கா) சரியான விளக்கம்
 (2) (உ) சரி, (கா) சரி; ஆனால் (கா) சரியான விளக்கமன்று
-(3) (உ) தவறு, (கா) சரி
-(4) (உ) தவறு, (கா) தவறு
 
 சரியான விடை: (2)</div>
             </div>
         </div>
-        <!-- BELOW: STUDENT VIEW -->
-        <div class="student-preview-section">
-            <div class="student-preview-header">
-                <span class="student-preview-label">Student View (Candidate Exam Screen)</span>
+        <!-- ROW 2: STUDENT EXAM SCREEN -->
+        <div class="student-grid">
+            <div class="lang-card">
+                <div class="lang-card-header">
+                    <span class="lang-title english">English Student View</span>
+                    <span class="lang-pill english">Exam Screen UI</span>
+                </div>
+                <div class="student-box">
+                    <div class="student-badge-row">
+                        <span class="student-q-badge">Question 3</span>
+                        <span class="student-type-badge">Assertion & Reason</span>
+                    </div>
+                    <div class="student-statements">
+                        <div class="student-statement-row">
+                            <span class="student-statement-num">Assertion (A):</span>
+                            <span>Light travels faster in vacuum than in glass.</span>
+                        </div>
+                        <div class="student-statement-row">
+                            <span class="student-statement-num">Reason (R):</span>
+                            <span>Refractive index of vacuum is less than glass.</span>
+                        </div>
+                    </div>
+                    <p class="student-q-query">Choose the most appropriate answer:</p>
+                    <div class="student-options-grid">
+                        <div class="student-option-tile selected">
+                            <span class="radio-circle"><span class="radio-dot"></span></span>
+                            <span class="opt-key">(A)</span> Both (A) and (R) are correct; (R) is correct explanation
+                        </div>
+                        <div class="student-option-tile">
+                            <span class="radio-circle"></span>
+                            <span class="opt-key">(B)</span> Both (A) and (R) are correct, but (R) is NOT explanation
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="student-box">
-                <div class="student-badge-row">
-                    <span class="student-q-badge">வினா 3</span>
-                    <span class="student-type-badge">உறுதிக்கூற்று - காரணம்</span>
+            <div class="lang-card tamil">
+                <div class="lang-card-header">
+                    <span class="lang-title tamil">Tamil Student View</span>
+                    <span class="lang-pill tamil">தேர்வுத் திரை</span>
                 </div>
-                <div class="student-statements">
-                    <div class="student-statement-row">
-                        <span class="student-statement-num">உறுதிக்கூற்று (உ):</span>
-                        <span>தேம்பாவணி காப்பியத்தின் முதன்மைப் பாட்டுடைத் தலைவன் வளன் (சூசையப்பர்) ஆவார்.</span>
+                <div class="student-box">
+                    <div class="student-badge-row">
+                        <span class="student-q-badge">வினா 3</span>
+                        <span class="student-type-badge">உறுதிக்கூற்று - காரணம்</span>
                     </div>
-                    <div class="student-statement-row">
-                        <span class="student-statement-num">காரணம் (கா):</span>
-                        <span>தேம்பாவணி 3,615 விருத்தப் பாடல்களைக் கொண்டக் கிறித்துவச் சமயக் காப்பியமாகும்.</span>
+                    <div class="student-statements">
+                        <div class="student-statement-row">
+                            <span class="student-statement-num">உறுதிக்கூற்று (உ):</span>
+                            <span>தேம்பாவணி காப்பியத் தலைவன் வளன் ஆவார்.</span>
+                        </div>
+                        <div class="student-statement-row">
+                            <span class="student-statement-num">காரணம் (கா):</span>
+                            <span>தேம்பாவணி 3,615 விருத்தப் பாடல்களைக் கொண்ட கிறித்துவக் காப்பியம்.</span>
+                        </div>
                     </div>
-                </div>
-                <p class="student-q-query">கீழே தரப்பெற்றுள்ள விருப்பங்களிலிருந்து சரியான பதிலைத் தேர்ந்தெடுக்க:</p>
-                <div class="student-options-grid single-col">
-                    <div class="student-option-tile">
-                        <span class="radio-circle"></span>
-                        <span class="opt-key">(1)</span> (உ) சரி, (கா) சரி; (கா) என்பது (உ)-விற்குச் சரியான விளக்கம்
-                    </div>
-                    <div class="student-option-tile selected">
-                        <span class="radio-circle"><span class="radio-dot"></span></span>
-                        <span class="opt-key">(2)</span> (உ) சரி, (கா) சரி; ஆனால் (கா) சரியான விளக்கமன்று
+                    <p class="student-q-query">கீழே தரப்பெற்றுள்ள விருப்பங்களிலிருந்து தேர்ந்தெடுக்க:</p>
+                    <div class="student-options-grid">
+                        <div class="student-option-tile">
+                            <span class="radio-circle"></span>
+                            <span class="opt-key">(1)</span> (உ) சரி, (கா) சரி; (கா) சரியான விளக்கம்
+                        </div>
+                        <div class="student-option-tile selected">
+                            <span class="radio-circle"><span class="radio-dot"></span></span>
+                            <span class="opt-key">(2)</span> (உ) சரி, (கா) சரி; ஆனால் (கா) சரியான விளக்கமன்று
+                        </div>
                     </div>
                 </div>
             </div>
@@ -718,11 +799,11 @@ Answer: A</div>
             <span class="type-name">4. Statement-Based Questions (பல்கூற்றுத் தேர்வு வினா)</span>
             <span class="type-rule">Prompt on top line • Evaluation query on second line • Items labeled (i), (ii), (iii), (iv)</span>
         </div>
-        <!-- TOP: ENGLISH (LEFT) & TAMIL (RIGHT) -->
+        <!-- ROW 1: AUTHORING FORMAT -->
         <div class="authoring-grid">
             <div class="lang-card">
                 <div class="lang-card-header">
-                    <span class="lang-title english">English Format</span>
+                    <span class="lang-title english">English Authoring Format</span>
                     <span class="lang-pill english">Input Source</span>
                 </div>
                 <div class="code-box">4. Statement-Based Question
@@ -741,7 +822,7 @@ Answer: A</div>
             </div>
             <div class="lang-card tamil">
                 <div class="lang-card-header">
-                    <span class="lang-title tamil">Tamil Format</span>
+                    <span class="lang-title tamil">Tamil Authoring Format</span>
                     <span class="lang-pill tamil">உள்ளீட்டு வடிவம்</span>
                 </div>
                 <div class="code-box">90. பல்கூற்றுத் தேர்வு வினா
@@ -754,34 +835,56 @@ Answer: A</div>
 
 (அ) (i), (ii) மட்டும் சரி
 (ஆ) (i), (iii) மட்டும் சரி
-(இ) (ii), (iv) மட்டும் சரி
-(ஈ) அனைத்தும் சரி
 
 பதில்: ஆ</div>
             </div>
         </div>
-        <!-- BELOW: STUDENT VIEW -->
-        <div class="student-preview-section">
-            <div class="student-preview-header">
-                <span class="student-preview-label">Student View (Candidate Exam Screen)</span>
+        <!-- ROW 2: STUDENT EXAM SCREEN -->
+        <div class="student-grid">
+            <div class="lang-card">
+                <div class="lang-card-header">
+                    <span class="lang-title english">English Student View</span>
+                    <span class="lang-pill english">Exam Screen UI</span>
+                </div>
+                <div class="student-box">
+                    <div class="student-badge-row">
+                        <span class="student-q-badge">Question 4</span>
+                        <span class="student-type-badge">Statement-Based</span>
+                    </div>
+                    <p class="student-q-prompt">Consider the following statements regarding RBI:</p>
+                    <div class="student-statements">
+                        <div class="student-statement-row"><span class="student-statement-num">(i)</span> Established on April 1, 1935.</div>
+                        <div class="student-statement-row"><span class="student-statement-num">(ii)</span> Headquarters moved to Mumbai in 1937.</div>
+                        <div class="student-statement-row"><span class="student-statement-num">(iii)</span> Sir Osborne Smith was first Governor.</div>
+                        <div class="student-statement-row"><span class="student-statement-num">(iv)</span> RBI nationalized in 1969.</div>
+                    </div>
+                    <div class="student-options-grid">
+                        <div class="student-option-tile selected"><span class="radio-circle"><span class="radio-dot"></span></span> <span class="opt-key">(A)</span> (i), (ii) and (iii) only</div>
+                        <div class="student-option-tile"><span class="radio-circle"></span> <span class="opt-key">(B)</span> (i) and (iv) only</div>
+                    </div>
+                </div>
             </div>
-            <div class="student-box">
-                <div class="student-badge-row">
-                    <span class="student-q-badge">வினா 90</span>
-                    <span class="student-type-badge">பல்கூற்றுத் தேர்வு வினா</span>
+            <div class="lang-card tamil">
+                <div class="lang-card-header">
+                    <span class="lang-title tamil">Tamil Student View</span>
+                    <span class="lang-pill tamil">தேர்வுத் திரை</span>
                 </div>
-                <p class="student-q-prompt">பெண்ணியக் கவிஞர்கள் பற்றிய பின்வரும் கூற்றுகளை ஆராய்க:</p>
-                <div class="student-statements">
-                    <div class="student-statement-row"><span class="student-statement-num">(i)</span> 'கருவறை வாசனை' கவிதைத் தொகுப்பைப் படைத்தவர் கனிமொழி.</div>
-                    <div class="student-statement-row"><span class="student-statement-num">(ii)</span> 'இரவு மிருகம்' கவிதைத் தொகுப்பை எழுதியவர் சல்மா.</div>
-                    <div class="student-statement-row"><span class="student-statement-num">(iii)</span> 'நீலமுடி' தொகுப்பை எழுதிய இளம்பிறையின் இயற்பெயர் பஞ்சவர்ணம்.</div>
-                    <div class="student-statement-row"><span class="student-statement-num">(iv)</span> சுகிர்தராணியின் கவிதைகள் அழகியலை மட்டுமே பாடுகின்றன.</div>
-                </div>
-                <div class="student-options-grid">
-                    <div class="student-option-tile"><span class="radio-circle"></span> <span class="opt-key">(அ)</span> (i), (ii) மட்டும் சரி</div>
-                    <div class="student-option-tile selected"><span class="radio-circle"><span class="radio-dot"></span></span> <span class="opt-key">(ஆ)</span> (i), (iii) மட்டும் சரி</div>
-                    <div class="student-option-tile"><span class="radio-circle"></span> <span class="opt-key">(இ)</span> (ii), (iv) மட்டும் சரி</div>
-                    <div class="student-option-tile"><span class="radio-circle"></span> <span class="opt-key">(ஈ)</span> அனைத்தும் சரி</div>
+                <div class="student-box">
+                    <div class="student-badge-row">
+                        <span class="student-q-badge">வினா 90</span>
+                        <span class="student-type-badge">பல்கூற்றுத் தேர்வு வினா</span>
+                    </div>
+                    <p class="student-q-prompt">பெண்ணியக் கவிஞர்கள் பற்றிய பின்வரும் கூற்றுகளை ஆராய்க:</p>
+                    <div class="student-statements">
+                        <div class="student-statement-row"><span class="student-statement-num">(i)</span> 'கருவறை வாசனை' படைத்தவர் கனிமொழி.</div>
+                        <div class="student-statement-row"><span class="student-statement-num">(ii)</span> 'இரவு மிருகம்' எழுதியவர் சல்மா.</div>
+                        <div class="student-statement-row"><span class="student-statement-num">(iii)</span> 'நீலமுடி' இளம்பிறையின் பெயர் பஞ்சவர்ணம்.</div>
+                        <div class="student-statement-row"><span class="student-statement-num">(iv)</span> சுகிர்தராணி அழகியலை மட்டுமே பாடுகிறார்.</div>
+                    </div>
+                    <div class="student-options-grid">
+                        <div class="student-option-tile"><span class="radio-circle"></span> <span class="opt-key">(அ)</span> (i), (ii) மட்டும் சரி</div>
+                        <div class="student-option-tile selected"><span class="radio-circle"><span class="radio-dot"></span></span> <span class="opt-key">(ஆ)</span> (i), (iii) மட்டும் சரி</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -793,11 +896,11 @@ Answer: A</div>
             <span class="type-name">5. Sequence / Chronological Order (காலவரிசை வினா)</span>
             <span class="type-rule">Must start with "Arrange... in chronological order:" OR "காலவரிசை வினா"</span>
         </div>
-        <!-- TOP: ENGLISH (LEFT) & TAMIL (RIGHT) -->
+        <!-- ROW 1: AUTHORING FORMAT -->
         <div class="authoring-grid">
             <div class="lang-card">
                 <div class="lang-card-header">
-                    <span class="lang-title english">English Format</span>
+                    <span class="lang-title english">English Authoring Format</span>
                     <span class="lang-pill english">Input Source</span>
                 </div>
                 <div class="code-box">5. Arrange computer innovations in chronological order:
@@ -815,7 +918,7 @@ Answer: A</div>
             </div>
             <div class="lang-card tamil">
                 <div class="lang-card-header">
-                    <span class="lang-title tamil">Tamil Format</span>
+                    <span class="lang-title tamil">Tamil Authoring Format</span>
                     <span class="lang-pill tamil">உள்ளீட்டு வடிவம்</span>
                 </div>
                 <div class="code-box">வினா 5 [காலவரிசை வினா]:
@@ -833,32 +936,63 @@ Answer: A</div>
 சரியான விடை: A</div>
             </div>
         </div>
-        <!-- BELOW: STUDENT VIEW -->
-        <div class="student-preview-section">
-            <div class="student-preview-header">
-                <span class="student-preview-label">Student View (Candidate Exam Screen)</span>
-            </div>
-            <div class="student-box">
-                <div class="student-badge-row">
-                    <span class="student-q-badge">வினா 5</span>
-                    <span class="student-type-badge">காலவரிசை வினா • Chronological Sequence</span>
+        <!-- ROW 2: STUDENT EXAM SCREEN -->
+        <div class="student-grid">
+            <div class="lang-card">
+                <div class="lang-card-header">
+                    <span class="lang-title english">English Student View</span>
+                    <span class="lang-pill english">Exam Screen UI</span>
                 </div>
-                <p class="student-q-prompt">தமிழ்த் திறனாய்வு நூல்களை வெளியீட்டாண்டு அடிப்படையில் சீரமைக்க:</p>
-                <div class="student-statements">
-                    <div class="student-statement-row"><span class="student-statement-num">(i)</span> இலக்கிய விமரிசனம் (தொ.மு.சி. ரகுநாதன்)</div>
-                    <div class="student-statement-row"><span class="student-statement-num">(ii)</span> விமரிசனக்கலை (க.நா. சுப்பிரமணியம்)</div>
-                    <div class="student-statement-row"><span class="student-statement-num">(iii)</span> இலக்கியக் கலை (அ.ச. ஞானசம்பந்தன்)</div>
-                    <div class="student-statement-row"><span class="student-statement-num">(iv)</span> தமிழ் நாவல் இலக்கியம் (க. கைலாசபதி)</div>
-                </div>
-                <p class="student-q-query">சரியான காலவரிசையைத் தேர்ந்தெடுக்க:</p>
-                <div class="student-options-grid single-col">
-                    <div class="student-option-tile selected">
-                        <span class="radio-circle"><span class="radio-dot"></span></span>
-                        <span class="opt-key">(A)</span> (i) → (ii) → (iii) → (iv)
+                <div class="student-box">
+                    <div class="student-badge-row">
+                        <span class="student-q-badge">Question 5</span>
+                        <span class="student-type-badge">Chronological Order</span>
                     </div>
-                    <div class="student-option-tile">
-                        <span class="radio-circle"></span>
-                        <span class="opt-key">(B)</span> (ii) → (i) → (iv) → (iii)
+                    <p class="student-q-prompt">Arrange computer innovations in chronological order:</p>
+                    <div class="student-statements">
+                        <div class="student-statement-row"><span class="student-statement-num">(i)</span> Invention of the Transistor</div>
+                        <div class="student-statement-row"><span class="student-statement-num">(ii)</span> Launch of the World Wide Web</div>
+                        <div class="student-statement-row"><span class="student-statement-num">(iii)</span> Development of the C Language</div>
+                        <div class="student-statement-row"><span class="student-statement-num">(iv)</span> Invention of the Microprocessor</div>
+                    </div>
+                    <div class="student-options-grid">
+                        <div class="student-option-tile selected">
+                            <span class="radio-circle"><span class="radio-dot"></span></span>
+                            <span class="opt-key">(A)</span> (i) → (iv) → (iii) → (ii)
+                        </div>
+                        <div class="student-option-tile">
+                            <span class="radio-circle"></span>
+                            <span class="opt-key">(B)</span> (i) → (iii) → (iv) → (ii)
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="lang-card tamil">
+                <div class="lang-card-header">
+                    <span class="lang-title tamil">Tamil Student View</span>
+                    <span class="lang-pill tamil">தேர்வுத் திரை</span>
+                </div>
+                <div class="student-box">
+                    <div class="student-badge-row">
+                        <span class="student-q-badge">வினா 5</span>
+                        <span class="student-type-badge">காலவரிசை வினா</span>
+                    </div>
+                    <p class="student-q-prompt">தமிழ்த் திறனாய்வு நூல்களை வெளியீட்டாண்டு அடிப்படையில் சீரமைக்க:</p>
+                    <div class="student-statements">
+                        <div class="student-statement-row"><span class="student-statement-num">(i)</span> இலக்கிய விமரிசனம் (தொ.மு.சி. ரகுநாதன்)</div>
+                        <div class="student-statement-row"><span class="student-statement-num">(ii)</span> விமரிசனக்கலை (க.நா. சுப்பிரமணியம்)</div>
+                        <div class="student-statement-row"><span class="student-statement-num">(iii)</span> இலக்கியக் கலை (அ.ச. ஞானசம்பந்தன்)</div>
+                        <div class="student-statement-row"><span class="student-statement-num">(iv)</span> தமிழ் நாவல் இலக்கியம் (க. கைலாசபதி)</div>
+                    </div>
+                    <div class="student-options-grid">
+                        <div class="student-option-tile selected">
+                            <span class="radio-circle"><span class="radio-dot"></span></span>
+                            <span class="opt-key">(A)</span> (i) → (ii) → (iii) → (iv)
+                        </div>
+                        <div class="student-option-tile">
+                            <span class="radio-circle"></span>
+                            <span class="opt-key">(B)</span> (ii) → (i) → (iv) → (iii)
+                        </div>
                     </div>
                 </div>
             </div>
@@ -871,11 +1005,11 @@ Answer: A</div>
             <span class="type-name">6. Passage-Based Questions (பத்தி வினாக்கள்)</span>
             <span class="type-rule">Header: "Directions: Read the following passage... Questions X to Y" followed by "Passage:"</span>
         </div>
-        <!-- TOP: ENGLISH (LEFT) & TAMIL (RIGHT) -->
+        <!-- ROW 1: AUTHORING FORMAT -->
         <div class="authoring-grid">
             <div class="lang-card">
                 <div class="lang-card-header">
-                    <span class="lang-title english">English Format</span>
+                    <span class="lang-title english">English Authoring Format</span>
                     <span class="lang-pill english">Input Source</span>
                 </div>
                 <div class="code-box">Directions: Read passage and answer Questions 6 and 7:
@@ -893,7 +1027,7 @@ Answer: B</div>
             </div>
             <div class="lang-card tamil">
                 <div class="lang-card-header">
-                    <span class="lang-title tamil">Tamil Format</span>
+                    <span class="lang-title tamil">Tamil Authoring Format</span>
                     <span class="lang-pill tamil">உள்ளீட்டு வடிவம்</span>
                 </div>
                 <div class="code-box">வழிமுறைகள்: பின்வரும் பத்தியைப் படித்து விடையளிக்கவும்:
@@ -907,23 +1041,46 @@ Answer: B</div>
 சரியான விடை: B</div>
             </div>
         </div>
-        <!-- BELOW: STUDENT VIEW -->
-        <div class="student-preview-section">
-            <div class="student-preview-header">
-                <span class="student-preview-label">Student View (Candidate Exam Screen)</span>
+        <!-- ROW 2: STUDENT EXAM SCREEN -->
+        <div class="student-grid">
+            <div class="lang-card">
+                <div class="lang-card-header">
+                    <span class="lang-title english">English Student View</span>
+                    <span class="lang-pill english">Exam Screen UI</span>
+                </div>
+                <div class="student-box">
+                    <div class="student-badge-row">
+                        <span class="student-q-badge">Question 6</span>
+                        <span class="student-type-badge">Passage Comprehension</span>
+                    </div>
+                    <div class="student-statement-row" style="background:#F0FDF4; border-color:#BBF7D0; color:#14532D; font-style:italic;">
+                        Photosynthesis converts light energy into glucose in chloroplasts. Water splits to release oxygen.
+                    </div>
+                    <p class="student-q-prompt" style="margin-top:2px;">6. In which cell organelle does photosynthesis take place?</p>
+                    <div class="student-options-grid">
+                        <div class="student-option-tile"><span class="radio-circle"></span> <span class="opt-key">(A)</span> Mitochondria</div>
+                        <div class="student-option-tile selected"><span class="radio-circle"><span class="radio-dot"></span></span> <span class="opt-key">(B)</span> Chloroplast</div>
+                    </div>
+                </div>
             </div>
-            <div class="student-box">
-                <div class="student-badge-row">
-                    <span class="student-q-badge">பத்தி வினா</span>
-                    <span class="student-type-badge">Passage Comprehension</span>
+            <div class="lang-card tamil">
+                <div class="lang-card-header">
+                    <span class="lang-title tamil">Tamil Student View</span>
+                    <span class="lang-pill tamil">தேர்வுத் திரை</span>
                 </div>
-                <div class="student-statement-row" style="background:#F0FDF4; border-color:#BBF7D0; color:#14532D; font-style:italic;">
-                    ஒளிச்சேர்க்கை என்பது தாவரங்கள் சூரிய ஒளியைப் பயன்படுத்தி உணவைத் தயாரிக்கும் நிகழ்வாகும். இந்நிகழ்வு பசங்கணிகத்தில் நடைபெற்று ஆக்சிஜனை வெளியிடுகிறது.
-                </div>
-                <p class="student-q-prompt" style="margin-top:2px;">6. ஒளிச்சேர்க்கை முதன்மையாக நடைபெறும் செல் உறுப்பு எது?</p>
-                <div class="student-options-grid">
-                    <div class="student-option-tile"><span class="radio-circle"></span> <span class="opt-key">(A)</span> மைட்டோகாண்ட்ரியா</div>
-                    <div class="student-option-tile selected"><span class="radio-circle"><span class="radio-dot"></span></span> <span class="opt-key">(B)</span> பசங்கணிகம்</div>
+                <div class="student-box">
+                    <div class="student-badge-row">
+                        <span class="student-q-badge">வினா 6</span>
+                        <span class="student-type-badge">பத்தி வினா</span>
+                    </div>
+                    <div class="student-statement-row" style="background:#F0FDF4; border-color:#BBF7D0; color:#14532D; font-style:italic;">
+                        ஒளிச்சேர்க்கை தாவரங்கள் சூரிய ஒளியைப் பயன்படுத்தி உணவைத் தயாரிக்கும் நிகழ்வாகும். இது பசங்கணிகத்தில் நடைபெற்று ஆக்சிஜனை வெளியிடுகிறது.
+                    </div>
+                    <p class="student-q-prompt" style="margin-top:2px;">6. ஒளிச்சேர்க்கை நடைபெறும் செல் உறுப்பு எது?</p>
+                    <div class="student-options-grid">
+                        <div class="student-option-tile"><span class="radio-circle"></span> <span class="opt-key">(A)</span> மைட்டோகாண்ட்ரியா</div>
+                        <div class="student-option-tile selected"><span class="radio-circle"><span class="radio-dot"></span></span> <span class="opt-key">(B)</span> பசங்கணிகம்</div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -935,11 +1092,11 @@ Answer: B</div>
             <span class="type-name">7. Mathematical Problem Solving & Data Tables (அட்டவணை வினாக்கள்)</span>
             <span class="type-rule">Use markdown pipe "|" tables for data matrices • Clear step-by-step arithmetic explanation</span>
         </div>
-        <!-- TOP: ENGLISH (LEFT) & TAMIL (RIGHT) -->
+        <!-- ROW 1: AUTHORING FORMAT -->
         <div class="authoring-grid">
             <div class="lang-card">
                 <div class="lang-card-header">
-                    <span class="lang-title english">English Format</span>
+                    <span class="lang-title english">English Authoring Format</span>
                     <span class="lang-pill english">Input Source</span>
                 </div>
                 <div class="code-box">8. Car production (in thousands) from 2021 to 2023:
@@ -956,7 +1113,7 @@ Explanation: Increase = 30. (30/40) * 100 = 75%.</div>
             </div>
             <div class="lang-card tamil">
                 <div class="lang-card-header">
-                    <span class="lang-title tamil">Tamil Format</span>
+                    <span class="lang-title tamil">Tamil Authoring Format</span>
                     <span class="lang-pill tamil">உள்ளீட்டு வடிவம்</span>
                 </div>
                 <div class="code-box">வினா 8:
@@ -973,36 +1130,72 @@ Explanation: Increase = 30. (30/40) * 100 = 75%.</div>
 விளக்கம்: அதிகரிப்பு = 30. (30/40) * 100 = 75%.</div>
             </div>
         </div>
-        <!-- BELOW: STUDENT VIEW -->
-        <div class="student-preview-section">
-            <div class="student-preview-header">
-                <span class="student-preview-label">Student View (Candidate Exam Screen)</span>
-            </div>
-            <div class="student-box">
-                <div class="student-badge-row">
-                    <span class="student-q-badge">வினா 8</span>
-                    <span class="student-type-badge">தரவு அட்டவணை • Data Matrix</span>
+        <!-- ROW 2: STUDENT EXAM SCREEN -->
+        <div class="student-grid">
+            <div class="lang-card">
+                <div class="lang-card-header">
+                    <span class="lang-title english">English Student View</span>
+                    <span class="lang-pill english">Exam Screen UI</span>
                 </div>
-                <table class="student-match-table">
-                    <thead>
-                        <tr>
-                            <th>நிறுவனம்</th>
-                            <th>2021</th>
-                            <th>2022</th>
-                            <th>2023</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td><strong>ஆல்பா</strong></td><td>40</td><td>55</td><td>70</td></tr>
-                        <tr><td><strong>பீட்டா</strong></td><td>30</td><td>45</td><td>60</td></tr>
-                    </tbody>
-                </table>
-                <p class="student-q-prompt">ஆல்பா நிறுவனத்தின் உற்பத்தி விழுக்காடு அதிகரிப்பு எவ்வளவு?</p>
-                <div class="student-options-grid">
-                    <div class="student-option-tile"><span class="radio-circle"></span> <span class="opt-key">(A)</span> 50%</div>
-                    <div class="student-option-tile"><span class="radio-circle"></span> <span class="opt-key">(B)</span> 60%</div>
-                    <div class="student-option-tile selected"><span class="radio-circle"><span class="radio-dot"></span></span> <span class="opt-key">(C)</span> 75%</div>
-                    <div class="student-option-tile"><span class="radio-circle"></span> <span class="opt-key">(D)</span> 80%</div>
+                <div class="student-box">
+                    <div class="student-badge-row">
+                        <span class="student-q-badge">Question 8</span>
+                        <span class="student-type-badge">Data Matrix</span>
+                    </div>
+                    <table class="student-match-table">
+                        <thead>
+                            <tr>
+                                <th>Company</th>
+                                <th>2021</th>
+                                <th>2022</th>
+                                <th>2023</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>Alpha</strong></td><td>40</td><td>55</td><td>70</td></tr>
+                            <tr><td><strong>Beta</strong></td><td>30</td><td>45</td><td>60</td></tr>
+                        </tbody>
+                    </table>
+                    <p class="student-q-prompt">What is percentage increase for Alpha from 2021 to 2023?</p>
+                    <div class="student-options-grid">
+                        <div class="student-option-tile"><span class="radio-circle"></span> <span class="opt-key">(A)</span> 50%</div>
+                        <div class="student-option-tile"><span class="radio-circle"></span> <span class="opt-key">(B)</span> 60%</div>
+                        <div class="student-option-tile selected"><span class="radio-circle"><span class="radio-dot"></span></span> <span class="opt-key">(C)</span> 75%</div>
+                        <div class="student-option-tile"><span class="radio-circle"></span> <span class="opt-key">(D)</span> 80%</div>
+                    </div>
+                </div>
+            </div>
+            <div class="lang-card tamil">
+                <div class="lang-card-header">
+                    <span class="lang-title tamil">Tamil Student View</span>
+                    <span class="lang-pill tamil">தேர்வுத் திரை</span>
+                </div>
+                <div class="student-box">
+                    <div class="student-badge-row">
+                        <span class="student-q-badge">வினா 8</span>
+                        <span class="student-type-badge">தரவு அட்டவணை</span>
+                    </div>
+                    <table class="student-match-table">
+                        <thead>
+                            <tr>
+                                <th>நிறுவனம்</th>
+                                <th>2021</th>
+                                <th>2022</th>
+                                <th>2023</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td><strong>ஆல்பா</strong></td><td>40</td><td>55</td><td>70</td></tr>
+                            <tr><td><strong>பீட்டா</strong></td><td>30</td><td>45</td><td>60</td></tr>
+                        </tbody>
+                    </table>
+                    <p class="student-q-prompt">ஆல்பா நிறுவனத்தின் உற்பத்தி விழுக்காடு அதிகரிப்பு எவ்வளவு?</p>
+                    <div class="student-options-grid">
+                        <div class="student-option-tile"><span class="radio-circle"></span> <span class="opt-key">(A)</span> 50%</div>
+                        <div class="student-option-tile"><span class="radio-circle"></span> <span class="opt-key">(B)</span> 60%</div>
+                        <div class="student-option-tile selected"><span class="radio-circle"><span class="radio-dot"></span></span> <span class="opt-key">(C)</span> 75%</div>
+                        <div class="student-option-tile"><span class="radio-circle"></span> <span class="opt-key">(D)</span> 80%</div>
+                    </div>
                 </div>
             </div>
         </div>
