@@ -425,6 +425,9 @@ function formatStatementsVertical(text) {
 
     let formatted = text;
 
+    // 0. Normalize split prompt headers like "காலவரிசை \n\n வினா" or "நிரல்படுத்துக \n\n வினா"
+    formatted = formatted.replace(/^(காலவரிசை|நிரல்படுத்துக|பொருத்துக|கூற்று)\s*\n+\s*(வினா|காரணம்)/im, "$1 $2");
+
     // 1. Statement 1 & 2 / கூற்று 1 & 2: ensure on newlines
     formatted = formatted.replace(/([^\n])\s*(கூற்று\s*2|Statement\s*(?:2|II))[:\.]\s*/gi, "$1\n$2: ");
 

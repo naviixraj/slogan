@@ -434,7 +434,7 @@
             }
         }
         if (startR !== -1) {
-            const preamble = text.slice(0, rMatches[startR].index).trim().replace(/\n\s*/g, " ");
+            const preamble = text.slice(0, rMatches[startR].index).trim();
             const stmts = [];
             const chosen = rMatches.slice(startR);
             let postamble = "";
@@ -464,7 +464,10 @@
     function renderNeatQuestion(raw, options) {
         if (!raw || typeof raw !== "string") return "";
 
-        const text = raw.trim();
+        let text = raw.trim();
+
+        // Normalize split prompt headers like "காலவரிசை \n\n வினா" or "நிரல்படுத்துக \n\n வினா"
+        text = text.replace(/^(காலவரிசை|நிரல்படுத்துக|பொருத்துக|கூற்று)\s*\n+\s*(வினா|காரணம்)/im, "$1 $2");
 
         // If the question already contains clean HTML tables, return wrapped
         if (/<table[\s>]/i.test(text) && /<\/table>/i.test(text)) {
@@ -730,7 +733,22 @@
                     }
                 } else if (multiStmts) {
                     if (multiStmts.preamble) {
-                        html += `<div class="neat-question-query">${escapeHtml(multiStmts.preamble)}</div>`;
+                        const pLines = multiStmts.preamble.split(/\n+/).map(l => l.trim()).filter(Boolean);
+                        let pQuery = multiStmts.preamble;
+                        if (pLines.length > 1 && /^(?:காலவரிசை\s+வினா|நிரல்படுத்துக\s+வினா|காலவரிசை|நிரல்படுத்துக|பொருத்துக|\[?[^\]]+\]?)/i.test(pLines[0])) {
+                            html += `
+                                <div class="neat-prompt-header">
+                                    <span class="neat-prompt-badge">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                                        ${escapeHtml(pLines[0])}
+                                    </span>
+                                </div>
+                            `;
+                            pQuery = pLines.slice(1).join(" ");
+                        }
+                        if (pQuery) {
+                            html += `<div class="neat-question-query">${escapeHtml(pQuery)}</div>`;
+                        }
                     }
                     html += `<div class="neat-statements-container" style="display: flex; flex-direction: column; gap: 8px; margin: 12px 0;">`;
                     multiStmts.statements.forEach(stmt => {
@@ -749,7 +767,7 @@
                     const rawLines = block.lines;
 
                     let startIdx = 0;
-                    const promptHeaderMatch = rawLines[0] && rawLines[0].match(/^(கீழ்க்காணும் கூற்றுகளைக் கருத்தில் கொள்க|காலவரிசை வினா|பொருத்துக|சரியான கூற்றைத் தேர்ந்தெடுக்க|Consider the following statements|Match the following)[:\s\-]*$/i);
+                    const promptHeaderMatch = rawLines[0] && rawLines[0].match(/^(?:கீழ்க்காணும்\s+கூற்றுகளைக்\s+கருத்தில்\s+கொள்க|காலவரிசை\s+வினா|நிரல்படுத்துக\s+வினா|பொருத்துக\s+வினா|காலவரிசை|நிரல்படுத்துக|பொருத்துக|கூற்று\s*–?\s*காரணம்\s*வினா|சரியான\s+கூற்றைத்\s+தேர்ந்தெடுக்க|Consider\s+the\s+following(?:\s+statements)?|Match\s+the\s+following)[:\s\-]*$/i);
                     
                     if (promptHeaderMatch) {
                         html += `
@@ -765,9 +783,21 @@
 
                     const remaining = rawLines.slice(startIdx);
                     const romanMap = ["(i)", "(ii)", "(iii)", "(iv)", "(v)", "(vi)", "(vii)", "(viii)"];
-                    const needsAutoRoman = optionsMentionRoman && remaining.length >= 2 && remaining.length <= 8 && !remaining.some(l => /^\(?([i|v|x]+)\)/i.test(l));
 
-                    remaining.forEach((lineText, idx) => {
+                    function isQueryOrInstruction(str) {
+                        if (!str) return false;
+                        if (str.endsWith(":") || str.endsWith("?")) return true;
+                        if (/^(?:பின்வரும்|கீழ்க்காணும்|கீழே\s+தரப்பெற்றுள்ள|கீழே\s+கொடுக்கப்பட்டுள்ள|மேற்கண்ட|Read\s+the|Consider|Which|What|In\s+the\s+light)/i.test(str)) return true;
+                        if (/(?:சீரமைக்க|அமைக்குக|ஆராய்க|கருத்தில்\s+கொள்க|வரிசைப்படுத்துக|தேர்ந்தெடுக்க)[:\s\-]*$/i.test(str)) return true;
+                        return false;
+                    }
+
+                    const candidateStatements = remaining.filter(l => !isQueryOrInstruction(l));
+                    const needsAutoRoman = optionsMentionRoman && candidateStatements.length >= 2 && candidateStatements.length <= 8 && !candidateStatements.some(l => /^\(?([i|v|x]+)\)/i.test(l));
+
+                    let autoRomanIdx = 0;
+
+                    remaining.forEach((lineText) => {
                         const trimmed = lineText.trim();
                         if (!trimmed) return;
 
@@ -804,10 +834,12 @@
                                     <span class="neat-statement-text">${escapeHtml(letterMatch[2])}</span>
                                 </div>
                             `;
-                        } else if (needsAutoRoman && idx < romanMap.length) {
+                        } else if (isQueryOrInstruction(trimmed)) {
+                            html += `<div class="neat-question-query">${escapeHtml(trimmed)}</div>`;
+                        } else if (needsAutoRoman && autoRomanIdx < romanMap.length) {
                             html += `
                                 <div class="neat-statement-box">
-                                    <span class="neat-statement-badge">${romanMap[idx]}</span>
+                                    <span class="neat-statement-badge">${romanMap[autoRomanIdx++]}</span>
                                     <span class="neat-statement-text">${escapeHtml(trimmed)}</span>
                                 </div>
                             `;
