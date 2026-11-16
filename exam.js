@@ -761,6 +761,8 @@ if (totalNumberEl) {
                     "option-letter";
 
                 letter.textContent =
+                    (question.optionLabels && question.optionLabels[key]) ?
+                    question.optionLabels[key] :
                     key;
 
 

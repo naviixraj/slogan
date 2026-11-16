@@ -147,6 +147,49 @@
         };
     }
 
+    function parseArrowMatch(text) {
+        if (!text || (!text.includes("$\\leftrightarrow$") && !text.includes("<->") && !text.includes("↔"))) return null;
+
+        const headerRegex = /([^\n]+?)\s*(?:\$\s*\\leftrightarrow\s*\$|<->|↔)\s*([^\n:]+):?/i;
+        const headerMatch = text.match(headerRegex);
+
+        const lineRegex = /(?:^|\n)\s*\(?([A-Da-dI|V|X|\d]+)\)?[\.:\-\s]*([^$\n↔<]+?)\s*(?:\$\s*\\leftrightarrow\s*\$|<->|↔)\s*\(?([A-Da-dI|V|X|\d]+)\)?[\.:\-\s]*([^\n]+)/g;
+
+        const itemsI = [];
+        const itemsII = [];
+        let lm;
+        let firstIdx = -1;
+        let lastIdx = -1;
+
+        while ((lm = lineRegex.exec(text)) !== null) {
+            if (firstIdx === -1) firstIdx = lm.index;
+            lastIdx = lm.index + lm[0].length;
+            itemsI.push({ key: lm[1].toUpperCase(), text: lm[2].trim() });
+            itemsII.push({ key: lm[3].toUpperCase(), text: lm[4].trim() });
+        }
+
+        if (itemsI.length < 2) return null;
+
+        let preamble = "";
+        let postamble = "";
+        if (headerMatch && headerMatch.index < firstIdx) {
+            preamble = text.slice(0, headerMatch.index).trim();
+        } else {
+            preamble = text.slice(0, firstIdx).trim();
+        }
+        postamble = text.slice(lastIdx).trim();
+
+        const titleI = headerMatch ? headerMatch[1].trim() : "பட்டியல் I";
+        const titleII = headerMatch ? headerMatch[2].trim() : "பட்டியல் II";
+
+        return {
+            preamble,
+            listI: { title: titleI, items: itemsI },
+            listII: { title: titleII, items: itemsII },
+            postamble
+        };
+    }
+
     function renderNeatQuestion(raw, options) {
         if (!raw || typeof raw !== "string") return "";
 
@@ -276,7 +319,7 @@
             }
 
             // 4. Detect Data Passage / Directions header
-            if (/^(?:The following Table|Based on the data|Data passage:|Directions?:|Read the following passage|Consider the following|பத்தியைப் படித்து)/i.test(line)) {
+            if (/^(?:#+\s*Reading Comprehension|\*\*Directions|\*\*Passage|The following Table|Based on the data|Data passage:|Directions?:|Read the following passage|Consider the following|பத்தியைப் படித்து)/i.test(line)) {
                 flushNormal();
                 currentPassage.push(line);
                 i++;
@@ -345,7 +388,7 @@
                 </div>`;
             } else if (block.type === "normal") {
                 const blockText = block.lines.join("\n");
-                const matchLists = parseMatchLists(blockText);
+                const matchLists = parseMatchLists(blockText) || parseArrowMatch(blockText);
                 const ar = !matchLists ? parseAssertionReason(blockText) : null;
 
                 if (matchLists) {

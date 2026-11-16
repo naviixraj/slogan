@@ -325,109 +325,61 @@ function convertHtmlTablesToMarkdown(html) {
 function splitOptionsSmart(str) {
     if (!str || typeof str !== "string") return null;
 
-    // 1. Strictly numbered options: (1) ... (2) ... (3) ... (4) ...
-    const numRegex = /(?:^|\n|\s)\(([1-4])\)\s+/g;
-    const numMatches = [];
-    let nm;
-    while ((nm = numRegex.exec(str)) !== null) {
-        numMatches.push({ num: parseInt(nm[1], 10), index: nm.index, len: nm[0].length });
-    }
+    const candidates = [];
 
-    if (numMatches.length >= 4) {
-        for (let i = 0; i <= numMatches.length - 4; i++) {
-            if (numMatches[i].num === 1 && numMatches[i + 1].num === 2 && numMatches[i + 2].num === 3 && numMatches[i + 3].num === 4) {
-                const m0 = numMatches[i];
-                const m1 = numMatches[i + 1];
-                const m2 = numMatches[i + 2];
-                const m3 = numMatches[i + 3];
+    // Helper to find valid 4-option sequences
+    function findSeq(regex, keys, labelList, mapFn) {
+        const matches = [];
+        let m;
+        while ((m = regex.exec(str)) !== null) {
+            matches.push({ key: mapFn ? mapFn(m[1]) : m[1], rawLabel: m[1], index: m.index, len: m[0].length });
+        }
+        for (let i = 0; i <= matches.length - 4; i++) {
+            if (matches[i].key === keys[0] && matches[i + 1].key === keys[1] && matches[i + 2].key === keys[2] && matches[i + 3].key === keys[3]) {
+                const m0 = matches[i];
+                const m1 = matches[i + 1];
+                const m2 = matches[i + 2];
+                const m3 = matches[i + 3];
 
                 let optD = str.slice(m3.index + m3.len).trim();
-                const trail = optD.match(/\s*(?:SECTION\s+[B-Z]|Faculty\s+Answer|Answer\s+Key|சரியான\s*விடை|விளக்கம்|Explanation|பதில்|குறுகிய\s*விளக்கம்)[\s\S]*$/i);
+                const trail = optD.match(/\s*(?:SECTION\s+[A-Z]|Directions:|Passage|Faculty\s+Answer|Answer\s+Key|சரியான\s*விடை|விளக்கம்|Explanation|பதில்|குறுகிய\s*விளக்கம்|தடயவியல்\s*பகுப்பாய்வு)[\s\S]*$/i);
                 if (trail) {
                     optD = optD.slice(0, trail.index).trim();
                 }
 
-                return {
+                candidates.push({
+                    startIndex: m0.index,
                     options: {
                         A: str.slice(m0.index + m0.len, m1.index).trim(),
                         B: str.slice(m1.index + m1.len, m2.index).trim(),
                         C: str.slice(m2.index + m2.len, m3.index).trim(),
                         D: optD
                     },
+                    optionLabels: {
+                        A: labelList[0],
+                        B: labelList[1],
+                        C: labelList[2],
+                        D: labelList[3]
+                    },
                     body: str.slice(0, m0.index).trim()
-                };
+                });
             }
         }
     }
+
+    // 1. Strictly numbered options: (1) ... (2) ... (3) ... (4) ...
+    findSeq(/(?:^|\n|\s)\(([1-4])\)\s+/g, ["1", "2", "3", "4"], ["1", "2", "3", "4"]);
 
     // 2. Lettered options: (A)... (B)... (C)... (D)...
-    const letterRegex = /(?:^|\n|\s)\(([A-D])\)\s+/gi;
-    const letMatches = [];
-    let lm;
-    while ((lm = letterRegex.exec(str)) !== null) {
-        letMatches.push({ key: lm[1].toUpperCase(), index: lm.index, len: lm[0].length });
-    }
-    if (letMatches.length >= 4) {
-        for (let i = 0; i <= letMatches.length - 4; i++) {
-            if (letMatches[i].key === "A" && letMatches[i + 1].key === "B" && letMatches[i + 2].key === "C" && letMatches[i + 3].key === "D") {
-                const m0 = letMatches[i];
-                const m1 = letMatches[i + 1];
-                const m2 = letMatches[i + 2];
-                const m3 = letMatches[i + 3];
-
-                let optD = str.slice(m3.index + m3.len).trim();
-                const trail = optD.match(/\s*(?:SECTION\s+[B-Z]|Faculty\s+Answer|Answer\s+Key|சரியான\s*விடை|விளக்கம்|Explanation|பதில்|குறுகிய\s*விளக்கம்)[\s\S]*$/i);
-                if (trail) {
-                    optD = optD.slice(0, trail.index).trim();
-                }
-
-                return {
-                    options: {
-                        A: str.slice(m0.index + m0.len, m1.index).trim(),
-                        B: str.slice(m1.index + m1.len, m2.index).trim(),
-                        C: str.slice(m2.index + m2.len, m3.index).trim(),
-                        D: optD
-                    },
-                    body: str.slice(0, m0.index).trim()
-                };
-            }
-        }
-    }
+    findSeq(/(?:^|\n|\s)\(([A-D])\)\s+/gi, ["A", "B", "C", "D"], ["A", "B", "C", "D"], k => k.toUpperCase());
 
     // 2b. Tamil lettered options: (அ)... (ஆ)... (இ)... (ஈ)...
-    const tamilOptRegex = /(?:^|\n|\s)\(([அஆஇஈ])\)\s+/gi;
-    const tamilMatches = [];
-    let tm;
-    while ((tm = tamilOptRegex.exec(str)) !== null) {
-        const tamilChar = tm[1];
-        const key = tamilChar === "அ" ? "A" : tamilChar === "ஆ" ? "B" : tamilChar === "இ" ? "C" : "D";
-        tamilMatches.push({ key, index: tm.index, len: tm[0].length });
-    }
-    if (tamilMatches.length >= 4) {
-        for (let i = 0; i <= tamilMatches.length - 4; i++) {
-            if (tamilMatches[i].key === "A" && tamilMatches[i + 1].key === "B" && tamilMatches[i + 2].key === "C" && tamilMatches[i + 3].key === "D") {
-                const m0 = tamilMatches[i];
-                const m1 = tamilMatches[i + 1];
-                const m2 = tamilMatches[i + 2];
-                const m3 = tamilMatches[i + 3];
+    findSeq(/(?:^|\n|\s)\(([அஆஇஈ])\)\s+/gi, ["A", "B", "C", "D"], ["அ", "ஆ", "இ", "ஈ"], k => k === "அ" ? "A" : k === "ஆ" ? "B" : k === "இ" ? "C" : "D");
 
-                let optD = str.slice(m3.index + m3.len).trim();
-                const trail = optD.match(/\s*(?:SECTION\s+[B-Z]|Faculty\s+Answer|Answer\s+Key|சரியான\s*விடை|விளக்கம்|Explanation|பதில்|குறுகிய\s*விளக்கம்)[\s\S]*$/i);
-                if (trail) {
-                    optD = optD.slice(0, trail.index).trim();
-                }
-
-                return {
-                    options: {
-                        A: str.slice(m0.index + m0.len, m1.index).trim(),
-                        B: str.slice(m1.index + m1.len, m2.index).trim(),
-                        C: str.slice(m2.index + m2.len, m3.index).trim(),
-                        D: optD
-                    },
-                    body: str.slice(0, m0.index).trim()
-                };
-            }
-        }
+    if (candidates.length > 0) {
+        // Pick candidate closest to bottom of question to avoid matching embedded List II items
+        candidates.sort((a, b) => b.startIndex - a.startIndex);
+        return candidates[0];
     }
 
     // 3. Fallback: 4 consecutive lines (e.g. Q1-Q5 unlabeled numbers)
@@ -437,11 +389,18 @@ function splitOptionsSmart(str) {
         const qLines = lines.slice(0, -4);
         if (candidateOpts.every(c => c.length < 80 && !c.includes("?") && !c.includes("|"))) {
             return {
+                startIndex: 0,
                 options: {
                     A: candidateOpts[0],
                     B: candidateOpts[1],
                     C: candidateOpts[2],
                     D: candidateOpts[3]
+                },
+                optionLabels: {
+                    A: "1",
+                    B: "2",
+                    C: "3",
+                    D: "4"
                 },
                 body: qLines.join("\n").trim()
             };
@@ -541,11 +500,13 @@ function parseMcqText(rawText) {
         rawChunk = rawChunk.replace(/(?:விருப்பங்கள்|தெரிவுகள்)\s*[:\s]+/gi, "\n");
 
         let options = { A: "Option A", B: "Option B", C: "Option C", D: "Option D" };
+        let optionLabels = { A: "A", B: "B", C: "C", D: "D" };
         let questionPrompt = rawChunk;
 
         const smartRes = splitOptionsSmart(rawChunk);
         if (smartRes) {
             options = smartRes.options;
+            optionLabels = smartRes.optionLabels || optionLabels;
             questionPrompt = smartRes.body;
         }
 
@@ -561,7 +522,7 @@ function parseMcqText(rawText) {
         }
 
         // Clean out any trailing SECTION headers
-        questionPrompt = questionPrompt.replace(/\s*SECTION\s+[A-Z][\s\S]*$/i, "").trim();
+        questionPrompt = questionPrompt.replace(/\n\s*SECTION\s+[B-Z][\s\S]*$/i, "").trim();
 
         const section = qNum <= 50 ? "Paper 1" : "Tamil Paper 2";
 
@@ -572,10 +533,28 @@ function parseMcqText(rawText) {
             question: questionPrompt,
             text: questionPrompt,
             options: options,
+            optionLabels: optionLabels,
             correctAnswer: answer,
             answer: answer,
             explanation: explanation
         });
+    }
+
+    // Attach reading passage to Q16-Q20 if present
+    const q15Match = validMatches.find(x => x.num === 15);
+    const q16Match = validMatches.find(x => x.num === 16);
+    if (q15Match && q16Match) {
+        const between15and16 = cleanDoc.slice(q15Match.index, q16Match.index);
+        const passMatch = between15and16.match(/(?:Directions:\s*Read\s+the\s+following\s+passage|Passage\s*\n\s*Educational\s+success)[\s\S]*$/i);
+        if (passMatch) {
+            const passageText = passMatch[0].trim().replace(/Questions\s+1[–-]5/i, "Questions 16–20");
+            for (const q of questions) {
+                if (q.number >= 16 && q.number <= 20 && !q.question.includes("Educational success")) {
+                    q.question = passageText + "\n\n" + q.question;
+                    q.text = q.question;
+                }
+            }
+        }
     }
 
     return questions;
