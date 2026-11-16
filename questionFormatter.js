@@ -94,8 +94,8 @@
         const sbsHeaderRegex = /(?:^|\n)\s*(List\s*[-–—:]?\s*(?:I|1|A|One)|பட்டியல்\s*[-–—:]?\s*(?:I|1|ஒன்று|முதல்)[^\n]*?)(?:\s{2,}|\t|\s+)(List\s*[-–—:]?\s*(?:II|2|B|Two)|பட்டியல்\s*[-–—:]?\s*(?:II|2|இரண்டு)[^\n]*)\s*\n([\s\S]*?)(?=(?:\n\s*(?:Options|விருப்பங்கள்|தெரிவுகள்|Choose\s+the\s+correct|கீழே\s+தரப்பெற்றுள்ள)|$))/i;
         const sbsMatch = text.match(sbsHeaderRegex);
         if (sbsMatch) {
-            const titleI = sbsMatch[1].trim();
-            const titleII = sbsMatch[2].trim();
+            const titleI = sbsMatch[1].trim().replace(/[:\-\–—\s]+$/, "");
+            const titleII = sbsMatch[2].trim().replace(/[:\-\–—\s]+$/, "");
             const body = sbsMatch[3].trim();
             const lines = body.split("\n").map(l => l.trim()).filter(Boolean);
             const rowRegex = /^\(?([A-Da-d\d]+)\)?[\.:\-\)]?\s*([^\n\(\)]+?)\s+\(?([A-Da-dI|V|X\d]+)\)?[\.:\-\)]?\s*([^\n]+)$/i;
@@ -104,8 +104,12 @@
             for (const l of lines) {
                 const rm = l.match(rowRegex);
                 if (rm) {
-                    sbsItemsI.push({ key: rm[1].toUpperCase(), text: rm[2].trim() });
-                    sbsItemsII.push({ key: rm[3].toUpperCase(), text: rm[4].trim() });
+                    const t1 = rm[2].trim();
+                    const t2 = rm[4].trim();
+                    if (t1.replace(/[:\-\–—\s\.\,\;]/g, "").length > 0 && t2.replace(/[:\-\–—\s\.\,\;]/g, "").length > 0) {
+                        sbsItemsI.push({ key: rm[1].toUpperCase(), text: t1 });
+                        sbsItemsII.push({ key: rm[3].toUpperCase(), text: t2 });
+                    }
                 }
             }
             if (sbsItemsI.length >= 2 && sbsItemsII.length >= 2) {
@@ -119,18 +123,19 @@
         }
 
         // 2. Check for sequential format: "List I ... List II ..."
-        const listRegex = /(?:^|\n)\s*(List\s*[-–—:]?\s*(?:I|1|A|One)|பட்டியல்\s*[-–—:]?\s*(?:I|1|ஒன்று|முதல்)(?:\s*\([^A-Da-dI|V|X\d\)]+\))?)([\s\S]*?)(?:^|\n)\s*(List\s*[-–—:]?\s*(?:II|2|B|Two)|பட்டியல்\s*[-–—:]?\s*(?:II|2|இரண்டு)(?:\s*\([^A-Da-dI|V|X\d\)]+\))?)([\s\S]*?)(?=(?:\n\s*(?:Choose\s+the\s+correct|கீழே\s+தரப்பெற்றுள்ள|விருப்பங்கள்|தெரிவுகள்|Options)|$))/i;
+        const listRegex = /(?:^|\n)\s*(List\s*[-–—:]?\s*(?:I|1|A|One)|பட்டியல்\s*[-–—:]?\s*(?:I|1|ஒன்று|முதல்)(?:\s*\([^A-Da-dI|V|X\d\)]+\))?)[:\s\-]*\n?([\s\S]*?)(?:^|\n)\s*(List\s*[-–—:]?\s*(?:II|2|B|Two)|பட்டியல்\s*[-–—:]?\s*(?:II|2|இரண்டு)(?:\s*\([^A-Da-dI|V|X\d\)]+\))?)[:\s\-]*\n?([\s\S]*?)(?=(?:\n\s*(?:Choose\s+the\s+correct|கீழே\s+தரப்பெற்றுள்ள|விருப்பங்கள்|தெரிவுகள்|Options)|$))/i;
         const match = text.match(listRegex);
         if (!match) return null;
 
-        const titleI = match[1].trim();
-        const bodyI = match[2].trim();
-        const titleII = match[3].trim();
-        const bodyII = match[4].trim();
+        const titleI = match[1].trim().replace(/[:\-\–—\s]+$/, "");
+        const bodyI = match[2].trim().replace(/^[:\-\–—\s]+/, "");
+        const titleII = match[3].trim().replace(/[:\-\–—\s]+$/, "");
+        const bodyII = match[4].trim().replace(/^[:\-\–—\s]+/, "");
 
         function splitItems(str) {
             // First check line-by-line
-            const lines = str.split("\n").map(l => l.trim()).filter(Boolean);
+            const rawLines = str.split("\n").map(l => l.trim()).filter(Boolean);
+            const lines = rawLines.filter(l => l.replace(/[:\-\–—\s\.\,\;]/g, "").length > 0);
             const items = [];
 
             for (const line of lines) {
@@ -139,8 +144,11 @@
                     m = line.match(/^([A-Da-dI|V|X|\d]+)\s+(.*)/i);
                 }
                 if (m) {
-                    items.push({ key: m[1].toUpperCase(), text: m[2].trim() });
-                } else if (line.length > 0) {
+                    const itemText = m[2].trim();
+                    if (itemText.replace(/[:\-\–—\s\.\,\;]/g, "").length > 0) {
+                        items.push({ key: m[1].toUpperCase(), text: itemText });
+                    }
+                } else if (line.replace(/[:\-\–—\s\.\,\;]/g, "").length > 0) {
                     items.push({ key: "", text: line });
                 }
             }
@@ -158,10 +166,13 @@
                 const inlineItems = [];
                 for (let i = 0; i < matches.length; i++) {
                     const nextIdx = matches[i + 1] ? matches[i + 1].index : str.length;
-                    inlineItems.push({
-                        key: matches[i].key,
-                        text: str.slice(matches[i].index + matches[i].len, nextIdx).trim()
-                    });
+                    const itemText = str.slice(matches[i].index + matches[i].len, nextIdx).trim();
+                    if (itemText.replace(/[:\-\–—\s\.\,\;]/g, "").length > 0) {
+                        inlineItems.push({
+                            key: matches[i].key,
+                            text: itemText
+                        });
+                    }
                 }
                 return inlineItems;
             }
@@ -607,6 +618,8 @@
                 if (block.rows && block.rows.length > 0) {
                     html += `<tbody>`;
                     block.rows.forEach(r => {
+                        const hasContent = r.some(c => c && c.replace(/[:\-\–—\s\.\,\;]/g, "").length > 0);
+                        if (!hasContent) return;
                         html += `<tr>`;
                         r.forEach((c, cIdx) => {
                             html += `<td class="${cIdx === 0 ? 'col-first' : 'col-val'}">${escapeHtml(c)}</td>`;
@@ -647,6 +660,12 @@
                         const item2 = matchLists.listII.items[r];
                         const text1 = item1 ? (item1.key ? `<strong>(${escapeHtml(item1.key)})</strong> ${escapeHtml(item1.text)}` : escapeHtml(item1.text)) : "";
                         const text2 = item2 ? (item2.key ? `<strong>(${escapeHtml(item2.key)})</strong> ${escapeHtml(item2.text)}` : escapeHtml(item2.text)) : "";
+                        
+                        // Safety: ignore any row where BOTH cells are empty or only punctuation
+                        const clean1 = text1.replace(/<[^>]*>/g, "").replace(/[:\-\–—\s\.\,\;]/g, "");
+                        const clean2 = text2.replace(/<[^>]*>/g, "").replace(/[:\-\–—\s\.\,\;]/g, "");
+                        if (!clean1 && !clean2) continue;
+
                         html += `
                             <tr>
                                 <td class="col-first">${text1}</td>
