@@ -29,28 +29,28 @@
         .doc-header {
             border-bottom: 2px solid #1E293B;
             padding-bottom: 10px;
-            margin-bottom: 18px;
+            margin-bottom: 20px;
             display: flex;
             justify-content: space-between;
             align-items: flex-end;
         }
 
         .doc-title h1 {
-            font-size: 19px;
+            font-size: 20px;
             font-weight: 800;
             color: #0F172A;
             letter-spacing: -0.3px;
         }
 
         .doc-title p {
-            font-size: 11.5px;
+            font-size: 12px;
             color: #475569;
             font-weight: 600;
             margin-top: 2px;
         }
 
         .doc-tag {
-            font-size: 10.5px;
+            font-size: 11px;
             font-weight: 700;
             background: #EFF6FF;
             color: #1D4ED8;
@@ -63,7 +63,7 @@
 
         /* CARD CONTAINER PER QUESTION TYPE */
         .type-section {
-            margin-bottom: 22px;
+            margin-bottom: 24px;
             page-break-inside: avoid;
             border: 1px solid #CBD5E1;
             border-radius: 8px;
@@ -74,7 +74,7 @@
 
         .type-header {
             background: #F8FAFC;
-            padding: 9px 14px;
+            padding: 10px 14px;
             border-bottom: 1px solid #E2E8F0;
             display: flex;
             justify-content: space-between;
@@ -82,7 +82,7 @@
         }
 
         .type-name {
-            font-size: 13.5px;
+            font-size: 14px;
             font-weight: 800;
             color: #0F172A;
             display: flex;
@@ -100,8 +100,8 @@
         .authoring-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 14px;
-            padding: 12px 14px;
+            gap: 16px;
+            padding: 14px 16px;
             background: #FFFFFF;
             border-bottom: 1px solid #E2E8F0;
         }
@@ -121,7 +121,7 @@
         }
 
         .lang-title {
-            font-size: 11px;
+            font-size: 11.5px;
             font-weight: 800;
             text-transform: uppercase;
             letter-spacing: 0.5px;
@@ -157,21 +157,28 @@
             border: 1px solid #A7F3D0;
         }
 
+        /* SPURRED & ENLARGED AUTHORING CODE BOX */
         .code-box {
             background: #F8FAFC;
-            border: 1px solid #E2E8F0;
-            border-radius: 5px;
-            padding: 10px 12px;
-            font-family: 'Consolas', 'Courier New', monospace;
-            font-size: 10.5px;
-            color: #1E293B;
+            border: 1px solid #CBD5E1;
+            border-left: 4px solid #2563EB;
+            border-radius: 6px;
+            padding: 12px 14px;
+            font-family: 'Consolas', 'Menlo', 'Nirmala UI', monospace;
+            font-size: 12.5px;
+            color: #0F172A;
             white-space: pre-wrap;
-            line-height: 1.5;
+            line-height: 1.6;
+            letter-spacing: 0.1px;
+        }
+
+        .lang-card.tamil .code-box {
+            border-left-color: #059669;
         }
 
         /* BOTTOM SECTION: STUDENT VIEW (CANDIDATE EXAM SCREEN) */
         .student-preview-section {
-            padding: 12px 14px 14px 14px;
+            padding: 12px 16px 16px 16px;
             background: #FDFEFE;
         }
 
@@ -179,11 +186,11 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            margin-bottom: 7px;
+            margin-bottom: 8px;
         }
 
         .student-preview-label {
-            font-size: 10.5px;
+            font-size: 11px;
             font-weight: 800;
             color: #475569;
             text-transform: uppercase;
@@ -203,10 +210,10 @@
             background: #FFFFFF;
             border: 1px solid #CBD5E1;
             border-radius: 6px;
-            padding: 12px 14px;
+            padding: 14px 16px;
             display: flex;
             flex-direction: column;
-            gap: 9px;
+            gap: 10px;
             box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
         }
 
@@ -217,7 +224,7 @@
         }
 
         .student-q-badge {
-            font-size: 10px;
+            font-size: 10.5px;
             font-weight: 700;
             background: #0F172A;
             color: #FFFFFF;
@@ -226,7 +233,7 @@
         }
 
         .student-type-badge {
-            font-size: 9.5px;
+            font-size: 10px;
             font-weight: 700;
             background: #F1F5F9;
             color: #475569;
@@ -236,14 +243,14 @@
         }
 
         .student-q-prompt {
-            font-size: 12.5px;
+            font-size: 13px;
             font-weight: 700;
             color: #0F172A;
             line-height: 1.45;
         }
 
         .student-q-query {
-            font-size: 11.5px;
+            font-size: 12px;
             color: #334155;
             font-weight: 600;
         }
@@ -259,7 +266,7 @@
         .student-statement-row {
             display: flex;
             gap: 8px;
-            font-size: 11px;
+            font-size: 11.5px;
             background: #F8FAFC;
             border: 1px solid #E2E8F0;
             border-radius: 4px;
@@ -278,7 +285,7 @@
         .student-match-table {
             width: 100%;
             border-collapse: collapse;
-            font-size: 11px;
+            font-size: 11.5px;
             margin: 4px 0;
             border: 1px solid #CBD5E1;
             border-radius: 5px;
@@ -287,7 +294,7 @@
 
         .student-match-table th {
             background: #F1F5F9;
-            padding: 6px 10px;
+            padding: 7px 10px;
             text-align: left;
             font-weight: 700;
             color: #0F172A;
@@ -301,11 +308,11 @@
         }
 
         .student-match-table td {
-            padding: 6px 10px;
+            padding: 7px 10px;
             border-bottom: 1px solid #E2E8F0;
             border-right: 1px solid #E2E8F0;
             color: #334155;
-            font-size: 11px;
+            font-size: 11.5px;
         }
 
         .student-match-table td:last-child {
@@ -320,7 +327,7 @@
         .student-options-grid {
             display: grid;
             grid-template-columns: 1fr 1fr;
-            gap: 6px;
+            gap: 8px;
             margin-top: 4px;
         }
 
@@ -335,8 +342,8 @@
             background: #FFFFFF;
             border: 1px solid #CBD5E1;
             border-radius: 5px;
-            padding: 6px 10px;
-            font-size: 11px;
+            padding: 7px 12px;
+            font-size: 11.5px;
             color: #1E293B;
             transition: all 0.15s ease;
         }
@@ -388,7 +395,7 @@
 
         .rules-table th {
             background: #F8FAFC;
-            padding: 8px 12px;
+            padding: 9px 12px;
             text-align: left;
             font-weight: 700;
             border-bottom: 1px solid #CBD5E1;
@@ -414,7 +421,7 @@
             color: #0F172A;
             padding: 2px 5px;
             border-radius: 3px;
-            font-size: 10.5px;
+            font-size: 11px;
             border: 1px solid #E2E8F0;
         }
 
@@ -446,7 +453,7 @@
     <header class="doc-header">
         <div class="doc-title">
             <h1>SLOGAN ACADEMY • QUESTION AUTHORING SPECIFICATION</h1>
-            <p>Standard Format Specification (English & Tamil) & Candidate Exam Screen View</p>
+            <p>Official Format Specification (English & Tamil) & Candidate Exam Screen View</p>
         </div>
         <span class="doc-tag">100% Parsing Accuracy</span>
     </header>
@@ -465,24 +472,28 @@
                     <span class="lang-pill english">Input Source</span>
                 </div>
                 <div class="code-box">1. Which layer of the OSI model does a router operate on?
+
 (A) Physical Layer
 (B) Data Link Layer
 (C) Network Layer
 (D) Transport Layer
+
 Answer: C
 Explanation: Routers operate at Layer 3 (Network Layer).</div>
             </div>
-            <div class="lang-card">
+            <div class="lang-card tamil">
                 <div class="lang-card-header">
                     <span class="lang-title tamil">Tamil Format</span>
                     <span class="lang-pill tamil">உள்ளீட்டு வடிவம்</span>
                 </div>
                 <div class="code-box">வினா 1:
 உலக சுற்றுச்சூழல் தினம் கொண்டாடப்படும் நாள் எது?
+
 (A) ஜூன் 5
 (B) ஜூலை 11
 (C) செப்டம்பர் 16
 (D) டிசம்பர் 1
+
 சரியான விடை: A
 விளக்கம்: ஒவ்வோர் ஆண்டும் ஜூன் 5 அன்று அனுசரிக்கப்படுகிறது.</div>
             </div>
@@ -534,11 +545,13 @@ Explanation: Routers operate at Layer 3 (Network Layer).</div>
                     <span class="lang-pill english">Input Source</span>
                 </div>
                 <div class="code-box">2. Match Protocols in List I with Ports in List II:
+
 List I (Protocols)
 (A) HTTP
 (B) HTTPS
 (C) SSH
 (D) DNS
+
 List II (Port Numbers)
 (I) 22
 (II) 53
@@ -548,20 +561,23 @@ List II (Port Numbers)
 Choose the correct answer:
 (A) (A)-(III), (B)-(IV), (C)-(I), (D)-(II)
 (B) (A)-(I), (B)-(II), (C)-(III), (D)-(IV)
+
 Answer: A</div>
             </div>
-            <div class="lang-card">
+            <div class="lang-card tamil">
                 <div class="lang-card-header">
                     <span class="lang-title tamil">Tamil Format</span>
                     <span class="lang-pill tamil">உள்ளீட்டு வடிவம்</span>
                 </div>
                 <div class="code-box">வினா 2 [பொருத்துக வினா]:
-தமிழ் நூல்களை ஆசிரியர்களுடன் பொருத்துக:
+தமிழ் அகராதியியல் நூல்களை ஆசிரியர்களுடன் பொருத்துக:
+
 பட்டியல் I (நூல்)
 (A) சதுரகராதி
 (B) தமிழ்-ஆங்கில அகராதி
 (C) அபிதான சிந்தாமணி
 (D) தமிழ் லெக்சிகன்
+
 பட்டியல் II (ஆசிரியர்)
 (I) வீரமாமுனிவர்
 (II) எம். வின்ஸ்லோ
@@ -571,6 +587,7 @@ Answer: A</div>
 சரியான பொருத்தத்தைத் தேர்ந்தெடுக்க:
 (A) (A)-(I), (B)-(II), (C)-(III), (D)-(IV)
 (B) (A)-(III), (B)-(IV), (C)-(I), (D)-(II)
+
 சரியான விடை: B</div>
             </div>
         </div>
@@ -628,6 +645,7 @@ Answer: A</div>
                     <span class="lang-pill english">Input Source</span>
                 </div>
                 <div class="code-box">3. Assertion and Reason:
+
 Assertion (A): Light travels faster in vacuum than in glass.
 Reason (R): Refractive index of vacuum is less than glass.
 
@@ -636,22 +654,25 @@ Choose the most appropriate answer:
 (B) Both (A) and (R) are correct, but (R) is NOT correct explanation.
 (C) (A) is correct, but (R) is incorrect.
 (D) (A) is incorrect, but (R) is correct.
+
 Answer: A</div>
             </div>
-            <div class="lang-card">
+            <div class="lang-card tamil">
                 <div class="lang-card-header">
                     <span class="lang-title tamil">Tamil Format</span>
                     <span class="lang-pill tamil">உள்ளீட்டு வடிவம்</span>
                 </div>
                 <div class="code-box">வினா 3 [உறுதிக்கூற்று - காரணம்].
+
 உறுதிக்கூற்று (உ): தேம்பாவணி காப்பியத் தலைவன் வளன் ஆவார்.
-காரணம் (கா): தேம்பாவணி 3,615 விருத்தப் பாடல்களைக் கொண்ட கிறித்துவக் காப்பியமாகும்.
+காரணம் (கா): தேம்பாவணி 3,615 விருத்தப் பாடல்களைக் கொண்ட காப்பியம்.
 
 கீழே தரப்பெற்றுள்ள விருப்பங்களிலிருந்து தேர்ந்தெடுக்க:
 (1) (உ) சரி, (கா) சரி; (கா) சரியான விளக்கம்
 (2) (உ) சரி, (கா) சரி; ஆனால் (கா) சரியான விளக்கமன்று
 (3) (உ) தவறு, (கா) சரி
 (4) (உ) தவறு, (கா) தவறு
+
 சரியான விடை: (2)</div>
             </div>
         </div>
@@ -704,6 +725,7 @@ Answer: A</div>
                     <span class="lang-pill english">Input Source</span>
                 </div>
                 <div class="code-box">4. Statement-Based Question
+
 Consider the following statements regarding RBI:
 (i) RBI was established on April 1, 1935.
 (ii) Headquarters moved to Mumbai in 1937.
@@ -713,14 +735,16 @@ Consider the following statements regarding RBI:
 Which of the statements given above are correct?
 (A) (i), (ii) and (iii) only
 (B) (i) and (iv) only
+
 Answer: A</div>
             </div>
-            <div class="lang-card">
+            <div class="lang-card tamil">
                 <div class="lang-card-header">
                     <span class="lang-title tamil">Tamil Format</span>
                     <span class="lang-pill tamil">உள்ளீட்டு வடிவம்</span>
                 </div>
                 <div class="code-box">90. பல்கூற்றுத் தேர்வு வினா
+
 பெண்ணியக் கவிஞர்கள் பற்றிய பின்வரும் கூற்றுகளை ஆராய்க:
 (i) 'கருவறை வாசனை' கவிதைத் தொகுப்பைப் படைத்தவர் கனிமொழி.
 (ii) 'இரவு மிருகம்' கவிதைத் தொகுப்பை எழுதியவர் சல்மா.
@@ -731,6 +755,7 @@ Answer: A</div>
 (ஆ) (i), (iii) மட்டும் சரி
 (இ) (ii), (iv) மட்டும் சரி
 (ஈ) அனைத்தும் சரி
+
 பதில்: ஆ</div>
             </div>
         </div>
@@ -775,6 +800,7 @@ Answer: A</div>
                     <span class="lang-pill english">Input Source</span>
                 </div>
                 <div class="code-box">5. Arrange computer innovations in chronological order:
+
 (i) Invention of the Transistor
 (ii) Launch of the World Wide Web
 (iii) Development of the C Language
@@ -783,14 +809,16 @@ Answer: A</div>
 Choose the correct sequence:
 (A) (i) -> (iv) -> (iii) -> (ii)
 (B) (i) -> (iii) -> (iv) -> (ii)
+
 Answer: A</div>
             </div>
-            <div class="lang-card">
+            <div class="lang-card tamil">
                 <div class="lang-card-header">
                     <span class="lang-title tamil">Tamil Format</span>
                     <span class="lang-pill tamil">உள்ளீட்டு வடிவம்</span>
                 </div>
                 <div class="code-box">வினா 5 [காலவரிசை வினா]:
+
 தமிழ்த் திறனாய்வு நூல்களை வெளியீட்டாண்டு அடிப்படையில் சீரமைக்க:
 (i) இலக்கிய விமரிசனம் (தொ.மு.சி. ரகுநாதன்)
 (ii) விமரிசனக்கலை (க.நா. சுப்பிரமணியம்)
@@ -800,6 +828,7 @@ Answer: A</div>
 சரியான காலவரிசையைத் தேர்ந்தெடுக்க:
 (A) (i) -> (ii) -> (iii) -> (iv)
 (B) (ii) -> (i) -> (iv) -> (iii)
+
 சரியான விடை: A</div>
             </div>
         </div>
@@ -849,6 +878,7 @@ Answer: A</div>
                     <span class="lang-pill english">Input Source</span>
                 </div>
                 <div class="code-box">Directions: Read passage and answer Questions 6 and 7:
+
 Passage:
 Photosynthesis converts light energy into glucose in chloroplasts. Water splits to release oxygen.
 
@@ -860,17 +890,19 @@ Answer: B
 (A) Nitrogen        (B) Oxygen
 Answer: B</div>
             </div>
-            <div class="lang-card">
+            <div class="lang-card tamil">
                 <div class="lang-card-header">
                     <span class="lang-title tamil">Tamil Format</span>
                     <span class="lang-pill tamil">உள்ளீட்டு வடிவம்</span>
                 </div>
                 <div class="code-box">வழிமுறைகள்: பின்வரும் பத்தியைப் படித்து விடையளிக்கவும்:
+
 பத்தி:
 ஒளிச்சேர்க்கை என்பது தாவரங்கள் சூரிய ஒளியைப் பயன்படுத்தி உணவைத் தயாரிக்கும் நிகழ்வாகும். இது பசங்கணிகத்தில் நடைபெற்று ஆக்சிஜனை வெளியிடுகிறது.
 
 6. ஒளிச்சேர்க்கை நடைபெறும் செல் உறுப்பு எது?
 (A) மைட்டோகாண்ட்ரியா    (B) பசங்கணிகம்
+
 சரியான விடை: B</div>
             </div>
         </div>
@@ -910,21 +942,24 @@ Answer: B</div>
                     <span class="lang-pill english">Input Source</span>
                 </div>
                 <div class="code-box">8. Car production (in thousands) from 2021 to 2023:
+
 Company | 2021 | 2022 | 2023
 Alpha | 40 | 55 | 70
 Beta  | 30 | 45 | 60
 
 What is percentage increase for Alpha from 2021 to 2023?
 (A) 50%    (B) 60%    (C) 75%    (D) 80%
+
 Answer: C
 Explanation: Increase = 30. (30/40) * 100 = 75%.</div>
             </div>
-            <div class="lang-card">
+            <div class="lang-card tamil">
                 <div class="lang-card-header">
                     <span class="lang-title tamil">Tamil Format</span>
                     <span class="lang-pill tamil">உள்ளீட்டு வடிவம்</span>
                 </div>
                 <div class="code-box">வினா 8:
+
 2021 முதல் 2023 வரை மகிழுந்து உற்பத்தி (ஆயிரங்களில்):
 நிறுவனம் | 2021 | 2022 | 2023
 ஆல்பா | 40 | 55 | 70
@@ -932,6 +967,7 @@ Explanation: Increase = 30. (30/40) * 100 = 75%.</div>
 
 ஆல்பா நிறுவனத்தின் விழுக்காடு அதிகரிப்பு எவ்வளவு?
 (A) 50%    (B) 60%    (C) 75%    (D) 80%
+
 சரியான விடை: C
 விளக்கம்: அதிகரிப்பு = 30. (30/40) * 100 = 75%.</div>
             </div>
