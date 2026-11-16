@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="ta,en">
+<head>
+    <meta charset="UTF-8">
+    <title>Slogan Academy - Question Authoring Blueprint</title>
+    <style>
+        @page {
+            size: A4;
+            margin: 12mm 12mm 12mm 12mm;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, 'Nirmala UI', Roboto, sans-serif;
+            color: #0F172A;
+            background: #FFFFFF;
+            line-height: 1.45;
+            font-size: 11px;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+        }
+
+        /* HEADER */
+        .doc-header {
+            border-bottom: 2px solid #0F172A;
+            padding-bottom: 8px;
+            margin-bottom: 14px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .doc-title h1 {
+            font-size: 18px;
+            font-weight: 800;
+            color: #0F172A;
+            letter-spacing: -0.3px;
+        }
+
+        .doc-title p {
+            font-size: 10.5px;
+            color: #475569;
+            font-weight: 600;
+        }
+
+        .doc-tag {
+            font-size: 9.5px;
+            font-weight: 700;
+            background: #ECFDF5;
+            color: #059669;
+            padding: 3px 8px;
+            border-radius: 4px;
+            border: 1px solid #A7F3D0;
+            text-transform: uppercase;
+        }
+
+        /* GRID OF TYPES */
+        .type-section {
+            margin-bottom: 12px;
+            page-break-inside: avoid;
+            border: 1px solid #CBD5E1;
+            border-radius: 6px;
+            overflow: hidden;
+        }
+
+        .type-header {
+            background: #F1F5F9;
+            padding: 6px 10px;
+            border-bottom: 1px solid #CBD5E1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .type-name {
+            font-size: 11.5px;
+            font-weight: 700;
+            color: #0F172A;
+        }
+
+        .type-rule {
+            font-size: 9.5px;
+            color: #475569;
+            font-weight: 500;
+        }
+
+        .type-content {
+            padding: 8px 10px;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            background: #FFFFFF;
+        }
+
+        .type-content.single-col {
+            grid-template-columns: 1fr;
+        }
+
+        .lang-col {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+        }
+
+        .lang-label {
+            font-size: 9px;
+            font-weight: 800;
+            color: #2563EB;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .code-box {
+            background: #F8FAFC;
+            border: 1px solid #E2E8F0;
+            border-radius: 4px;
+            padding: 6px 8px;
+            font-family: 'Consolas', 'Courier New', monospace;
+            font-size: 9.5px;
+            color: #1E293B;
+            white-space: pre-wrap;
+            line-height: 1.4;
+        }
+
+        /* RULES SUMMARY */
+        .rules-card {
+            background: #0F172A;
+            color: #F8FAFC;
+            border-radius: 6px;
+            padding: 10px 14px;
+            margin-top: 10px;
+            page-break-inside: avoid;
+        }
+
+        .rules-title {
+            font-size: 11px;
+            font-weight: 800;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #38BDF8;
+            margin-bottom: 6px;
+        }
+
+        .rules-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 10px;
+            font-size: 9.5px;
+        }
+
+        .rule-item strong {
+            display: block;
+            color: #FFFFFF;
+            margin-bottom: 2px;
+        }
+
+        .rule-item span {
+            color: #94A3B8;
+        }
+    </style>
+</head>
+<body>
+
+    <header class="doc-header">
+        <div class="doc-title">
+            <h1>SLOGAN ACADEMY • QUESTION AUTHORING BLUEPRINT</h1>
+            <p>Official Format Specification for All 7 Question Types (English & Tamil)</p>
+        </div>
+        <span class="doc-tag">100% Parsing Accuracy</span>
+    </header>
+
+    <!-- TYPE 1: MCQ -->
+    <div class="type-section">
+        <div class="type-header">
+            <span class="type-name">1. Multiple Choice Questions (Standard MCQ)</span>
+            <span class="type-rule">Direct question • 4 Choices (A-D or 1-4) • Answer line</span>
+        </div>
+        <div class="type-content">
+            <div class="lang-col">
+                <span class="lang-label">English Structure</span>
+                <div class="code-box">1. Which layer of the OSI model does a router operate on?
+(A) Physical Layer
+(B) Data Link Layer
+(C) Network Layer
+(D) Transport Layer
+Answer: C
+Explanation: Routers operate at Layer 3 (Network Layer).</div>
+            </div>
+            <div class="lang-col">
+                <span class="lang-label">Tamil Structure</span>
+                <div class="code-box">வினா 1:
+உலக சுற்றுச்சூழல் தினம் கொண்டாடப்படும் நாள் எது?
+(A) ஜூன் 5
+(B) ஜூலை 11
+(C) செப்டம்பர் 16
+(D) டிசம்பர் 1
+சரியான விடை: A
+விளக்கம்: ஒவ்வோர் ஆண்டும் ஜூன் 5 அன்று அனுசரிக்கப்படுகிறது.</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TYPE 2: MATCH THE FOLLOWING -->
+    <div class="type-section">
+        <div class="type-header">
+            <span class="type-name">2. Match the Following (பொருத்துக வினா)</span>
+            <span class="type-rule">Must contain "List I" & "List II" (or "பட்டியல் I" & "பட்டியல் II") • Aligns to 2-column table</span>
+        </div>
+        <div class="type-content">
+            <div class="lang-col">
+                <span class="lang-label">English Structure</span>
+                <div class="code-box">2. Match the Protocols in List I with Ports in List II:
+List I (Protocols)
+(A) HTTP
+(B) HTTPS
+(C) SSH
+(D) DNS
+List II (Port Numbers)
+(I) 22
+(II) 53
+(III) 80
+(IV) 443
+
+Choose the correct answer from the options below:
+(A) (A)-(III), (B)-(IV), (C)-(I), (D)-(II)
+(B) (A)-(I), (B)-(II), (C)-(III), (D)-(IV)
+(C) (A)-(IV), (B)-(III), (C)-(II), (D)-(I)
+(D) (A)-(II), (B)-(I), (C)-(IV), (D)-(III)
+Answer: A</div>
+            </div>
+            <div class="lang-col">
+                <span class="lang-label">Tamil Structure</span>
+                <div class="code-box">வினா 2 [பொருத்துக வினா]:
+தமிழ் அகராதியியல் நூல்களை ஆசிரியர்களுடன் பொருத்துக:
+பட்டியல் I (நூல்)
+(A) சதுரகராதி
+(B) தமிழ்-ஆங்கில அகராதி
+(C) அபிதான சிந்தாமணி
+(D) தமிழ் லெக்சிகன்
+பட்டியல் II (ஆசிரியர்)
+(I) வீரமாமுனிவர்
+(II) எம். வின்ஸ்லோ
+(III) ஆ. சிங்காரவேலு முதலியார்
+(IV) எஸ். வையாபுரிப் பிள்ளை
+
+சரியான பொருத்தத்தைத் தேர்ந்தெடுக்க:
+(A) (A)-(I), (B)-(II), (C)-(III), (D)-(IV)
+(B) (A)-(III), (B)-(IV), (C)-(I), (D)-(II)
+(C) (A)-(II), (B)-(I), (C)-(IV), (D)-(III)
+(D) (A)-(IV), (B)-(III), (C)-(II), (D)-(I)
+சரியான விடை: A</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TYPE 3: ASSERTION & REASON -->
+    <div class="type-section">
+        <div class="type-header">
+            <span class="type-name">3. Assertion & Reason (உறுதிக்கூற்று - காரணம்)</span>
+            <span class="type-rule">Must use "Assertion (A):" & "Reason (R):" OR "உறுதிக்கூற்று (உ):" & "காரணம் (கா):"</span>
+        </div>
+        <div class="type-content">
+            <div class="lang-col">
+                <span class="lang-label">English Structure</span>
+                <div class="code-box">3. Assertion and Reason:
+Assertion (A): Light travels faster in vacuum than glass.
+Reason (R): Refractive index of vacuum is less than glass.
+
+Choose the most appropriate answer:
+(A) Both (A) and (R) are correct, and (R) is correct explanation.
+(B) Both (A) and (R) are correct, but (R) is NOT correct explanation.
+(C) (A) is correct, but (R) is incorrect.
+(D) (A) is incorrect, but (R) is correct.
+Answer: A</div>
+            </div>
+            <div class="lang-col">
+                <span class="lang-label">Tamil Structure</span>
+                <div class="code-box">வினா 3 [உறுதிக்கூற்று - காரணம்].
+உறுதிக்கூற்று (உ): தேம்பாவணி காப்பியத் தலைவன் வளன் ஆவார்.
+காரணம் (கா): தேம்பாவணி 3,615 பாடல்களைக் கொண்ட காப்பியம்.
+
+கீழே தரப்பெற்றுள்ள விருப்பங்களிலிருந்து தேர்ந்தெடுக்க:
+(1) (உ) சரி, (கா) சரி; (கா) என்பது (உ)-விற்குச் சரியான விளக்கம்
+(2) (உ) சரி, (கா) சரி; ஆனால் (கா) சரியான விளக்கமன்று
+(3) (உ) தவறு, (கா) சரி
+(4) (உ) தவறு, (கா) தவறு
+சரியான விடை: (2)</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TYPE 4: STATEMENT-BASED -->
+    <div class="type-section">
+        <div class="type-header">
+            <span class="type-name">4. Statement-Based Questions (பல்கூற்றுத் தேர்வு வினா)</span>
+            <span class="type-rule">Prompt on top line • Evaluation query on second line • Items labeled (i), (ii), (iii), (iv)</span>
+        </div>
+        <div class="type-content">
+            <div class="lang-col">
+                <span class="lang-label">English Structure</span>
+                <div class="code-box">4. Consider the following statements regarding RBI:
+(i) RBI was established on April 1, 1935.
+(ii) Headquarters moved to Mumbai in 1937.
+(iii) Sir Osborne Smith was the first Governor.
+(iv) RBI was nationalized in the year 1969.
+
+Which of the statements given above are correct?
+(A) (i), (ii) and (iii) only
+(B) (i) and (iv) only
+(C) (ii), (iii) and (iv) only
+(D) (i), (ii), (iii) and (iv)
+Answer: A</div>
+            </div>
+            <div class="lang-col">
+                <span class="lang-label">Tamil Structure</span>
+                <div class="code-box">90. பல்கூற்றுத் தேர்வு வினா
+பெண்ணியக் கவிஞர்கள் பற்றிய பின்வரும் கூற்றுகளை ஆராய்க:
+(i) 'கருவறை வாசனை' கவிதைத் தொகுப்பைப் படைத்தவர் கனிமொழி.
+(ii) 'இரவு மிருகம்' கவிதைத் தொகுப்பை எழுதியவர் சல்மா.
+(iii) 'நீலமுடி' தொகுப்பை எழுதிய இளம்பிறை பெயர் பஞ்சவர்ணம்.
+(iv) சுகிர்தராணியின் கவிதைகள் அழகியலை மட்டுமே பாடுகின்றன.
+
+(அ) (i), (ii) மட்டும் சரி
+(ஆ) (i), (iii) மட்டும் சரி
+(இ) (ii), (iv) மட்டும் சரி
+(ஈ) (i), (ii), (iii), (iv) அனைத்தும் சரி
+பதில்: (ஆ) (i), (iii) மட்டும் சரி</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TYPE 5: CHRONOLOGY -->
+    <div class="type-section">
+        <div class="type-header">
+            <span class="type-name">5. Sequence / Chronological Order (காலவரிசை வினா)</span>
+            <span class="type-rule">Must start with "Arrange... in chronological order:" OR "காலவரிசை வினா"</span>
+        </div>
+        <div class="type-content">
+            <div class="lang-col">
+                <span class="lang-label">English Structure</span>
+                <div class="code-box">5. Arrange the computer innovations in chronological order:
+(i) Invention of the Transistor
+(ii) Launch of the World Wide Web
+(iii) Development of the C Language
+(iv) Invention of the Microprocessor
+
+Choose the correct sequence:
+(A) (i) -> (iv) -> (iii) -> (ii)
+(B) (i) -> (iii) -> (iv) -> (ii)
+(C) (iv) -> (i) -> (iii) -> (ii)
+(D) (ii) -> (i) -> (iii) -> (iv)
+Answer: A</div>
+            </div>
+            <div class="lang-col">
+                <span class="lang-label">Tamil Structure</span>
+                <div class="code-box">வினா 5 [காலவரிசை வினா]:
+தமிழ்த் திறனாய்வு நூல்களை வெளியீட்டாண்டு அடிப்படையில் சீரமைக்க:
+(i) இலக்கிய விமரிசனம் (தொ.மு.சி. ரகுநாதன்)
+(ii) விமரிசனக்கலை (க.நா. சுப்பிரமணியம்)
+(iii) இலக்கியக் கலை (அ.ச. ஞானசம்பந்தன்)
+(iv) தமிழ் நாவல் இலக்கியம் (க. கைலாசபதி)
+
+சரியான காலவரிசையைத் தேர்ந்தெடுக்க:
+(A) (i) -> (ii) -> (iii) -> (iv)
+(B) (ii) -> (i) -> (iv) -> (iii)
+(C) (iii) -> (i) -> (ii) -> (iv)
+(D) (iv) -> (iii) -> (ii) -> (i)
+சரியான விடை: A</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- TYPE 6: PASSAGE -->
+    <div class="type-section">
+        <div class="type-header">
+            <span class="type-name">6. Passage-Based Questions (பத்தி வினாக்கள்)</span>
+            <span class="type-rule">Header: "Directions: Read the following passage... Questions X to Y" followed by "Passage:"</span>
+        </div>
+        <div class="type-content single-col">
+            <div class="code-box">Directions: Read the following passage carefully and answer Questions 6 and 7:
+Passage:
+Photosynthesis is the process by which green plants convert light energy into chemical energy stored in glucose. This reaction takes place inside chloroplasts using chlorophyll. Water molecules are split to release oxygen as a byproduct.
+
+6. In which cell organelle does photosynthesis primarily take place?
+(A) Mitochondria    (B) Chloroplast    (C) Ribosome    (D) Endoplasmic Reticulum
+Answer: B
+
+7. What gas is released as a byproduct during photosynthesis?
+(A) Nitrogen        (B) Oxygen         (C) Carbon dioxide    (D) Hydrogen
+Answer: B</div>
+        </div>
+    </div>
+
+    <!-- TYPE 7: MATH & DATA TABLES -->
+    <div class="type-section">
+        <div class="type-header">
+            <span class="type-name">7. Mathematical Problem Solving & Data Tables (அட்டவணை வினாக்கள்)</span>
+            <span class="type-rule">Use markdown pipe "|" tables for data matrices • Clear step-by-step arithmetic explanation</span>
+        </div>
+        <div class="type-content single-col">
+            <div class="code-box">8. The following table shows car production (in thousands) from 2021 to 2023:
+Company | 2021 | 2022 | 2023
+Alpha | 40 | 55 | 70
+Beta | 30 | 45 | 60
+Gamma | 50 | 60 | 65
+
+What is the percentage increase in the production of cars by Company Alpha from 2021 to 2023?
+(A) 50%    (B) 60%    (C) 75%    (D) 80%
+Answer: C
+Explanation: Production 2021 = 40. Production 2023 = 70. Increase = 30. Percentage = (30/40) * 100 = 75%.</div>
+        </div>
+    </div>
+
+    <!-- 4 GOLDEN RULES -->
+    <div class="rules-card">
+        <div class="rules-title">4 CRITICAL AUTHORING RULES TO PREVENT STRUCTURE COLLAPSE</div>
+        <div class="rules-grid">
+            <div class="rule-item">
+                <strong>1. Question Numbering</strong>
+                <span>Every question must start with 1., 2., Q1., or வினா 1: on its own fresh line.</span>
+            </div>
+            <div class="rule-item">
+                <strong>2. Never Split Headers</strong>
+                <span>Keep titles like "பல்கூற்றுத் தேர்வு வினா" intact on 1 line.</span>
+            </div>
+            <div class="rule-item">
+                <strong>3. Label Statements</strong>
+                <span>Always use (i), (ii), (iii), (iv) for statements or chronology items.</span>
+            </div>
+            <div class="rule-item">
+                <strong>4. Answer Key at Bottom</strong>
+                <span>Always end with Answer: X, சரியான விடை: X, or பதில்: X.</span>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
