@@ -321,7 +321,61 @@ function convertHtmlTablesToMarkdown(html) {
     }).replace(/<[^>]+>/g, "\n");
 }
 
-// Helper: robust parser for MCQ questions from text (PDF or plain text)
+// Helper: split horizontal inline options: e.g. (1) opt1 (2) opt2 (3) opt3 (4) opt4 or (A)...(B)...(C)...(D)...
+function splitInlineOptions(str) {
+    if (!str || typeof str !== "string") return null;
+    const regex = /(?:\s+|^)(?:\(?([2-4B-Db-d])[\.\)\:\-\]]|\(([2-4B-Db-d])\))\s+/g;
+    const matches = [];
+    let m;
+    while ((m = regex.exec(str)) !== null) {
+        matches.push({ key: (m[1] || m[2]).toUpperCase(), index: m.index, len: m[0].length });
+    }
+    if (matches.length >= 3) {
+        const last3 = matches.slice(-3);
+        let optD = str.slice(last3[2].index + last3[2].len).trim();
+        const trail = optD.match(/\s*(?:SECTION\s+[B-Z]|Faculty\s+Answer|Answer\s+Key)[\s\S]*$/i);
+        if (trail) {
+            optD = optD.slice(0, trail.index).trim();
+        }
+        return {
+            A: str.slice(0, last3[0].index).trim(),
+            B: str.slice(last3[0].index + last3[0].len, last3[1].index).trim(),
+            C: str.slice(last3[1].index + last3[1].len, last3[2].index).trim(),
+            D: optD
+        };
+    }
+    return null;
+}
+
+// Helper: extract unlabelled options when options are 4 plain consecutive lines (e.g. 50 \n 44 \n 52 \n 56)
+function extractUnlabeledOptions(text) {
+    const lines = text.split("\n").map(l => l.trim()).filter(Boolean);
+    if (lines.length >= 5) {
+        let candidateLines = lines;
+        const lastLine = lines[lines.length - 1];
+        if (lines.slice(-5, -1).includes(lastLine)) {
+            candidateLines = lines.slice(0, -1);
+        }
+
+        const candidateOpts = candidateLines.slice(-4);
+        const bodyLines = candidateLines.slice(0, -4);
+
+        if (candidateOpts.every(c => c.length < 80 && !c.includes("|") && !c.includes("Table") && !c.includes("?"))) {
+            return {
+                body: bodyLines.join("\n").trim(),
+                options: {
+                    A: candidateOpts[0],
+                    B: candidateOpts[1],
+                    C: candidateOpts[2],
+                    D: candidateOpts[3]
+                }
+            };
+        }
+    }
+    return null;
+}
+
+// Helper: robust parser for MCQ questions from text (PDF, Word, or plain text)
 function parseMcqText(text) {
     if (!text || typeof text !== "string") return [];
 
@@ -382,51 +436,84 @@ function parseMcqText(text) {
         // Clean leading question tag: e.g. "Q1.What...", "Question 1: ...", "வினா 1: ..."
         let qBody = cleanBlock.replace(/^(?:(?:Question|Q|வினா(?:\s*எண்)?)\s*[:\.-]?\s*\d+[\.:\)\s\-]*|\d+[\.\)]\s*)/i, "").trim();
 
-        // Parse options A, B, C, D / 1, 2, 3, 4 / அ, ஆ, இ, ஈ
-        const lines = qBody.split("\n");
-        const optLines = [];
-        const questionLines = [];
-        let inOptions = false;
+        // 1. Check for inline options horizontally: (1)... (2)... (3)... (4)... or (A)... (B)... (C)... (D)...
+        let options = { A: "", B: "", C: "", D: "" };
+        let questionText = qBody;
 
-        for (let l of lines) {
-            const lineTrim = l.trim();
-            const optMatch = lineTrim.match(/^(\(?([A-Da-d1-4அஆஇஈ])[\.\)\:\-\]]|\(([A-Da-d1-4அஆஇஈ])\))\s+(?!\d{1,2}\.)(.*)/);
-            if (optMatch) {
-                inOptions = true;
-                const optKey = (optMatch[2] || optMatch[3]);
-                const mapKey = tamilOptMap[optKey] || (optKey === "1" ? "A" : optKey === "2" ? "B" : optKey === "3" ? "C" : optKey === "4" ? "D" : optKey.toUpperCase());
-                optLines.push({ key: mapKey, text: optMatch[4].trim() });
-            } else if (!inOptions) {
-                questionLines.push(l);
-            } else if (inOptions && optLines.length > 0 && !lineTrim.match(/^(?:Question|Q\d|Correct|Answer|Explanation|வினா|விடை)/i)) {
-                optLines[optLines.length - 1].text += " " + lineTrim;
+        let fullOptStr = "";
+        if (explanation && /\([2-4B-Db-d]\)/.test(explanation)) {
+            fullOptStr = explanation;
+            explanation = "";
+        }
+
+        const inlineOnBody = splitInlineOptions(qBody);
+        const inlineOnStr = fullOptStr ? splitInlineOptions(fullOptStr) : null;
+
+        if (inlineOnStr) {
+            options = inlineOnStr;
+        } else if (inlineOnBody) {
+            options = inlineOnBody;
+            const firstOptIdx = qBody.search(/(?:\s+|^)(?:\(?([1-4A-Da-d])[\.\)\:\-\]]|\(([1-4A-Da-d])\))\s+/);
+            if (firstOptIdx > 0) {
+                questionText = qBody.slice(0, firstOptIdx).trim();
+            }
+        } else {
+            // 2. Line-based option matching
+            const lines = qBody.split("\n");
+            const optLines = [];
+            const questionLines = [];
+            let inOptions = false;
+
+            for (let l of lines) {
+                const lineTrim = l.trim();
+                const optMatch = lineTrim.match(/^(\(?([A-Da-d1-4அஆஇஈ])[\.\)\:\-\]]|\(([A-Da-d1-4அஆஇஈ])\))\s+(?!\d{1,2}\.)(.*)/);
+                if (optMatch) {
+                    inOptions = true;
+                    const optKey = (optMatch[2] || optMatch[3]);
+                    const mapKey = tamilOptMap[optKey] || (optKey === "1" ? "A" : optKey === "2" ? "B" : optKey === "3" ? "C" : optKey === "4" ? "D" : optKey.toUpperCase());
+                    optLines.push({ key: mapKey, text: optMatch[4].trim() });
+                } else if (!inOptions) {
+                    questionLines.push(l);
+                } else if (inOptions && optLines.length > 0 && !lineTrim.match(/^(?:Question|Q\d|Correct|Answer|Explanation|வினா|விடை)/i)) {
+                    optLines[optLines.length - 1].text += " " + lineTrim;
+                }
+            }
+
+            if (optLines.length >= 4) {
+                questionText = questionLines.join("\n").trim();
+                optLines.forEach(o => {
+                    if (options.hasOwnProperty(o.key)) {
+                        options[o.key] = o.text;
+                    }
+                });
+            } else {
+                // 3. Unlabeled 4 lines fallback
+                const unlab = extractUnlabeledOptions(qBody);
+                if (unlab) {
+                    options = unlab.options;
+                    questionText = unlab.body;
+                }
             }
         }
 
-        let questionText = questionLines.join("\n").trim();
-        
-        // If there was shared context (tables/passage before Q1), attach to question
-        if (sharedContext) {
+        // Attach shared context ONLY to the passage group (questions 1 to 5), never to the whole document!
+        if (sharedContext && idx < 5) {
             questionText = sharedContext + "\n\n" + questionText;
         }
-
-        let options = { A: "", B: "", C: "", D: "" };
-        optLines.forEach(o => {
-            if (options.hasOwnProperty(o.key)) {
-                options[o.key] = o.text;
-            }
-        });
 
         if (!options.A) options.A = "Option A";
         if (!options.B) options.B = "Option B";
         if (!options.C) options.C = "Option C";
         if (!options.D) options.D = "Option D";
 
+        // Clean any trailing "SECTION B" header from question text
+        questionText = questionText.replace(/\s*SECTION\s+[B-Z][\s\S]*$/i, "").trim();
+
         if (questionText.trim()) {
             questions.push({
                 id: idx + 1,
                 number: idx + 1,
-                section: "Paper 1",
+                section: idx < 50 ? "Paper 1" : "Tamil Paper 2",
                 question: questionText.trim(),
                 text: questionText.trim(),
                 options: options,
