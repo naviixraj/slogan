@@ -2556,6 +2556,9 @@
                         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="23 4 23 10 17 10"/><polyline points="1 20 1 14 7 14"/><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"/></svg>
                         Change
                     </button>
+                <div style="margin-top: 8px; display: flex; justify-content: space-between; align-items: center;">
+                    <span style="font-size: 11px; color: var(--muted);">Supports Word (.docx), PDF, Excel (.xlsx), CSV, TXT</span>
+                    <a href="QUESTION_SET_AUTHORING_TEMPLATE.txt" download="QUESTION_SET_AUTHORING_TEMPLATE.txt" style="font-size: 11px; color: var(--navy); font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">📥 Download Authoring Template (.txt)</a>
                 </div>
             </div>
 
@@ -2563,7 +2566,10 @@
             <div class="form-field" id="pasteTextPane" style="display: none;">
                 <div class="paste-toolbar">
                     <label for="pasteQuestionsText" style="margin-bottom: 0;">Paste Complete Question Set Text</label>
-                    <button type="button" class="btn-sample-template" id="loadSamplePasteBtn">Load Sample Format</button>
+                    <div style="display: flex; gap: 8px;">
+                        <button type="button" class="btn-sample-template" id="loadSamplePasteBtn">Load Sample Format</button>
+                        <a href="QUESTION_SET_AUTHORING_TEMPLATE.txt" download="QUESTION_SET_AUTHORING_TEMPLATE.txt" class="btn-sample-template" style="text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">📥 Download Template</a>
+                    </div>
                 </div>
                 <textarea id="pasteQuestionsText" class="paste-textarea" placeholder="Paste your complete exam paper with all questions here...
 
@@ -2717,6 +2723,6 @@ Ans: B
 
     <!-- EXTERNAL CONTROLLER SCRIPT (CSP COMPLIANT) -->
     <script src="questionFormatter.js?v=20261116-v6"></script>
-    <script src="admin.js?v=20261116-v2"></script>
+    <script src="admin.js?v=20261116-v3"></script>
 </body>
 </html>

@@ -1037,45 +1037,99 @@ function updatePasteDetection() {
 
 function loadSampleQuestionTemplate() {
     if (!pasteQuestionsText) return;
-    const sample = `1. Which layer of the OSI model does a router operate on?
-A) Physical Layer
-B) Data Link Layer
-C) Network Layer
-D) Transport Layer
+    const sample = `1. Which layer of the OSI model does a network router operate on?
+(A) Physical Layer
+(B) Data Link Layer
+(C) Network Layer
+(D) Transport Layer
 Answer: C
 Explanation: Routers operate at Layer 3 (Network Layer) to direct IP packet traffic.
 
-2. Which memory type is volatile and loses data when power is turned off?
-A) ROM
-B) RAM
-C) Hard Disk Drive
-D) Flash Memory
-Answer: B
-Explanation: RAM (Random Access Memory) requires continuous electric power to retain data.
+2. Match the Computer Protocols in List I with their Default Ports in List II:
+List I (Protocols)
+(A) HTTP
+(B) HTTPS
+(C) SSH
+(D) DNS
+List II (Port Numbers)
+(I) 22
+(II) 53
+(III) 80
+(IV) 443
 
-3. In computer networking, what is the default port for secure web communications (HTTPS)?
-A. Port 80
-B. Port 21
-C. Port 443
-D. Port 25
+Choose the correct answer from the options given below:
+(A) (A)-(III), (B)-(IV), (C)-(I), (D)-(II)
+(B) (A)-(I), (B)-(II), (C)-(III), (D)-(IV)
+(C) (A)-(IV), (B)-(III), (C)-(II), (D)-(I)
+(D) (A)-(II), (B)-(I), (C)-(IV), (D)-(III)
+Answer: A
+Explanation: HTTP = 80, HTTPS = 443, SSH = 22, DNS = 53.
+
+3. Assertion and Reason:
+Assertion (A): Light travels faster in vacuum than in glass.
+Reason (R): The refractive index of vacuum is 1, which is less than the refractive index of glass.
+
+In the light of the above statements, choose the most appropriate answer:
+(A) Both (A) and (R) are correct, and (R) is the correct explanation of (A).
+(B) Both (A) and (R) are correct, but (R) is NOT the correct explanation of (A).
+(C) (A) is correct, but (R) is incorrect.
+(D) (A) is incorrect, but (R) is correct.
+Answer: A
+Explanation: Light velocity is maximum in vacuum where refractive index is 1.
+
+வினா 4 [உறுதிக்கூற்று - காரணம்].
+உறுதிக்கூற்று (உ): வீரமாமுனிவர் இயற்றிய தேம்பாவணி காப்பியத்தின் முதன்மைப் பாட்டுடைத் தலைவன் இயேசு பெருமான் ஆவார். 
+காரணம் (கா): தேம்பாவணி 3 காண்டங்களையும் 36 படலங்களையும் 3,615 விருத்தப் பாடல்களையும் கொண்டக் கிறித்துவச் சமயக் காப்பியமாகும்.
+
+கீழே தரப்பெற்றுள்ள விருப்பங்களிலிருந்து சரியான பதிலத்தைத் தேர்ந்தெடுக்க: 
+(1) (உ) சரி, (கா) சரி; (கா) என்பது (உ)-விற்குச் சரியான விளக்கமாகும் 
+(2) (உ) சரி, (கா) தவறு 
+(3) (உ) தவறு, (கா) சரி 
+(4) (உ) தவறு, (கா) தவறு
+சரியான விடை: (3) (உ) தவறு, (கா) சரி
+விளக்கம்: தேம்பாவணியின் முதன்மைப் பாட்டுடைத் தலைவன் வளன் (சூசையப்பர்) ஆவார் (இயேசு பெருமான் அல்ல). எனவே உறுதிக்கூற்று தவறு, காரணம் சரி.
+
+5. Consider the following statements regarding the Indian Constitution:
+(i) The original Constitution contained 395 Articles and 8 Schedules.
+(ii) Dr. B.R. Ambedkar was the Chairman of the Drafting Committee.
+(iii) The Constitution was adopted on January 26, 1950.
+(iv) The Preamble is an integral part of the Constitution.
+
+Which of the statements given above are correct?
+(A) (i), (ii) and (iv) only
+(B) (i) and (iii) only
+(C) (ii), (iii) and (iv) only
+(D) (i), (ii), (iii) and (iv)
+Answer: A
+Explanation: The Constitution was adopted on November 26, 1949 and enacted on January 26, 1950.
+
+6. Arrange the following computer innovations in chronological order:
+(i) Invention of the Transistor
+(ii) Release of the World Wide Web
+(iii) Development of the C Programming Language
+(iv) Invention of the Microprocessor
+
+Choose the correct chronological sequence:
+(A) (i) -> (iv) -> (iii) -> (ii)
+(B) (i) -> (iii) -> (iv) -> (ii)
+(C) (iv) -> (i) -> (iii) -> (ii)
+(D) (ii) -> (i) -> (iii) -> (iv)
+Answer: A
+Explanation: Transistor (1947) -> Microprocessor (1971) -> C Language (1972) -> World Wide Web (1989).
+
+7. The following table shows the number of students enrolled in three courses from 2021 to 2023:
+Course | 2021 | 2022 | 2023
+Physics | 120 | 150 | 180
+Chemistry | 80 | 100 | 140
+Mathematics | 100 | 120 | 160
+
+What is the percentage increase in total student enrollment from 2021 to 2023?
+(A) 40%
+(B) 50%
+(C) 60%
+(D) 70%
 Answer: C
-Explanation: Port 443 is universally standardized for HTTPS encrypted traffic.
-
-4. What is the fundamental functional unit of the human nervous system?
-A. Nephron
-B. Neuron
-C. Alveoli
-D. Axon
-Answer: B
-Explanation: The neuron is the primary excitable cell of the nervous system.
-
-5. Which Indian constitutional amendment introduced the Goods and Services Tax (GST)?
-A. 100th Amendment
-B. 101st Amendment
-C. 102nd Amendment
-D. 103rd Amendment
-Answer: B
-Explanation: The 101st Constitutional Amendment Act, 2016 introduced GST in India.`;
+Explanation: Total in 2021 = 300. Total in 2023 = 480. Increase = 180. Percentage = (180/300)*100 = 60%.`;
 
     pasteQuestionsText.value = sample;
     updatePasteDetection();
