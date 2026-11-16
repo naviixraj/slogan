@@ -184,7 +184,7 @@
 
     function parseAssertionReason(text) {
         if (!text || typeof text !== "string") return null;
-        const arRegex = /(?:^|\n|\s*)(Assertion(?:\s*\([A-Za-z]\))?|கூற்று\s*\([A-Za-z0-9]\)|உறுதிக்கூற்று\s*(?:\([A-Za-z0-9]+\))?|கூற்று\s*1)[:\s\-]+([\s\S]*?)(?:^|\n|\s*)(Reason(?:\s*\([A-Za-z]\))?|காரணம்\s*(?:\([A-Za-z0-9]+\))?|காரணம்\s*\(கா\)|கூற்று\s*2)[:\s\-]+([\s\S]*?)(?=(?:Choose\s+the\s+correct|விருப்பங்கள்|தெரிவுகள்|\([1-4A-Dஅஆஇஈ]\)|$))/i;
+        const arRegex = /(?:^|\n|\s*)(Assertion(?:\s*\([A-Za-z]\))?|கூற்று\s*\([A-Za-z0-9]\)|உறுதிக்கூற்று\s*(?:\([A-Za-z0-9]+\))?)[:\.\-\s]*:?\s*([\s\S]*?)(?:^|\n|\s*)(Reason(?:\s*\([A-Za-z]\))?|காரணம்\s*(?:\([A-Za-z0-9]+\))?|காரணம்\s*\(கா\))[:\.\-\s]*:?\s*([\s\S]*?)(?=(?:\n\s*(?:Choose\s+the\s+correct|விருப்பங்கள்|தெரிவுகள்|கீழே\s+தரப்பெற்றுள்ள)|\n\s*\([1-4A-Dஅஆஇஈ]\)|$))/i;
         const match = text.match(arRegex);
         if (!match) return null;
 
@@ -256,6 +256,37 @@
         if (/(?:Assertion\s*\(?[A-Z]?\)?|கூற்று\s*\(?[A-Za-z0-9]?\)?|உறுதிக்கூற்று)/i.test(text) &&
             /(?:Reason\s*\(?[A-Z]?\)?|காரணம்\s*\(?[A-Za-z0-9]?\)?)/i.test(text)) {
             return null;
+        }
+
+        // 0. Dedicated Statement 1 and Statement 2 / கூற்று 1 மற்றும் கூற்று 2 handler
+        let cleanText = text;
+        let titleLine = "";
+        const headerTitleRegex = /^\s*\[?\s*(?:கூற்று\s*1\s*[-–—]\s*கூற்று\s*2|Statement\s*(?:1|I)\s*[-–—]\s*Statement\s*(?:2|II))[^\n\]]*\]?[\.:]?\s*/i;
+        const hMatch = cleanText.match(headerTitleRegex);
+        if (hMatch) {
+            titleLine = hMatch[0].replace(/[\[\]]/g, "").trim();
+            cleanText = cleanText.slice(hMatch[0].length).trim();
+        }
+
+        const stmtPairRegex = /(?:^|\n|\s*)(கூற்று\s*1|Statement\s*(?:1|I))[:\.]\s*([\s\S]*?)(?:\.\s+|\n\s*|\s{2,})(கூற்று\s*2|Statement\s*(?:2|II))[:\.]\s*([\s\S]*)$/i;
+        const pairMatch = cleanText.match(stmtPairRegex);
+        if (pairMatch) {
+            let postamble = "";
+            let s2Text = pairMatch[4].trim();
+            const postMatchRegex = /(?:\n\s*|\s{2,}|\.\s+)(?:Which\s+of|Choose\s+the|கீழே\s+தரப்பெற்றுள்ள|கீழே\s+கொடுக்கப்பட்டுள்ள|மேற்கண்டவற்றுள்|சரியான\s*பதில்|சரியான\s*விடை)[\s\S]*$/i;
+            const pm = s2Text.match(postMatchRegex);
+            if (pm) {
+                postamble = pm[0].replace(/^\.\s+/, "").trim().replace(/\n\s*/g, " ");
+                s2Text = s2Text.slice(0, pm.index).trim();
+            }
+            return {
+                preamble: titleLine,
+                statements: [
+                    { badge: pairMatch[1].trim(), text: pairMatch[2].trim().replace(/\s+/g, " ") },
+                    { badge: pairMatch[3].trim(), text: s2Text.replace(/\s+/g, " ") }
+                ],
+                postamble
+            };
         }
 
         const postMatchRegex = /(?:^|\n\s*|\s{2,}|\.\s+)(?:Which\s+(?:of\s+(?:the\s+)?(?:above|statements?|these)|statements?|one\s+of)|Choose\s+(?:the\s+)?correct|In\s+the\s+light\s+of\s+the\s+above|மேற்கண்டவற்றுள்|கீழ்க்கண்டவற்றுள்|கீழே\s+கொடுக்கப்பட்டுள்ள|சரியான\s*விடை)[\s\S]*$/i;
