@@ -195,21 +195,48 @@
 
     function parseAssertionReason(text) {
         if (!text || typeof text !== "string") return null;
-        const arRegex = /(?:^|\n|\s*)(Assertion(?:\s*\([A-Za-z]\))?|கூற்று\s*\([A-Za-z0-9]\)|உறுதிக்கூற்று\s*(?:\([A-Za-z0-9]+\))?)[:\.\-\s]*:?\s*([\s\S]*?)(?:^|\n|\s*)(Reason(?:\s*\([A-Za-z]\))?|காரணம்\s*(?:\([A-Za-z0-9]+\))?|காரணம்\s*\(கா\))[:\.\-\s]*:?\s*([\s\S]*?)(?=(?:\n\s*(?:Choose\s+the\s+correct|விருப்பங்கள்|தெரிவுகள்|கீழே\s+தரப்பெற்றுள்ள)|\n\s*\([1-4A-Dஅஆஇஈ]\)|$))/i;
-        const match = text.match(arRegex);
+
+        let workingText = text;
+        const preambleParts = [];
+
+        // 1. Detect and separate prompt headers such as:
+        // "உறுதிக்கூற்று - காரணம் (கலித்தொகைத் திணை மரபு)"
+        // "[உறுதிக்கூற்று - காரணம்]."
+        // "கூற்று – காரணம் வினா"
+        // "Assertion - Reason (...)"
+        const headerMatch = workingText.match(/^\s*\[?\s*(?:Assertion|கூற்று|உறுதிக்கூற்று)\s*(?:[-–—:]|\s+மற்றும்\s+|\s+and\s+|&)\s*(?:Reason|காரணம்)[^\]\n]*\]?[\.:\s]*\n?/i);
+        if (headerMatch) {
+            preambleParts.push(headerMatch[0].trim());
+            workingText = workingText.slice(headerMatch[0].length);
+        }
+
+        const arRegex = /(?:^|\n|\s*)(Assertion(?:\s*\([^)\n]+\))?|கூற்று(?:\s*\([^)\n]+\))?|உறுதிக்கூற்று(?:\s*\([^)\n]+\))?)[:\.\-\s]*:?\s*([\s\S]*?)(?:^|\n|\s*)(Reason(?:\s*\([^)\n]+\))?|காரணம்(?:\s*\([^)\n]+\))?)[:\.\-\s]*:?\s*([\s\S]*?)(?=(?:\n\s*(?:Choose\s+the\s+correct|விருப்பங்கள்|தெரிவுகள்|கீழே\s+தரப்பெற்றுள்ள)|\n\s*\([1-4A-Dஅஆஇஈ]\)|$))/i;
+        const match = workingText.match(arRegex);
         if (!match) return null;
 
+        const assertionText = match[2].trim().replace(/^[:\-\–—\s]+/, "");
+        const reasonText = match[4].trim().replace(/^[:\-\–—\s]+/, "");
+
+        // Safety: Assertion and Reason MUST both have non-empty, meaningful text
+        if (assertionText.replace(/[:\-\–—\s\.\,\;]/g, "").length === 0 ||
+            reasonText.replace(/[:\-\–—\s\.\,\;]/g, "").length === 0) {
+            return null;
+        }
+
+        const inlinePreamble = workingText.slice(0, match.index).trim();
+        if (inlinePreamble) preambleParts.push(inlinePreamble);
+
         return {
-            preamble: text.slice(0, match.index).trim(),
+            preamble: preambleParts.join("\n").trim(),
             assertion: {
                 badge: match[1].trim(),
-                text: match[2].trim()
+                text: assertionText
             },
             reason: {
                 badge: match[3].trim(),
-                text: match[4].trim()
+                text: reasonText
             },
-            postamble: text.slice(match.index + match[0].length).trim()
+            postamble: workingText.slice(match.index + match[0].length).trim()
         };
     }
 
