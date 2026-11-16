@@ -413,6 +413,48 @@ function splitOptionsSmart(str) {
     return null;
 }
 
+// Helper: format statements vertically line-by-line if merged together on the same line
+function formatStatementsVertical(text) {
+    if (!text || typeof text !== "string") return text;
+
+    // Skip if it's already match lists or tables
+    if (/(?:List\s*[-–—:]?\s*(?:I|1|A|One)|பட்டியல்\s*[-–—:]?\s*(?:I|1|ஒன்று|முதல்))/i.test(text) &&
+        /(?:List\s*[-–—:]?\s*(?:II|2|B|Two)|பட்டியல்\s*[-–—:]?\s*(?:II|2|இரண்டு))/i.test(text)) {
+        return text;
+    }
+
+    let formatted = text;
+
+    // 1. Statement 1 & 2 / கூற்று 1 & 2: ensure on newlines
+    formatted = formatted.replace(/([^\n])\s*(கூற்று\s*2|Statement\s*(?:2|II))[:\.]\s*/gi, "$1\n$2: ");
+
+    // 2. Letters A, B, C, D: if preceded by sentence and space, put each on a newline
+    if (/(?:^|\n|\s)A[\.:\)]\s+/i.test(formatted) && /(?:^|\n|\s)B[\.:\)]\s+/i.test(formatted)) {
+        formatted = formatted.replace(/([^\n])\s+(A[\.:\)]\s+)/i, "$1\n$2");
+        formatted = formatted.replace(/([^\n])\s+(B[\.:\)]\s+)/i, "$1\n$2");
+        formatted = formatted.replace(/([^\n])\s+(C[\.:\)]\s+)/i, "$1\n$2");
+        formatted = formatted.replace(/([^\n])\s+(D[\.:\)]\s+)/i, "$1\n$2");
+    }
+
+    // 3. Parenthesized (A), (B), (C), (D)
+    if (/(?:^|\n|\s)\(A\)\s+/i.test(formatted) && /(?:^|\n|\s)\(B\)\s+/i.test(formatted)) {
+        formatted = formatted.replace(/([^\n])\s+(\(A\)\s+)/i, "$1\n$2");
+        formatted = formatted.replace(/([^\n])\s+(\(B\)\s+)/i, "$1\n$2");
+        formatted = formatted.replace(/([^\n])\s+(\(C\)\s+)/i, "$1\n$2");
+        formatted = formatted.replace(/([^\n])\s+(\(D\)\s+)/i, "$1\n$2");
+    }
+
+    // 4. Roman (i), (ii), (iii), (iv)
+    if (/(?:^|\n|\s)\(i\)\s+/i.test(formatted) && /(?:^|\n|\s)\(ii\)\s+/i.test(formatted)) {
+        formatted = formatted.replace(/([^\n])\s+(\(i\)\s+)/i, "$1\n$2");
+        formatted = formatted.replace(/([^\n])\s+(\(ii\)\s+)/i, "$1\n$2");
+        formatted = formatted.replace(/([^\n])\s+(\(iii\)\s+)/i, "$1\n$2");
+        formatted = formatted.replace(/([^\n])\s+(\(iv\)\s+)/i, "$1\n$2");
+    }
+
+    return formatted;
+}
+
 // Helper: robust parser for MCQ questions from text (PDF, Word, or plain text)
 function parseMcqText(rawText) {
     if (!rawText || typeof rawText !== "string") return [];
@@ -547,6 +589,9 @@ function parseMcqText(rawText) {
         questionPrompt = questionPrompt.replace(/\n\s*SECTION\s+[B-Z][\s\S]*$/i, "").trim();
 
         const section = qNum <= 50 ? "Paper 1" : "Tamil Paper 2";
+
+        // Format statements vertically line by line if merged together on the same line
+        questionPrompt = formatStatementsVertical(questionPrompt);
 
         questions.push({
             id: qNum,
