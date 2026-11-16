@@ -560,7 +560,7 @@ async function inspectSet(setId) {
                                 </div>
                                 <span style="font-size: 11px; color: var(--muted); font-weight: 600;">Single Split Question • ${q.section || "Paper 1"}</span>
                             </div>
-                            <div class="q-title">${typeof window.renderNeatQuestion === "function" ? window.renderNeatQuestion(qText) : qText}</div>
+                            <div class="q-title">${typeof window.renderNeatQuestion === "function" ? window.renderNeatQuestion(qText, q.options || { A: optA, B: optB, C: optC, D: optD }) : qText}</div>
                             <div class="options-grid">
                                 <div class="option-box ${correct === 'A' ? 'is-correct' : ''}">
                                     <span class="opt-circle">A</span>

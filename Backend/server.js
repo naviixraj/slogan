@@ -297,9 +297,35 @@ async function extractPdfText(buffer) {
     return "";
 }
 
+// Helper: convert HTML tables (from Word or rich text) into clean markdown tables
+function convertHtmlTablesToMarkdown(html) {
+    if (!html) return "";
+    return html.replace(/<table[\s\S]*?<\/table>/gi, (tableHtml) => {
+        const rows = [];
+        const trMatches = tableHtml.match(/<tr[\s\S]*?<\/tr>/gi) || [];
+        for (const tr of trMatches) {
+            const cells = [];
+            const cellMatches = tr.match(/<(?:td|th)[\s\S]*?<\/(?:td|th)>/gi) || [];
+            for (const cell of cellMatches) {
+                const cellText = cell.replace(/<[^>]+>/g, "").trim();
+                cells.push(cellText);
+            }
+            if (cells.length > 0) {
+                rows.push("| " + cells.join(" | ") + " |");
+            }
+        }
+        if (rows.length > 0) {
+            return "\n\n" + rows.join("\n") + "\n\n";
+        }
+        return "";
+    }).replace(/<[^>]+>/g, "\n");
+}
+
 // Helper: robust parser for MCQ questions from text (PDF or plain text)
 function parseMcqText(text) {
     if (!text || typeof text !== "string") return [];
+
+    const tamilOptMap = { "அ": "A", "ஆ": "B", "இ": "C", "ஈ": "D" };
 
     // Strip page number markers and normalize linebreaks
     const normalized = text
@@ -308,8 +334,8 @@ function parseMcqText(text) {
         .replace(/\r\n/g, "\n")
         .replace(/\r/g, "\n");
 
-    // Split strictly by Question markers: e.g. "Question 1", "Q.1", "Q1.", "Q 1:"
-    const qSplitter = /(?:^|\n)(?=(?:(?:Question|Q)\s*[:\.-]?\s*\d+[\.:\)\s\-]+))/gi;
+    // Split strictly by Question markers: e.g. "Question 1", "Q.1", "வினா 1", "வினா எண் 1"
+    const qSplitter = /(?:^|\n)(?=(?:(?:Question|Q|வினா(?:\s*எண்)?)\s*[:\.-]?\s*\d+[\.:\)\s\-]+))/gi;
     let parts = normalized.split(qSplitter);
     let sharedContext = "";
     let questionBlocks = [];
@@ -320,7 +346,7 @@ function parseMcqText(text) {
         parts = normalized.split(numSplitter);
     }
 
-    if (parts.length > 1 && !/^(?:Question|Q)\s*[:\.-]?\s*\d+/i.test(parts[0].trim())) {
+    if (parts.length > 1 && !/^(?:Question|Q|வினா)\s*[:\.-]?\s*\d+/i.test(parts[0].trim())) {
         // First part is shared passage/tables before Q1
         sharedContext = parts[0].trim();
         questionBlocks = parts.slice(1);
@@ -333,31 +359,30 @@ function parseMcqText(text) {
     questionBlocks.forEach((block, idx) => {
         let cleanBlock = block.trim();
 
-        // Extract explanation if present
+        // Extract explanation if present (English or Tamil)
         let explanation = "";
-        const expMatch = cleanBlock.match(/(?:Explanation|Solution|Short Explanation|Exp|Sol)[:\s\-]+([\s\S]*)$/i);
+        const expMatch = cleanBlock.match(/(?:Explanation|Solution|Short Explanation|Exp|Sol|தடயவியல்\s*பகுப்பாய்வு|விளக்கம்)[:\s\-]+([\s\S]*)$/i);
         if (expMatch) {
             explanation = expMatch[1].trim();
             cleanBlock = cleanBlock.replace(expMatch[0], "").trim();
         }
 
-        // Extract answer if present
+        // Extract answer if present (English or Tamil)
         let answer = "A";
-        const ansMatch = cleanBlock.match(/(?:Correct\s*Answer|Answer|Ans|Key)[:\s\-]+([A-Da-d1-4]|\([A-Da-d1-4]\)|\[[A-Da-d1-4]\])/i);
+        const ansMatch = cleanBlock.match(/(?:Correct\s*Answer|Answer|Ans|Key|சரியான\s*விடை|விடை)[:\s\-]+([A-Da-d1-4அஆஇஈ]|\([A-Da-d1-4அஆஇஈ]\)|\[[A-Da-d1-4அஆஇஈ]\])/i);
         if (ansMatch) {
-            const rawLetter = ansMatch[1].replace(/[\(\)\[\]\s]/g, "").toUpperCase();
-            const mapped = rawLetter === "1" ? "A" : rawLetter === "2" ? "B" : rawLetter === "3" ? "C" : rawLetter === "4" ? "D" : rawLetter;
+            const rawLetter = ansMatch[1].replace(/[\(\)\[\]\s]/g, "");
+            const mapped = tamilOptMap[rawLetter] || (rawLetter === "1" ? "A" : rawLetter === "2" ? "B" : rawLetter === "3" ? "C" : rawLetter === "4" ? "D" : rawLetter.toUpperCase());
             if (["A", "B", "C", "D"].includes(mapped)) {
                 answer = mapped;
             }
             cleanBlock = cleanBlock.replace(ansMatch[0], "").trim();
         }
 
-        // Clean leading question tag: e.g. "Q1.What...", "Question 1: ..."
-        let qBody = cleanBlock.replace(/^(?:(?:Question|Q)\s*[:\.-]?\s*\d+[\.:\)\s\-]*|\d+[\.\)]\s*)/i, "").trim();
+        // Clean leading question tag: e.g. "Q1.What...", "Question 1: ...", "வினா 1: ..."
+        let qBody = cleanBlock.replace(/^(?:(?:Question|Q|வினா(?:\s*எண்)?)\s*[:\.-]?\s*\d+[\.:\)\s\-]*|\d+[\.\)]\s*)/i, "").trim();
 
-        // Parse options A, B, C, D or 1, 2, 3, 4
-        // Line-based matching that never collides with decimal numbers like 2.0 or 1.2
+        // Parse options A, B, C, D / 1, 2, 3, 4 / அ, ஆ, இ, ஈ
         const lines = qBody.split("\n");
         const optLines = [];
         const questionLines = [];
@@ -365,15 +390,15 @@ function parseMcqText(text) {
 
         for (let l of lines) {
             const lineTrim = l.trim();
-            const optMatch = lineTrim.match(/^(\(?([A-Da-d1-4])[\.\)\:\-\]]|\(([A-Da-d1-4])\))\s+(?!\d{1,2}\.)(.*)/);
+            const optMatch = lineTrim.match(/^(\(?([A-Da-d1-4அஆஇஈ])[\.\)\:\-\]]|\(([A-Da-d1-4அஆஇஈ])\))\s+(?!\d{1,2}\.)(.*)/);
             if (optMatch) {
                 inOptions = true;
-                const optKey = (optMatch[2] || optMatch[3]).toUpperCase();
-                const mapKey = optKey === "1" ? "A" : optKey === "2" ? "B" : optKey === "3" ? "C" : optKey === "4" ? "D" : optKey;
+                const optKey = (optMatch[2] || optMatch[3]);
+                const mapKey = tamilOptMap[optKey] || (optKey === "1" ? "A" : optKey === "2" ? "B" : optKey === "3" ? "C" : optKey === "4" ? "D" : optKey.toUpperCase());
                 optLines.push({ key: mapKey, text: optMatch[4].trim() });
             } else if (!inOptions) {
                 questionLines.push(l);
-            } else if (inOptions && optLines.length > 0 && !lineTrim.match(/^(?:Question|Q\d|Correct|Answer|Explanation)/i)) {
+            } else if (inOptions && optLines.length > 0 && !lineTrim.match(/^(?:Question|Q\d|Correct|Answer|Explanation|வினா|விடை)/i)) {
                 optLines[optLines.length - 1].text += " " + lineTrim;
             }
         }
@@ -425,8 +450,13 @@ async function parseUploadedQuestions(file) {
         questions = parseMcqText(text);
     } else if (ext === ".docx") {
         try {
-            const docxResult = await mammoth.extractRawText({ buffer: file.buffer });
-            questions = parseMcqText(docxResult.value);
+            const htmlResult = await mammoth.convertToHtml({ buffer: file.buffer });
+            if (htmlResult && htmlResult.value && /<table[\s>]/i.test(htmlResult.value)) {
+                questions = parseMcqText(convertHtmlTablesToMarkdown(htmlResult.value));
+            } else {
+                const docxResult = await mammoth.extractRawText({ buffer: file.buffer });
+                questions = parseMcqText(docxResult.value);
+            }
         } catch (docxErr) {
             console.error("DOCX parsing error:", docxErr);
             questions = parseMcqText(file.buffer.toString("utf8"));

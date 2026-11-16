@@ -112,7 +112,7 @@ async function loadAnswerReview() {
             const qBody = document.createElement("div");
             qBody.className = "review-question-body";
             if (typeof window.renderNeatQuestion === "function") {
-                qBody.innerHTML = window.renderNeatQuestion(question.question || "");
+                qBody.innerHTML = window.renderNeatQuestion(question.question || "", question.options || null);
             } else {
                 qBody.textContent = question.question || "";
             }

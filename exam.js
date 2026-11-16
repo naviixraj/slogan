@@ -677,7 +677,7 @@ if (totalNumberEl) {
 
         if (questionTextEl) {
             if (typeof window.renderNeatQuestion === "function") {
-                questionTextEl.innerHTML = window.renderNeatQuestion(question.question || "");
+                questionTextEl.innerHTML = window.renderNeatQuestion(question.question || "", question.options || null);
             } else {
                 questionTextEl.textContent = question.question || "";
             }

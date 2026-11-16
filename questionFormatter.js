@@ -1,11 +1,11 @@
 /**
- * SLOGON ACADEMY - UNIVERSAL NEAT QUESTION FORMATTER
- * Automatically parses and structures any competitive exam question:
- * - Data Interpretation Tables (single or multiple tables with auto-detected columns)
- * - Match the Following (List I vs. List II)
- * - Statements (Statement I, Statement II) & Assertion-Reason
- * - Passages & Directions
- * - Standard MCQs
+ * SLOGON ACADEMY - UNIVERSAL NEAT QUESTION & TABLE FORMATTER
+ * Faithfully formats questions exactly as they appear in uploaded documents:
+ * - Data Interpretation Tables (vertical cell streams, markdown tables, HTML tables)
+ * - Match the Following & Chronology questions
+ * - Statement lists: Roman numerals (i)-(x), Arabic (1)-(4), English/Tamil Assertion & Reason
+ * - Passages & Direction Cards
+ * - Clean prompt headers and stray metadata filtering
  */
 "use strict";
 
@@ -20,17 +20,97 @@
             .replace(/'/g, "&#039;");
     }
 
-    function renderNeatQuestion(raw) {
+    function isNumericValue(val) {
+        if (!val) return false;
+        const s = String(val).trim().replace(/,/g, "");
+        return /^[-+]?\d+(\.\d+)?%?$/.test(s);
+    }
+
+    function isHeaderCell(str) {
+        if (!str || typeof str !== "string") return false;
+        const s = str.trim();
+        if (s.length > 50) return false;
+        if (s.split(/\s+/).length > 6) return false;
+        if (/[;\.\?!]/.test(s) && !/^\d+\.\d+$/.test(s) && !/^\([A-Za-z0-9]+\)$/.test(s)) return false;
+        return true;
+    }
+
+    // Helper: detect vertical table dump (headers followed by repeating rows of N items)
+    function detectVerticalTable(lines, startIdx) {
+        if (startIdx >= lines.length) return null;
+
+        if (!isHeaderCell(lines[startIdx])) return null;
+
+        let firstNumIdx = -1;
+        for (let j = startIdx; j < Math.min(lines.length, startIdx + 30); j++) {
+            if (isNumericValue(lines[j])) {
+                firstNumIdx = j;
+                break;
+            }
+            if (!isHeaderCell(lines[j])) {
+                return null;
+            }
+        }
+
+        if (firstNumIdx <= startIdx + 1) return null;
+
+        const row1LabelIdx = firstNumIdx - 1;
+        const headers = lines.slice(startIdx, row1LabelIdx);
+        const colCount = headers.length;
+
+        if (colCount < 2 || colCount > 15) return null;
+
+        let currIdx = row1LabelIdx;
+        const rows = [];
+
+        while (currIdx + colCount <= lines.length) {
+            const potentialRow = lines.slice(currIdx, currIdx + colCount);
+            const remainingCells = potentialRow.slice(1);
+            const numCount = remainingCells.filter(isNumericValue).length;
+
+            if (numCount >= Math.floor((colCount - 1) * 0.6)) {
+                rows.push(potentialRow);
+                currIdx += colCount;
+            } else {
+                break;
+            }
+        }
+
+        if (rows.length >= 1) {
+            return {
+                headers,
+                rows,
+                consumedCount: currIdx - startIdx
+            };
+        }
+
+        return null;
+    }
+
+    function renderNeatQuestion(raw, options) {
         if (!raw || typeof raw !== "string") return "";
 
         const text = raw.trim();
 
-        // If the question already contains raw HTML tables or custom layout divs, return directly inside wrapper
-        if (/<table[\s>]/i.test(text) || /<div[\s>]/i.test(text)) {
+        // If the question already contains clean HTML tables, return wrapped
+        if (/<table[\s>]/i.test(text) && /<\/table>/i.test(text)) {
             return `<div class="neat-question-root">${text}</div>`;
         }
 
-        const lines = text.split(/\r?\n/);
+        let lines = text.split(/\r?\n/).map(l => l.trim()).filter(Boolean);
+
+        // Filter out stray page headers/footers (e.g. "நிரல்படுத்துக வினாக்கள்", "Page 1 of 5")
+        lines = lines.filter(l => !/^(?:நிரல்படுத்துக வினாக்கள்|Page\s+\d+|--\s*\d+\s*--)$/i.test(l));
+
+        // Check if options refer to Roman numerals (i), (ii), etc.
+        let optionsMentionRoman = false;
+        if (options && typeof options === "object") {
+            const optValues = Object.values(options).join(" ");
+            optionsMentionRoman = /\(?([i|v|x]+)\)/i.test(optValues);
+        } else {
+            optionsMentionRoman = /\(i\).*\(ii\)/i.test(text);
+        }
+
         const blocks = [];
         let currentTable = null;
         let currentPassage = [];
@@ -57,22 +137,17 @@
 
         function flushNormal() {
             if (currentNormal.length > 0) {
-                blocks.push({ type: "normal", text: currentNormal.join("\n") });
+                blocks.push({ type: "normal", lines: currentNormal });
                 currentNormal = [];
             }
         }
 
         let i = 0;
         while (i < lines.length) {
-            const line = lines[i].trim();
+            const line = lines[i];
 
-            if (!line) {
-                i++;
-                continue;
-            }
-
-            // Detect table caption: e.g. "Table-1: ...", "Table 1: ...", "Table-2: ..."
-            const tableCaptionMatch = line.match(/^(Table\s*[-:\s]\s*\d+[:\s].*|Table\s+\d+[:\s].*)/i);
+            // 1. Detect table caption: e.g. "Table-1: ...", "Table 1: ...", "அட்டவணை 1: ..."
+            const tableCaptionMatch = line.match(/^(Table\s*[-:\s]\s*\d+[:\s].*|Table\s+\d+[:\s].*|அட்டவணை\s*[-:\s]?\s*\d+[:\s].*)/i);
             if (tableCaptionMatch) {
                 flushPassage();
                 flushNormal();
@@ -87,33 +162,35 @@
                 continue;
             }
 
-            // Helper to tokenize table row (supports both pipe '|' and space-separated table lines)
-            function tokenizeRow(str) {
-                if (str.includes("|")) {
-                    return str.split("|").map(c => c.trim()).filter((c, idx, arr) => {
-                        if ((idx === 0 || idx === arr.length - 1) && c === "") return false;
-                        return true;
-                    });
-                }
-                const tokens = [];
-                // Matches either "2020 (E)" or single words/numbers
-                const rowRegex = /(\S+\s+\([A-Za-z0-9]+\)|\S+)/g;
-                let rm;
-                while ((rm = rowRegex.exec(str)) !== null) {
-                    tokens.push(rm[1].trim());
-                }
-                return tokens;
+            // 2. Check for vertical table stream
+            const vertTable = detectVerticalTable(lines, i);
+            if (vertTable) {
+                flushPassage();
+                flushNormal();
+                
+                const caption = currentTable ? currentTable.caption : null;
+                blocks.push({
+                    type: "table",
+                    caption: caption,
+                    headers: vertTable.headers,
+                    rows: vertTable.rows
+                });
+                currentTable = null;
+                i += vertTable.consumedCount;
+                continue;
             }
 
-            // Detect table rows: either contains '|' or follows a Table caption
-            if (line.includes("|") || (currentTable && !line.includes("?") && !/^(?:What|Which|Find|Calculate|From the year|Considering|In the year|The difference|Table\s*[-:\s]\s*\d+|Q\d|Question)/i.test(line))) {
-                // Ignore standard markdown divider rows like |---|---|
+            // 3. Detect pipe-separated markdown table rows (contains '|')
+            if (line.includes("|")) {
                 if (/^\|?[\s\-:]+(\|[\s\-:]+)+\|?$/.test(line)) {
                     i++;
                     continue;
                 }
 
-                const cells = tokenizeRow(line);
+                const cells = line.split("|").map(c => c.trim()).filter((c, idx, arr) => {
+                    if ((idx === 0 || idx === arr.length - 1) && c === "") return false;
+                    return true;
+                });
 
                 if (cells.length > 1) {
                     flushPassage();
@@ -134,20 +211,18 @@
                 }
             }
 
-            // If we were parsing a table and encounter a non-table line, flush table
             if (currentTable) {
                 flushTable();
             }
 
-            // Detect Data Passage / Directions header
-            if (/^(?:Data passage:|Directions?:|Based on the data|Read the following passage|Consider the following)/i.test(line)) {
+            // 4. Detect Data Passage / Directions header
+            if (/^(?:The following Table|Based on the data|Data passage:|Directions?:|Read the following passage|Consider the following|பத்தியைப் படித்து)/i.test(line)) {
                 flushNormal();
                 currentPassage.push(line);
                 i++;
                 continue;
             }
 
-            // Continue gathering passage lines until question prompt is reached
             if (currentPassage.length > 0 && !line.includes("?") && !/^(?:What|Which|Find|Calculate|From the year|Considering|In the year|The difference|If|Choose)/i.test(line)) {
                 currentPassage.push(line);
                 i++;
@@ -163,7 +238,7 @@
         flushTable();
         flushNormal();
 
-        // Assemble clean, structured, non-congested HTML
+        // Assemble clean, structured HTML
         let html = `<div class="neat-question-root">`;
 
         for (const block of blocks) {
@@ -189,7 +264,7 @@
                 if (block.headers && block.headers.length > 0) {
                     html += `<thead><tr>`;
                     block.headers.forEach((h, hIdx) => {
-                        html += `<th class="${hIdx === 0 ? 'col-first' : ''}">${escapeHtml(h)}</th>`;
+                        html += `<th class="${hIdx === 0 ? 'col-first' : 'col-val'}">${escapeHtml(h)}</th>`;
                     });
                     html += `</tr></thead>`;
                 }
@@ -209,17 +284,69 @@
                     </div>
                 </div>`;
             } else if (block.type === "normal") {
-                const subLines = block.text.split("\n");
-                subLines.forEach(l => {
-                    const trimmed = l.trim();
+                const rawLines = block.lines;
+
+                let startIdx = 0;
+                const promptHeaderMatch = rawLines[0] && rawLines[0].match(/^(கீழ்க்காணும் கூற்றுகளைக் கருத்தில் கொள்க|காலவரிசை வினா|பொருத்துக|சரியான கூற்றைத் தேர்ந்தெடுக்க|Consider the following statements|Match the following)[:\s\-]*$/i);
+                
+                if (promptHeaderMatch) {
+                    html += `
+                        <div class="neat-prompt-header">
+                            <span class="neat-prompt-badge">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                                ${escapeHtml(rawLines[0])}
+                            </span>
+                        </div>
+                    `;
+                    startIdx = 1;
+                }
+
+                const remaining = rawLines.slice(startIdx);
+                const romanMap = ["(i)", "(ii)", "(iii)", "(iv)", "(v)", "(vi)", "(vii)", "(viii)"];
+                const needsAutoRoman = optionsMentionRoman && remaining.length >= 2 && remaining.length <= 8 && !remaining.some(l => /^\(?([i|v|x]+)\)/i.test(l));
+
+                remaining.forEach((lineText, idx) => {
+                    const trimmed = lineText.trim();
                     if (!trimmed) return;
 
-                    const stmtMatch = trimmed.match(/^(Statement\s+[I|V|X|\d]+|Assertion\s*\(?[A-Z]?\)?|Reason\s*\(?[A-Z]?\)?|List\s+[I|V|X|\d]+)[:\s\-]+(.*)/i);
-                    if (stmtMatch) {
+                    const romanMatch = trimmed.match(/^\(?([i|v|x]+)\)[\.\:\-\s]+(.*)/i);
+                    const tamilStmtMatch = trimmed.match(/^(கூற்று\s*\(?[A-Za-z0-9]?\)?|காரணம்\s*\(?[A-Za-z0-9]?\)?|பட்டியல்\s+[I|V|X|\d]+)[:\s\-]+(.*)/i);
+                    const engStmtMatch = trimmed.match(/^(Statement\s+[I|V|X|\d]+|Assertion\s*\(?[A-Z]?\)?|Reason\s*\(?[A-Z]?\)?|List\s+[I|V|X|\d]+)[:\s\-]+(.*)/i);
+                    const letterMatch = trimmed.match(/^\(([a-d])\)[\.\:\-\s]+(.*)/i);
+
+                    if (romanMatch) {
                         html += `
                             <div class="neat-statement-box">
-                                <span class="neat-statement-badge">${escapeHtml(stmtMatch[1])}</span>
-                                <span class="neat-statement-text">${escapeHtml(stmtMatch[2])}</span>
+                                <span class="neat-statement-badge">(${romanMatch[1].toLowerCase()})</span>
+                                <span class="neat-statement-text">${escapeHtml(romanMatch[2])}</span>
+                            </div>
+                        `;
+                    } else if (tamilStmtMatch) {
+                        html += `
+                            <div class="neat-statement-box">
+                                <span class="neat-statement-badge">${escapeHtml(tamilStmtMatch[1])}</span>
+                                <span class="neat-statement-text">${escapeHtml(tamilStmtMatch[2])}</span>
+                            </div>
+                        `;
+                    } else if (engStmtMatch) {
+                        html += `
+                            <div class="neat-statement-box">
+                                <span class="neat-statement-badge">${escapeHtml(engStmtMatch[1])}</span>
+                                <span class="neat-statement-text">${escapeHtml(engStmtMatch[2])}</span>
+                            </div>
+                        `;
+                    } else if (letterMatch) {
+                        html += `
+                            <div class="neat-statement-box">
+                                <span class="neat-statement-badge">(${letterMatch[1].toLowerCase()})</span>
+                                <span class="neat-statement-text">${escapeHtml(letterMatch[2])}</span>
+                            </div>
+                        `;
+                    } else if (needsAutoRoman && idx < romanMap.length) {
+                        html += `
+                            <div class="neat-statement-box">
+                                <span class="neat-statement-badge">${romanMap[idx]}</span>
+                                <span class="neat-statement-text">${escapeHtml(trimmed)}</span>
                             </div>
                         `;
                     } else if (trimmed.includes("?") || /^(?:What|Which|Find|Calculate|The difference|From the year|Considering|In the year|If)/i.test(trimmed)) {
