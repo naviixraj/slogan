@@ -1011,12 +1011,17 @@ function updatePasteDetection() {
         return;
     }
 
-    const regex = /(?:^|\n)(?=(?:(?:Question|Q)\s*[:\.-]?\s*\d+[\.:\)\s\-]+|\d+[\.\)]\s+))/gi;
-    const blocks = text.split(regex).map(b => b.trim()).filter(b => b.length > 5);
+    const regex = /(?:^|\n)(?=(?:(?:Question|Q|வினா(?:\s*எண்)?)\s*[:\.-]?\s*\d+[\.:\)\s\-\]]+|\d+[\.\)]\s+|\d+\s*[:\.\-]?\s*(?:\[|\(|பொருத்துக|காலவரிசை|நிரல்படுத்துக|உறுதிக்கூற்று)))/gi;
+    let blocks = text.split(regex).map(b => b.trim()).filter(b => b.length > 5);
+
+    // If split produced 0 blocks, check if the pasted text is a standalone single question
+    if (blocks.length === 0 && /(?:^|\n|\s{2,})(?:\(?([A-Da-d1-4அஆஇஈ])[\.\)\:\-\]]|\(([A-Da-d1-4அஆஇஈ])\))/g.test(text)) {
+        blocks = [text];
+    }
 
     if (blocks.length === 0) {
         pasteDetectSummary.className = "paste-detect-summary has-error";
-        pasteDetectSummary.innerHTML = "⚠️ No questions detected yet. Please ensure questions start with numbers like '1.' or 'Q1.'";
+        pasteDetectSummary.innerHTML = "⚠️ No questions detected yet. Please ensure questions start with numbers like '1.' or 'Q1.' or 'வினா 1:'";
         return;
     }
 

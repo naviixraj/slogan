@@ -501,8 +501,8 @@ function parseMcqText(rawText) {
         passageBeforeQ1 = cleanDoc.slice(0, q1Idx).trim();
     }
 
-    // 4. Match question headers (supports Q1., Question 1:, வினா 1:, 1: தலைப்பு, 1. கேள்வி)
-    const qHeaderRegex = /(?:^|\n)\s*(?:Q\s*(\d+)[\.:\)]|Question\s*(\d+)[\.:\)]|(?:வினா(?:\s*எண்)?)\s*(\d+)(?:\s*(?:\[[^\]]+\]|\([^\)]+\)))?[:\.]?|(\d+)\s*[:\.]\s*(?:பொருத்துக|பல்நோக்கு|பல்கூற்று|காலவரிசை|நிரல்படுத்துக|சரியான|கூற்று|வினா|உறுதிக்கூற்று)|(\d+)[\.:\)]\s+)/gi;
+    // 4. Match question headers (supports Q1., Question 1:, வினா 1:, வினா எண்: 68, 68 [உறுதிக்கூற்று], 1: தலைப்பு, 1. கேள்வி)
+    const qHeaderRegex = /(?:^|\n)\s*(?:Q\s*[:\.]?\s*(\d+)[\.:\)]?|Question\s*[:\.]?\s*(\d+)[\.:\)]?|(?:வினா(?:\s*எண்)?)\s*[:\.]?\s*(\d+)(?:\s*(?:\[[^\]]+\]|\([^\)]+\)))?[:\.]?|(\d+)\s*[:\.\-]?\s*(?:\[[^\]]+\]|\([^\)]+\)|பொருத்துக|பல்நோக்கு|பல்கூற்று|காலவரிசை|நிரல்படுத்துக|சரியான|கூற்று|வினா|உறுதிக்கூற்று)|(\d+)[\.:\)]\s+)/gi;
 
     const matches = [];
     let m;
@@ -513,6 +513,40 @@ function parseMcqText(rawText) {
 
     // Filter sublabel (வினா 1 after question 50)
     const validMatches = matches.filter((item, idx) => !(item.num === 1 && idx > 5));
+
+    // Standalone single question fallback (e.g. user pasted 1 question without explicit Q number header)
+    if (validMatches.length === 0) {
+        const smartRes = splitOptionsSmart(cleanDoc);
+        if (smartRes) {
+            let answer = "A";
+            let explanation = "";
+            let questionPrompt = cleanDoc;
+
+            const ansExpMatch = cleanDoc.match(/(?:Correct\s*Answer|சரியான\s*விடை|Answer|Ans|பதில்|விடை)[:\s]+(?:\(?([1-4A-Da-dஅஆஇஈ])\)?|\[([1-4A-Da-dஅஆஇஈ])\])(?:\s*([^\n]+))?\s*(?:(?:(?:Short\s*)?Explanation|விளக்கம்|குறுகிய\s*விளக்கம்)[:\s]+([\s\S]*))?$/i);
+            if (ansExpMatch) {
+                const rawLetter = (ansExpMatch[1] || ansExpMatch[2] || "A").toUpperCase();
+                const tamilMap = { "அ": "A", "ஆ": "B", "இ": "C", "ஈ": "D" };
+                answer = tamilMap[rawLetter] || (rawLetter === "1" ? "A" : rawLetter === "2" ? "B" : rawLetter === "3" ? "C" : rawLetter === "4" ? "D" : rawLetter);
+                if (ansExpMatch[4]) explanation = ansExpMatch[4].trim();
+            }
+
+            questionPrompt = smartRes.body;
+            questionPrompt = formatStatementsVertical(questionPrompt);
+
+            return [{
+                id: 1,
+                number: 1,
+                section: "Tamil Paper 2",
+                question: questionPrompt,
+                text: questionPrompt,
+                options: smartRes.options,
+                optionLabels: smartRes.optionLabels || { A: "A", B: "B", C: "C", D: "D" },
+                correctAnswer: answer,
+                answer: answer,
+                explanation: explanation
+            }];
+        }
+    }
 
     // Dynamic Passage and Directions scanner (e.g. Questions 16-20, Questions 1-5, வினாக்கள் 1 முதல் 5)
     const passageList = [];
