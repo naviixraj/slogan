@@ -87,6 +87,66 @@
         return null;
     }
 
+    function parseMatchLists(text) {
+        if (!text || typeof text !== "string") return null;
+        const listRegex = /(?:^|\n)\s*(List\s+I|பட்டியல்\s*[-–—]?\s*(?:I|ஒன்று|1|முதல்))(?:\s*[:\-]|\s+(?=\([A-Za-z\d]\)|[A-Za-z]\.))([\s\S]*?)(?:^|\n)\s*(List\s+II|பட்டியல்\s*[-–—]?\s*(?:II|இரண்டு|2))(?:\s*[:\-]|\s+(?=\([A-Za-z\d]\)|[I|V|X\d]\.))([\s\S]*?)(?=(?:Choose\s+the\s+correct|விருப்பங்கள்|தெரிவுகள்|\([1-4A-Dஅஆஇஈ]\)|$))/i;
+        const match = text.match(listRegex);
+        if (!match) return null;
+
+        const titleI = match[1].trim();
+        const bodyI = match[2].trim();
+        const titleII = match[3].trim();
+        const bodyII = match[4].trim();
+
+        function splitItems(str) {
+            const itemRegex = /(?:^|\n|\s{2,}|\s)(?:\(?([A-Da-dI|V|X|\d]+)\)?[\.:\-\)]|\(([A-Da-dI|V|X|\d]+)\))\s+/g;
+            const matches = [];
+            let m;
+            while ((m = itemRegex.exec(str)) !== null) {
+                matches.push({ key: (m[1] || m[2]).toUpperCase(), index: m.index, len: m[0].length });
+            }
+            if (matches.length === 0) {
+                return str.split("\n").map(l => l.trim()).filter(Boolean).map((t, idx) => ({ key: String(idx + 1), text: t }));
+            }
+            const items = [];
+            for (let i = 0; i < matches.length; i++) {
+                const nextIdx = matches[i + 1] ? matches[i + 1].index : str.length;
+                items.push({
+                    key: matches[i].key,
+                    text: str.slice(matches[i].index + matches[i].len, nextIdx).trim()
+                });
+            }
+            return items;
+        }
+
+        return {
+            preamble: text.slice(0, match.index).trim(),
+            listI: { title: titleI, items: splitItems(bodyI) },
+            listII: { title: titleII, items: splitItems(bodyII) },
+            postamble: text.slice(match.index + match[0].length).trim()
+        };
+    }
+
+    function parseAssertionReason(text) {
+        if (!text || typeof text !== "string") return null;
+        const arRegex = /(?:^|\n|\s*)(Assertion(?:\s*\([A-Za-z]\))?|கூற்று\s*\([A-Za-z0-9]\)|உறுதிக்கூற்று\s*(?:\([A-Za-z0-9]+\))?|கூற்று\s*1)[:\s\-]+([\s\S]*?)(?:^|\n|\s*)(Reason(?:\s*\([A-Za-z]\))?|காரணம்\s*(?:\([A-Za-z0-9]+\))?|காரணம்\s*\(கா\)|கூற்று\s*2)[:\s\-]+([\s\S]*?)(?=(?:Choose\s+the\s+correct|விருப்பங்கள்|தெரிவுகள்|\([1-4A-Dஅஆஇஈ]\)|$))/i;
+        const match = text.match(arRegex);
+        if (!match) return null;
+
+        return {
+            preamble: text.slice(0, match.index).trim(),
+            assertion: {
+                badge: match[1].trim(),
+                text: match[2].trim()
+            },
+            reason: {
+                badge: match[3].trim(),
+                text: match[4].trim()
+            },
+            postamble: text.slice(match.index + match[0].length).trim()
+        };
+    }
+
     function renderNeatQuestion(raw, options) {
         if (!raw || typeof raw !== "string") return "";
 
@@ -284,77 +344,131 @@
                     </div>
                 </div>`;
             } else if (block.type === "normal") {
-                const rawLines = block.lines;
+                const blockText = block.lines.join("\n");
+                const matchLists = parseMatchLists(blockText);
+                const ar = !matchLists ? parseAssertionReason(blockText) : null;
 
-                let startIdx = 0;
-                const promptHeaderMatch = rawLines[0] && rawLines[0].match(/^(கீழ்க்காணும் கூற்றுகளைக் கருத்தில் கொள்க|காலவரிசை வினா|பொருத்துக|சரியான கூற்றைத் தேர்ந்தெடுக்க|Consider the following statements|Match the following)[:\s\-]*$/i);
-                
-                if (promptHeaderMatch) {
+                if (matchLists) {
+                    if (matchLists.preamble) {
+                        html += `<div class="neat-question-query">${escapeHtml(matchLists.preamble)}</div>`;
+                    }
                     html += `
-                        <div class="neat-prompt-header">
-                            <span class="neat-prompt-badge">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
-                                ${escapeHtml(rawLines[0])}
-                            </span>
+                        <div class="neat-match-container">
+                            <div class="neat-match-col">
+                                <div class="neat-match-header">${escapeHtml(matchLists.listI.title)}</div>
+                                ${matchLists.listI.items.map(it => `
+                                    <div class="neat-match-item">
+                                        <span class="neat-match-badge">${escapeHtml(it.key)}</span>
+                                        <span class="neat-match-text">${escapeHtml(it.text)}</span>
+                                    </div>
+                                `).join("")}
+                            </div>
+                            <div class="neat-match-col">
+                                <div class="neat-match-header">${escapeHtml(matchLists.listII.title)}</div>
+                                ${matchLists.listII.items.map(it => `
+                                    <div class="neat-match-item">
+                                        <span class="neat-match-badge">${escapeHtml(it.key)}</span>
+                                        <span class="neat-match-text">${escapeHtml(it.text)}</span>
+                                    </div>
+                                `).join("")}
+                            </div>
                         </div>
                     `;
-                    startIdx = 1;
-                }
-
-                const remaining = rawLines.slice(startIdx);
-                const romanMap = ["(i)", "(ii)", "(iii)", "(iv)", "(v)", "(vi)", "(vii)", "(viii)"];
-                const needsAutoRoman = optionsMentionRoman && remaining.length >= 2 && remaining.length <= 8 && !remaining.some(l => /^\(?([i|v|x]+)\)/i.test(l));
-
-                remaining.forEach((lineText, idx) => {
-                    const trimmed = lineText.trim();
-                    if (!trimmed) return;
-
-                    const romanMatch = trimmed.match(/^\(?([i|v|x]+)\)[\.\:\-\s]+(.*)/i);
-                    const tamilStmtMatch = trimmed.match(/^(கூற்று\s*\(?[A-Za-z0-9]?\)?|காரணம்\s*\(?[A-Za-z0-9]?\)?|பட்டியல்\s+[I|V|X|\d]+)[:\s\-]+(.*)/i);
-                    const engStmtMatch = trimmed.match(/^(Statement\s+[I|V|X|\d]+|Assertion\s*\(?[A-Z]?\)?|Reason\s*\(?[A-Z]?\)?|List\s+[I|V|X|\d]+)[:\s\-]+(.*)/i);
-                    const letterMatch = trimmed.match(/^\(([a-d])\)[\.\:\-\s]+(.*)/i);
-
-                    if (romanMatch) {
-                        html += `
-                            <div class="neat-statement-box">
-                                <span class="neat-statement-badge">(${romanMatch[1].toLowerCase()})</span>
-                                <span class="neat-statement-text">${escapeHtml(romanMatch[2])}</span>
-                            </div>
-                        `;
-                    } else if (tamilStmtMatch) {
-                        html += `
-                            <div class="neat-statement-box">
-                                <span class="neat-statement-badge">${escapeHtml(tamilStmtMatch[1])}</span>
-                                <span class="neat-statement-text">${escapeHtml(tamilStmtMatch[2])}</span>
-                            </div>
-                        `;
-                    } else if (engStmtMatch) {
-                        html += `
-                            <div class="neat-statement-box">
-                                <span class="neat-statement-badge">${escapeHtml(engStmtMatch[1])}</span>
-                                <span class="neat-statement-text">${escapeHtml(engStmtMatch[2])}</span>
-                            </div>
-                        `;
-                    } else if (letterMatch) {
-                        html += `
-                            <div class="neat-statement-box">
-                                <span class="neat-statement-badge">(${letterMatch[1].toLowerCase()})</span>
-                                <span class="neat-statement-text">${escapeHtml(letterMatch[2])}</span>
-                            </div>
-                        `;
-                    } else if (needsAutoRoman && idx < romanMap.length) {
-                        html += `
-                            <div class="neat-statement-box">
-                                <span class="neat-statement-badge">${romanMap[idx]}</span>
-                                <span class="neat-statement-text">${escapeHtml(trimmed)}</span>
-                            </div>
-                        `;
-                    } else if (trimmed.includes("?") || /^(?:What|Which|Find|Calculate|The difference|From the year|Considering|In the year|If)/i.test(trimmed)) {
-                        html += `<div class="neat-question-query">${escapeHtml(trimmed)}</div>`;
-                    } else {
-                        html += `<p class="neat-paragraph">${escapeHtml(trimmed)}</p>`;
+                    if (matchLists.postamble) {
+                        html += `<div class="neat-question-query">${escapeHtml(matchLists.postamble)}</div>`;
                     }
-                });
+                } else if (ar) {
+                    if (ar.preamble) {
+                        html += `<div class="neat-question-query">${escapeHtml(ar.preamble)}</div>`;
+                    }
+                    html += `
+                        <div class="neat-ar-wrapper">
+                            <div class="neat-ar-card neat-ar-assertion">
+                                <span class="neat-ar-badge">${escapeHtml(ar.assertion.badge)}</span>
+                                <div class="neat-ar-text">${escapeHtml(ar.assertion.text)}</div>
+                            </div>
+                            <div class="neat-ar-card neat-ar-reason">
+                                <span class="neat-ar-badge">${escapeHtml(ar.reason.badge)}</span>
+                                <div class="neat-ar-text">${escapeHtml(ar.reason.text)}</div>
+                            </div>
+                        </div>
+                    `;
+                    if (ar.postamble) {
+                        html += `<div class="neat-question-query">${escapeHtml(ar.postamble)}</div>`;
+                    }
+                } else {
+                    const rawLines = block.lines;
+
+                    let startIdx = 0;
+                    const promptHeaderMatch = rawLines[0] && rawLines[0].match(/^(கீழ்க்காணும் கூற்றுகளைக் கருத்தில் கொள்க|காலவரிசை வினா|பொருத்துக|சரியான கூற்றைத் தேர்ந்தெடுக்க|Consider the following statements|Match the following)[:\s\-]*$/i);
+                    
+                    if (promptHeaderMatch) {
+                        html += `
+                            <div class="neat-prompt-header">
+                                <span class="neat-prompt-badge">
+                                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                                    ${escapeHtml(rawLines[0])}
+                                </span>
+                            </div>
+                        `;
+                        startIdx = 1;
+                    }
+
+                    const remaining = rawLines.slice(startIdx);
+                    const romanMap = ["(i)", "(ii)", "(iii)", "(iv)", "(v)", "(vi)", "(vii)", "(viii)"];
+                    const needsAutoRoman = optionsMentionRoman && remaining.length >= 2 && remaining.length <= 8 && !remaining.some(l => /^\(?([i|v|x]+)\)/i.test(l));
+
+                    remaining.forEach((lineText, idx) => {
+                        const trimmed = lineText.trim();
+                        if (!trimmed) return;
+
+                        const romanMatch = trimmed.match(/^\(?([i|v|x]+)\)[\.\:\-\s]+(.*)/i);
+                        const tamilStmtMatch = trimmed.match(/^(கூற்று\s*\(?[A-Za-z0-9]?\)?|காரணம்\s*\(?[A-Za-z0-9]?\)?|பட்டியல்\s+[I|V|X|\d]+)[:\s\-]+(.*)/i);
+                        const engStmtMatch = trimmed.match(/^(Statement\s+[I|V|X|\d]+|Assertion\s*\(?[A-Z]?\)?|Reason\s*\(?[A-Z]?\)?|List\s+[I|V|X|\d]+)[:\s\-]+(.*)/i);
+                        const letterMatch = trimmed.match(/^\(([a-d])\)[\.\:\-\s]+(.*)/i);
+
+                        if (romanMatch) {
+                            html += `
+                                <div class="neat-statement-box">
+                                    <span class="neat-statement-badge">(${romanMatch[1].toLowerCase()})</span>
+                                    <span class="neat-statement-text">${escapeHtml(romanMatch[2])}</span>
+                                </div>
+                            `;
+                        } else if (tamilStmtMatch) {
+                            html += `
+                                <div class="neat-statement-box">
+                                    <span class="neat-statement-badge">${escapeHtml(tamilStmtMatch[1])}</span>
+                                    <span class="neat-statement-text">${escapeHtml(tamilStmtMatch[2])}</span>
+                                </div>
+                            `;
+                        } else if (engStmtMatch) {
+                            html += `
+                                <div class="neat-statement-box">
+                                    <span class="neat-statement-badge">${escapeHtml(engStmtMatch[1])}</span>
+                                    <span class="neat-statement-text">${escapeHtml(engStmtMatch[2])}</span>
+                                </div>
+                            `;
+                        } else if (letterMatch) {
+                            html += `
+                                <div class="neat-statement-box">
+                                    <span class="neat-statement-badge">(${letterMatch[1].toLowerCase()})</span>
+                                    <span class="neat-statement-text">${escapeHtml(letterMatch[2])}</span>
+                                </div>
+                            `;
+                        } else if (needsAutoRoman && idx < romanMap.length) {
+                            html += `
+                                <div class="neat-statement-box">
+                                    <span class="neat-statement-badge">${romanMap[idx]}</span>
+                                    <span class="neat-statement-text">${escapeHtml(trimmed)}</span>
+                                </div>
+                            `;
+                        } else if (trimmed.includes("?") || /^(?:What|Which|Find|Calculate|The difference|From the year|Considering|In the year|If)/i.test(trimmed)) {
+                            html += `<div class="neat-question-query">${escapeHtml(trimmed)}</div>`;
+                        } else {
+                            html += `<p class="neat-paragraph">${escapeHtml(trimmed)}</p>`;
+                        }
+                    });
+                }
             }
         }
 

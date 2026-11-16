@@ -321,208 +321,262 @@ function convertHtmlTablesToMarkdown(html) {
     }).replace(/<[^>]+>/g, "\n");
 }
 
-// Helper: split horizontal inline options: e.g. (1) opt1 (2) opt2 (3) opt3 (4) opt4 or (A)...(B)...(C)...(D)...
-function splitInlineOptions(str) {
+// Helper: smart option splitter for numeric (1-4), letter (A-D), and Tamil (அ-ஈ) choices
+function splitOptionsSmart(str) {
     if (!str || typeof str !== "string") return null;
-    const regex = /(?:\s+|^)(?:\(?([2-4B-Db-d])[\.\)\:\-\]]|\(([2-4B-Db-d])\))\s+/g;
-    const matches = [];
-    let m;
-    while ((m = regex.exec(str)) !== null) {
-        matches.push({ key: (m[1] || m[2]).toUpperCase(), index: m.index, len: m[0].length });
-    }
-    if (matches.length >= 3) {
-        const last3 = matches.slice(-3);
-        let optD = str.slice(last3[2].index + last3[2].len).trim();
-        const trail = optD.match(/\s*(?:SECTION\s+[B-Z]|Faculty\s+Answer|Answer\s+Key)[\s\S]*$/i);
-        if (trail) {
-            optD = optD.slice(0, trail.index).trim();
-        }
-        return {
-            A: str.slice(0, last3[0].index).trim(),
-            B: str.slice(last3[0].index + last3[0].len, last3[1].index).trim(),
-            C: str.slice(last3[1].index + last3[1].len, last3[2].index).trim(),
-            D: optD
-        };
-    }
-    return null;
-}
 
-// Helper: extract unlabelled options when options are 4 plain consecutive lines (e.g. 50 \n 44 \n 52 \n 56)
-function extractUnlabeledOptions(text) {
-    const lines = text.split("\n").map(l => l.trim()).filter(Boolean);
+    // 1. Strictly numbered options: (1) ... (2) ... (3) ... (4) ...
+    const numRegex = /(?:^|\n|\s)\(([1-4])\)\s+/g;
+    const numMatches = [];
+    let nm;
+    while ((nm = numRegex.exec(str)) !== null) {
+        numMatches.push({ num: parseInt(nm[1], 10), index: nm.index, len: nm[0].length });
+    }
+
+    if (numMatches.length >= 4) {
+        for (let i = 0; i <= numMatches.length - 4; i++) {
+            if (numMatches[i].num === 1 && numMatches[i + 1].num === 2 && numMatches[i + 2].num === 3 && numMatches[i + 3].num === 4) {
+                const m0 = numMatches[i];
+                const m1 = numMatches[i + 1];
+                const m2 = numMatches[i + 2];
+                const m3 = numMatches[i + 3];
+
+                let optD = str.slice(m3.index + m3.len).trim();
+                const trail = optD.match(/\s*(?:SECTION\s+[B-Z]|Faculty\s+Answer|Answer\s+Key|சரியான\s*விடை|விளக்கம்|Explanation|பதில்|குறுகிய\s*விளக்கம்)[\s\S]*$/i);
+                if (trail) {
+                    optD = optD.slice(0, trail.index).trim();
+                }
+
+                return {
+                    options: {
+                        A: str.slice(m0.index + m0.len, m1.index).trim(),
+                        B: str.slice(m1.index + m1.len, m2.index).trim(),
+                        C: str.slice(m2.index + m2.len, m3.index).trim(),
+                        D: optD
+                    },
+                    body: str.slice(0, m0.index).trim()
+                };
+            }
+        }
+    }
+
+    // 2. Lettered options: (A)... (B)... (C)... (D)...
+    const letterRegex = /(?:^|\n|\s)\(([A-D])\)\s+/gi;
+    const letMatches = [];
+    let lm;
+    while ((lm = letterRegex.exec(str)) !== null) {
+        letMatches.push({ key: lm[1].toUpperCase(), index: lm.index, len: lm[0].length });
+    }
+    if (letMatches.length >= 4) {
+        for (let i = 0; i <= letMatches.length - 4; i++) {
+            if (letMatches[i].key === "A" && letMatches[i + 1].key === "B" && letMatches[i + 2].key === "C" && letMatches[i + 3].key === "D") {
+                const m0 = letMatches[i];
+                const m1 = letMatches[i + 1];
+                const m2 = letMatches[i + 2];
+                const m3 = letMatches[i + 3];
+
+                let optD = str.slice(m3.index + m3.len).trim();
+                const trail = optD.match(/\s*(?:SECTION\s+[B-Z]|Faculty\s+Answer|Answer\s+Key|சரியான\s*விடை|விளக்கம்|Explanation|பதில்|குறுகிய\s*விளக்கம்)[\s\S]*$/i);
+                if (trail) {
+                    optD = optD.slice(0, trail.index).trim();
+                }
+
+                return {
+                    options: {
+                        A: str.slice(m0.index + m0.len, m1.index).trim(),
+                        B: str.slice(m1.index + m1.len, m2.index).trim(),
+                        C: str.slice(m2.index + m2.len, m3.index).trim(),
+                        D: optD
+                    },
+                    body: str.slice(0, m0.index).trim()
+                };
+            }
+        }
+    }
+
+    // 2b. Tamil lettered options: (அ)... (ஆ)... (இ)... (ஈ)...
+    const tamilOptRegex = /(?:^|\n|\s)\(([அஆஇஈ])\)\s+/gi;
+    const tamilMatches = [];
+    let tm;
+    while ((tm = tamilOptRegex.exec(str)) !== null) {
+        const tamilChar = tm[1];
+        const key = tamilChar === "அ" ? "A" : tamilChar === "ஆ" ? "B" : tamilChar === "இ" ? "C" : "D";
+        tamilMatches.push({ key, index: tm.index, len: tm[0].length });
+    }
+    if (tamilMatches.length >= 4) {
+        for (let i = 0; i <= tamilMatches.length - 4; i++) {
+            if (tamilMatches[i].key === "A" && tamilMatches[i + 1].key === "B" && tamilMatches[i + 2].key === "C" && tamilMatches[i + 3].key === "D") {
+                const m0 = tamilMatches[i];
+                const m1 = tamilMatches[i + 1];
+                const m2 = tamilMatches[i + 2];
+                const m3 = tamilMatches[i + 3];
+
+                let optD = str.slice(m3.index + m3.len).trim();
+                const trail = optD.match(/\s*(?:SECTION\s+[B-Z]|Faculty\s+Answer|Answer\s+Key|சரியான\s*விடை|விளக்கம்|Explanation|பதில்|குறுகிய\s*விளக்கம்)[\s\S]*$/i);
+                if (trail) {
+                    optD = optD.slice(0, trail.index).trim();
+                }
+
+                return {
+                    options: {
+                        A: str.slice(m0.index + m0.len, m1.index).trim(),
+                        B: str.slice(m1.index + m1.len, m2.index).trim(),
+                        C: str.slice(m2.index + m2.len, m3.index).trim(),
+                        D: optD
+                    },
+                    body: str.slice(0, m0.index).trim()
+                };
+            }
+        }
+    }
+
+    // 3. Fallback: 4 consecutive lines (e.g. Q1-Q5 unlabeled numbers)
+    const lines = str.split("\n").map(l => l.trim()).filter(Boolean);
     if (lines.length >= 5) {
-        let candidateLines = lines;
-        const lastLine = lines[lines.length - 1];
-        if (lines.slice(-5, -1).includes(lastLine)) {
-            candidateLines = lines.slice(0, -1);
-        }
-
-        const candidateOpts = candidateLines.slice(-4);
-        const bodyLines = candidateLines.slice(0, -4);
-
-        if (candidateOpts.every(c => c.length < 80 && !c.includes("|") && !c.includes("Table") && !c.includes("?"))) {
+        const candidateOpts = lines.slice(-4);
+        const qLines = lines.slice(0, -4);
+        if (candidateOpts.every(c => c.length < 80 && !c.includes("?") && !c.includes("|"))) {
             return {
-                body: bodyLines.join("\n").trim(),
                 options: {
                     A: candidateOpts[0],
                     B: candidateOpts[1],
                     C: candidateOpts[2],
                     D: candidateOpts[3]
-                }
+                },
+                body: qLines.join("\n").trim()
             };
         }
     }
+
     return null;
 }
 
 // Helper: robust parser for MCQ questions from text (PDF, Word, or plain text)
-function parseMcqText(text) {
-    if (!text || typeof text !== "string") return [];
+function parseMcqText(rawText) {
+    if (!rawText || typeof rawText !== "string") return [];
 
-    const tamilOptMap = { "அ": "A", "ஆ": "B", "இ": "C", "ஈ": "D" };
+    // 1. Extract all Faculty Answer Keys (Section B & C)
+    const facultyKeys = new Map();
+    const facultyBlockRegex = /SECTION\s+[B-Z]\s*[—–-]\s*(?:[A-Z\s-]+)?ANSWER\s+KEY[\s\S]*?(?=(?:SECTION\s+A|Q\d+\.|\d+\.\s+[A-Za-z]|(?:வினா|வினா\s*எண்)\s*\d+[:\.]|\d+\s*[:\.]\s*(?:பொருத்துக|பல்நோக்கு|காலவரிசை|சரியான|கூற்று|வினா)|$))/gi;
+    let fbMatch;
+    while ((fbMatch = facultyBlockRegex.exec(rawText)) !== null) {
+        const block = fbMatch[0];
+        const itemRegex = /(?:Q|வினா\s*எண்|வினா)?\s*(\d+)[:\.]\s*(?:Correct\s*Answer[:\s]+(?:\(([1-4A-Da-dஅஆஇஈ])\)|([1-4A-Da-dஅஆஇஈ]))|சரியான\s*விடை[:\s]+(?:\(([1-4A-Da-dஅஆஇஈ])\)|([1-4A-Da-dஅஆஇஈ]))|பதில்[:\s]+(?:\(([1-4A-Da-dஅஆஇஈ])\)|([1-4A-Da-dஅஆஇஈ])))?\s*(?:(?:Explanation|விளக்கம்|குறுகிய\s*விளக்கம்)[:\s]+([\s\S]*?))(?=(?:(?:Q|வினா\s*எண்|வினா)?\s*\d+[:\.]|SECTION|$))/gi;
+        let im;
+        while ((im = itemRegex.exec(block)) !== null) {
+            const qNum = parseInt(im[1], 10);
+            const ansRaw = (im[2] || im[3] || im[4] || im[5] || im[6] || im[7] || "A").toUpperCase();
+            const tamilMap = { "அ": "A", "ஆ": "B", "இ": "C", "ஈ": "D" };
+            const ans = tamilMap[ansRaw] || (ansRaw === "1" ? "A" : ansRaw === "2" ? "B" : ansRaw === "3" ? "C" : ansRaw === "4" ? "D" : ansRaw);
+            const exp = (im[8] || "").trim();
+            facultyKeys.set(qNum, { answer: ans, explanation: exp });
+        }
 
-    // Strip page number markers and normalize linebreaks
-    const normalized = text
-        .replace(/--\s*\d+\s+of\s+\d+\s*--/gi, "")
-        .replace(/Page\s+\d+(?:\s+of\s+\d+)?/gi, "")
-        .replace(/\r\n/g, "\n")
-        .replace(/\r/g, "\n");
-
-    // Split strictly by Question markers: e.g. "Question 1", "Q.1", "வினா 1", "வினா எண் 1"
-    const qSplitter = /(?:^|\n)(?=(?:(?:Question|Q|வினா(?:\s*எண்)?)\s*[:\.-]?\s*\d+[\.:\)\s\-]+))/gi;
-    let parts = normalized.split(qSplitter);
-    let sharedContext = "";
-    let questionBlocks = [];
-
-    // Fallback if questions are numbered with digits like "1. Question"
-    if (parts.length <= 1) {
-        const numSplitter = /(?:^|\n)(?=\d+[\.\)]\s+[^\d])/gi;
-        parts = normalized.split(numSplitter);
+        const tableItemRegex = /Q(\d+)\s*\(([1-4A-Da-d])\)/gi;
+        let tim;
+        while ((tim = tableItemRegex.exec(block)) !== null) {
+            const qNum = parseInt(tim[1], 10);
+            const ansRaw = tim[2].toUpperCase();
+            const ans = ansRaw === "1" ? "A" : ansRaw === "2" ? "B" : ansRaw === "3" ? "C" : ansRaw === "4" ? "D" : ansRaw;
+            if (!facultyKeys.has(qNum)) {
+                facultyKeys.set(qNum, { answer: ans, explanation: "Passage-grounded direct comprehension response." });
+            }
+        }
     }
 
-    if (parts.length > 1 && !/^(?:Question|Q|வினா)\s*[:\.-]?\s*\d+/i.test(parts[0].trim())) {
-        // First part is shared passage/tables before Q1
-        sharedContext = parts[0].trim();
-        questionBlocks = parts.slice(1);
-    } else {
-        questionBlocks = parts.filter(p => p.trim().length > 0);
+    // 2. Remove Section B & C blocks from text
+    const cleanDoc = rawText.replace(facultyBlockRegex, "\n\n");
+
+    // 3. Find preamble (Table 1 & Table 2) before Q1
+    let passageBeforeQ1 = "";
+    const q1Idx = cleanDoc.search(/(?:^|\n)Q1\./i);
+    if (q1Idx > 0) {
+        passageBeforeQ1 = cleanDoc.slice(0, q1Idx).trim();
     }
+
+    // 4. Match question headers
+    const qHeaderRegex = /(?:^|\n)(?:Q\s*(\d+)[\.:\)]|Question\s*(\d+)[\.:\)]|(\d+)\s*[:\.]\s*(?:பொருத்துக|பல்நோக்கு|பல்கூற்று|காலவரிசை|நிரல்படுத்துக|சரியான|கூற்று|வினா|உறுதிக்கூற்று)|(?:வினா(?:\s*எண்)?)\s*(\d+)(?:\s*(?:\[[^\]]+\]|\([^\)]+\)))?[:\.]?|(\d+)\.\s+[A-Za-z])/gi;
+
+    const matches = [];
+    let m;
+    while ((m = qHeaderRegex.exec(cleanDoc)) !== null) {
+        const num = parseInt(m[1] || m[2] || m[3] || m[4] || m[5], 10);
+        matches.push({ num, index: m.index, len: m[0].length, headerText: m[0].trim() });
+    }
+
+    // Filter sublabel (வினா 1 after question 50)
+    const validMatches = matches.filter((item, idx) => !(item.num === 1 && idx > 5));
 
     const questions = [];
 
-    questionBlocks.forEach((block, idx) => {
-        let cleanBlock = block.trim();
+    for (let i = 0; i < validMatches.length; i++) {
+        const curr = validMatches[i];
+        const next = validMatches[i + 1];
+        let rawChunk = cleanDoc.slice(curr.index + curr.len, next ? next.index : cleanDoc.length).trim();
+        const qNum = curr.num;
 
-        // Extract explanation if present (English or Tamil)
-        let explanation = "";
-        const expMatch = cleanBlock.match(/(?:Explanation|Solution|Short Explanation|Exp|Sol|தடயவியல்\s*பகுப்பாய்வு|விளக்கம்)[:\s\-]+([\s\S]*)$/i);
-        if (expMatch) {
-            explanation = expMatch[1].trim();
-            cleanBlock = cleanBlock.replace(expMatch[0], "").trim();
-        }
-
-        // Extract answer if present (English or Tamil)
         let answer = "A";
-        const ansMatch = cleanBlock.match(/(?:Correct\s*Answer|Answer|Ans|Key|சரியான\s*விடை|விடை)[:\s\-]+([A-Da-d1-4அஆஇஈ]|\([A-Da-d1-4அஆஇஈ]\)|\[[A-Da-d1-4அஆஇஈ]\])/i);
-        if (ansMatch) {
-            const rawLetter = ansMatch[1].replace(/[\(\)\[\]\s]/g, "");
-            const mapped = tamilOptMap[rawLetter] || (rawLetter === "1" ? "A" : rawLetter === "2" ? "B" : rawLetter === "3" ? "C" : rawLetter === "4" ? "D" : rawLetter.toUpperCase());
-            if (["A", "B", "C", "D"].includes(mapped)) {
-                answer = mapped;
+        let explanation = "";
+
+        // Merge faculty key if present
+        if (facultyKeys.has(qNum)) {
+            const fk = facultyKeys.get(qNum);
+            answer = fk.answer || answer;
+            explanation = fk.explanation || explanation;
+        }
+
+        // Inline answer and explanation
+        const ansExpMatch = rawChunk.match(/(?:Correct\s*Answer|சரியான\s*விடை|Answer|Ans|பதில்|விடை)[:\s]+(?:\(?([1-4A-Da-dஅஆஇஈ])\)?|\[([1-4A-Da-dஅஆஇஈ])\])(?:\s*([^\n]+))?\s*(?:(?:(?:Short\s*)?Explanation|விளக்கம்|குறுகிய\s*விளக்கம்)[:\s]+([\s\S]*))?$/i);
+        if (ansExpMatch) {
+            const rawLetter = (ansExpMatch[1] || ansExpMatch[2] || "A").toUpperCase();
+            const tamilMap = { "அ": "A", "ஆ": "B", "இ": "C", "ஈ": "D" };
+            answer = tamilMap[rawLetter] || (rawLetter === "1" ? "A" : rawLetter === "2" ? "B" : rawLetter === "3" ? "C" : rawLetter === "4" ? "D" : rawLetter);
+            if (!explanation && ansExpMatch[4]) {
+                explanation = ansExpMatch[4].trim();
             }
-            cleanBlock = cleanBlock.replace(ansMatch[0], "").trim();
+            rawChunk = rawChunk.slice(0, ansExpMatch.index).trim();
         }
 
-        // Clean leading question tag: e.g. "Q1.What...", "Question 1: ...", "வினா 1: ..."
-        let qBody = cleanBlock.replace(/^(?:(?:Question|Q|வினா(?:\s*எண்)?)\s*[:\.-]?\s*\d+[\.:\)\s\-]*|\d+[\.\)]\s*)/i, "").trim();
+        // Remove options label e.g. விருப்பங்கள் / தெரிவுகள்
+        rawChunk = rawChunk.replace(/(?:விருப்பங்கள்|தெரிவுகள்)\s*[:\s]+/gi, "\n");
 
-        // 1. Check for inline options horizontally: (1)... (2)... (3)... (4)... or (A)... (B)... (C)... (D)...
-        let options = { A: "", B: "", C: "", D: "" };
-        let questionText = qBody;
+        let options = { A: "Option A", B: "Option B", C: "Option C", D: "Option D" };
+        let questionPrompt = rawChunk;
 
-        let fullOptStr = "";
-        if (explanation && /\([2-4B-Db-d]\)/.test(explanation)) {
-            fullOptStr = explanation;
-            explanation = "";
+        const smartRes = splitOptionsSmart(rawChunk);
+        if (smartRes) {
+            options = smartRes.options;
+            questionPrompt = smartRes.body;
         }
 
-        const inlineOnBody = splitInlineOptions(qBody);
-        const inlineOnStr = fullOptStr ? splitInlineOptions(fullOptStr) : null;
-
-        if (inlineOnStr) {
-            options = inlineOnStr;
-        } else if (inlineOnBody) {
-            options = inlineOnBody;
-            const firstOptIdx = qBody.search(/(?:\s+|^)(?:\(?([1-4A-Da-d])[\.\)\:\-\]]|\(([1-4A-Da-d])\))\s+/);
-            if (firstOptIdx > 0) {
-                questionText = qBody.slice(0, firstOptIdx).trim();
-            }
-        } else {
-            // 2. Line-based option matching
-            const lines = qBody.split("\n");
-            const optLines = [];
-            const questionLines = [];
-            let inOptions = false;
-
-            for (let l of lines) {
-                const lineTrim = l.trim();
-                const optMatch = lineTrim.match(/^(\(?([A-Da-d1-4அஆஇஈ])[\.\)\:\-\]]|\(([A-Da-d1-4அஆஇஈ])\))\s+(?!\d{1,2}\.)(.*)/);
-                if (optMatch) {
-                    inOptions = true;
-                    const optKey = (optMatch[2] || optMatch[3]);
-                    const mapKey = tamilOptMap[optKey] || (optKey === "1" ? "A" : optKey === "2" ? "B" : optKey === "3" ? "C" : optKey === "4" ? "D" : optKey.toUpperCase());
-                    optLines.push({ key: mapKey, text: optMatch[4].trim() });
-                } else if (!inOptions) {
-                    questionLines.push(l);
-                } else if (inOptions && optLines.length > 0 && !lineTrim.match(/^(?:Question|Q\d|Correct|Answer|Explanation|வினா|விடை)/i)) {
-                    optLines[optLines.length - 1].text += " " + lineTrim;
-                }
-            }
-
-            if (optLines.length >= 4) {
-                questionText = questionLines.join("\n").trim();
-                optLines.forEach(o => {
-                    if (options.hasOwnProperty(o.key)) {
-                        options[o.key] = o.text;
-                    }
-                });
-            } else {
-                // 3. Unlabeled 4 lines fallback
-                const unlab = extractUnlabeledOptions(qBody);
-                if (unlab) {
-                    options = unlab.options;
-                    questionText = unlab.body;
-                }
-            }
+        // Attach header line if it contains title info (like "பொருத்துக (சங்க இலக்கியச் சொற்களும் பொருள்களும்)")
+        const headerInfo = curr.headerText.replace(/^(?:Q\s*\d+[\.:\)]|Question\s*\d+[\.:\)]|\d+\.\s+|\d+\s*[:\.]\s*|(?:வினா(?:\s*எண்)?)\s*\d+[:\.]?)\s*/i, "").trim();
+        if (headerInfo && !questionPrompt.startsWith(headerInfo)) {
+            questionPrompt = headerInfo + "\n\n" + questionPrompt;
         }
 
-        // Attach shared context ONLY to the passage group (questions 1 to 5), never to the whole document!
-        if (sharedContext && idx < 5) {
-            questionText = sharedContext + "\n\n" + questionText;
+        // Attach passageBeforeQ1 only to Q1–Q5
+        if (qNum <= 5 && passageBeforeQ1) {
+            questionPrompt = passageBeforeQ1 + "\n\n" + questionPrompt;
         }
 
-        if (!options.A) options.A = "Option A";
-        if (!options.B) options.B = "Option B";
-        if (!options.C) options.C = "Option C";
-        if (!options.D) options.D = "Option D";
+        // Clean out any trailing SECTION headers
+        questionPrompt = questionPrompt.replace(/\s*SECTION\s+[A-Z][\s\S]*$/i, "").trim();
 
-        // Clean any trailing "SECTION B" header from question text
-        questionText = questionText.replace(/\s*SECTION\s+[B-Z][\s\S]*$/i, "").trim();
+        const section = qNum <= 50 ? "Paper 1" : "Tamil Paper 2";
 
-        if (questionText.trim()) {
-            questions.push({
-                id: idx + 1,
-                number: idx + 1,
-                section: idx < 50 ? "Paper 1" : "Tamil Paper 2",
-                question: questionText.trim(),
-                text: questionText.trim(),
-                options: options,
-                correctAnswer: answer,
-                answer: answer,
-                explanation: explanation
-            });
-        }
-    });
+        questions.push({
+            id: qNum,
+            number: qNum,
+            section: section,
+            question: questionPrompt,
+            text: questionPrompt,
+            options: options,
+            correctAnswer: answer,
+            answer: answer,
+            explanation: explanation
+        });
+    }
 
     return questions;
 }
@@ -538,7 +592,7 @@ async function parseUploadedQuestions(file) {
     } else if (ext === ".docx") {
         try {
             const htmlResult = await mammoth.convertToHtml({ buffer: file.buffer });
-            if (htmlResult && htmlResult.value && /<table[\s>]/i.test(htmlResult.value)) {
+            if (htmlResult && htmlResult.value) {
                 questions = parseMcqText(convertHtmlTablesToMarkdown(htmlResult.value));
             } else {
                 const docxResult = await mammoth.extractRawText({ buffer: file.buffer });
