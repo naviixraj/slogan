@@ -127,6 +127,65 @@
             line-height: 1.4;
         }
 
+        /* DO'S & DON'TS TABLE */
+        .rules-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 10px;
+        }
+
+        .rules-table th {
+            background: #F8FAFC;
+            padding: 6px 10px;
+            text-align: left;
+            font-weight: 700;
+            border-bottom: 1px solid #CBD5E1;
+            color: #1E293B;
+        }
+
+        .rules-table td {
+            padding: 6px 10px;
+            border-bottom: 1px solid #E2E8F0;
+            vertical-align: top;
+            color: #334155;
+            line-height: 1.4;
+        }
+
+        .rules-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .rules-table code {
+            font-family: 'Consolas', monospace;
+            background: #F1F5F9;
+            color: #0F172A;
+            padding: 1px 4px;
+            border-radius: 3px;
+            font-size: 9.5px;
+            border: 1px solid #E2E8F0;
+        }
+
+        .badge-do {
+            display: inline-block;
+            background: #ECFDF5;
+            color: #059669;
+            font-weight: 700;
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 9px;
+            border: 1px solid #A7F3D0;
+        }
+
+        .badge-dont {
+            display: inline-block;
+            background: #FEF2F2;
+            color: #DC2626;
+            font-weight: 700;
+            padding: 1px 5px;
+            border-radius: 3px;
+            font-size: 9px;
+            border: 1px solid #FECACA;
+        }
     </style>
 </head>
 <body>
@@ -380,5 +439,47 @@ Answer: C
 Explanation: Production 2021 = 40. Production 2023 = 70. Increase = 30. Percentage = (30/40) * 100 = 75%.</div>
         </div>
     </div>
+
+    <!-- DO'S & DON'TS TABLE -->
+    <div class="type-section">
+        <div class="type-header">
+            <span class="type-name">Authoring Guidelines: Do's & Don'ts</span>
+            <span class="type-rule">Standard rules to ensure 100% parsing accuracy</span>
+        </div>
+        <div style="padding: 0; background: #FFFFFF;">
+            <table class="rules-table">
+                <thead>
+                    <tr>
+                        <th style="width: 20%;">Category</th>
+                        <th style="width: 40%;">DO <span class="badge-do">✓ Recommended</span></th>
+                        <th style="width: 40%;">DON'T <span class="badge-dont">✗ Avoid</span></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Question Numbers</strong></td>
+                        <td>Start every question with <code>1.</code>, <code>2.</code>, <code>Q1:</code>, or <code>வினா 1:</code> on a fresh line.</td>
+                        <td>Don't blend questions together in one continuous paragraph without a number.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Prompt Badges</strong></td>
+                        <td>Keep <code>பல்கூற்றுத் தேர்வு வினா</code> or <code>காலவரிசை வினா</code> intact on its own line.</td>
+                        <td>Don't split titles like <code>பல்கூற்று</code> and <code>த் தேர்வு வினா</code> across two separate lines.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Statements & Lists</strong></td>
+                        <td>Label statements clearly with <code>(i)</code>, <code>(ii)</code>, <code>(iii)</code>, <code>(iv)</code>.</td>
+                        <td>Don't write statements as raw run-on text without numeral markers.</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Answer Keys</strong></td>
+                        <td>Always end each question with <code>Answer: X</code>, <code>சரியான விடை: X</code>, or <code>பதில்: X</code>.</td>
+                        <td>Don't omit the answer line or place it before the choices.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
 </body>
 </html>
