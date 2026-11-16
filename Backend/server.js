@@ -300,7 +300,7 @@ async function extractPdfText(buffer) {
 // Helper: convert HTML tables (from Word or rich text) into clean markdown tables
 function convertHtmlTablesToMarkdown(html) {
     if (!html) return "";
-    return html.replace(/<table[\s\S]*?<\/table>/gi, (tableHtml) => {
+    let processed = html.replace(/<table[\s\S]*?<\/table>/gi, (tableHtml) => {
         const rows = [];
         const trMatches = tableHtml.match(/<tr[\s\S]*?<\/tr>/gi) || [];
         for (const tr of trMatches) {
@@ -318,10 +318,27 @@ function convertHtmlTablesToMarkdown(html) {
             return "\n\n" + rows.join("\n") + "\n\n";
         }
         return "";
-    })
-    .replace(/<br\s*\/?>/gi, "\n")
-    .replace(/<\/(?:p|div|tr|li|h[1-6])>/gi, "\n")
-    .replace(/<[^>]+>/g, "");
+    });
+
+    // Convert Word/HTML <ol><li> list items into numbered statements if not already numbered
+    processed = processed.replace(/<ol[\s\S]*?<\/ol>/gi, (olHtml) => {
+        let idx = 1;
+        const romanMap = ["i", "ii", "iii", "iv", "v", "vi", "vii", "viii"];
+        return olHtml.replace(/<li[^>]*>([\s\S]*?)<\/li>/gi, (m, content) => {
+            const clean = content.replace(/<[^>]+>/g, "").trim();
+            if (/^\(?([0-9]+|[a-d]|[ivx]+)\)[\.\:\-\s]/i.test(clean)) {
+                return "\n" + clean + "\n";
+            }
+            const badge = idx <= romanMap.length ? `(${romanMap[idx - 1]})` : `(${idx})`;
+            idx++;
+            return `\n${badge} ${clean}\n`;
+        });
+    });
+
+    return processed
+        .replace(/<br\s*\/?>/gi, "\n")
+        .replace(/<\/(?:p|div|tr|li|h[1-6])>/gi, "\n")
+        .replace(/<[^>]+>/g, "");
 }
 
 // Helper: smart option splitter for numeric (1-4), letter (A-D), and Tamil (அ-ஈ) choices
@@ -425,8 +442,12 @@ function formatStatementsVertical(text) {
 
     let formatted = text;
 
-    // 0. Normalize split prompt headers like "காலவரிசை \n\n வினா" or "நிரல்படுத்துக \n\n வினா"
-    formatted = formatted.replace(/^(காலவரிசை|நிரல்படுத்துக|பொருத்துக|கூற்று)\s*\n+\s*(வினா|காரணம்)/im, "$1 $2");
+    // 0. Normalize split prompt headers like "பல்கூற்று \n\n த் தேர்வு வினா" or "காலவரிசை \n\n வினா"
+    formatted = formatted.replace(/^(?:\[?\s*)?(பல்கூற்று|பல்நோக்கு|காலவரிசை|நிரல்படுத்துக|பொருத்துக|கூற்று)\s*\n+\s*(?:த்?\s*தேர்வு\s*)?(வினா|காரணம்)[^\]\n]*\]?/im, (m, p1, p2) => {
+        if (/தேர்வு/i.test(m)) return `${p1}த் தேர்வு ${p2}`;
+        return `${p1} ${p2}`;
+    });
+    formatted = formatted.replace(/^பல்கூற்று\s*\n+\s*த்\s*தேர்வு\s*வினா/im, "பல்கூற்றுத் தேர்வு வினா");
 
     // 1. Statement 1 & 2 / கூற்று 1 & 2: ensure on newlines
     formatted = formatted.replace(/([^\n])\s*(கூற்று\s*2|Statement\s*(?:2|II))[:\.]\s*/gi, "$1\n$2: ");

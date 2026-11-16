@@ -466,8 +466,12 @@
 
         let text = raw.trim();
 
-        // Normalize split prompt headers like "காலவரிசை \n\n வினா" or "நிரல்படுத்துக \n\n வினா"
-        text = text.replace(/^(காலவரிசை|நிரல்படுத்துக|பொருத்துக|கூற்று)\s*\n+\s*(வினா|காரணம்)/im, "$1 $2");
+        // Normalize split prompt headers like "பல்கூற்று \n\n த் தேர்வு வினா" or "காலவரிசை \n\n வினா"
+        text = text.replace(/^(?:\[?\s*)?(பல்கூற்று|பல்நோக்கு|காலவரிசை|நிரல்படுத்துக|பொருத்துக|கூற்று)\s*\n+\s*(?:த்?\s*தேர்வு\s*)?(வினா|காரணம்)[^\]\n]*\]?/im, (match, p1, p2) => {
+            if (/தேர்வு/i.test(match)) return `${p1}த் தேர்வு ${p2}`;
+            return `${p1} ${p2}`;
+        });
+        text = text.replace(/^பல்கூற்று\s*\n+\s*த்\s*தேர்வு\s*வினா/im, "பல்கூற்றுத் தேர்வு வினா");
 
         // If the question already contains clean HTML tables, return wrapped
         if (/<table[\s>]/i.test(text) && /<\/table>/i.test(text)) {
@@ -735,7 +739,7 @@
                     if (multiStmts.preamble) {
                         const pLines = multiStmts.preamble.split(/\n+/).map(l => l.trim()).filter(Boolean);
                         let pQuery = multiStmts.preamble;
-                        if (pLines.length > 1 && /^(?:காலவரிசை\s+வினா|நிரல்படுத்துக\s+வினா|காலவரிசை|நிரல்படுத்துக|பொருத்துக|\[?[^\]]+\]?)/i.test(pLines[0])) {
+                        if (pLines.length > 1 && /^(?:\[[^\]]+\]|பல்கூற்றுத்?\s*தேர்வு\s*வினா|பல்கூற்று\s*வினா|பல்நோக்கு\s*வினா|காலவரிசை\s*வினா|நிரல்படுத்துக\s*வினா|பொருத்துக\s*வினா|கூற்று\s*–?\s*காரணம்\s*வினா|காலவரிசை|நிரல்படுத்துக|பொருத்துக|கூற்று)/i.test(pLines[0])) {
                             html += `
                                 <div class="neat-prompt-header">
                                     <span class="neat-prompt-badge">
@@ -767,9 +771,9 @@
                     const rawLines = block.lines;
 
                     let startIdx = 0;
-                    const promptHeaderMatch = rawLines[0] && rawLines[0].match(/^(?:கீழ்க்காணும்\s+கூற்றுகளைக்\s+கருத்தில்\s+கொள்க|காலவரிசை\s+வினா|நிரல்படுத்துக\s+வினா|பொருத்துக\s+வினா|காலவரிசை|நிரல்படுத்துக|பொருத்துக|கூற்று\s*–?\s*காரணம்\s*வினா|சரியான\s+கூற்றைத்\s+தேர்ந்தெடுக்க|Consider\s+the\s+following(?:\s+statements)?|Match\s+the\s+following)[:\s\-]*$/i);
+                    const promptHeaderRegex = /^(?:\[[^\]]+\]|பல்கூற்றுத்?\s*தேர்வு\s*வினா|பல்கூற்று\s*வினா|பல்நோக்கு\s*வினா|கீழ்க்காணும்\s+கூற்றுகளைக்\s+கருத்தில்\s+கொள்க|காலவரிசை\s+வினா|நிரல்படுத்துக\s+வினா|பொருத்துக\s+வினா|காலவரிசை|நிரல்படுத்துக|பொருத்துக|கூற்று\s*–?\s*காரணம்\s*வினா|சரியான\s+கூற்றைத்\s+தேர்ந்தெடுக்க|Consider\s+the\s+following(?:\s+statements)?|Match\s+the\s+following)[:\s\-]*$/i;
                     
-                    if (promptHeaderMatch) {
+                    if (rawLines[0] && promptHeaderRegex.test(rawLines[0])) {
                         html += `
                             <div class="neat-prompt-header">
                                 <span class="neat-prompt-badge">
@@ -786,13 +790,14 @@
 
                     function isQueryOrInstruction(str) {
                         if (!str) return false;
-                        if (str.endsWith(":") || str.endsWith("?")) return true;
-                        if (/^(?:பின்வரும்|கீழ்க்காணும்|கீழே\s+தரப்பெற்றுள்ள|கீழே\s+கொடுக்கப்பட்டுள்ள|மேற்கண்ட|Read\s+the|Consider|Which|What|In\s+the\s+light)/i.test(str)) return true;
-                        if (/(?:சீரமைக்க|அமைக்குக|ஆராய்க|கருத்தில்\s+கொள்க|வரிசைப்படுத்துக|தேர்ந்தெடுக்க)[:\s\-]*$/i.test(str)) return true;
+                        const s = str.trim();
+                        if (s.endsWith(":") || s.endsWith("?")) return true;
+                        if (/(?:ஆராய்க|கருத்தில்\s+கொள்க|சீரமைக்க|அமைக்குக|வரிசைப்படுத்துக|தேர்ந்தெடுக்க|விடையளிக்கவும்|தேர்வு\s+செய்க)[:\s\-]*$/i.test(s)) return true;
+                        if (/(?:பின்வரும்|கீழ்க்காணும்|கீழே\s+தரப்பெற்றுள்ள|கீழே\s+கொடுக்கப்பட்டுள்ள|மேற்கண்ட|Read\s+the|Consider|Which|What|In\s+the\s+light|சரியான\s+கூற்றைத்)/i.test(s)) return true;
                         return false;
                     }
 
-                    const candidateStatements = remaining.filter(l => !isQueryOrInstruction(l));
+                    const candidateStatements = remaining.filter(l => !isQueryOrInstruction(l) && !promptHeaderRegex.test(l));
                     const needsAutoRoman = optionsMentionRoman && candidateStatements.length >= 2 && candidateStatements.length <= 8 && !candidateStatements.some(l => /^\(?([i|v|x]+)\)/i.test(l));
 
                     let autoRomanIdx = 0;
@@ -832,6 +837,15 @@
                                 <div class="neat-statement-box">
                                     <span class="neat-statement-badge">(${letterMatch[1].toLowerCase()})</span>
                                     <span class="neat-statement-text">${escapeHtml(letterMatch[2])}</span>
+                                </div>
+                            `;
+                        } else if (promptHeaderRegex.test(trimmed)) {
+                            html += `
+                                <div class="neat-prompt-header">
+                                    <span class="neat-prompt-badge">
+                                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                                        ${escapeHtml(trimmed)}
+                                    </span>
                                 </div>
                             `;
                         } else if (isQueryOrInstruction(trimmed)) {
