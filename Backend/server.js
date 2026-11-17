@@ -1421,6 +1421,11 @@ app.post("/api/logout", (req, res) => {
     });
 });
 
+// Authoring Guide PDF redirect
+app.get(["/authoring-guide.html", "/authoring-guide"], (req, res) => {
+    res.redirect("/QUESTION_AUTHORING_BLUEPRINT.pdf");
+});
+
 // Serve existing website files
 app.use(express.static(ROOT, { index: false }));
 
