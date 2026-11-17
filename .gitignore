@@ -7,3 +7,4 @@ Backend/candidates.sqlite
 Thumbs.db
 # Local HTTPS certificates
 certs/
+.vscode/
