@@ -43,6 +43,16 @@ app.use(
 app.use(express.json({ limit: "50mb" }));
 app.use(express.urlencoded({ extended: true, limit: "50mb" }));
 
+// Prevent browser caching of HTML pages to guarantee immediate updates
+app.use((req, res, next) => {
+    if (req.path.endsWith(".html") || req.path === "/" || !path.extname(req.path)) {
+        res.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+        res.setHeader("Pragma", "no-cache");
+        res.setHeader("Expires", "0");
+    }
+    next();
+});
+
 // Handle JSON body parser errors gracefully
 app.use((err, req, res, next) => {
     if (err && err.type === "entity.too.large") {
