@@ -461,6 +461,97 @@
         return null;
     }
 
+    function renderPassageBlock(rawText) {
+        if (!rawText) return "";
+        let s = rawText.trim();
+        let directions = "";
+        let heading = "";
+        let tableNote = "";
+
+        // 1. Separate Directions if present
+        const dirMatch = s.match(/^(?:#+\s*)?(Directions?:|வழிமுறைகள்?:?)\s*([^\n]*?\b(?:Questions?|வினாக்கள்?)\s*\d+[\s\S]*?\d+\.?)(?=\s*(?:Passage|பத்தி)|\n|$)/i);
+        if (dirMatch) {
+            directions = (dirMatch[1] + " " + dirMatch[2]).trim();
+            s = s.slice(dirMatch[0].length).trim();
+        } else {
+            const dirSimpleMatch = s.match(/^(?:#+\s*)?(Directions?:|வழிமுறைகள்?:?)\s*(Read the following passage[^\n\.]*\.?|பின்வரும் பத்தியைப் படித்து[^\n\.]*\.?)(?=\s*(?:Passage|பத்தி)|\n|$)/i);
+            if (dirSimpleMatch) {
+                directions = (dirSimpleMatch[1] + " " + dirSimpleMatch[2]).trim();
+                s = s.slice(dirSimpleMatch[0].length).trim();
+            }
+        }
+
+        // 2. Separate Heading if present
+        const headMatch = s.match(/^(?:#+\s*)?(Passage|பத்தி)[:\s]*/i);
+        if (headMatch) {
+            heading = headMatch[1].trim();
+            s = s.slice(headMatch[0].length).trim();
+        } else if (directions && !heading) {
+            heading = /வழிமுறைகள்/i.test(directions) ? "பத்தி" : "Passage";
+        }
+
+        // 3. Separate Table Context / Introduction Note if present at the end
+        const tableNoteMatch = s.match(/\s*((?:The following (?:Table|Data|Chart|Information)|பின்வரும் (?:அட்டவணை|தகவல்))[\s\S]*)$/i);
+        if (tableNoteMatch) {
+            tableNote = tableNoteMatch[1].trim();
+            s = s.slice(0, tableNoteMatch.index).trim();
+        }
+
+        // 4. Split body into paragraphs
+        let paragraphs = s.split(/\n\s*\n/).map(p => p.trim()).filter(Boolean);
+        if (paragraphs.length <= 1) {
+            const lineSplit = s.split(/\n+/).map(p => p.trim()).filter(Boolean);
+            if (lineSplit.length > 1) {
+                paragraphs = lineSplit;
+            }
+        }
+        if (paragraphs.length === 0 && s) {
+            paragraphs = [s];
+        }
+
+        let out = `<div class="neat-passage-box">`;
+
+        // Directions Banner
+        if (directions) {
+            const isTamil = /வழிமுறைகள்/i.test(directions);
+            const tag = isTamil ? "வழிமுறைகள்" : "Directions";
+            const textOnly = directions.replace(/^(?:Directions?:|வழிமுறைகள்?:?)\s*/i, "").trim();
+            out += `
+                <div class="neat-passage-directions">
+                    <span class="neat-directions-tag">${escapeHtml(tag)}</span>
+                    <span class="neat-directions-text">${escapeHtml(textOnly || directions)}</span>
+                </div>
+            `;
+        }
+
+        // Passage Content Card
+        out += `<div class="neat-passage-content-card">`;
+        if (heading) {
+            out += `<h4 class="neat-passage-heading">${escapeHtml(heading)}</h4>`;
+        }
+        out += `<div class="neat-passage-body">`;
+        for (const p of paragraphs) {
+            out += `<p class="neat-passage-paragraph">${escapeHtml(p)}</p>`;
+        }
+        out += `</div></div>`;
+
+        // Table Note Card
+        if (tableNote) {
+            out += `
+                <div class="neat-passage-table-note">
+                    <div class="neat-table-note-header">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                        Data Reference Note
+                    </div>
+                    <p class="neat-passage-paragraph" style="margin-bottom:0;">${escapeHtml(tableNote)}</p>
+                </div>
+            `;
+        }
+
+        out += `</div>`;
+        return out;
+    }
+
     function renderNeatQuestion(raw, options) {
         if (!raw || typeof raw !== "string") return "";
 
@@ -511,7 +602,7 @@
 
         function flushPassage() {
             if (currentPassage.length > 0) {
-                blocks.push({ type: "passage", text: currentPassage.join(" ") });
+                blocks.push({ type: "passage", text: currentPassage.join("\n\n") });
                 currentPassage = [];
             }
         }
@@ -597,7 +688,7 @@
             }
 
             // 4. Detect Data Passage / Directions header
-            if (/^(?:#+\s*Reading Comprehension|\*\*Directions|\*\*Passage|The following Table|Based on the data|Data passage:|Directions?:|Read the following passage|Consider the following|பத்தியைப் படித்து)/i.test(line)) {
+            if (/^(?:#+\s*(?:Reading Comprehension|Passage|பத்தி)|\*\*Directions|\*\*Passage|The following Table|Based on the data|Data passage:|Directions?:|வழிமுறைகள்?:?|Read the following passage|பின்வரும் பத்தியைப் படித்து|Consider the following|பத்தியைப் படித்து|^Passage\b|^பத்தி\b)/i.test(line)) {
                 flushNormal();
                 currentPassage.push(line);
                 i++;
@@ -624,15 +715,7 @@
 
         for (const block of blocks) {
             if (block.type === "passage") {
-                html += `
-                    <div class="neat-passage-box">
-                        <div class="neat-passage-badge">
-                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-                            DATA PASSAGE / DIRECTIONS
-                        </div>
-                        <div class="neat-passage-body">${escapeHtml(block.text)}</div>
-                    </div>
-                `;
+                html += renderPassageBlock(block.text);
             } else if (block.type === "table") {
                 html += `<div class="neat-table-section">`;
                 if (block.caption) {

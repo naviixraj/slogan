@@ -4900,31 +4900,97 @@ input:focus-visible,
 
 /* 1. DIRECTIONS & PASSAGE CARDS */
 .neat-passage-box {
-  background: #F8FAFC;
-  border: 1px solid #E2E8F0;
-  border-left: 4px solid #0F8B6D;
+  background: #FFFFFF;
+  border: 1px solid #CBD5E1;
   border-radius: 8px;
-  padding: 16px 20px;
-  margin-bottom: 6px;
+  padding: 20px 24px;
+  margin-bottom: 18px;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
 }
 
-.neat-passage-badge {
-  display: inline-flex;
+.neat-passage-directions {
+  display: flex;
   align-items: center;
-  gap: 7px;
+  gap: 10px;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-left: 4px solid #1E293B;
+  border-radius: 6px;
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  font-size: 14px;
+  color: #1E293B;
+}
+
+.neat-directions-tag {
   font-size: 11px;
   font-weight: 800;
-  color: #0F8B6D;
-  letter-spacing: 0.8px;
+  background: #1E293B;
+  color: #FFFFFF;
+  padding: 3px 8px;
+  border-radius: 4px;
   text-transform: uppercase;
-  margin-bottom: 8px;
+  letter-spacing: 0.6px;
+  flex: none;
+}
+
+.neat-directions-text {
+  font-weight: 600;
+  color: #1E293B;
+  line-height: 1.5;
+}
+
+.neat-passage-content-card {
+  margin-bottom: 12px;
+}
+
+.neat-passage-heading {
+  font-size: 16px;
+  font-weight: 800;
+  color: #0F172A;
+  margin: 0 0 12px 0;
+  letter-spacing: -0.2px;
 }
 
 .neat-passage-body {
-  font-size: 14.5px;
-  line-height: 1.75;
+  font-size: 15px;
+  line-height: 1.8;
+  color: #1E293B;
+  font-weight: 400;
+}
+
+.neat-passage-paragraph {
+  margin-bottom: 14px;
+  line-height: 1.8;
+  text-align: justify;
+}
+
+.neat-passage-paragraph:last-child {
+  margin-bottom: 0;
+}
+
+.neat-passage-table-note {
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-left: 4px solid #059669;
+  border-radius: 6px;
+  padding: 12px 16px;
+  margin-top: 14px;
+  font-size: 13.5px;
+  line-height: 1.65;
   color: #334155;
-  font-weight: 450;
+}
+
+.neat-table-note-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 11px;
+  font-weight: 800;
+  color: #059669;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+  margin-bottom: 6px;
 }
 
 /* 2. DATA TABLE SECTION */
