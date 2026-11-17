@@ -525,14 +525,7 @@ function parseMcqText(rawText) {
     // 2. Remove Section B & C blocks from text
     const cleanDoc = rawText.replace(facultyBlockRegex, "\n\n");
 
-    // 3. Find preamble (Table 1 & Table 2) before Q1
-    let passageBeforeQ1 = "";
-    const q1Idx = cleanDoc.search(/(?:^|\n)Q1\./i);
-    if (q1Idx > 0) {
-        passageBeforeQ1 = cleanDoc.slice(0, q1Idx).trim();
-    }
-
-    // 4. Match question headers (supports Q1., Question 1:, வினா 1:, வினா எண்: 68, 68 [உறுதிக்கூற்று], 1: தலைப்பு, 1. கேள்வி)
+    // 3. Match question headers (supports Q1., Question 1:, வினா 1:, வினா எண்: 68, 68 [உறுதிக்கூற்று], 1: தலைப்பு, 1. கேள்வி)
     const qHeaderRegex = /(?:^|\n)\s*(?:Q\s*[:\.]?\s*(\d+)[\.:\)]?|Question\s*[:\.]?\s*(\d+)[\.:\)]?|(?:வினா(?:\s*எண்)?)\s*[:\.]?\s*(\d+)(?:\s*(?:\[[^\]]+\]|\([^\)]+\)))?[:\.]?|(\d+)\s*[:\.\-]?\s*(?:\[[^\]]+\]|\([^\)]+\)|பொருத்துக|பல்நோக்கு|பல்கூற்று|காலவரிசை|நிரல்படுத்துக|சரியான|கூற்று|வினா|உறுதிக்கூற்று)|(\d+)[\.:\)]\s+)/gi;
 
     const matches = [];
@@ -544,6 +537,18 @@ function parseMcqText(rawText) {
 
     // Filter sublabel (வினா 1 after question 50)
     const validMatches = matches.filter((item, idx) => !(item.num === 1 && idx > 5));
+
+    // 4. Find preamble (Table 1 & Table 2) before Q1
+    let passageBeforeQ1 = "";
+    const firstQMatch = validMatches.length > 0 ? validMatches[0] : null;
+    if (firstQMatch && firstQMatch.index > 0) {
+        passageBeforeQ1 = cleanDoc.slice(0, firstQMatch.index).trim();
+    } else {
+        const q1Idx = cleanDoc.search(/(?:^|\n)Q1\./i);
+        if (q1Idx > 0) {
+            passageBeforeQ1 = cleanDoc.slice(0, q1Idx).trim();
+        }
+    }
 
     // Standalone single question fallback (e.g. user pasted 1 question without explicit Q number header)
     if (validMatches.length === 0) {
@@ -584,10 +589,37 @@ function parseMcqText(rawText) {
     const passageFinderRegex = /(?:Directions[:\s]+[^\n]*?(?:Questions?|வினாக்கள்?)\s*(\d+)\s*(?:to|[-–—]|முதல்)\s*(\d+)[^\n]*|Passage\s*[:\n])[^\n]*\n([\s\S]*?)(?=(?:^|\n)\s*(?:Q\s*\d+|Question\s*\d+|(?:வினா(?:\s*எண்)?)\s*\d+|\d+[\.:\)]))/gi;
     let pm;
     while ((pm = passageFinderRegex.exec(cleanDoc)) !== null) {
-        const startQ = parseInt(pm[1], 10);
-        const endQ = parseInt(pm[2], 10);
+        let startQ = parseInt(pm[1], 10);
+        let endQ = parseInt(pm[2], 10);
+        let pText = pm[0].trim();
+
+        // Check where this passage physically appears in the document relative to questions
+        const nextQ = validMatches.find(m => m.index > pm.index);
+        const prevQ = [...validMatches].reverse().find(m => m.index < pm.index);
+
+        // If the passage is before Q1, passageBeforeQ1 already handles Q1-Q5
+        if (!prevQ && validMatches.length > 0 && pm.index < validMatches[0].index) {
+            continue;
+        }
+
+        if (nextQ) {
+            // If the document copy-pasted a template like "Questions 1-5" after question 15 (e.g., between Q15 and Q16),
+            // the passage belongs to the upcoming questions (e.g., Q16-Q20), NEVER to previous questions!
+            if (prevQ && startQ && startQ <= prevQ.num) {
+                const span = (endQ && endQ >= startQ) ? (endQ - startQ) : 4;
+                const actualStart = nextQ.num;
+                const actualEnd = actualStart + span;
+                pText = pText.replace(/(?:Questions?|வினாக்கள்?)\s*\d+\s*(?:to|[-–—]|முதல்)\s*\d+/i, `Questions ${actualStart}–${actualEnd}`);
+                startQ = actualStart;
+                endQ = actualEnd;
+            } else if (!startQ || !endQ) {
+                startQ = nextQ.num;
+                endQ = nextQ.num + 4;
+            }
+        }
+
         if (startQ && endQ) {
-            passageList.push({ startQ, endQ, text: pm[0].trim() });
+            passageList.push({ startQ, endQ, text: pText });
         }
     }
 

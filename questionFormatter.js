@@ -525,15 +525,20 @@
         }
 
         // Passage Content Card
-        out += `<div class="neat-passage-content-card">`;
-        if (heading) {
-            out += `<h4 class="neat-passage-heading">${escapeHtml(heading)}</h4>`;
+        if (heading || paragraphs.length > 0) {
+            out += `<div class="neat-passage-content-card">`;
+            if (heading) {
+                out += `<h4 class="neat-passage-heading">${escapeHtml(heading)}</h4>`;
+            }
+            if (paragraphs.length > 0) {
+                out += `<div class="neat-passage-body">`;
+                for (const p of paragraphs) {
+                    out += `<p class="neat-passage-paragraph">${escapeHtml(p)}</p>`;
+                }
+                out += `</div>`;
+            }
+            out += `</div>`;
         }
-        out += `<div class="neat-passage-body">`;
-        for (const p of paragraphs) {
-            out += `<p class="neat-passage-paragraph">${escapeHtml(p)}</p>`;
-        }
-        out += `</div></div>`;
 
         // Table Note Card
         if (tableNote) {
