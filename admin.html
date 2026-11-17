@@ -11,7 +11,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Tamil:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=20261117-v2">
+    <link rel="stylesheet" href="style.css?v=20261117-v3">
 
     <style>
         :root {
@@ -2578,28 +2578,13 @@
                         Change
                     </button>
                 </div>
-
-                <!-- FILE UPLOAD FOOTER / HELPER LINKS -->
-                <div style="margin-top: 10px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
-                    <span style="font-size: 11px; color: var(--muted);">Supports Word (.docx), PDF, Excel (.xlsx), CSV, TXT</span>
-                    <div style="display: flex; gap: 12px; align-items: center;">
-                        <a href="authoring-guide.html" target="_blank" style="font-size: 11px; color: var(--navy); font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">📖 View Guide</a>
-                        <a href="QUESTION_AUTHORING_BLUEPRINT.pdf" download="QUESTION_AUTHORING_BLUEPRINT.pdf" style="font-size: 11px; color: #DC2626; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">📕 Download PDF</a>
-                        <a href="QUESTION_SET_AUTHORING_TEMPLATE.txt" download="QUESTION_SET_AUTHORING_TEMPLATE.txt" style="font-size: 11px; color: var(--navy); font-weight: 600; text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">📥 Template (.txt)</a>
-                    </div>
-                </div>
             </div>
 
             <!-- PANE 2: BULK PASTE TEXT -->
             <div class="form-field" id="pasteTextPane" style="display: none;">
                 <div class="paste-toolbar">
                     <label for="pasteQuestionsText" style="margin-bottom: 0;">Paste Complete Question Set Text</label>
-                    <div style="display: flex; gap: 8px;">
-                        <button type="button" class="btn-sample-template" id="loadSamplePasteBtn">Load Sample Format</button>
-                        <a href="authoring-guide.html" target="_blank" class="btn-sample-template" style="text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">📖 View Guide</a>
-                        <a href="QUESTION_AUTHORING_BLUEPRINT.pdf" download="QUESTION_AUTHORING_BLUEPRINT.pdf" class="btn-sample-template" style="text-decoration: none; display: inline-flex; align-items: center; gap: 4px; color: #DC2626; font-weight: 700;">📕 Download PDF</a>
-                        <a href="QUESTION_SET_AUTHORING_TEMPLATE.txt" download="QUESTION_SET_AUTHORING_TEMPLATE.txt" class="btn-sample-template" style="text-decoration: none; display: inline-flex; align-items: center; gap: 4px;">📥 Template</a>
-                    </div>
+                    <button type="button" class="btn-sample-template" id="loadSamplePasteBtn">Load Sample Format</button>
                 </div>
                 <textarea id="pasteQuestionsText" class="paste-textarea" placeholder="Paste your complete exam paper with all questions here...
 
@@ -2753,6 +2738,6 @@ Ans: B
 
     <!-- EXTERNAL CONTROLLER SCRIPT (CSP COMPLIANT) -->
     <script src="questionFormatter.js?v=20261117-v1"></script>
-    <script src="admin.js?v=20261117-v2"></script>
+    <script src="admin.js?v=20261117-v3"></script>
 </body>
 </html>
