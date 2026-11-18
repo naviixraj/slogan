@@ -237,16 +237,33 @@
             border-bottom: 1px solid var(--line);
             display: flex;
             align-items: center;
-            justify-content: flex-end;
+            justify-content: space-between;
             gap: 13px;
             padding: 0 36px;
         }
 
-        /* TOPBAR PROFILE DROPDOWN */
+        /* MOBILE DRAWER BASE STYLES (OPTION A) */
+        .mobile-hamburger-btn {
+            display: none;
+        }
 
+        .topbar-left {
+            display: none;
+        }
+
+        .sidebar-backdrop {
+            display: none;
+        }
+
+        .sidebar-close-btn {
+            display: none;
+        }
+
+        /* TOPBAR PROFILE DROPDOWN */
         .profile-dropdown-wrapper {
             position: relative;
             z-index: 60;
+            margin-left: auto;
         }
 
         .top-avatar-btn {
@@ -1000,45 +1017,124 @@
             }
         }
 
-        @media(max-width: 700px) {
+        /* MOBILE DRAWER MEDIA QUERY (<= 900px) */
+        @media(max-width: 900px) {
+            .sidebar-backdrop {
+                display: block;
+                position: fixed;
+                inset: 0;
+                background: rgba(15, 23, 42, 0.45);
+                backdrop-filter: blur(2px);
+                -webkit-backdrop-filter: blur(2px);
+                z-index: 998;
+                opacity: 0;
+                pointer-events: none;
+                transition: opacity 0.25s ease;
+            }
+
+            .sidebar-backdrop.active {
+                opacity: 1;
+                pointer-events: auto;
+            }
+
             .sidebar {
-                width: 66px;
-                padding: 18px 8px;
+                position: fixed;
+                inset: 0 auto 0 0;
+                width: 270px;
+                max-width: 82vw;
+                background: #FFFFFF;
+                box-shadow: 4px 0 24px rgba(0, 0, 0, 0.15);
+                z-index: 999;
+                transform: translateX(-100%);
+                transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
+                display: flex;
+                flex-direction: column;
+                padding: 20px 16px;
+            }
+
+            .sidebar.open {
+                transform: translateX(0);
+            }
+
+            .sidebar-close-btn {
+                display: inline-flex;
                 align-items: center;
-            }
-
-            .brand {
-                padding: 0 0 22px;
-            }
-
-            .brand-name,
-            .profile-text,
-            .nav-label,
-            .nav-text,
-            .academy-note {
-                display: none;
-            }
-
-            .profile {
-                border: 0;
-                padding: 0 0 18px;
-                margin: 0 0 12px;
-            }
-
-            .nav-link {
                 justify-content: center;
-                padding: 12px 8px;
+                width: 32px;
+                height: 32px;
+                margin-left: auto;
+                border-radius: 8px;
+                border: 1px solid var(--line);
+                background: #F8FAFC;
+                color: #64748B;
+                cursor: pointer;
+                transition: all 0.18s ease;
+            }
+
+            .sidebar-close-btn:hover,
+            .sidebar-close-btn:active {
+                background: #FEE2E2;
+                border-color: #FCA5A5;
+                color: #DC2626;
             }
 
             .main {
-                margin-left: 66px;
+                margin-left: 0 !important;
+                width: 100% !important;
+                min-width: 0 !important;
             }
 
             .topbar {
-                height: 56px;
-                padding: 0 14px;
+                height: 58px;
+                padding: 0 16px;
+                justify-content: space-between;
             }
 
+            .topbar-left {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+
+            .mobile-hamburger-btn {
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                width: 38px;
+                height: 38px;
+                padding: 0;
+                border-radius: 8px;
+                border: 1px solid var(--line);
+                background: #FFFFFF;
+                color: #1E293B;
+                cursor: pointer;
+                transition: background 0.18s ease, border-color 0.18s ease;
+            }
+
+            .mobile-hamburger-btn:hover,
+            .mobile-hamburger-btn:active {
+                background: var(--emerald-soft);
+                border-color: var(--emerald);
+                color: var(--emerald-dark);
+            }
+
+            .topbar-brand-mobile {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                font-size: 16px;
+                font-weight: 800;
+                color: #0F172A;
+            }
+
+            .topbar-logo-mobile {
+                width: 28px;
+                height: 28px;
+                object-fit: contain;
+            }
+        }
+
+        @media(max-width: 700px) {
             .topbar-label {
                 display: none;
             }
@@ -1184,13 +1280,22 @@
 
 <body>
 
+    <!-- MOBILE DRAWER BACKDROP (OPTION A) -->
+    <div class="sidebar-backdrop" id="sidebarBackdrop"></div>
+
     <!-- LEFT SIDEBAR -->
 
-    <aside class="sidebar">
+    <aside class="sidebar" id="sidebar">
 
         <div class="brand">
             <img src="Logoicon.png" alt="SLOGON Logo" class="brand-logo">
             <span class="brand-name">ExamHub</span>
+            <button class="sidebar-close-btn" id="sidebarCloseBtn" type="button" aria-label="Close menu">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                    <line x1="18" y1="6" x2="6" y2="18"/>
+                    <line x1="6" y1="6" x2="18" y2="18"/>
+                </svg>
+            </button>
         </div>
 
         <div class="profile">
@@ -1235,6 +1340,21 @@
     <main class="main">
 
         <header class="topbar">
+            <!-- MOBILE TOPBAR LEFT (HAMBURGER & BRAND) -->
+            <div class="topbar-left">
+                <button class="mobile-hamburger-btn" id="mobileMenuButton" type="button" aria-label="Open menu">
+                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
+                        <line x1="4" y1="6" x2="20" y2="6"/>
+                        <line x1="4" y1="12" x2="20" y2="12"/>
+                        <line x1="4" y1="18" x2="20" y2="18"/>
+                    </svg>
+                </button>
+                <div class="topbar-brand-mobile">
+                    <img src="Logoicon.png" alt="SLOGON Logo" class="topbar-logo-mobile">
+                    <span class="topbar-title-mobile">ExamHub</span>
+                </div>
+            </div>
+
             <!-- PROFILE DROPDOWN WRAPPER -->
             <div class="profile-dropdown-wrapper" id="profileDropdownWrapper">
                 <button class="top-avatar-btn" id="topAvatarButton" type="button" aria-expanded="false" aria-haspopup="true" title="Candidate Profile">

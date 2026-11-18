@@ -696,6 +696,9 @@ function isClickOnInteractiveControl(target) {
     // Form inputs, textareas, selects, or modal submit buttons
     if (target.closest("input, textarea, select, button[type='submit']")) return true;
 
+    // Mobile drawer controls and sidebar
+    if (target.closest("#mobileMenuButton, #sidebarCloseBtn, #sidebarBackdrop, #sidebar")) return true;
+
     return false;
 }
 
@@ -2207,6 +2210,48 @@ function bindEventListeners() {
         const saved = localStorage.getItem("adminViewMode");
         if (saved === "list") setDashboardView(true);
     } catch (e) {}
+
+    // Mobile Navigation Drawer (Option A)
+    const mobileMenuButton = document.getElementById("mobileMenuButton");
+    const sidebarBackdrop = document.getElementById("sidebarBackdrop");
+    const sidebarCloseBtn = document.getElementById("sidebarCloseBtn");
+    const mobileSidebarEl = document.getElementById("sidebar") || document.querySelector(".sidebar");
+
+    function openMobileDrawer() {
+        if (mobileSidebarEl) mobileSidebarEl.classList.add("open");
+        if (sidebarBackdrop) sidebarBackdrop.classList.add("active");
+        document.body.style.overflow = "hidden";
+    }
+
+    function closeMobileDrawer() {
+        if (mobileSidebarEl) mobileSidebarEl.classList.remove("open");
+        if (sidebarBackdrop) sidebarBackdrop.classList.remove("active");
+        document.body.style.overflow = "";
+    }
+
+    if (mobileMenuButton) mobileMenuButton.addEventListener("click", openMobileDrawer);
+    if (sidebarCloseBtn) sidebarCloseBtn.addEventListener("click", closeMobileDrawer);
+    if (sidebarBackdrop) sidebarBackdrop.addEventListener("click", closeMobileDrawer);
+
+    document.querySelectorAll(".sidebar .nav-link").forEach(link => {
+        link.addEventListener("click", () => {
+            if (window.innerWidth <= 900) {
+                closeMobileDrawer();
+            }
+        });
+    });
+
+    window.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && mobileSidebarEl && mobileSidebarEl.classList.contains("open")) {
+            closeMobileDrawer();
+        }
+    });
+
+    window.addEventListener("resize", () => {
+        if (window.innerWidth > 900 && mobileSidebarEl && mobileSidebarEl.classList.contains("open")) {
+            closeMobileDrawer();
+        }
+    });
 }
 
 // -----------------------------------------------------
