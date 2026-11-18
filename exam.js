@@ -407,28 +407,9 @@ async function loadCandidateInfo() {
         }
 
 
-        /* ---------- Restore current question ---------- */
+        /* ---------- Strictly start at Question 1 ---------- */
 
-        const savedCurrentQuestion =
-            localStorage.getItem(
-                STORAGE_KEYS.currentQuestion
-            );
-
-        if (savedCurrentQuestion !== null) {
-
-            const parsedIndex =
-                Number(savedCurrentQuestion);
-
-            if (
-                Number.isInteger(parsedIndex) &&
-                parsedIndex >= 0 &&
-                parsedIndex < questions.length
-            ) {
-
-                currentQuestionIndex =
-                    parsedIndex;
-            }
-        }
+        currentQuestionIndex = 0;
     }
 
 

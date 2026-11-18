@@ -125,8 +125,10 @@
 
 
             /* ---------------------------------------------
-               STORE QUESTIONS
+               STORE QUESTIONS (Strictly Numerical Order)
                --------------------------------------------- */
+
+            questions.sort((a, b) => (Number(a.number || a.id) || 0) - (Number(b.number || b.id) || 0));
 
             window.examQuestions = questions;
 

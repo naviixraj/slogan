@@ -147,6 +147,7 @@ if (instructionCheckbox && proceedButton) {
         localStorage.removeItem("examAnswers");
         localStorage.removeItem("questionStatus");
         localStorage.removeItem("examResult");
+        localStorage.removeItem("examCurrentQuestion");
 
         /* RESET PREVIOUS TIMER */
 
