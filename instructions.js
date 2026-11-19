@@ -50,6 +50,17 @@ function updateInstructionsUI(details) {
     if (detailDurEl) {
         detailDurEl.textContent = `${durationMinutes} minutes`;
     }
+
+    // Start Exam Confirmation Modal meta
+    const modalQCountEl = document.getElementById("startModalQuestions");
+    if (modalQCountEl) {
+        modalQCountEl.textContent = String(questionsCount);
+    }
+
+    const modalDurEl = document.getElementById("startModalDuration");
+    if (modalDurEl) {
+        modalDurEl.textContent = `${durationMinutes} Mins`;
+    }
 }
 
 /* INITIAL DISPLAY CANDIDATE & TEST INFORMATION */
@@ -109,71 +120,107 @@ async function syncLatestTestDetails() {
 
 syncLatestTestDetails();
 
-/* DECLARATION CHECKBOX */
+/* DECLARATION CHECKBOX & START MODAL CONTROLS */
 
-const instructionCheckbox =
-    document.getElementById("instructionCheckbox");
+const instructionCheckbox = document.getElementById("instructionCheckbox");
+const proceedButton = document.getElementById("proceedButton");
+const startExamModal = document.getElementById("startExamModal");
+const cancelStartExamBtn = document.getElementById("cancelStartExamBtn");
+const confirmStartExamBtn = document.getElementById("confirmStartExamBtn");
 
-const proceedButton =
-    document.getElementById("proceedButton");
+function openStartModal() {
+    if (!startExamModal) return;
+    startExamModal.style.display = "flex";
+    requestAnimationFrame(() => {
+        startExamModal.classList.add("active");
+    });
+}
+
+function closeStartModal() {
+    if (!startExamModal) return;
+    startExamModal.classList.remove("active");
+    setTimeout(() => {
+        if (!startExamModal.classList.contains("active")) {
+            startExamModal.style.display = "none";
+        }
+    }, 250);
+}
+
+function launchExamination() {
+    /* START TIME */
+    localStorage.setItem(
+        "examStartTime",
+        Date.now().toString()
+    );
+
+    /* EXACT EXAMINATION DURATION IN SECONDS */
+    const durMinutes = testDetails?.duration || 180;
+    localStorage.setItem("examDuration", String(durMinutes * 60));
+
+    /* CLEAR PREVIOUS EXAM DATA */
+    localStorage.removeItem("examAnswers");
+    localStorage.removeItem("questionStatus");
+    localStorage.removeItem("examResult");
+    localStorage.removeItem("examCurrentQuestion");
+
+    /* RESET PREVIOUS TIMER */
+    localStorage.removeItem("slogonExamEndTime");
+    localStorage.removeItem("slogonExamTimerCandidate");
+
+    localStorage.removeItem("slogonTimerWarning10");
+    localStorage.removeItem("slogonTimerWarning5");
+    localStorage.removeItem("slogonTimerWarning1");
+    localStorage.removeItem("slogonTimerTimeUp");
+
+    /* START EXAM */
+    localStorage.setItem("examStarted", "true");
+
+    /* REDIRECT TO EXAM */
+    window.location.href = "exam.html";
+}
 
 if (instructionCheckbox && proceedButton) {
-
     instructionCheckbox.addEventListener("change", function () {
         proceedButton.disabled = !this.checked;
     });
 
-    /* PROCEED TO EXAMINATION */
-
+    /* OPEN CUSTOM CONFIRMATION POPUP ON PROCEED CLICK */
     proceedButton.addEventListener("click", function () {
-
         if (!instructionCheckbox.checked) {
             return;
         }
-
-        /* START TIME */
-
-        localStorage.setItem(
-            "examStartTime",
-            Date.now().toString()
-        );
-
-        /* EXACT EXAMINATION DURATION IN SECONDS */
-        const durMinutes = testDetails?.duration || 180;
-        localStorage.setItem("examDuration", String(durMinutes * 60));
-
-        /* CLEAR PREVIOUS EXAM DATA */
-
-        localStorage.removeItem("examAnswers");
-        localStorage.removeItem("questionStatus");
-        localStorage.removeItem("examResult");
-        localStorage.removeItem("examCurrentQuestion");
-
-        /* RESET PREVIOUS TIMER */
-
-        localStorage.removeItem("slogonExamEndTime");
-        localStorage.removeItem("slogonExamTimerCandidate");
-
-        localStorage.removeItem("slogonTimerWarning10");
-        localStorage.removeItem("slogonTimerWarning5");
-        localStorage.removeItem("slogonTimerWarning1");
-        localStorage.removeItem("slogonTimerTimeUp");
-
-        /* START EXAM */
-
-        localStorage.setItem("examStarted", "true");
-
-        window.location.href = "exam.html";
+        openStartModal();
     });
 }
 
-/* PREVENT ACCIDENTAL PAGE LEAVE */
+/* MODAL ACTION: CANCEL */
+if (cancelStartExamBtn) {
+    cancelStartExamBtn.addEventListener("click", function () {
+        closeStartModal();
+    });
+}
 
-window.addEventListener("beforeunload", function (event) {
+/* MODAL ACTION: START */
+if (confirmStartExamBtn) {
+    confirmStartExamBtn.addEventListener("click", function () {
+        confirmStartExamBtn.disabled = true;
+        confirmStartExamBtn.textContent = "Starting...";
+        launchExamination();
+    });
+}
 
-    if (instructionCheckbox && instructionCheckbox.checked) {
-        event.preventDefault();
-        event.returnValue = "";
+/* DISMISS ON BACKDROP CLICK */
+if (startExamModal) {
+    startExamModal.addEventListener("click", function (event) {
+        if (event.target === startExamModal) {
+            closeStartModal();
+        }
+    });
+}
+
+/* DISMISS ON ESC KEY */
+document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape" && startExamModal && startExamModal.classList.contains("active")) {
+        closeStartModal();
     }
-
 });

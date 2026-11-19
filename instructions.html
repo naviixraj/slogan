@@ -637,14 +637,57 @@
     </footer>
 
 
+    <!-- =====================================================
+         START EXAM CONFIRMATION MODAL
+    ====================================================== -->
+    <div class="start-modal-overlay" id="startExamModal" aria-hidden="true" style="display: none;">
+        <div class="start-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="startModalTitle">
+            <div class="start-modal-icon-badge">
+                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+            </div>
+
+            <h3 id="startModalTitle" class="start-modal-title">Start Examination?</h3>
+
+            <p class="start-modal-text">
+                Are you sure you want to begin the examination now? Once started, your countdown timer will begin immediately.
+            </p>
+
+            <div class="start-modal-meta">
+                <div class="meta-item">
+                    <span class="meta-label">Total Questions</span>
+                    <strong class="meta-val" id="startModalQuestions">150</strong>
+                </div>
+                <div class="meta-divider"></div>
+                <div class="meta-item">
+                    <span class="meta-label">Duration</span>
+                    <strong class="meta-val" id="startModalDuration">180 Mins</strong>
+                </div>
+            </div>
+
+            <div class="start-modal-buttons">
+                <button type="button" class="btn-modal-cancel" id="cancelStartExamBtn">
+                    Cancel
+                </button>
+                <button type="button" class="btn-modal-confirm" id="confirmStartExamBtn">
+                    Start
+                </button>
+            </div>
+        </div>
+    </div>
+
+
 <!-- =====================================================
                 PAGE JAVASCRIPT
 ====================================================== -->
 
-<script src="instructions.js?v=20261118-v1" defer></script>
+<script src="instructions.js?v=20261119-v2" defer></script>
 
 
 </body>
 
 </html>
+
 

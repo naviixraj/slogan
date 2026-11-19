@@ -6104,6 +6104,174 @@ input:focus-visible,
   }
 }
 
+/* =========================================================
+   START EXAM CONFIRMATION MODAL (INSTRUCTIONS PAGE)
+========================================================= */
 
+.start-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 99999;
+  background: rgba(11, 31, 58, 0.72);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  opacity: 0;
+  transition: opacity 0.22s ease-in-out;
+}
 
+.start-modal-overlay.active {
+  display: flex !important;
+  opacity: 1;
+}
 
+.start-modal-dialog {
+  background: #FFFFFF;
+  width: 100%;
+  max-width: 440px;
+  border-radius: 16px;
+  padding: 32px 28px 26px;
+  text-align: center;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(11, 31, 58, 0.08);
+  transform: scale(0.92);
+  transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+}
+
+.start-modal-overlay.active .start-modal-dialog {
+  transform: scale(1);
+}
+
+.start-modal-icon-badge {
+  width: 58px;
+  height: 58px;
+  margin: 0 auto 16px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #FEF3C7 0%, #FDE68A 100%);
+  color: #B45309;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 14px rgba(217, 119, 6, 0.2);
+}
+
+.start-modal-title {
+  font-size: 20px;
+  font-weight: 700;
+  color: #0B1F3A;
+  margin-bottom: 8px;
+  font-family: 'Poppins', sans-serif;
+  letter-spacing: -0.2px;
+}
+
+.start-modal-text {
+  font-size: 13.5px;
+  color: #4B5563;
+  line-height: 1.55;
+  margin-bottom: 20px;
+  font-family: 'Poppins', sans-serif;
+}
+
+.start-modal-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  background: #F8FAFC;
+  border: 1px solid #E2E8F0;
+  border-radius: 10px;
+  padding: 12px 16px;
+  margin-bottom: 24px;
+}
+
+.meta-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+
+.meta-label {
+  font-size: 11px;
+  font-weight: 500;
+  color: #64748B;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.meta-val {
+  font-size: 16px;
+  font-weight: 700;
+  color: #0F172A;
+}
+
+.meta-divider {
+  width: 1px;
+  height: 28px;
+  background: #CBD5E1;
+}
+
+.start-modal-buttons {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.btn-modal-cancel {
+  flex: 1;
+  min-height: 44px;
+  border: 1.5px solid #CBD5E1;
+  background: #FFFFFF;
+  color: #475569;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  font-family: 'Poppins', sans-serif;
+}
+
+.btn-modal-cancel:hover {
+  background: #F1F5F9;
+  border-color: #94A3B8;
+  color: #1E293B;
+}
+
+.btn-modal-confirm {
+  flex: 1;
+  min-height: 44px;
+  border: none;
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%);
+  color: #FFFFFF;
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: 10px;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
+  transition: all 0.15s ease;
+  font-family: 'Poppins', sans-serif;
+}
+
+.btn-modal-confirm:hover {
+  background: linear-gradient(135deg, #059669 0%, #047857 100%);
+  box-shadow: 0 6px 18px rgba(16, 185, 129, 0.45);
+  transform: translateY(-1px);
+}
+
+.btn-modal-confirm:active {
+  transform: translateY(0);
+}
+
+@media (max-width: 480px) {
+  .start-modal-dialog {
+    padding: 24px 18px 20px;
+  }
+  .start-modal-title {
+    font-size: 18px;
+  }
+  .start-modal-text {
+    font-size: 12.5px;
+  }
+}
