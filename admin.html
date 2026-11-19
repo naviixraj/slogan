@@ -2187,10 +2187,18 @@
                 color: #DC2626;
             }
 
+            html,
+            body {
+                overflow-x: hidden !important;
+                max-width: 100vw !important;
+            }
+
             .main {
                 margin-left: 0 !important;
                 width: 100% !important;
                 min-width: 0 !important;
+                max-width: 100vw !important;
+                overflow-x: hidden !important;
             }
 
             .topbar {
@@ -2247,6 +2255,13 @@
             }
 
             /* MOBILE QUESTION CARD & SINGLE-COLUMN OPTION STACK (STUDENT EXAM STYLE) */
+            .inspector-panel,
+            #inspectorQuestionsContainer {
+                width: 100% !important;
+                max-width: 100% !important;
+                box-sizing: border-box !important;
+            }
+
             .question-card {
                 background: #FFFFFF !important;
                 border: 1px solid #E2E8F0 !important;
@@ -2254,6 +2269,17 @@
                 border-radius: 12px;
                 margin-bottom: 14px;
                 box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+                width: 100% !important;
+                max-width: 100% !important;
+                box-sizing: border-box !important;
+            }
+
+            .q-title,
+            .neat-question-root,
+            .neat-table-scroll-wrapper {
+                width: 100% !important;
+                max-width: 100% !important;
+                box-sizing: border-box !important;
             }
 
             .q-header {
