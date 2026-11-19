@@ -906,65 +906,67 @@
             grid-template-columns: 1fr !important;
         }
 
-        .list-view .test-card {
-            display: grid;
-            grid-template-columns: 4px 1fr;
-            width: 100%;
-        }
+        @media (min-width: 901px) {
+            .list-view .test-card {
+                display: grid;
+                grid-template-columns: 4px 1fr;
+                width: 100%;
+            }
 
-        .list-view .accent {
-            height: 100%;
-        }
+            .list-view .accent {
+                height: 100%;
+            }
 
-        .list-view .card-body {
-            display: grid;
-            grid-template-columns: minmax(210px, 1.1fr) minmax(220px, 1.3fr) minmax(180px, 1fr);
-            align-items: center;
-            gap: 14px 20px;
-            width: 100%;
-            box-sizing: border-box;
-        }
+            .list-view .card-body {
+                display: grid;
+                grid-template-columns: minmax(210px, 1.1fr) minmax(220px, 1.3fr) minmax(180px, 1fr);
+                align-items: center;
+                gap: 14px 20px;
+                width: 100%;
+                box-sizing: border-box;
+            }
 
-        .list-view .card-body > * {
-            min-width: 0;
-        }
+            .list-view .card-body > * {
+                min-width: 0;
+            }
 
-        .list-view .card-top,
-        .list-view .meta {
-            margin: 0;
-            padding: 0;
-            border: 0;
-        }
+            .list-view .card-top,
+            .list-view .meta {
+                margin: 0;
+                padding: 0;
+                border: 0;
+            }
 
-        .list-view .meta {
-            display: flex;
-            flex-wrap: nowrap;
-            gap: 8px 12px;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
+            .list-view .meta {
+                display: flex;
+                flex-wrap: nowrap;
+                gap: 8px 12px;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
 
-        .list-view .test-card h2 {
-            margin-bottom: 0;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
+            .list-view .test-card h2 {
+                margin-bottom: 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
 
-        .list-view .test-card p {
-            min-height: 0;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            max-width: 100%;
-        }
+            .list-view .test-card p {
+                min-height: 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                max-width: 100%;
+            }
 
-        .list-view .start {
-            width: 100%;
-            max-width: 205px;
-            margin: 0;
-            font-size: 12.5px;
+            .list-view .start {
+                width: 100%;
+                max-width: 205px;
+                margin: 0;
+                font-size: 12.5px;
+            }
         }
 
         .empty {
@@ -1106,10 +1108,18 @@
                 color: #DC2626;
             }
 
+            html,
+            body {
+                overflow-x: hidden !important;
+                max-width: 100vw !important;
+            }
+
             .main {
                 margin-left: 0 !important;
                 width: 100% !important;
                 min-width: 0 !important;
+                max-width: 100vw !important;
+                overflow-x: hidden !important;
             }
 
             .topbar {
@@ -1208,29 +1218,90 @@
             .test-grid {
                 grid-template-columns: 1fr !important;
                 gap: 20px !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                box-sizing: border-box !important;
             }
 
-            .test-card {
+            .test-card,
+            .list-view .test-card {
+                display: flex !important;
+                flex-direction: column !important;
                 background: #FFFFFF !important;
                 box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06) !important;
                 border: 1px solid #E2E8F0 !important;
+                width: 100% !important;
+                max-width: 100% !important;
+                box-sizing: border-box !important;
+                overflow: hidden !important;
             }
 
+            .accent,
+            .list-view .accent {
+                height: 4px !important;
+                width: 100% !important;
+            }
+
+            .card-body,
             .list-view .card-body {
-                display: block;
+                display: flex !important;
+                flex-direction: column !important;
+                padding: 17px !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
             }
 
+            .card-top,
             .list-view .card-top {
-                margin-bottom: 13px;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: space-between !important;
+                width: 100% !important;
+                margin-bottom: 15px !important;
             }
 
+            .test-card h2,
+            .list-view .test-card h2 {
+                white-space: normal !important;
+                overflow: visible !important;
+                text-overflow: clip !important;
+                margin-bottom: 9px !important;
+                text-align: left !important;
+                font-size: 15px !important;
+                line-height: 1.35 !important;
+            }
+
+            .test-card p,
+            .list-view .test-card p {
+                text-align: left !important;
+                white-space: normal !important;
+                overflow: visible !important;
+                text-overflow: clip !important;
+                max-width: 100% !important;
+                min-height: auto !important;
+                font-size: 12px !important;
+                line-height: 1.6 !important;
+                justify-self: auto !important;
+            }
+
+            .meta,
             .list-view .meta {
-                margin-top: 12px;
+                display: flex !important;
+                flex-wrap: wrap !important;
+                white-space: normal !important;
+                gap: 8px 14px !important;
+                border-top: 1px solid #EEF0EB !important;
+                margin-top: 13px !important;
+                padding-top: 12px !important;
+                font-size: 11px !important;
+                width: 100% !important;
             }
 
+            .start,
             .list-view .start {
-                width: 100%;
-                margin-top: 14px;
+                width: 100% !important;
+                max-width: 100% !important;
+                margin-top: 14px !important;
             }
         }
 /* CANDIDATE PROFILE MODAL */
