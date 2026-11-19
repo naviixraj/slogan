@@ -28,62 +28,34 @@
 </head>
 
 
-<body class="exam-body">
+<body class="exam-body nta-cbt-theme">
 
     <div class="exam-page">
 
 
         <!-- =================================================
-             TOP HEADER
+             TOP HEADER (NTA CBT MAROON BAR)
         ================================================== -->
 
-        <header class="exam-header">
+        <header class="exam-header nta-exam-header">
 
             <!-- Brand -->
-            <div class="exam-brand">
-
+            <div class="exam-header-brand">
                 <img src="Logoicon.png" alt="SLOGON ACADEMY Logo" class="exam-logo">
+                <span class="exam-brand-title">SLOGON ACADEMY</span>
+            </div>
 
-                <div class="exam-brand-text">
+            <!-- Exam Title -->
+            <div class="exam-header-title">
+                <span id="examTitle">NTA UGC NET Exam - Tamil</span>
+            </div>
 
-                    <strong>
-                        SLOGON ACADEMY
-                    </strong>
-
-                    <span>
-                        Learn • Practice • Qualify
-                    </span>
-
+            <!-- Timer Countdown Badge -->
+            <div class="exam-header-timer">
+                <div class="timer-pill-badge">
+                    <span class="timer-icon" aria-hidden="true">⏱</span>
+                    <strong id="timer">60:00</strong>
                 </div>
-
-            </div>
-
-
-            <!-- Exam Name -->
-            <div class="exam-name">
-
-                <span>
-                    ONLINE EXAMINATION
-                </span>
-
-                <strong id="examTitle">
-                    UGC NET MOCK TEST
-                </strong>
-
-            </div>
-
-
-            <!-- Timer -->
-            <div class="exam-timer">
-
-                <span class="timer-label">
-                    TIME REMAINING
-                </span>
-
-                <strong id="timer">
-                    60:00
-                </strong>
-
             </div>
 
         </header>
@@ -91,570 +63,155 @@
 
 
         <!-- =================================================
-             CANDIDATE INFORMATION BAR
+             PRESERVED STATE IDENTIFIERS (HIDDEN FOR COMPATIBILITY)
         ================================================== -->
 
-        <section class="candidate-bar">
-
-            <div class="candidate-bar-item">
-
-                <span>
-                    Candidate
-                </span>
-
-                <strong id="examCandidateName">
-                    Candidate
-                </strong>
-
-            </div>
-
-
-            <div class="candidate-bar-item">
-
-                <span>
-                    Register Number
-                </span>
-
-                <strong id="examRegisterNumber">
-                    ---
-                </strong>
-
-            </div>
-
-
-            <div class="candidate-bar-item">
-
-                <span>
-                    Subject
-                </span>
-
-                <strong id="examSubject">
-                    Tamil
-                </strong>
-
-            </div>
-
-
-            <div class="candidate-bar-item question-counter">
-
-                <span>
-                    Question
-                </span>
-
-                <strong>
-                    <span id="currentQuestionNumber">
-                        1
-                    </span>
-
-                    /
-
-                    <span id="totalQuestionNumber">
-                        50
-                    </span>
-                </strong>
-
-            </div>
-
-        </section>
+        <div class="exam-state-vault" style="display: none !important;" aria-hidden="true">
+            <span id="examCandidateName">Candidate</span>
+            <span id="examRegisterNumber">---</span>
+            <span id="examSubject">Tamil</span>
+            <span id="sidebarCandidateName">Candidate</span>
+            <span id="sidebarSubject">Tamil</span>
+            <span id="notVisitedCount">50</span>
+            <span id="notAnsweredCount">0</span>
+            <span id="answeredCount">0</span>
+            <span id="reviewCount">0</span>
+            <span id="answeredReviewCount">0</span>
+            <button type="button" id="mobileSubmitButton">Submit Test</button>
+        </div>
 
 
 
         <!-- =================================================
-             MAIN EXAM AREA
+             MAIN CBT EXAM AREA (2-COLUMN LAYOUT)
         ================================================== -->
 
-        <main class="exam-main">
+        <main class="exam-main nta-exam-main">
 
 
             <!-- =================================================
-                 LEFT QUESTION AREA
+                 LEFT COLUMN: QUESTION CARD & CONTROLS
             ================================================== -->
 
-            <section class="question-area">
+            <section class="question-area nta-question-area">
 
+                <div class="question-card nta-question-card">
 
-                <!-- Question Card -->
-
-                <div class="question-card">
-
-
-                    <!-- Question Header -->
-
-                    <div class="question-header">
-
-                        <div class="question-number-badge">
-
-                            Question
-                            <span id="questionNumber">
-                                01
-                            </span>
-
+                    <!-- Question Header: QUESTION 41 OF 50 -->
+                    <div class="nta-question-header">
+                        <div class="nta-question-tracker">
+                            QUESTION <span id="currentQuestionNumber">1</span> OF <span id="totalQuestionNumber">50</span>
+                            <span id="questionNumber" style="display: none;">1</span>
                         </div>
-
-
-                        <div class="question-type">
-
-                            MCQ
-
-                        </div>
-
+                        <div class="question-type nta-type-badge">MCQ</div>
                     </div>
 
-
-
-                    <!-- Question Content -->
-
-                    <div class="question-content">
-
+                    <!-- Question Statement / Content -->
+                    <div class="question-content nta-question-content">
                         <div id="questionText" class="question-text-wrapper">
                             Question Loading...
                         </div>
-
                     </div>
 
+                    <!-- Options Area with "விடைத் தெரிவுகள்" Header -->
+                    <div class="nta-options-section">
+                        <div class="nta-options-title">
+                            விடைத் தெரிவுகள்
+                        </div>
 
+                        <div class="options-container nta-options-container" id="optionsContainer">
+                            <!-- Options dynamically rendered by exam.js -->
+                        </div>
+                    </div>
 
-                    <!-- Options -->
+                    <!-- Action Controls (2-group bottom bar) -->
+                    <div class="nta-action-toolbar">
 
-                    <div class="options-container"
-                        id="optionsContainer">
+                        <div class="nta-toolbar-left">
+                            <button type="button" class="nta-btn nta-btn-review" id="reviewButton">
+                                Mark for Review &amp; Next
+                            </button>
 
+                            <button type="button" class="nta-btn nta-btn-clear" id="clearButton">
+                                Clear Response
+                            </button>
+                        </div>
 
-                        <label class="option">
+                        <div class="nta-toolbar-right">
+                            <button type="button" class="nta-btn nta-btn-prev" id="previousButton">
+                                Previous
+                            </button>
 
-                            <input
-                                type="radio"
-                                name="answer"
-                                value="A">
+                            <button type="button" class="nta-btn nta-btn-savenext" id="saveNextButton">
+                                Save &amp; Next
+                            </button>
 
-                            <span class="option-letter">
-                                A
-                            </span>
-
-                            <span class="option-text">
-                                8
-                            </span>
-
-                        </label>
-
-
-
-                        <label class="option">
-
-                            <input
-                                type="radio"
-                                name="answer"
-                                value="B">
-
-                            <span class="option-letter">
-                                B
-                            </span>
-
-                            <span class="option-text">
-                                9
-                            </span>
-
-                        </label>
-
-
-
-                        <label class="option">
-
-                            <input
-                                type="radio"
-                                name="answer"
-                                value="C">
-
-                            <span class="option-letter">
-                                C
-                            </span>
-
-                            <span class="option-text">
-                                10
-                            </span>
-
-                        </label>
-
-
-
-                        <label class="option">
-
-                            <input
-                                type="radio"
-                                name="answer"
-                                value="D">
-
-                            <span class="option-letter">
-                                D
-                            </span>
-
-                            <span class="option-text">
-                                11
-                            </span>
-
-                        </label>
+                            <button type="button" class="nta-btn nta-btn-submit" id="submitButton">
+                                Submit
+                            </button>
+                        </div>
 
                     </div>
 
                 </div>
-
-
-
-                <!-- =================================================
-                     BOTTOM QUESTION CONTROLS
-                ================================================== -->
-
-                <div class="question-controls">
-
-
-                    <button
-                        type="button"
-                        class="exam-btn previous-btn"
-                        id="previousButton">
-
-                        ← Previous
-
-                    </button>
-
-
-                    <button
-                        type="button"
-                        class="exam-btn clear-btn"
-                        id="clearButton">
-
-                        Clear Response
-
-                    </button>
-
-
-                    <button
-                        type="button"
-                        class="exam-btn review-btn"
-                        id="reviewButton">
-
-                        Mark for Review
-
-                    </button>
-
-
-                    <button
-                        type="button"
-                        class="exam-btn next-btn"
-                        id="saveNextButton">
-
-                        Save & Next →
-
-                    </button>
-
-                </div>
-
-
-
-                <!-- Mobile Submit -->
-
-                <div class="mobile-submit-area">
-
-                    <button
-                        type="button"
-                        class="submit-test-button"
-                        id="mobileSubmitButton">
-
-                        Submit Test
-
-                    </button>
-
-                </div>
-
 
             </section>
 
 
 
             <!-- =================================================
-                 RIGHT SIDEBAR
+                 RIGHT COLUMN: QUESTION PALETTE
             ================================================== -->
 
-            <aside class="exam-sidebar">
+            <aside class="exam-sidebar nta-exam-sidebar">
 
+                <div class="palette-card nta-palette-card">
 
-                <!-- Candidate Mini Card -->
+                    <h3 class="nta-palette-title">
+                        Question Palette
+                    </h3>
 
-                <div class="sidebar-candidate">
+                    <!-- Standard 5-Indicator NTA Legend -->
+                    <div class="nta-legend-grid">
 
-                    <div class="sidebar-avatar">
-                        S
-                    </div>
-
-                    <div>
-
-                        <strong id="sidebarCandidateName">
-                            Candidate
-                        </strong>
-
-                        <span id="sidebarSubject">
-                            Tamil
-                        </span>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- Question Palette -->
-
-                <div class="palette-card">
-
-                    <div class="sidebar-title">
-
-                        <h3>
-                            Question Palette
-                        </h3>
-
-                        <span>
-                            கேள்வி எண்
-                        </span>
-
-                    </div>
-
-
-                    <div
-                        class="question-palette"
-                        id="questionPalette">
-
-                        <!--
-                            Question numbers will be
-                            generated by JavaScript.
-                        -->
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- Question Summary -->
-
-                <div class="summary-card">
-
-                    <div class="sidebar-title">
-
-                        <h3>
-                            Question Summary
-                        </h3>
-
-                        <span>
-                            கேள்வி நிலை
-                        </span>
-
-                    </div>
-
-
-                    <div class="summary-grid">
-
-
-                        <div class="summary-item">
-
-                            <span
-                                class="summary-dot answered-dot">
-                            </span>
-
-                            <div>
-
-                                <strong
-                                    id="answeredCount">
-                                    0
-                                </strong>
-
-                                <small>
-                                    Answered
-                                </small>
-
-                            </div>
-
+                        <div class="nta-legend-item">
+                            <span class="nta-legend-symbol symbol-not-visited"></span>
+                            <span class="nta-legend-label">Not Visited</span>
                         </div>
 
-
-
-                        <div class="summary-item">
-
-                            <span
-                                class="summary-dot not-answered-dot">
-                            </span>
-
-                            <div>
-
-                                <strong
-                                    id="notAnsweredCount">
-                                    0
-                                </strong>
-
-                                <small>
-                                    Not Answered
-                                </small>
-
-                            </div>
-
+                        <div class="nta-legend-item">
+                            <span class="nta-legend-symbol symbol-not-answered"></span>
+                            <span class="nta-legend-label">Not Answered</span>
                         </div>
 
-
-
-                        <div class="summary-item">
-
-                            <span
-                                class="summary-dot review-dot">
-                            </span>
-
-                            <div>
-
-                                <strong
-                                    id="reviewCount">
-                                    0
-                                </strong>
-
-                                <small>
-                                    Review
-                                </small>
-
-                            </div>
-
+                        <div class="nta-legend-item">
+                            <span class="nta-legend-symbol symbol-answered"></span>
+                            <span class="nta-legend-label">Answered</span>
                         </div>
 
+                        <div class="nta-legend-item">
+                            <span class="nta-legend-symbol symbol-marked"></span>
+                            <span class="nta-legend-label">Marked</span>
+                        </div>
 
-
-                        <div class="summary-item">
-
-                            <span
-                                class="summary-dot not-visited-dot">
+                        <div class="nta-legend-item nta-legend-item-full">
+                            <span class="nta-legend-symbol symbol-answered-marked">
+                                <span class="nta-symbol-dot"></span>
                             </span>
-
-                            <div>
-
-                                <strong
-                                    id="notVisitedCount">
-                                    50
-                                </strong>
-
-                                <small>
-                                    Not Visited
-                                </small>
-
-                            </div>
-
+                            <span class="nta-legend-label">Answered &amp; Marked for Review</span>
                         </div>
 
                     </div>
 
-                </div>
-
-
-
-                <!-- Legend -->
-
-                <div class="legend-card">
-
-                    <div class="sidebar-title">
-
-                        <h3>
-                            Status Legend
-                        </h3>
-
-                        <span>
-                            நிலை
-                        </span>
-
+                    <!-- 5-Column Question Grid -->
+                    <div class="question-palette nta-palette-grid" id="questionPalette">
+                        <!-- Number buttons dynamically generated by exam.js -->
                     </div>
-
-
-                    <div class="legend-list">
-
-
-                        <div class="legend-item">
-
-                            <span
-                                class="legend-box legend-not-visited">
-                            </span>
-
-                            <span>
-                                Not Visited
-                            </span>
-
-                        </div>
-
-
-                        <div class="legend-item">
-
-                            <span
-                                class="legend-box legend-not-answered">
-                            </span>
-
-                            <span>
-                                Not Answered
-                            </span>
-
-                        </div>
-
-
-                        <div class="legend-item">
-
-                            <span
-                                class="legend-box legend-answered">
-                            </span>
-
-                            <span>
-                                Answered
-                            </span>
-
-                        </div>
-
-
-                        <div class="legend-item">
-
-                            <span
-                                class="legend-box legend-review">
-                            </span>
-
-                            <span>
-                                Mark for Review
-                            </span>
-
-                        </div>
-
-
-                        <div class="legend-item">
-
-                            <span
-                                class="legend-box legend-answered-review">
-                            </span>
-
-                            <span>
-                                Answered & Review
-                            </span>
-
-                        </div>
-
-                    </div>
-
-                </div>
-
-
-
-                <!-- Submit Test -->
-
-                <div class="sidebar-submit">
-
-                    <button
-                        type="button"
-                        class="submit-test-button"
-                        id="submitButton">
-
-                        Submit Test
-
-                    </button>
 
                 </div>
 
             </aside>
+
 
         </main>
 

@@ -969,6 +969,8 @@ if (totalNumberEl) {
         const currentStatus =
             questionStatus[questionId];
 
+        const isCurrentlyMarked = (currentStatus === "review" || currentStatus === "answeredReview");
+
 
         if (currentStatus === "review") {
 
@@ -1000,6 +1002,11 @@ if (totalNumberEl) {
         updateQuestionSummary();
 
         updateReviewButton(questionId);
+
+        // In NTA UGC NET CBT model, clicking "Mark for Review & Next" advances to the next question
+        if (!isCurrentlyMarked) {
+            goNext();
+        }
     }
 
 
@@ -1031,7 +1038,7 @@ if (totalNumberEl) {
         } else {
 
             reviewButtonEl.textContent =
-                "Mark for Review";
+                "Mark for Review & Next";
         }
     }
 
@@ -1129,19 +1136,8 @@ if (totalNumberEl) {
 
         if (saveNextButtonEl) {
 
-            if (
-                currentQuestionIndex ===
-                questions.length - 1
-            ) {
-
-                saveNextButtonEl.textContent =
-                    "Save & Submit";
-
-            } else {
-
-                saveNextButtonEl.textContent =
-                    "Save & Next";
-            }
+            saveNextButtonEl.textContent =
+                "Save & Next";
         }
     }
 
