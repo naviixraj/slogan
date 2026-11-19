@@ -11,7 +11,7 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Tamil:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css?v=20261119-v6">
+    <link rel="stylesheet" href="style.css?v=20261119-v7">
 
     <style>
         :root {
@@ -793,56 +793,58 @@
             height: 100%;
         }
 
-        .list-view .card-body {
-            display: grid;
-            grid-template-columns: 280px 1fr auto;
-            align-items: center;
-            gap: 15px 24px;
-            padding: 17px 24px;
-        }
+        @media (min-width: 901px) {
+            .list-view .card-body {
+                display: grid;
+                grid-template-columns: 280px 1fr auto;
+                align-items: center;
+                gap: 15px 24px;
+                padding: 17px 24px;
+            }
 
-        .list-view .card-top,
-        .list-view .meta {
-            margin: 0;
-            padding: 0;
-            border: 0;
-        }
+            .list-view .card-top,
+            .list-view .meta {
+                margin: 0;
+                padding: 0;
+                border: 0;
+            }
 
-        .list-view .meta {
-            display: flex;
-            flex-wrap: nowrap;
-            gap: 8px 12px;
-            white-space: nowrap;
-        }
+            .list-view .meta {
+                display: flex;
+                flex-wrap: nowrap;
+                gap: 8px 12px;
+                white-space: nowrap;
+            }
 
-        .list-view .test-card h2 {
-            margin-bottom: 0;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-        }
+            .list-view .test-card h2 {
+                margin-bottom: 0;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
 
-        .list-view .test-card p {
-            min-height: 0;
-            justify-self: end;
-            text-align: right;
-            overflow: hidden;
-            text-overflow: ellipsis;
-            white-space: nowrap;
-            max-width: 320px;
-        }
+            .list-view .test-card p {
+                min-height: 0;
+                justify-self: end;
+                text-align: right;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+                max-width: 320px;
+            }
 
-        .list-view .start {
-            width: 190px;
-            margin: 0;
-            justify-self: start;
-        }
+            .list-view .start {
+                width: 190px;
+                margin: 0;
+                justify-self: start;
+            }
 
-        .list-view .card-actions-cluster {
-            justify-self: end;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
+            .list-view .card-actions-cluster {
+                justify-self: end;
+                display: inline-flex;
+                align-items: center;
+                gap: 8px;
+            }
         }
 
         .test-grid:not(.list-view) .card-actions-cluster {
@@ -2330,34 +2332,103 @@
             }
         }
 
-        @media (max-width: 700px) {
+        @media (max-width: 900px) {
+            .toolbar {
+                flex-direction: column;
+                align-items: stretch;
+                gap: 12px;
+            }
+
+            .search {
+                width: 100% !important;
+            }
+
+            .actions {
+                justify-content: flex-end;
+                width: 100%;
+            }
+
             .test-grid {
-                grid-template-columns: 1fr;
+                grid-template-columns: 1fr !important;
+            }
+
+            .test-card {
+                width: 100% !important;
+                max-width: 100% !important;
+                box-sizing: border-box !important;
+                overflow: hidden !important;
+            }
+
+            .list-view .test-card {
+                display: flex !important;
+                flex-direction: column !important;
+            }
+
+            .list-view .accent {
+                height: 4px !important;
+                width: 100% !important;
             }
 
             .list-view .card-body {
-                display: block;
-                padding: 17px;
+                display: flex !important;
+                flex-direction: column !important;
+                padding: 17px !important;
+                width: 100% !important;
+                box-sizing: border-box !important;
             }
 
             .list-view .card-top {
-                margin-bottom: 13px;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: space-between !important;
+                width: 100% !important;
+                margin-bottom: 13px !important;
+            }
+
+            .list-view .test-card h2 {
+                white-space: normal !important;
+                overflow: visible !important;
+                text-overflow: clip !important;
+                margin-bottom: 9px !important;
+                text-align: left !important;
+                font-size: 15px !important;
+                line-height: 1.35 !important;
+            }
+
+            .list-view .test-card p {
+                text-align: left !important;
+                white-space: normal !important;
+                overflow: visible !important;
+                text-overflow: clip !important;
+                max-width: 100% !important;
+                min-height: auto !important;
+                font-size: 12px !important;
+                line-height: 1.6 !important;
+                justify-self: auto !important;
             }
 
             .list-view .meta {
-                margin-top: 12px;
-                padding-top: 12px;
-                border-top: 1px solid #EEF0EB;
+                display: flex !important;
+                flex-wrap: wrap !important;
+                white-space: normal !important;
+                gap: 8px 14px !important;
+                border-top: 1px solid #EEF0EB !important;
+                margin-top: 12px !important;
+                padding-top: 12px !important;
+                font-size: 11px !important;
+                width: 100% !important;
             }
 
             .list-view .start {
-                width: 100%;
-                margin-top: 14px;
+                width: 100% !important;
+                margin-top: 14px !important;
             }
 
             .list-view .card-actions-cluster {
-                justify-content: flex-end;
-                margin-top: 10px;
+                display: flex !important;
+                justify-content: flex-end !important;
+                margin-top: 10px !important;
+                width: 100% !important;
             }
         }
 
@@ -3128,6 +3199,6 @@ Ans: B
 
     <!-- EXTERNAL CONTROLLER SCRIPT (CSP COMPLIANT) -->
     <script src="questionFormatter.js?v=20261117-v1"></script>
-    <script src="admin.js?v=20261119-v6"></script>
+    <script src="admin.js?v=20261119-v7"></script>
 </body>
 </html>
