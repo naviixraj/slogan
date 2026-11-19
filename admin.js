@@ -373,11 +373,6 @@ function renderSets() {
         const titleH2 = document.createElement("h2");
         titleH2.textContent = set.title;
 
-        const subP = document.createElement("p");
-        subP.textContent = isAvailable
-            ? "Ready to begin. Complete the instructions before starting your examination."
-            : "This examination will be available once its question bank is ready.";
-
         const metaDiv = document.createElement("div");
         metaDiv.className = "meta";
         const subj = set.subject || "Paper 1 (General) & Paper 2 (Subject)";
@@ -437,7 +432,7 @@ function renderSets() {
 
         actionsCluster.append(editBtn, delBtn);
 
-        body.append(top, titleH2, subP, metaDiv, inspectBtn, actionsCluster);
+        body.append(top, titleH2, metaDiv, inspectBtn, actionsCluster);
         card.append(accent, body);
 
         // Enable clicking anywhere on the card/tab in both grid and list views
