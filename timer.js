@@ -907,19 +907,80 @@ function getExamDurationMs() {
 
         /*
         -----------------------------------------------------
-        Give the user a short moment to see the message,
-        then automatically submit the examination.
+        Automatically navigate to result after brief pause
+        if candidate doesn't click cross or backdrop
         -----------------------------------------------------
         */
 
         setTimeout(
             function () {
-
                 automaticSubmit();
-
             },
-            1800
+            3200
         );
+    }
+
+
+    /* =====================================================
+       REDIRECT TO RESULT PAGE (SUBMIT & VIEW RESULT)
+    ===================================================== */
+
+    let hasRedirectedToResult = false;
+
+    function redirectToResult() {
+        if (hasRedirectedToResult) {
+            return;
+        }
+        hasRedirectedToResult = true;
+
+        console.log("SLOGON TIMER: Navigating to result page after time-up...");
+
+        // 1. Primary: Use forceSubmit from exam.js to grade and navigate immediately
+        if (
+            window.SLOGONExam &&
+            typeof window.SLOGONExam.forceSubmit === "function"
+        ) {
+            try {
+                window.SLOGONExam.forceSubmit();
+                return;
+            } catch (err) {
+                console.warn("SLOGON TIMER: forceSubmit error, attempting button fallback:", err);
+            }
+        }
+
+        // 2. Button fallback: Click confirmSubmit in exam.html
+        const confirmBtn =
+            document.getElementById("confirmSubmit") ||
+            document.getElementById("modalSubmit");
+
+        if (confirmBtn) {
+            try {
+                confirmBtn.click();
+                return;
+            } catch (err) {
+                console.warn("SLOGON TIMER: confirmSubmit click error:", err);
+            }
+        }
+
+        // 3. Exam modal fallback
+        if (
+            window.SLOGONExam &&
+            typeof window.SLOGONExam.submitExam === "function"
+        ) {
+            try {
+                window.SLOGONExam.submitExam();
+                const btn =
+                    document.getElementById("confirmSubmit") ||
+                    document.getElementById("modalSubmit");
+                if (btn) {
+                    btn.click();
+                    return;
+                }
+            } catch (e) {}
+        }
+
+        // 4. Absolute fallback
+        window.location.href = "result.html";
     }
 
 
@@ -940,7 +1001,6 @@ function getExamDurationMs() {
                 "slogonTimeUpOverlay"
             )
         ) {
-
             return;
         }
 
@@ -950,13 +1010,16 @@ function getExamDurationMs() {
                 "div"
             );
 
-
         overlay.id =
             "slogonTimeUpOverlay";
 
-
         overlay.innerHTML = `
-            <div class="slogon-timeup-box">
+            <div class="slogon-timeup-box" style="position: relative;">
+
+                <!-- Cross Sign in Top-Right of Banner -->
+                <button type="button" class="slogon-timeup-close" id="timeUpCloseBtn" title="Close and View Result" aria-label="Close and View Result">
+                    &times;
+                </button>
 
                 <div class="slogon-timeup-icon">
                     ⏰
@@ -970,13 +1033,16 @@ function getExamDurationMs() {
                     Your examination time has ended.
                 </p>
 
-                <p>
+                <p style="margin-bottom: 22px;">
                     Your answers are being submitted automatically.
                 </p>
 
+                <button type="button" class="slogon-timeup-view-btn" id="timeUpViewResultBtn">
+                    View Result &rarr;
+                </button>
+
             </div>
         `;
-
 
         overlay.style.position =
             "fixed";
@@ -990,6 +1056,9 @@ function getExamDurationMs() {
         overlay.style.background =
             "rgba(11, 31, 58, 0.92)";
 
+        overlay.style.backdropFilter =
+            "blur(6px)";
+
         overlay.style.display =
             "flex";
 
@@ -1002,12 +1071,14 @@ function getExamDurationMs() {
         overlay.style.padding =
             "20px";
 
+        overlay.style.cursor =
+            "pointer"; // Indicates backdrop is clickable to close/view result
+
 
         const box =
             overlay.querySelector(
                 ".slogon-timeup-box"
             );
-
 
         box.style.width =
             "min(90%, 430px)";
@@ -1016,23 +1087,142 @@ function getExamDurationMs() {
             "#FFFFFF";
 
         box.style.borderRadius =
-            "14px";
+            "16px";
 
         box.style.padding =
-            "35px 25px";
+            "36px 26px 28px";
 
         box.style.textAlign =
             "center";
 
         box.style.boxShadow =
-            "0 20px 60px rgba(0,0,0,0.30)";
+            "0 25px 60px rgba(0,0,0,0.40)";
+
+        box.style.cursor =
+            "default"; // Reset cursor inside modal card
+
+
+        /*
+        -----------------------------------------------------
+        Cross Button (Top Right of Banner)
+        -----------------------------------------------------
+        */
+
+        const closeBtn =
+            overlay.querySelector(
+                ".slogon-timeup-close"
+            );
+
+        if (closeBtn) {
+            closeBtn.style.position = "absolute";
+            closeBtn.style.top = "14px";
+            closeBtn.style.right = "14px";
+            closeBtn.style.width = "36px";
+            closeBtn.style.height = "36px";
+            closeBtn.style.border = "none";
+            closeBtn.style.background = "#F1F5F9";
+            closeBtn.style.color = "#475569";
+            closeBtn.style.fontSize = "24px";
+            closeBtn.style.fontWeight = "600";
+            closeBtn.style.lineHeight = "1";
+            closeBtn.style.borderRadius = "50%";
+            closeBtn.style.cursor = "pointer";
+            closeBtn.style.display = "flex";
+            closeBtn.style.alignItems = "center";
+            closeBtn.style.justifyContent = "center";
+            closeBtn.style.transition = "all 0.15s ease";
+
+            closeBtn.onmouseenter = function () {
+                closeBtn.style.background = "#E2E8F0";
+                closeBtn.style.color = "#0F172A";
+            };
+
+            closeBtn.onmouseleave = function () {
+                closeBtn.style.background = "#F1F5F9";
+                closeBtn.style.color = "#475569";
+            };
+
+            // Pressing cross sign -> view result page
+            closeBtn.addEventListener("click", function (event) {
+                event.stopPropagation();
+                redirectToResult();
+            });
+        }
+
+
+        /*
+        -----------------------------------------------------
+        View Result Button
+        -----------------------------------------------------
+        */
+
+        const viewBtn =
+            overlay.querySelector(
+                ".slogon-timeup-view-btn"
+            );
+
+        if (viewBtn) {
+            viewBtn.style.minHeight = "42px";
+            viewBtn.style.padding = "10px 24px";
+            viewBtn.style.background = "linear-gradient(135deg, #10B981 0%, #059669 100%)";
+            viewBtn.style.color = "#FFFFFF";
+            viewBtn.style.border = "none";
+            viewBtn.style.borderRadius = "8px";
+            viewBtn.style.fontSize = "14px";
+            viewBtn.style.fontWeight = "600";
+            viewBtn.style.fontFamily = "Poppins, sans-serif";
+            viewBtn.style.cursor = "pointer";
+            viewBtn.style.boxShadow = "0 4px 14px rgba(16, 185, 129, 0.35)";
+            viewBtn.style.transition = "all 0.15s ease";
+
+            viewBtn.onmouseenter = function () {
+                viewBtn.style.transform = "translateY(-1px)";
+                viewBtn.style.boxShadow = "0 6px 18px rgba(16, 185, 129, 0.45)";
+            };
+
+            viewBtn.onmouseleave = function () {
+                viewBtn.style.transform = "translateY(0)";
+                viewBtn.style.boxShadow = "0 4px 14px rgba(16, 185, 129, 0.35)";
+            };
+
+            // Pressing View Result button -> view result page
+            viewBtn.addEventListener("click", function (event) {
+                event.stopPropagation();
+                redirectToResult();
+            });
+        }
+
+
+        /*
+        -----------------------------------------------------
+        Pressing empty sides of banner (backdrop) -> view result page
+        -----------------------------------------------------
+        */
+
+        overlay.addEventListener("click", function (event) {
+            if (event.target === overlay) {
+                redirectToResult();
+            }
+        });
+
+
+        /*
+        -----------------------------------------------------
+        Pressing Escape key -> view result page
+        -----------------------------------------------------
+        */
+
+        document.addEventListener("keydown", function (event) {
+            if (event.key === "Escape" && document.getElementById("slogonTimeUpOverlay")) {
+                redirectToResult();
+            }
+        });
 
 
         const icon =
             overlay.querySelector(
                 ".slogon-timeup-icon"
             );
-
 
         icon.style.fontSize =
             "42px";
@@ -1045,7 +1235,6 @@ function getExamDurationMs() {
             overlay.querySelector(
                 "h2"
             );
-
 
         heading.style.margin =
             "0 0 10px";
@@ -1062,12 +1251,10 @@ function getExamDurationMs() {
                 "p"
             );
 
-
         paragraphs.forEach(
             function (paragraph) {
-
                 paragraph.style.margin =
-                    "7px 0";
+                    "6px 0";
 
                 paragraph.style.color =
                     "#6B7280";
@@ -1089,99 +1276,7 @@ function getExamDurationMs() {
     ===================================================== */
 
     function automaticSubmit() {
-
-        /*
-        -----------------------------------------------------
-        exam.js exposes SLOGONExam.submitExam().
-        That function opens the confirmation modal.
-
-        We then automatically click its final Submit button.
-        -----------------------------------------------------
-        */
-
-        if (
-            window.SLOGONExam &&
-            typeof window.SLOGONExam.submitExam ===
-            "function"
-        ) {
-
-            try {
-
-                /*
-                Open submit process
-                */
-
-                window.SLOGONExam.submitExam();
-
-
-                /*
-                -------------------------------------------------
-                Give the modal a moment to render, then click
-                the actual final Submit Test button.
-                -------------------------------------------------
-                */
-
-                setTimeout(
-                    function () {
-
-                        const finalSubmitButton =
-                            document.getElementById(
-                                "modalSubmit"
-                            );
-
-
-                        if (
-                            finalSubmitButton
-                        ) {
-
-                            finalSubmitButton.click();
-
-                        } else {
-
-                            /*
-                            -----------------------------------------
-                            Fallback:
-                            If the modal button is unavailable,
-                            use the public forceSubmit API if it
-                            exists.
-                            -----------------------------------------
-                            */
-
-                            if (
-                                window.SLOGONExam &&
-                                typeof window.SLOGONExam.forceSubmit ===
-                                "function"
-                            ) {
-
-                                window.SLOGONExam.forceSubmit();
-
-                            } else {
-
-                                console.error(
-                                    "SLOGON TIMER: Automatic submit button not found."
-                                );
-                            }
-                        }
-
-                    },
-                    100
-                );
-
-
-            } catch (error) {
-
-                console.error(
-                    "SLOGON TIMER: Automatic submission failed:",
-                    error
-                );
-            }
-
-        } else {
-
-            console.error(
-                "SLOGON TIMER: exam.js is not available."
-            );
-        }
+        redirectToResult();
     }
 
 

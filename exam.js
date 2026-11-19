@@ -1930,6 +1930,11 @@ if (totalNumberEl) {
         submitExam:
             function () {
                 openSubmitModal();
+            },
+
+        forceSubmit:
+            function () {
+                submitExam();
             }
     };
 
