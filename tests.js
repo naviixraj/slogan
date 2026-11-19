@@ -48,7 +48,7 @@ const pageSubtitle = document.getElementById("pageSubtitle");
 let mockTests = Array.from({ length: 10 }, (_, i) => ({
     id: `MOCK${String(i + 1).padStart(2, "0")}`,
     title: `UGC NET Full-Length Mock Test ${String(i + 1).padStart(2, "0")}`,
-    status: i === 0 ? "available" : "coming"
+    status: "coming"
 }));
 
 async function loadStudentTests() {
@@ -66,8 +66,12 @@ async function loadStudentTests() {
                     duration: t.duration,
                     isDb: true
                 }));
+                // Filter out any unwanted/dummy MOCK01 so only real admin uploaded sets appear as available
                 const existingIds = new Set(dbTests.map(t => t.id.toUpperCase()));
-                const upcoming = mockTests.filter(m => !existingIds.has(m.id.toUpperCase()));
+                existingIds.add("MOCK01");
+                const upcoming = mockTests
+                    .filter(m => !existingIds.has(m.id.toUpperCase()))
+                    .map(m => ({ ...m, status: "coming" }));
                 mockTests = [...dbTests, ...upcoming];
                 renderTests();
             }

@@ -13,24 +13,8 @@ if (window.location.hostname === "127.0.0.1" || window.location.hostname === "lo
    Architecture: Exact Match to Student Portal (tests.js)
    ===================================================== */
 
-// Initial default question sets (ensures instant display even offline)
-// Question Set source: Real question set loaded from data/mock01.json (150 questions)
-const DEFAULT_SETS = [
-    {
-        id: "MOCK01",
-        title: "UGC NET Full-Length Mock Test 01",
-        subject: "Paper 1 (General) & Paper 2 (Subject)",
-        fileType: "json",
-        file_type: "json",
-        fileName: "mock01.json",
-        file_name: "mock01.json",
-        questionsCount: 150,
-        questions_count: 150,
-        duration: 180,
-        status: "available",
-        questions: []
-    }
-];
+// Initial default question sets (loaded dynamically from database via /api/admin/sets)
+const DEFAULT_SETS = [];
 
 // Initial default student records
 const DEFAULT_STUDENTS = [

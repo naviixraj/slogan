@@ -18,7 +18,7 @@
        CONFIGURATION
        ----------------------------------------------------- */
 
-    const selectedTestId = (localStorage.getItem("selectedMockTest") || "mock01").toLowerCase();
+    const selectedTestId = (localStorage.getItem("selectedMockTest") || "set01").toLowerCase();
     const QUESTIONS_FILE = `/api/mock-tests/${selectedTestId}/questions`;
 
 
