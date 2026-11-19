@@ -903,12 +903,13 @@
         /* LIST VIEW */
 
         .list-view {
-            grid-template-columns: 1fr;
+            grid-template-columns: 1fr !important;
         }
 
         .list-view .test-card {
             display: grid;
             grid-template-columns: 4px 1fr;
+            width: 100%;
         }
 
         .list-view .accent {
@@ -917,9 +918,15 @@
 
         .list-view .card-body {
             display: grid;
-            grid-template-columns: 1.1fr 1fr auto;
+            grid-template-columns: minmax(210px, 1.1fr) minmax(220px, 1.3fr) minmax(180px, 1fr);
             align-items: center;
-            gap: 15px;
+            gap: 14px 20px;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .list-view .card-body > * {
+            min-width: 0;
         }
 
         .list-view .card-top,
@@ -929,12 +936,33 @@
             border: 0;
         }
 
+        .list-view .meta {
+            display: flex;
+            flex-wrap: nowrap;
+            gap: 8px 12px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .list-view .test-card h2 {
+            margin-bottom: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
         .list-view .test-card p {
             min-height: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            max-width: 100%;
         }
 
         .list-view .start {
-            width: 205px;
+            width: 100%;
+            max-width: 205px;
             margin: 0;
             font-size: 12.5px;
         }
@@ -1008,7 +1036,7 @@
         /* MOBILE RESPONSIVE */
 
         @media(max-width: 1050px) {
-            .test-grid {
+            .test-grid:not(.list-view) {
                 grid-template-columns: repeat(2, minmax(0, 1fr));
             }
 
@@ -1134,7 +1162,7 @@
             }
         }
 
-        @media(max-width: 700px) {
+        @media(max-width: 900px) {
             .topbar-label {
                 display: none;
             }
