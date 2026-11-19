@@ -390,7 +390,7 @@ function renderSets() {
         const inspectBtn = document.createElement("button");
         inspectBtn.className = "start";
         inspectBtn.type = "button";
-        inspectBtn.textContent = isAvailable ? "START EXAMINATION" : "COMING SOON";
+        inspectBtn.textContent = isAvailable ? "INSPECT QUESTIONS" : "COMING SOON";
         inspectBtn.disabled = !isAvailable;
         inspectBtn.addEventListener("click", (e) => {
             e.stopPropagation();
