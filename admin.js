@@ -349,7 +349,7 @@ function renderSets() {
         const fName = set.file_name || set.fileName || "File";
         const qCount = set.questions_count !== undefined ? set.questions_count : (set.questionsCount || (set.questions ? set.questions.length : 0));
         const dur = set.duration || 180;
-        const statusLabel = set.status === "available" ? "Published" : "Draft";
+        const isAvailable = set.status !== "coming";
 
         const accent = document.createElement("div");
         accent.className = "accent";
@@ -362,11 +362,11 @@ function renderSets() {
 
         const codeSpan = document.createElement("span");
         codeSpan.className = "test-code";
-        codeSpan.textContent = `${set.id} • ${fileBadge}`;
+        codeSpan.textContent = `EXAM ${String(set.id).toUpperCase()}`;
 
         const statusSpan = document.createElement("span");
-        statusSpan.className = "status available";
-        statusSpan.textContent = statusLabel;
+        statusSpan.className = isAvailable ? "status available" : "status coming";
+        statusSpan.textContent = isAvailable ? "AVAILABLE" : "COMING SOON";
 
         top.append(codeSpan, statusSpan);
 
@@ -374,20 +374,24 @@ function renderSets() {
         titleH2.textContent = set.title;
 
         const subP = document.createElement("p");
-        subP.textContent = `${set.subject || "General Paper"} — Parsed from ${fName}`;
+        subP.textContent = isAvailable
+            ? "Ready to begin. Complete the instructions before starting your examination."
+            : "This examination will be available once its question bank is ready.";
 
         const metaDiv = document.createElement("div");
         metaDiv.className = "meta";
-        metaDiv.innerHTML = `
-            <span>${qCount} Questions</span>
-            <span>${dur} Mins</span>
-            <span>Auto-split ready</span>
-        `;
+        const subj = set.subject || "Paper 1 (General) & Paper 2 (Subject)";
+        [`${qCount} Questions`, subj, `${dur} Minutes`].forEach(text => {
+            const item = document.createElement("span");
+            item.textContent = text;
+            metaDiv.appendChild(item);
+        });
 
         const inspectBtn = document.createElement("button");
         inspectBtn.className = "start";
         inspectBtn.type = "button";
-        inspectBtn.textContent = "Inspect Questions ➔";
+        inspectBtn.textContent = isAvailable ? "START EXAMINATION" : "COMING SOON";
+        inspectBtn.disabled = !isAvailable;
         inspectBtn.addEventListener("click", (e) => {
             e.stopPropagation();
             inspectSet(set.id);
@@ -561,9 +565,11 @@ async function inspectSet(setId) {
                                             <polyline points="20 6 9 17 4 12"></polyline>
                                         </svg>
                                     </div>
-                                    <span class="q-badge">Question ${String(qNum).padStart(2, '0')}</span>
+                                    <span class="q-badge" title="Question ${qNum}">
+                                        <span class="q-badge-prefix">Question </span><span class="q-badge-num">${qNum}</span>
+                                    </span>
                                 </div>
-                                <span class="q-section-tag">${q.section || "Paper 1"} • MCQ</span>
+                                <span class="q-section-tag"><span class="q-section-full">Single Split Question • </span>${q.section || "Paper 1"}</span>
                             </div>
                             <div class="q-title">${typeof window.renderNeatQuestion === "function" ? window.renderNeatQuestion(qText, q.options || { A: optA, B: optB, C: optC, D: optD }) : qText}</div>
                             <div class="options-grid">
@@ -812,8 +818,13 @@ function updateCardNumbersInDom() {
     cards.forEach((card, idx) => {
         const newNum = idx + 1;
         card.setAttribute("data-qnum", String(newNum));
-        const badge = card.querySelector(".q-badge");
-        if (badge) badge.textContent = `Question ${String(newNum).padStart(2, "0")}`;
+        const numEl = card.querySelector(".q-badge-num");
+        if (numEl) {
+            numEl.textContent = String(newNum);
+        } else {
+            const badge = card.querySelector(".q-badge");
+            if (badge) badge.textContent = `Question ${newNum}`;
+        }
         const delBtn = card.querySelector(".btn-delete-single-q");
         if (delBtn) {
             delBtn.setAttribute("data-qnum", String(newNum));
