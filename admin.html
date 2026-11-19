@@ -918,40 +918,41 @@
         .bulk-top-bin-btn {
             position: relative;
             height: 38px;
-            padding: 0 14px !important;
-            gap: 8px;
+            padding: 0 10px;
+            gap: 6px;
             cursor: pointer;
-            border-radius: 8px !important;
-            background: #FEE2E2 !important;
-            border: 1px solid #FCA5A5 !important;
-            color: #DC2626 !important;
-            display: inline-flex;
+            border-radius: 8px;
+            background: #FEE2E2;
+            border: 1px solid #FCA5A5;
+            color: #DC2626;
             align-items: center;
             transition: all 0.18s ease;
         }
 
         .bulk-top-bin-btn:hover {
-            background: #FEE2E2 !important;
-            border-color: #DC2626 !important;
-            color: #B91C1C !important;
+            background: #FEE2E2;
+            border-color: #DC2626;
+            color: #B91C1C;
         }
 
-        .bulk-bin-label {
-            font-size: 13px;
-            font-weight: 700;
-            color: #DC2626;
-            display: inline-block;
+        .bulk-top-bin-btn svg {
+            width: 24px;
+            height: 24px;
+            stroke: #DC2626;
+            stroke-width: 2.2;
+            flex-shrink: 0;
+            display: block;
         }
 
         .bulk-bin-count-badge {
             background: #DC2626;
             color: #FFFFFF;
-            font-size: 11.5px;
+            font-size: 11px;
             font-weight: 800;
-            padding: 2px 7px;
-            border-radius: 12px;
+            padding: 2px 6px;
+            border-radius: 10px;
             line-height: 1;
-            min-width: 20px;
+            min-width: 18px;
             text-align: center;
             display: inline-block;
             pointer-events: none;
@@ -2376,43 +2377,36 @@
 
             .bulk-top-bin-btn {
                 width: auto !important;
-                min-width: 95px !important;
                 height: 40px !important;
-                padding: 0 14px !important;
+                padding: 0 10px !important;
                 background: #FEE2E2 !important;
                 border: 1px solid #FCA5A5 !important;
                 border-radius: 8px !important;
                 color: #DC2626 !important;
-                display: inline-flex !important;
-                align-items: center !important;
-                gap: 8px !important;
-                cursor: pointer !important;
-                box-shadow: 0 2px 6px rgba(220, 38, 38, 0.12) !important;
+                align-items: center;
+                gap: 6px;
+                cursor: pointer;
+                box-shadow: 0 2px 6px rgba(220, 38, 38, 0.12);
             }
 
             .bulk-top-bin-btn svg {
-                width: 19px !important;
-                height: 19px !important;
+                width: 24px !important;
+                height: 24px !important;
                 stroke: #DC2626 !important;
+                stroke-width: 2.2 !important;
                 flex-shrink: 0 !important;
-            }
-
-            .bulk-bin-label {
-                font-size: 13px !important;
-                font-weight: 700 !important;
-                color: #DC2626 !important;
-                display: inline-block !important;
+                display: block !important;
             }
 
             .bulk-bin-count-badge {
                 background: #DC2626 !important;
                 color: #FFFFFF !important;
-                font-size: 11.5px !important;
+                font-size: 11px !important;
                 font-weight: 800 !important;
-                padding: 2px 7px !important;
-                border-radius: 12px !important;
+                padding: 2px 6px !important;
+                border-radius: 10px !important;
                 line-height: 1 !important;
-                min-width: 20px !important;
+                min-width: 18px !important;
                 text-align: center !important;
                 display: inline-block !important;
             }
@@ -2426,8 +2420,7 @@
                 background: #FFFFFF !important;
                 border: 1px solid #CBD5E1 !important;
                 color: #475569 !important;
-                display: inline-flex !important;
-                align-items: center !important;
+                align-items: center;
             }
 
             .btn-edit-set-details {
@@ -2439,9 +2432,8 @@
                 background: #FFFFFF !important;
                 border: 1px solid #CBD5E1 !important;
                 color: #1E293B !important;
-                display: inline-flex !important;
-                align-items: center !important;
-                gap: 6px !important;
+                align-items: center;
+                gap: 6px;
             }
 
             .btn-back-sets {
@@ -2450,9 +2442,8 @@
                 font-size: 12.5px !important;
                 font-weight: 700 !important;
                 border-radius: 8px !important;
-                display: inline-flex !important;
-                align-items: center !important;
-                gap: 6px !important;
+                align-items: center;
+                gap: 6px;
             }
         }
 
@@ -2856,15 +2847,14 @@
                                 <span>Back to Sets</span>
                             </button>
 
-                            <button type="button" class="bin-btn bulk-top-bin-btn" id="bulkDeleteBinButton" style="display: none;" title="Delete selected questions" aria-label="Delete selected questions">
-                                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <button type="button" class="bulk-top-bin-btn" id="bulkDeleteBinButton" style="display: none;" title="Delete selected questions" aria-label="Delete selected questions">
+                                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M3 6h18"></path>
                                     <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
                                     <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
                                     <line x1="10" y1="11" x2="10" y2="17"></line>
                                     <line x1="14" y1="11" x2="14" y2="17"></line>
                                 </svg>
-                                <span class="bulk-bin-label">Delete</span>
                                 <span class="bulk-bin-count-badge" id="bulkBinCountBadge">0</span>
                             </button>
                         </div>
