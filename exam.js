@@ -316,6 +316,19 @@ async function loadCandidateInfo() {
 
         updateNavigationButtons();
 
+        /*
+        -----------------------------------------------------
+        START EXAM TIMER COUNTDOWN
+        Triggered at this exact moment because Question 1
+        and options are now verified and visible on screen!
+        -----------------------------------------------------
+        */
+        if (window.SLOGONTimer && typeof window.SLOGONTimer.startWhenReady === "function") {
+            window.SLOGONTimer.startWhenReady();
+        } else {
+            window.dispatchEvent(new CustomEvent("slogon:questionsReady"));
+        }
+
         console.log(
             `SLOGON ACADEMY: Exam initialized with ${questions.length} questions.`
         );

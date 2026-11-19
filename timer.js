@@ -33,9 +33,15 @@ function getExamDurationMinutes() {
     return 180;
 }
 
-const EXAM_DURATION_MINUTES = getExamDurationMinutes();
-const EXAM_DURATION_MS = EXAM_DURATION_MINUTES * 60 * 1000;
-
+function getExamDurationMs() {
+    try {
+        const storedSec = parseInt(localStorage.getItem("examDuration"), 10);
+        if (!isNaN(storedSec) && storedSec > 0) {
+            return storedSec * 1000;
+        }
+    } catch (e) {}
+    return 180 * 60 * 1000;
+}
 
     const STORAGE_KEYS = {
 
@@ -44,6 +50,9 @@ const EXAM_DURATION_MS = EXAM_DURATION_MINUTES * 60 * 1000;
 
         candidateKey:
             "slogonExamTimerCandidate",
+
+        liveStarted:
+            "slogonExamLiveStarted",
 
         warning10:
             "slogonTimerWarning10",
@@ -83,7 +92,7 @@ const EXAM_DURATION_MS = EXAM_DURATION_MINUTES * 60 * 1000;
        INITIALIZE
     ===================================================== */
 
-    document.addEventListener( "DOMContentLoaded",initializeTimer);
+    document.addEventListener("DOMContentLoaded", initializeTimer);
 
 
     function initializeTimer() {
@@ -146,33 +155,47 @@ const EXAM_DURATION_MS = EXAM_DURATION_MINUTES * 60 * 1000;
                 STORAGE_KEYS.candidateKey
             );
 
+        const isLiveStarted =
+            localStorage.getItem(
+                STORAGE_KEYS.liveStarted
+            ) === "true";
+
+        const savedEndTime =
+            localStorage.getItem(
+                STORAGE_KEYS.endTime
+            );
+
 
         /*
         -----------------------------------------------------
-        New candidate / new exam session
+        CASE 1: Page was refreshed mid-exam for same candidate
+        Restore the existing countdown safely
         -----------------------------------------------------
         */
 
         if (
-            !savedCandidateKey ||
-            savedCandidateKey !== candidateKey
+            savedCandidateKey === candidateKey &&
+            isLiveStarted &&
+            savedEndTime
         ) {
 
-            startNewTimer(candidateKey);
-
-        } else {
-
             restoreTimer();
+            startTimer();
+            return;
         }
 
 
         /*
         -----------------------------------------------------
-        Start timer
+        CASE 2: Fresh exam session — Questions are still loading!
+        Display full duration static in badge so candidate loses
+        zero seconds while questions and options are being fetched.
         -----------------------------------------------------
         */
 
-        startTimer();
+        const initialSeconds = Math.floor(getExamDurationMs() / 1000);
+        updateDisplay(initialSeconds);
+        console.log("SLOGON TIMER: Standby mode. Waiting for question paper to render before starting countdown...");
     }
 
 
@@ -222,13 +245,13 @@ const EXAM_DURATION_MS = EXAM_DURATION_MINUTES * 60 * 1000;
 
         /*
         -----------------------------------------------------
-       Current timestamp + 180 minutes
+        Current timestamp + exact duration
         -----------------------------------------------------
         */
 
         endTime =
             Date.now() +
-            EXAM_DURATION_MS;
+            getExamDurationMs();
 
 
         localStorage.setItem(
@@ -256,7 +279,30 @@ const EXAM_DURATION_MS = EXAM_DURATION_MINUTES * 60 * 1000;
 
 
         console.log(
-            "SLOGON TIMER: New 60-minute exam timer started."
+            `SLOGON TIMER: New ${getExamDurationMinutes()}-minute exam timer configured.`
+        );
+    }
+
+
+    /* =====================================================
+       START TIMER WHEN QUESTIONS ARE READY
+    ===================================================== */
+
+    function startWhenReady() {
+        if (isRunning) {
+            return;
+        }
+
+        timerElement = document.getElementById("timer") || timerElement;
+        const candidateKey = getCandidateKey();
+
+        startNewTimer(candidateKey);
+        localStorage.setItem(STORAGE_KEYS.liveStarted, "true");
+
+        startTimer();
+
+        console.log(
+            `SLOGON TIMER: Question paper rendered. Timer countdown officially started for ${getExamDurationMinutes()} minutes.`
         );
     }
 
@@ -1201,51 +1247,43 @@ const EXAM_DURATION_MS = EXAM_DURATION_MINUTES * 60 * 1000;
     window.SLOGONTimer = {
 
         start: function () {
-
-            if (!isRunning) {
-
-                startTimer();
-            }
+            startWhenReady();
         },
 
+        startWhenReady: function () {
+            startWhenReady();
+        },
 
         stop: function () {
-
             stop();
         },
 
-
         getEndTime: function () {
-
             return endTime;
         },
 
+        getRemainingSeconds: function () {
+            if (!endTime) {
+                return Math.floor(getExamDurationMs() / 1000);
+            }
 
-        getRemainingSeconds:
-            function () {
-
-                if (!endTime) {
-                    return 0;
-                }
-
-
-                return Math.max(
-                    0,
-                    Math.ceil(
-                        (
-                            endTime -
-                            Date.now()
-                        ) / 1000
-                    )
-                );
-            },
-
+            return Math.max(
+                0,
+                Math.ceil(
+                    (endTime - Date.now()) / 1000
+                )
+            );
+        },
 
         isRunning: function () {
-
             return isRunning;
         }
     };
+
+    // Custom event listener for questions ready
+    window.addEventListener("slogon:questionsReady", function () {
+        startWhenReady();
+    });
 /*
 -----------------------------------------------------
 INITIALIZE SLOGON EXAM TIMER

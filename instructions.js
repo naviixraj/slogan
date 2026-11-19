@@ -166,6 +166,7 @@ function launchExamination() {
     /* RESET PREVIOUS TIMER */
     localStorage.removeItem("slogonExamEndTime");
     localStorage.removeItem("slogonExamTimerCandidate");
+    localStorage.removeItem("slogonExamLiveStarted");
 
     localStorage.removeItem("slogonTimerWarning10");
     localStorage.removeItem("slogonTimerWarning5");
