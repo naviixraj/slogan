@@ -113,7 +113,7 @@ if (window.location.hostname === "127.0.0.1" || window.location.hostname === "lo
 
         cacheDOM();
 
-        loadCandidateInfo();
+        await loadCandidateInfo();
 
         try {
 

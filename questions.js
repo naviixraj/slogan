@@ -42,7 +42,8 @@
             console.log(`SLOGON ACADEMY: Loading question data for ${selectedTestId}...`);
 
             const response = await fetch(QUESTIONS_FILE, {
-                cache: "no-store"
+                cache: "no-store",
+                credentials: "same-origin"
             });
 
 
@@ -82,6 +83,12 @@
             }
 
             const questions = result.questions;
+
+            // Normalize and guarantee unique sequential 1-based IDs and numbers
+            questions.forEach((q, idx) => {
+                q.id = idx + 1;
+                q.number = idx + 1;
+            });
 
 
             /* ---------------------------------------------
@@ -358,7 +365,7 @@
 
 
         /* ---------------------------------------------
-           CHECK DUPLICATE IDs
+           CHECK DUPLICATE IDs (Auto-repair if found)
            --------------------------------------------- */
 
         const ids = questions.map(question => String(question.id));
@@ -368,11 +375,11 @@
 
         if (ids.length !== uniqueIds.size) {
 
-            return {
-                valid: false,
-                message:
-                    "Duplicate question IDs found in questions.json."
-            };
+            console.warn("SLOGON ACADEMY: Duplicate question IDs detected. Auto-re-indexing questions.");
+            questions.forEach((q, idx) => {
+                q.id = idx + 1;
+                q.number = idx + 1;
+            });
 
         }
 
@@ -515,12 +522,11 @@
         errorBox.innerHTML = `
             <strong>SLOGON ACADEMY</strong><br>
             Unable to load examination questions.<br>
-            Please make sure that
-            <strong>data/questions.json</strong>
-            exists and the exam is opened using
-            <strong>Live Server</strong>.
+            <span style="font-size: 13px; color: #7F1D1D;">${(error && error.message) ? error.message : "Please check your network connection or login session."}</span>
+            <div style="margin-top: 10px;">
+                <a href="tests.html" style="color: #991B1B; font-weight: 700; text-decoration: underline;">Return to Examinations Dashboard</a>
+            </div>
         `;
-
 
         document.body.prepend(errorBox);
 

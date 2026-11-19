@@ -807,6 +807,13 @@ async function parseUploadedQuestions(file) {
         questions = parseMcqText(textContent);
     }
 
+    if (Array.isArray(questions)) {
+        questions.forEach((q, idx) => {
+            q.id = idx + 1;
+            q.number = idx + 1;
+        });
+    }
+
     return questions;
 }
 
@@ -962,6 +969,11 @@ app.post("/api/admin/sets/paste", requireAdmin, async (req, res) => {
                 message: "No questions could be extracted from the pasted text. Please make sure questions have numbers (e.g. 1. or Q1.), options A, B, C, D, and answer keys (e.g. Answer: C)."
             });
         }
+
+        questions.forEach((q, idx) => {
+            q.id = idx + 1;
+            q.number = idx + 1;
+        });
 
         // Generate collision-free next ID
         const setId = await getNextUniqueSetId();
@@ -1382,6 +1394,12 @@ app.get("/api/mock-tests/:testId/questions", async (req, res) => {
                 message: `Examination set "${req.params.testId}" not found.`
             });
         }
+
+        // Guarantee unique sequential IDs and numbers for client examination engines
+        questions.forEach((q, idx) => {
+            q.id = idx + 1;
+            q.number = idx + 1;
+        });
 
         res.set("Cache-Control", "no-store");
         return res.json({

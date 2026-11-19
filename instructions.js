@@ -13,7 +13,7 @@ let testDetails = JSON.parse(
 );
 
 // Fallback test ID
-let activeTestId = localStorage.getItem("selectedMockTest") || (testDetails ? testDetails.id : "MOCK01");
+let activeTestId = localStorage.getItem("selectedMockTest") || (testDetails ? testDetails.id : "SET01");
 
 function updateInstructionsUI(details) {
     if (!details) return;
