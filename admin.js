@@ -561,27 +561,31 @@ async function inspectSet(setId) {
                                             <polyline points="20 6 9 17 4 12"></polyline>
                                         </svg>
                                     </div>
-                                    <span class="q-badge">QUESTION ${String(qNum).padStart(2, '0')}</span>
+                                    <span class="q-badge">Question ${String(qNum).padStart(2, '0')}</span>
                                 </div>
-                                <span style="font-size: 11px; color: var(--muted); font-weight: 600;">Single Split Question • ${q.section || "Paper 1"}</span>
+                                <span class="q-section-tag">${q.section || "Paper 1"} • MCQ</span>
                             </div>
                             <div class="q-title">${typeof window.renderNeatQuestion === "function" ? window.renderNeatQuestion(qText, q.options || { A: optA, B: optB, C: optC, D: optD }) : qText}</div>
                             <div class="options-grid">
                                 <div class="option-box ${correct === 'A' ? 'is-correct' : ''}">
                                     <span class="opt-circle">${labelA}</span>
-                                    <span>${optA} ${correct === 'A' ? '<strong style="color: var(--emerald-dark); margin-left: 6px;">(Correct Answer ✓)</strong>' : ''}</span>
+                                    <span class="opt-text">${optA}</span>
+                                    ${correct === 'A' ? '<strong class="correct-badge-tag">(Correct Answer ✓)</strong>' : ''}
                                 </div>
                                 <div class="option-box ${correct === 'B' ? 'is-correct' : ''}">
                                     <span class="opt-circle">${labelB}</span>
-                                    <span>${optB} ${correct === 'B' ? '<strong style="color: var(--emerald-dark); margin-left: 6px;">(Correct Answer ✓)</strong>' : ''}</span>
+                                    <span class="opt-text">${optB}</span>
+                                    ${correct === 'B' ? '<strong class="correct-badge-tag">(Correct Answer ✓)</strong>' : ''}
                                 </div>
                                 <div class="option-box ${correct === 'C' ? 'is-correct' : ''}">
                                     <span class="opt-circle">${labelC}</span>
-                                    <span>${optC} ${correct === 'C' ? '<strong style="color: var(--emerald-dark); margin-left: 6px;">(Correct Answer ✓)</strong>' : ''}</span>
+                                    <span class="opt-text">${optC}</span>
+                                    ${correct === 'C' ? '<strong class="correct-badge-tag">(Correct Answer ✓)</strong>' : ''}
                                 </div>
                                 <div class="option-box ${correct === 'D' ? 'is-correct' : ''}">
                                     <span class="opt-circle">${labelD}</span>
-                                    <span>${optD} ${correct === 'D' ? '<strong style="color: var(--emerald-dark); margin-left: 6px;">(Correct Answer ✓)</strong>' : ''}</span>
+                                    <span class="opt-text">${optD}</span>
+                                    ${correct === 'D' ? '<strong class="correct-badge-tag">(Correct Answer ✓)</strong>' : ''}
                                 </div>
                             </div>
                             <div class="q-explanation">
@@ -809,7 +813,7 @@ function updateCardNumbersInDom() {
         const newNum = idx + 1;
         card.setAttribute("data-qnum", String(newNum));
         const badge = card.querySelector(".q-badge");
-        if (badge) badge.textContent = `QUESTION ${String(newNum).padStart(2, "0")}`;
+        if (badge) badge.textContent = `Question ${String(newNum).padStart(2, "0")}`;
         const delBtn = card.querySelector(".btn-delete-single-q");
         if (delBtn) {
             delBtn.setAttribute("data-qnum", String(newNum));

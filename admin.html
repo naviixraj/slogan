@@ -1094,20 +1094,33 @@
         }
 
         .q-badge {
-            background: #0B1F3A;
-            color: #D4AF37;
-            padding: 4px 10px;
-            border-radius: 5px;
+            background: #E8F5E9;
+            color: #0F8B6D;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
+            display: inline-flex;
+            align-items: center;
+        }
+
+        .q-section-tag {
             font-size: 11px;
-            font-weight: 800;
+            font-weight: 600;
+            color: #64748B;
+            background: #F1F5F9;
+            padding: 4px 10px;
+            border-radius: 6px;
         }
 
         .q-title {
-            font-size: 14px;
+            font-size: 15px;
             font-weight: 600;
-            color: var(--charcoal);
+            color: #1E293B;
             line-height: 1.6;
             margin-bottom: 14px;
+            font-family: 'Noto Sans Tamil', 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
         .options-grid {
@@ -1122,45 +1135,75 @@
             align-items: center;
             gap: 12px;
             padding: 10px 14px;
-            border-radius: 8px;
+            min-height: 48px;
+            border-radius: 9px;
             border: 1px solid #DDE2E8;
             background: rgba(255, 255, 255, 0.9);
-            font-size: 13px;
+            font-size: 13.5px;
+            line-height: 1.5;
+            transition: all 0.18s ease;
         }
 
         .option-box.is-correct {
-            border-color: #16A34A;
+            border-color: #0F8B6D;
             background: #F0FDF4;
-            color: #166534;
+            box-shadow: 0 0 0 1px #0F8B6D;
+            color: #087357;
             font-weight: 600;
         }
 
         .opt-circle {
-            width: 26px;
-            height: 26px;
+            width: 28px;
+            height: 28px;
             border-radius: 50%;
             background: #F8FAFC;
-            border: 1px solid #CBD5E1;
-            display: grid;
-            place-items: center;
-            font-size: 11.5px;
+            border: 1.5px solid #CBD5E1;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
             font-weight: 700;
             flex-shrink: 0;
             color: #475569;
         }
 
         .option-box.is-correct .opt-circle {
-            background: #16A34A;
-            border-color: #16A34A;
+            background: #0F8B6D;
+            border-color: #0F8B6D;
             color: #FFFFFF;
+        }
+
+        .opt-text {
+            flex: 1;
+            word-break: break-word;
+            overflow-wrap: break-word;
+            color: #1E293B;
+        }
+
+        .option-box.is-correct .opt-text {
+            color: #087357;
+            font-weight: 600;
+        }
+
+        .correct-badge-tag {
+            color: #087357;
+            margin-left: auto;
+            font-size: 12px;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            background: #E8F5E9;
+            padding: 3px 8px;
+            border-radius: 6px;
+            flex-shrink: 0;
         }
 
         .q-explanation {
             background: #FFFBEB;
             border-left: 3px solid #D4AF37;
             padding: 12px 14px;
-            border-radius: 4px;
-            font-size: 12px;
+            border-radius: 6px;
+            font-size: 12.5px;
             color: #78350F;
             line-height: 1.6;
         }
@@ -2158,11 +2201,132 @@
             .content {
                 padding: 20px 16px 40px;
             }
+
+            /* MOBILE QUESTION CARD & SINGLE-COLUMN OPTION STACK (STUDENT EXAM STYLE) */
+            .question-card {
+                padding: 16px 14px;
+                border-radius: 12px;
+                margin-bottom: 14px;
+                box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+            }
+
+            .q-header {
+                flex-wrap: wrap;
+                gap: 8px;
+                padding-bottom: 8px;
+            }
+
+            .q-header-left {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .q-badge {
+                font-size: 11.5px;
+                padding: 4px 10px;
+                border-radius: 16px;
+            }
+
+            .q-title {
+                font-size: 14.5px;
+                line-height: 1.6;
+                margin-bottom: 12px;
+            }
+
+            .options-grid {
+                grid-template-columns: 1fr;
+                gap: 8px;
+                margin-bottom: 12px;
+            }
+
+            .option-box {
+                min-height: 48px;
+                padding: 10px 12px;
+                border-radius: 9px;
+                gap: 10px;
+                font-size: 13px;
+                width: 100%;
+            }
+
+            .opt-circle {
+                width: 28px;
+                height: 28px;
+                font-size: 11.5px;
+            }
+
+            .correct-badge-tag {
+                font-size: 11px;
+                padding: 2px 6px;
+            }
+
+            .q-explanation {
+                padding: 10px 12px;
+                border-radius: 8px;
+                font-size: 12px;
+                line-height: 1.55;
+            }
+
+            .q-footer {
+                margin-top: 10px;
+                padding-top: 6px;
+                gap: 10px;
+            }
+
+            .btn-edit-single-q,
+            .btn-delete-single-q,
+            .bin-btn {
+                width: 38px;
+                height: 38px;
+                padding: 8px;
+                border-radius: 8px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .inspector-topbar {
+                flex-wrap: wrap;
+                gap: 10px;
+                margin-bottom: 16px;
+            }
+
+            .inspector-topbar-left,
+            .inspector-topbar-right {
+                flex-wrap: wrap;
+                gap: 8px;
+            }
         }
 
         @media (max-width: 640px) {
             .edit-options-grid {
                 grid-template-columns: 1fr;
+            }
+
+            .inspector-topbar-left,
+            .inspector-topbar-right {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .neat-match-container {
+                grid-template-columns: 1fr;
+            }
+
+            .q-header {
+                justify-content: space-between;
+            }
+
+            .correct-badge-tag {
+                display: block;
+                width: 100%;
+                margin-left: 0;
+                margin-top: 4px;
+                text-align: left;
+            }
+
+            .option-box.is-correct {
+                flex-wrap: wrap;
             }
         }
     </style>
