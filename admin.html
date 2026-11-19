@@ -2225,6 +2225,8 @@
 
             /* MOBILE QUESTION CARD & SINGLE-COLUMN OPTION STACK (STUDENT EXAM STYLE) */
             .question-card {
+                background: #FFFFFF !important;
+                border: 1px solid #E2E8F0 !important;
                 padding: 16px 14px;
                 border-radius: 12px;
                 margin-bottom: 14px;
@@ -2354,15 +2356,54 @@
             }
 
             .actions {
-                justify-content: flex-end;
-                width: 100%;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: space-between !important;
+                width: 100% !important;
+                gap: 8px !important;
+            }
+
+            /* 1: All formats filter dropdown (Left-aligned) */
+            .actions .filter {
+                order: 1 !important;
+                flex: 0 1 auto !important;
+                min-width: 110px !important;
+                max-width: 135px !important;
+                height: 38px !important;
+                margin-right: auto !important;
+            }
+
+            /* 2: + Upload Set primary action button */
+            .actions .btn-upload-set {
+                order: 2 !important;
+                flex: 0 0 auto !important;
+                height: 38px !important;
+                padding: 0 12px !important;
+                font-size: 11.5px !important;
+                white-space: nowrap !important;
+            }
+
+            /* 3: View Toggle button (Grid / List flipper on the right) */
+            .actions .view-toggle-btn {
+                order: 3 !important;
+                flex: 0 0 auto !important;
+                width: 38px !important;
+                height: 38px !important;
+            }
+
+            #studentsSection .actions {
+                justify-content: flex-end !important;
             }
 
             .test-grid {
                 grid-template-columns: 1fr !important;
+                gap: 20px !important;
             }
 
             .test-card {
+                background: #FFFFFF !important;
+                box-shadow: 0 4px 18px rgba(15, 23, 42, 0.06) !important;
+                border: 1px solid #E2E8F0 !important;
                 width: 100% !important;
                 max-width: 100% !important;
                 box-sizing: border-box !important;
