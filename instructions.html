@@ -24,7 +24,7 @@
         rel="stylesheet">
 
     <!-- Main CSS -->
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="style.css?v=20261120-v2">
 
 </head>
 
@@ -558,15 +558,22 @@
              DECLARATION
         ================================================== -->
 
-        <section class="declaration-card">
+        <section class="declaration-card breathing-box" id="declarationCard">
 
             <div class="declaration-content">
 
-                <h3>
-                    Declaration
-                </h3>
+                <div class="declaration-header">
+                    <span class="declaration-badge" aria-hidden="true">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        </svg>
+                    </span>
+                    <h3>
+                        Candidate Declaration
+                    </h3>
+                </div>
 
-                <label class="checkbox-label">
+                <label class="checkbox-label" for="instructionCheckbox">
 
                     <input
                         type="checkbox"
@@ -575,8 +582,7 @@
                     <span class="custom-checkbox"></span>
 
                     <span class="checkbox-text">
-                        I have read and understood all the instructions
-                        and I am ready to begin the examination.
+                        I hereby declare that I am the registered candidate appearing for this examination. I have read and understood all the examination instructions and agree to follow the rules and regulations. I will not engage in any unfair practices or malpractice during the examination.
                     </span>
 
                 </label>
@@ -683,7 +689,7 @@
                 PAGE JAVASCRIPT
 ====================================================== -->
 
-<script src="instructions.js?v=20261119-v2" defer></script>
+<script src="instructions.js?v=20261120-v2" defer></script>
 
 
 </body>

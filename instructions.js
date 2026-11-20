@@ -181,8 +181,17 @@ function launchExamination() {
 }
 
 if (instructionCheckbox && proceedButton) {
+    const declarationCard = document.getElementById("declarationCard");
+
     instructionCheckbox.addEventListener("change", function () {
         proceedButton.disabled = !this.checked;
+        if (declarationCard) {
+            if (this.checked) {
+                declarationCard.classList.add("confirmed");
+            } else {
+                declarationCard.classList.remove("confirmed");
+            }
+        }
     });
 
     /* OPEN CUSTOM CONFIRMATION POPUP ON PROCEED CLICK */

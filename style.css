@@ -1354,153 +1354,127 @@ select:focus-visible {
 
 
 /* =========================================================
-   DECLARATION
+   DECLARATION (DARK HIGH-VISIBILITY BREATHING BOX)
 ========================================================= */
 
+@keyframes declarationPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(107, 29, 47, 0.65), 0 8px 24px rgba(0, 0, 0, 0.35);
+    border-color: #6B1D2F;
+  }
+  50% {
+    box-shadow: 0 0 0 7px rgba(107, 29, 47, 0.22), 0 12px 32px rgba(107, 29, 47, 0.45);
+    border-color: #991B1B;
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(107, 29, 47, 0.65), 0 8px 24px rgba(0, 0, 0, 0.35);
+    border-color: #6B1D2F;
+  }
+}
+
 .declaration-card {
-
-    display: flex;
-
-    gap: 15px;
-
-    background: rgba(255, 252, 242, 0.85);
-
-    backdrop-filter: blur(6px);
-
-    -webkit-backdrop-filter: blur(6px);
-
-    border: 1px solid rgba(212,175,55,0.55);
-
-    border-radius: 12px;
-
-    padding: 20px;
-
-    margin-bottom: 18px;
-
+    display: block;
+    background: linear-gradient(135deg, #241015 0%, #1A0B0F 100%);
+    border: 2px solid #6B1D2F;
+    border-radius: 14px;
+    padding: 22px 24px;
+    margin-bottom: 22px;
+    box-sizing: border-box;
+    animation: declarationPulse 2.8s infinite ease-in-out;
+    transition: all 0.3s ease;
 }
 
+.declaration-card.confirmed {
+    animation: none;
+    border-color: #D4AF37;
+    box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.3), 0 8px 25px rgba(0, 0, 0, 0.3);
+}
 
-.declaration-icon {
-
-    width: 35px;
-
-    height: 35px;
-
-    flex-shrink: 0;
-
-    border-radius: 50%;
-
-    background: #D4AF37;
-
-    color: #0B1F3A;
-
+.declaration-header {
     display: flex;
-
     align-items: center;
-
-    justify-content: center;
-
-    font-weight: 700;
-
+    gap: 10px;
+    margin-bottom: 14px;
 }
 
+.declaration-badge {
+    width: 32px;
+    height: 32px;
+    border-radius: 8px;
+    background: rgba(107, 29, 47, 0.5);
+    border: 1px solid rgba(212, 175, 55, 0.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #D4AF37;
+    flex-shrink: 0;
+}
 
 .declaration-content h3 {
-
-    color: #0B1F3A;
-
-    font-size: 14px;
-
-    margin-bottom: 10px;
-
+    color: #D4AF37 !important;
+    font-size: 15px;
+    font-weight: 700;
+    font-family: "Poppins", sans-serif;
+    margin: 0;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
 }
-
 
 /* Checkbox */
-
 .checkbox-label {
-
     display: flex;
-
     align-items: flex-start;
-
-    gap: 10px;
-
+    gap: 14px;
     cursor: pointer;
-
     position: relative;
-
+    user-select: none;
 }
-
 
 .checkbox-label input {
-
     position: absolute;
-
     opacity: 0;
-
     pointer-events: none;
-
 }
-
 
 .custom-checkbox {
-
-    width: 20px;
-
-    height: 20px;
-
+    width: 22px;
+    height: 22px;
     flex-shrink: 0;
-
-    border: 2px solid #9CA3AF;
-
-    border-radius: 4px;
-
-    background: #FFFFFF;
-
+    margin-top: 2px;
+    border: 2px solid #D4AF37;
+    border-radius: 6px;
+    background: rgba(255, 255, 255, 0.08);
     position: relative;
-
-    transition: 0.2s ease;
-
+    transition: all 0.2s ease;
 }
 
+.checkbox-label:hover .custom-checkbox {
+    border-color: #F59E0B;
+    background: rgba(255, 255, 255, 0.15);
+}
 
 .checkbox-label input:checked + .custom-checkbox {
-
-    background: #0B1F3A;
-
-    border-color: #0B1F3A;
-
+    background: #6B1D2F !important;
+    border-color: #D4AF37 !important;
+    box-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
 }
-
 
 .checkbox-label input:checked + .custom-checkbox::after {
-
     content: "✓";
-
     position: absolute;
-
     color: #D4AF37;
-
-    font-size: 13px;
-
-    font-weight: 700;
-
-    left: 3px;
-
+    font-size: 15px;
+    font-weight: 800;
+    left: 4px;
     top: -1px;
-
 }
 
-
 .checkbox-text {
-
-    color: #4B5563;
-
-    font-size: 12px;
-
-    line-height: 1.7;
-
+    color: #F3F4F6 !important;
+    font-size: 13.5px;
+    line-height: 1.65;
+    font-family: "Inter", sans-serif;
+    font-weight: 500;
 }
 
 
