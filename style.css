@@ -1285,15 +1285,19 @@ select:focus-visible {
 
 .status-dot {
 
-    width: 14px;
+    width: 18px;
 
-    height: 14px;
+    height: 18px;
 
     border-radius: 4px;
 
     flex-shrink: 0;
 
     margin-top: 2px;
+
+    position: relative;
+
+    box-sizing: border-box;
 
 }
 
@@ -1304,9 +1308,11 @@ select:focus-visible {
 
     color: #1F2937;
 
-    font-size: 12px;
+    font-size: 13px;
 
     margin-bottom: 3px;
+
+    font-family: "Poppins", sans-serif;
 
 }
 
@@ -1317,34 +1323,38 @@ select:focus-visible {
 
     color: #6B7280;
 
-    font-size: 10px;
+    font-size: 11px;
 
     line-height: 1.5;
 
 }
 
 
-/* Status Colors */
+/* Status Colors Matching Exam NTA Palette Legend */
 
 .status-dot.not-visited {
 
-    background: #E5E7EB;
+    background: #FFFFFF;
 
-    border: 1px solid #CBD5E1;
+    border: 1.5px solid #CBD5E1;
 
 }
 
 
 .status-dot.not-answered {
 
-    background: #F59E0B;
+    background: #EF4444;
+
+    border: 1px solid #DC2626;
 
 }
 
 
 .status-dot.answered {
 
-    background: #22C55E;
+    background: #10B981;
+
+    border: 1px solid #059669;
 
 }
 
@@ -1353,12 +1363,40 @@ select:focus-visible {
 
     background: #8B5CF6;
 
+    border: 1px solid #7C3AED;
+
 }
 
 
 .status-dot.answered-review {
 
-    background: #6366F1;
+    background: #8B5CF6;
+
+    border: 1px solid #7C3AED;
+
+    position: relative;
+
+}
+
+.status-dot.answered-review::after {
+
+    content: "";
+
+    width: 6px;
+
+    height: 6px;
+
+    background-color: #10B981;
+
+    border-radius: 50%;
+
+    border: 1px solid #FFFFFF;
+
+    position: absolute;
+
+    bottom: 1.5px;
+
+    right: 1.5px;
 
 }
 
