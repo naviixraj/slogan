@@ -1354,40 +1354,47 @@ select:focus-visible {
 
 
 /* =========================================================
-   DECLARATION (DARK HIGH-VISIBILITY BREATHING BOX)
+   DECLARATION (MATCHING UI THEME & BREATHING ZOOM ANIMATION)
 ========================================================= */
 
-@keyframes declarationPulse {
+@keyframes declarationBreathe {
   0% {
-    box-shadow: 0 0 0 0 rgba(107, 29, 47, 0.65), 0 8px 24px rgba(0, 0, 0, 0.35);
+    transform: scale(1);
+    box-shadow: 0 4px 14px rgba(107, 29, 47, 0.10), 0 0 0 0 rgba(107, 29, 47, 0.25);
     border-color: #6B1D2F;
   }
   50% {
-    box-shadow: 0 0 0 7px rgba(107, 29, 47, 0.22), 0 12px 32px rgba(107, 29, 47, 0.45);
+    transform: scale(1.02);
+    box-shadow: 0 12px 30px rgba(107, 29, 47, 0.22), 0 0 0 6px rgba(107, 29, 47, 0.12);
     border-color: #991B1B;
   }
   100% {
-    box-shadow: 0 0 0 0 rgba(107, 29, 47, 0.65), 0 8px 24px rgba(0, 0, 0, 0.35);
+    transform: scale(1);
+    box-shadow: 0 4px 14px rgba(107, 29, 47, 0.10), 0 0 0 0 rgba(107, 29, 47, 0.25);
     border-color: #6B1D2F;
   }
 }
 
 .declaration-card {
     display: block;
-    background: linear-gradient(135deg, #241015 0%, #1A0B0F 100%);
+    background: linear-gradient(135deg, #FFF8F5 0%, #FFF1EC 100%);
     border: 2px solid #6B1D2F;
     border-radius: 14px;
     padding: 22px 24px;
     margin-bottom: 22px;
     box-sizing: border-box;
-    animation: declarationPulse 2.8s infinite ease-in-out;
+    transform-origin: center center;
+    will-change: transform, box-shadow;
+    animation: declarationBreathe 2.4s infinite ease-in-out;
     transition: all 0.3s ease;
 }
 
 .declaration-card.confirmed {
     animation: none;
-    border-color: #D4AF37;
-    box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.3), 0 8px 25px rgba(0, 0, 0, 0.3);
+    transform: scale(1);
+    background: linear-gradient(135deg, #F0FDF4 0%, #DCFCE7 100%);
+    border-color: #10B981;
+    box-shadow: 0 6px 20px rgba(16, 185, 129, 0.2), 0 0 0 2px rgba(16, 185, 129, 0.3);
 }
 
 .declaration-header {
@@ -1401,23 +1408,35 @@ select:focus-visible {
     width: 32px;
     height: 32px;
     border-radius: 8px;
-    background: rgba(107, 29, 47, 0.5);
-    border: 1px solid rgba(212, 175, 55, 0.4);
+    background: #6B1D2F;
+    border: 1px solid rgba(212, 175, 55, 0.5);
     display: flex;
     align-items: center;
     justify-content: center;
     color: #D4AF37;
     flex-shrink: 0;
+    transition: all 0.25s ease;
+}
+
+.declaration-card.confirmed .declaration-badge {
+    background: #10B981;
+    border-color: #059669;
+    color: #FFFFFF;
 }
 
 .declaration-content h3 {
-    color: #D4AF37 !important;
+    color: #6B1D2F !important;
     font-size: 15px;
     font-weight: 700;
     font-family: "Poppins", sans-serif;
     margin: 0;
     letter-spacing: 0.5px;
     text-transform: uppercase;
+    transition: color 0.25s ease;
+}
+
+.declaration-card.confirmed .declaration-content h3 {
+    color: #065F46 !important;
 }
 
 /* Checkbox */
@@ -1441,28 +1460,28 @@ select:focus-visible {
     height: 22px;
     flex-shrink: 0;
     margin-top: 2px;
-    border: 2px solid #D4AF37;
+    border: 2px solid #6B1D2F;
     border-radius: 6px;
-    background: rgba(255, 255, 255, 0.08);
+    background: #FFFFFF;
     position: relative;
     transition: all 0.2s ease;
 }
 
 .checkbox-label:hover .custom-checkbox {
-    border-color: #F59E0B;
-    background: rgba(255, 255, 255, 0.15);
+    border-color: #991B1B;
+    background: #FFF5F2;
 }
 
 .checkbox-label input:checked + .custom-checkbox {
-    background: #6B1D2F !important;
-    border-color: #D4AF37 !important;
-    box-shadow: 0 0 8px rgba(212, 175, 55, 0.4);
+    background: #10B981 !important;
+    border-color: #059669 !important;
+    box-shadow: 0 0 8px rgba(16, 185, 129, 0.4);
 }
 
 .checkbox-label input:checked + .custom-checkbox::after {
     content: "✓";
     position: absolute;
-    color: #D4AF37;
+    color: #FFFFFF;
     font-size: 15px;
     font-weight: 800;
     left: 4px;
@@ -1470,11 +1489,16 @@ select:focus-visible {
 }
 
 .checkbox-text {
-    color: #F3F4F6 !important;
+    color: #1F2937 !important;
     font-size: 13.5px;
     line-height: 1.65;
     font-family: "Inter", sans-serif;
     font-weight: 500;
+    transition: color 0.25s ease;
+}
+
+.declaration-card.confirmed .checkbox-text {
+    color: #064E3B !important;
 }
 
 
