@@ -23,7 +23,7 @@
 
     <!-- Main CSS -->
     <link rel="stylesheet"
-        href="style.css?v=20261120-v7">
+        href="style.css?v=20261120-v10">
 
 </head>
 
@@ -138,21 +138,29 @@
                         </div>
                     </div>
 
-                    <!-- Action Controls (2-group bottom bar) -->
+                    <!-- Action Controls (2-group bottom bar on desktop, docked 5-tile floating dock on mobile) -->
                     <div class="nta-action-toolbar">
+
+                        <!-- Mobile Arched Peak Notch with Upward Chevron (only shown on mobile) -->
+                        <div class="mobile-toolbar-notch" aria-hidden="true">
+                            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="18 15 12 9 6 15"></polyline>
+                            </svg>
+                        </div>
 
                         <div class="nta-toolbar-left">
                             <button type="button" class="nta-btn nta-btn-review" id="reviewButton" title="Mark this question for review and continue">
-                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
                                     <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
                                 </svg>
-                                <span>Mark for Review &amp; Next</span>
+                                <span class="btn-text-full">Mark for Review &amp; Next</span>
+                                <span class="btn-text-mobile">Mark for Review</span>
                             </button>
 
                             <button type="button" class="nta-btn nta-btn-clear" id="clearButton" title="Deselect currently chosen answer">
-                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
-                                    <path d="M3 3v5h5"></path>
+                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="3 6 5 6 21 6"></polyline>
+                                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
                                 </svg>
                                 <span>Clear Response</span>
                             </button>
@@ -160,21 +168,24 @@
 
                         <div class="nta-toolbar-right">
                             <button type="button" class="nta-btn nta-btn-prev" id="previousButton" title="Go to previous question">
-                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="15 18 9 12 15 6"></polyline>
+                                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                                    <polyline points="12 19 5 12 12 5"></polyline>
                                 </svg>
                                 <span>Previous</span>
                             </button>
 
                             <button type="button" class="nta-btn nta-btn-savenext" id="saveNextButton" title="Save answer and proceed to next question">
-                                <span>Save &amp; Next</span>
-                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path>
+                                    <polyline points="17 21 17 13 7 13 7 21"></polyline>
+                                    <polyline points="7 3 7 8 15 8"></polyline>
                                 </svg>
+                                <span>Save &amp; Next</span>
                             </button>
 
                             <button type="button" class="nta-btn nta-btn-submit" id="submitButton" title="Submit the complete examination">
-                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
                                     <polyline points="20 6 9 17 4 12"></polyline>
                                 </svg>
                                 <span>Submit</span>
