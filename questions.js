@@ -32,6 +32,9 @@
 
 
     /* -----------------------------------------------------
+       PROCESS & STORE QUESTIONS
+       ----------------------------------------------------- */
+
     function processAndStoreQuestions(result) {
         if (!result || !result.success || !Array.isArray(result.questions)) {
             throw new Error(
