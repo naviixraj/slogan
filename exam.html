@@ -23,7 +23,7 @@
 
     <!-- Main CSS -->
     <link rel="stylesheet"
-        href="style.css?v=20261120-v3">
+        href="style.css?v=20261120-v4">
 
 </head>
 
@@ -247,71 +247,70 @@
 
         <div
             class="modal-overlay"
-            id="submitModal">
+            id="submitModal"
+            aria-hidden="true">
 
+            <div class="submit-modal" role="dialog" aria-modal="true" aria-labelledby="submitModalTitle">
 
-            <div class="submit-modal">
+                <!-- Close Button -->
+                <button type="button" class="submit-modal-close" id="closeSubmitModal" aria-label="Cancel and return to exam" title="Close">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
 
-
-                <div class="modal-icon">
-                    !
+                <!-- Icon Badge (Maroon & Soft Gold) -->
+                <div class="modal-icon-badge">
+                    <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <polyline points="9 15 11 17 15 12"></polyline>
+                    </svg>
                 </div>
 
-
-                <h2>
-                    Submit Test?
+                <h2 id="submitModalTitle" class="submit-modal-title">
+                    Submit Examination?
                 </h2>
 
-
-                <p>
-                    Are you sure you want to submit
-                    the examination?
+                <p class="submit-modal-subtitle">
+                    Are you sure you want to finish and submit your test? Once submitted, your answers will be evaluated and finalized.
                 </p>
 
-
+                <!-- Status Cards Matching NTA Legend -->
                 <div class="modal-summary">
 
-
-                    <div>
-
-                        <span>
-                            Answered
-                        </span>
-
+                    <div class="summary-card summary-card-answered">
+                        <div class="summary-card-header">
+                            <span class="status-indicator-dot dot-answered"></span>
+                            <span>Answered</span>
+                        </div>
                         <strong id="modalAnswered">
                             0
                         </strong>
-
                     </div>
 
-
-                    <div>
-
-                        <span>
-                            Not Answered
-                        </span>
-
+                    <div class="summary-card summary-card-not-answered">
+                        <div class="summary-card-header">
+                            <span class="status-indicator-dot dot-not-answered"></span>
+                            <span>Not Answered</span>
+                        </div>
                         <strong id="modalNotAnswered">
                             0
                         </strong>
-
                     </div>
 
-
-                    <div>
-
-                        <span>
-                            Review
-                        </span>
-
+                    <div class="summary-card summary-card-review">
+                        <div class="summary-card-header">
+                            <span class="status-indicator-dot dot-review"></span>
+                            <span>Review</span>
+                        </div>
                         <strong id="modalReview">
                             0
                         </strong>
-
                     </div>
 
                 </div>
-
 
                 <div class="modal-actions">
 
@@ -319,19 +318,17 @@
                         type="button"
                         class="modal-cancel"
                         id="cancelSubmit">
-
                         Continue Test
-
                     </button>
-
 
                     <button
                         type="button"
                         class="modal-confirm"
                         id="confirmSubmit">
-
+                        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="20 6 9 17 4 12"></polyline>
+                        </svg>
                         Submit Test
-
                     </button>
 
                 </div>
@@ -377,7 +374,7 @@
 
     <script src="timer.js?v=20261120-v4"></script>
 
-    <script src="exam.js?v=20261120-v2"></script>
+    <script src="exam.js?v=20261120-v3"></script>
 
 
 </body>

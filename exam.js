@@ -1791,6 +1791,14 @@ if (totalNumberEl) {
             );
         }
 
+        const closeSubmitBtn = document.getElementById("closeSubmitModal");
+        if (closeSubmitBtn) {
+            closeSubmitBtn.addEventListener(
+                "click",
+                closeSubmitModal
+            );
+        }
+
 
         /* ---------- Confirm Submit ---------- */
 
