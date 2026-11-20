@@ -30,6 +30,9 @@ function updateInstructionsUI(details) {
     const headerExamName = document.getElementById("headerExamName");
     if (headerExamName) headerExamName.textContent = examTitle;
 
+    const headerExamNameMobile = document.getElementById("headerExamNameMobile");
+    if (headerExamNameMobile) headerExamNameMobile.textContent = examTitle;
+
     const subjectDisplay = document.getElementById("subjectDisplay");
     if (subjectDisplay) subjectDisplay.textContent = examSubject;
 
@@ -84,6 +87,9 @@ if (testDetails) {
 
     const headEl = document.getElementById("headerExamName");
     if (headEl) headEl.textContent = candidateData.exam || "Mock Test";
+
+    const headMobileEl = document.getElementById("headerExamNameMobile");
+    if (headMobileEl) headMobileEl.textContent = candidateData.exam || "Mock Test";
 }
 
 /* LIVE SERVER SYNC: FETCH LATEST TEST SPECS FROM DATABASE */
