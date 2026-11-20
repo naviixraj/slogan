@@ -5700,6 +5700,18 @@ input:focus-visible,
   font-weight: 700;
   letter-spacing: 0.6px;
   text-transform: uppercase;
+  line-height: 1.2;
+}
+
+.nta-exam-header .exam-brand-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-width: 0;
+}
+
+.nta-exam-header .exam-title-mobile {
+  display: none;
 }
 
 .nta-exam-header .exam-header-title {
@@ -6485,21 +6497,81 @@ input:focus-visible,
   }
 
   .exam-header.nta-exam-header {
-    height: auto;
-    min-height: 54px;
-    padding: 10px 14px;
-    flex-wrap: wrap;
-    gap: 10px;
+    height: 58px;
+    min-height: 58px;
+    padding: 6px 14px;
+    display: flex !important;
+    flex-direction: row !important;
+    flex-wrap: nowrap !important;
+    align-items: center;
     justify-content: space-between;
+    gap: 8px;
   }
 
+  .nta-exam-header .exam-header-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    flex: 1;
+  }
+
+  .nta-exam-header .exam-logo {
+    width: 36px;
+    height: 36px;
+    min-width: 36px;
+  }
+
+  .nta-exam-header .exam-brand-text {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-width: 0;
+    line-height: 1.15;
+  }
+
+  .nta-exam-header .exam-brand-title {
+    font-size: 13.5px;
+    letter-spacing: 0.3px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.2;
+  }
+
+  /* Question name displayed directly under SLOGON ACADEMY in small font */
+  .nta-exam-header .exam-title-mobile {
+    display: block !important;
+    font-size: 11px;
+    font-weight: 500;
+    color: #FAF4E6 !important;
+    letter-spacing: 0.2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: min(52vw, 220px);
+    line-height: 1.25;
+    margin-top: 1px;
+    opacity: 0.95;
+  }
+
+  /* Hide center title on mobile so it doesn't push to the right or wrap */
   .nta-exam-header .exam-header-title {
-    order: 3;
-    width: 100%;
-    text-align: left;
-    font-size: 13px;
-    padding: 4px 0 0 0;
-    border-top: 1px solid rgba(255, 255, 255, 0.15);
+    display: none !important;
+  }
+
+  .nta-exam-header .exam-header-timer {
+    flex-shrink: 0;
+    margin-left: 6px;
+  }
+
+  .nta-exam-header .timer-pill-badge {
+    padding: 4px 10px;
+    gap: 6px;
+  }
+
+  .nta-exam-header #timer {
+    font-size: 15px;
   }
 
   .nta-action-toolbar {

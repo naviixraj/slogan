@@ -171,6 +171,15 @@ if (window.location.hostname === "127.0.0.1" || window.location.hostname === "lo
     candidateRegisterEl = document.getElementById("examRegisterNumber");
     candidateSubjectEl = document.getElementById("examSubject");
 
+    // Sync Exam Title across Desktop & Mobile headers immediately
+    const savedExamTitle = localStorage.getItem("currentExamTitle");
+    if (savedExamTitle) {
+        const dtTitleEl = document.getElementById("examTitle");
+        const mbTitleEl = document.getElementById("examTitleMobile");
+        if (dtTitleEl) dtTitleEl.textContent = savedExamTitle;
+        if (mbTitleEl) mbTitleEl.textContent = savedExamTitle;
+    }
+
     // Question details
     questionCounterEl = null;
     questionNumberEl = document.getElementById("questionNumber");
@@ -274,8 +283,10 @@ async function loadCandidateInfo() {
                 const currentTitle = localStorage.getItem("currentExamTitle");
                 const currentSubject = localStorage.getItem("currentExamSubject");
                 const examTitleEl = document.getElementById("examTitle");
-                if (examTitleEl && currentTitle) {
-                    examTitleEl.textContent = currentTitle;
+                const examTitleMobileEl = document.getElementById("examTitleMobile");
+                if (currentTitle) {
+                    if (examTitleEl) examTitleEl.textContent = currentTitle;
+                    if (examTitleMobileEl) examTitleMobileEl.textContent = currentTitle;
                 }
                 if (candidateSubjectEl) {
                     candidateSubjectEl.textContent =
@@ -333,8 +344,10 @@ async function loadCandidateInfo() {
         const currentSubject = localStorage.getItem("currentExamSubject");
 
         const examTitleEl = document.getElementById("examTitle");
-        if (examTitleEl && currentTitle) {
-            examTitleEl.textContent = currentTitle;
+        const examTitleMobileEl = document.getElementById("examTitleMobile");
+        if (currentTitle) {
+            if (examTitleEl) examTitleEl.textContent = currentTitle;
+            if (examTitleMobileEl) examTitleMobileEl.textContent = currentTitle;
         }
 
         if (candidateSubjectEl) {
