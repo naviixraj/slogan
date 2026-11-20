@@ -6045,49 +6045,59 @@ input:focus-visible,
   font-weight: 600;
 }
 
-/* Mobile Notch and Text Switching Helpers (Desktop defaults) */
+/* Helper classes for Desktop vs Mobile icons and text */
+.desktop-only-icon {
+  display: inline-block !important;
+}
+
+.mobile-only-icon {
+  display: none !important;
+}
+
+.btn-text-desktop {
+  display: inline !important;
+}
+
+.btn-text-mobile {
+  display: none !important;
+}
+
 .mobile-toolbar-notch {
   display: none !important;
 }
 
-.btn-text-mobile {
-  display: none;
-}
-
-.btn-text-full {
-  display: inline;
-}
-
 /* ================= Bottom Action Toolbar ================= */
 .nta-action-toolbar {
-  padding: 16px 24px;
+  padding: 12px 18px;
   border-top: 1.5px solid rgba(212, 175, 55, 0.28);
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 12px;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  flex-wrap: nowrap !important;
+  gap: 10px;
   background: linear-gradient(180deg, #FFFFFF 0%, #FDFBF7 100%);
   border-radius: 0 0 16px 16px;
   box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.02);
 }
 
 .nta-toolbar-left {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  flex-shrink: 0 !important;
 }
 
 .nta-toolbar-right {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  flex-shrink: 0 !important;
 }
 
 /* Standard Button Base */
 .nta-btn {
-  min-height: 42px;
-  padding: 10px 20px;
+  min-height: 40px;
+  padding: 8px 14px;
   border-radius: 10px;
   font-family: "Poppins", sans-serif;
   font-size: 13px;
@@ -6185,7 +6195,7 @@ input:focus-visible,
   background: linear-gradient(135deg, #6B1D2F 0%, #4A101D 100%) !important;
   color: #FFFFFF !important;
   border: 1px solid #581423 !important;
-  padding: 10px 24px;
+  padding: 8px 16px;
   box-shadow: 0 4px 14px rgba(107, 29, 47, 0.35);
 }
 
@@ -6205,7 +6215,7 @@ input:focus-visible,
   background: linear-gradient(135deg, #10B981 0%, #059669 100%) !important;
   color: #FFFFFF !important;
   border: 1px solid #059669 !important;
-  padding: 10px 24px;
+  padding: 8px 16px;
   box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
 }
 
@@ -6703,8 +6713,16 @@ input:focus-visible,
     display: contents !important;
   }
 
-  /* Responsive button label switching */
-  .btn-text-full {
+  /* Helper classes switching on mobile */
+  .desktop-only-icon {
+    display: none !important;
+  }
+
+  .mobile-only-icon {
+    display: block !important;
+  }
+
+  .btn-text-desktop {
     display: none !important;
   }
 

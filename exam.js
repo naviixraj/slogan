@@ -1133,22 +1133,18 @@ if (totalNumberEl) {
         const status =
             questionStatus[questionId];
 
-        const bookmarkSvg = '<svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path></svg>';
+        const isReview = (status === "review" || status === "answeredReview");
+        const desktopSpan = reviewButtonEl.querySelector(".btn-text-desktop");
+        const mobileSpan = reviewButtonEl.querySelector(".btn-text-mobile");
 
-        if (
-            status === "review" ||
-            status === "answeredReview"
-        ) {
-
-            reviewButtonEl.innerHTML =
-                bookmarkSvg +
-                '<span class="btn-text-full">Remove Review</span><span class="btn-text-mobile">Remove<br>Review</span>';
-
+        if (desktopSpan) {
+            desktopSpan.textContent = isReview ? "Remove Review" : "Mark for Review & Next";
         } else {
+            reviewButtonEl.textContent = isReview ? "Remove Review" : "Mark for Review & Next";
+        }
 
-            reviewButtonEl.innerHTML =
-                bookmarkSvg +
-                '<span class="btn-text-full">Mark for Review &amp; Next</span><span class="btn-text-mobile">Mark<br>for Review</span>';
+        if (mobileSpan) {
+            mobileSpan.innerHTML = isReview ? "Remove<br>Review" : "Mark<br>for Review";
         }
     }
 
@@ -1248,8 +1244,10 @@ if (totalNumberEl) {
 
         if (saveNextButtonEl) {
 
-            saveNextButtonEl.innerHTML =
-                '<svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg><span>Save &amp; Next</span>';
+            const saveSpan = saveNextButtonEl.querySelector("span");
+            if (saveSpan) {
+                saveSpan.textContent = "Save & Next";
+            }
         }
     }
 
