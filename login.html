@@ -4,8 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SLOGON ACADEMY | Candidate Login</title>
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="style.css">
+<link rel="icon" type="image/png" href="Logoicon.png?v=2026.2">
+    <link rel="stylesheet" href="style.css?v=20261120-v9">
     <style>
         * {
             box-sizing: border-box;
@@ -42,29 +42,40 @@
 
         .brand {
             text-align: center;
-            margin-bottom: 30px;
+            margin-bottom: 24px;
+        }
+
+        .login-brand-logo {
+            max-width: 220px;
+            width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto 12px;
+            object-fit: contain;
         }
 
         .brand h1 {
             margin: 0;
-            color: #176B52;
-            font-size: 27px;
-            letter-spacing: 1px;
+            color: #6B1D2F;
+            font-size: 24px;
+            letter-spacing: 0.8px;
+            font-weight: 700;
         }
 
         .brand p {
-            margin-top: 9px;
-            color: #65736B;
+            margin-top: 6px;
+            color: #6E6264;
             font-size: 13px;
         }
 
         h2 {
             margin-bottom: 8px;
-            font-size: 23px;
+            font-size: 22px;
+            color: #251417;
         }
 
         .subtitle {
-            color: #738078;
+            color: #6E6264;
             font-size: 14px;
             margin-bottom: 25px;
         }
@@ -74,20 +85,23 @@
             margin: 17px 0 8px;
             font-weight: 600;
             font-size: 14px;
+            color: #251417;
         }
 
         input {
             width: 100%;
             padding: 13px;
-            border: 1px solid #D6DED8;
+            border: 1px solid #D8D2C5;
             border-radius: 8px;
             font-size: 15px;
             outline: none;
+            background: #FFFFFF;
+            transition: all 0.2s ease;
         }
 
         input:focus {
-            border-color: #176B52;
-            box-shadow: 0 0 0 3px rgba(23,107,82,0.10);
+            border-color: #6B1D2F;
+            box-shadow: 0 0 0 3px rgba(107, 29, 47, 0.12);
         }
 
         .password-wrapper {
@@ -123,12 +137,12 @@
         }
 
         .toggle-password-btn:hover {
-            color: #176B52 !important;
-            background: rgba(23, 107, 82, 0.08) !important;
+            color: #6B1D2F !important;
+            background: rgba(107, 29, 47, 0.08) !important;
         }
 
         .toggle-password-btn:focus-visible {
-            outline: 2px solid #176B52;
+            outline: 2px solid #6B1D2F;
             outline-offset: 1px;
         }
 
@@ -136,22 +150,32 @@
             width: 100%;
             margin-top: 25px;
             padding: 14px;
-            background: #176B52;
-            color: white;
-            border: none;
+            background: linear-gradient(135deg, #7A1E24 0%, #561524 100%);
+            color: #FFFFFF;
+            border: 1px solid #6B1D2F;
             border-radius: 8px;
             font-size: 16px;
             font-weight: 600;
             cursor: pointer;
+            box-shadow: 0 4px 14px rgba(107, 29, 47, 0.28);
+            transition: all 0.2s ease;
         }
 
         button:hover {
-            background: #11563F;
+            background: linear-gradient(135deg, #8B242B 0%, #631829 100%);
+            box-shadow: 0 6px 18px rgba(107, 29, 47, 0.38);
+            transform: translateY(-1px);
+        }
+
+        button:active {
+            transform: translateY(0);
         }
 
         button:disabled {
             opacity: 0.65;
             cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
         }
 
         #message {
@@ -206,7 +230,7 @@
     <main class="login-card">
 
         <header class="brand">
-            <h1>SLOGON ACADEMY</h1>
+            <img src="slogon-logo-full.png?v=2026.2" alt="SLOGON ACADEMY" class="login-brand-logo">
         </header>
 
         <h2>Candidate Login</h2>

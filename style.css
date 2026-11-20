@@ -11,21 +11,37 @@
 
 :root {
 
-    /* Brand Colors */
+    /* Official Brand Colors (Synchronized with Official Logo) */
 
-    --navy-blue: #0B1F3A;
+    --primary-maroon: #6B1D2F;
+
+    --primary-maroon-hover: #561524;
+
+    --primary-maroon-light: #FBF4F5;
+
+    --brand-gold: #C88A2C;
+
+    --brand-gold-hover: #B27822;
+
+    --brand-gold-light: #FFF8E7;
+
+    --brand-green: #265C42;
+
+    --navy-blue: #6B1D2F;
 
     --gold: #D4AF37;
 
     --white: #FFFFFF;
 
-    --light-gray: #F5F6F8;
+    --bg-ivory: #FAF7EE;
 
-    --text-dark: #1F2937;
+    --light-gray: #FAF7EE;
 
-    --text-gray: #6B7280;
+    --text-dark: #251417;
 
-    --border-color: #E5E7EB;
+    --text-gray: #6E6264;
+
+    --border-color: #E8E0D2;
 
     --danger: #DC2626;
 
