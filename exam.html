@@ -23,7 +23,7 @@
 
     <!-- Main CSS -->
     <link rel="stylesheet"
-        href="style.css?v=20261120-v6">
+        href="style.css?v=20261120-v7">
 
 </head>
 
@@ -136,26 +136,42 @@
                     <div class="nta-action-toolbar">
 
                         <div class="nta-toolbar-left">
-                            <button type="button" class="nta-btn nta-btn-review" id="reviewButton">
-                                Mark for Review &amp; Next
+                            <button type="button" class="nta-btn nta-btn-review" id="reviewButton" title="Mark this question for review and continue">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"></path>
+                                </svg>
+                                <span>Mark for Review &amp; Next</span>
                             </button>
 
-                            <button type="button" class="nta-btn nta-btn-clear" id="clearButton">
-                                Clear Response
+                            <button type="button" class="nta-btn nta-btn-clear" id="clearButton" title="Deselect currently chosen answer">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 12a9 9 0 1 0 9-9 9.75 9.75 0 0 0-6.74 2.74L3 8"></path>
+                                    <path d="M3 3v5h5"></path>
+                                </svg>
+                                <span>Clear Response</span>
                             </button>
                         </div>
 
                         <div class="nta-toolbar-right">
-                            <button type="button" class="nta-btn nta-btn-prev" id="previousButton">
-                                Previous
+                            <button type="button" class="nta-btn nta-btn-prev" id="previousButton" title="Go to previous question">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="15 18 9 12 15 6"></polyline>
+                                </svg>
+                                <span>Previous</span>
                             </button>
 
-                            <button type="button" class="nta-btn nta-btn-savenext" id="saveNextButton">
-                                Save &amp; Next
+                            <button type="button" class="nta-btn nta-btn-savenext" id="saveNextButton" title="Save answer and proceed to next question">
+                                <span>Save &amp; Next</span>
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
                             </button>
 
-                            <button type="button" class="nta-btn nta-btn-submit" id="submitButton">
-                                Submit
+                            <button type="button" class="nta-btn nta-btn-submit" id="submitButton" title="Submit the complete examination">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="20 6 9 17 4 12"></polyline>
+                                </svg>
+                                <span>Submit</span>
                             </button>
                         </div>
 

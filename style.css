@@ -5922,15 +5922,18 @@ input:focus-visible,
 }
 
 /* ================= Bottom Action Toolbar ================= */
+/* ================= Bottom Action Toolbar ================= */
 .nta-action-toolbar {
-  padding: 14px 24px;
-  border-top: 1.5px solid #EAE6DC;
+  padding: 16px 24px;
+  border-top: 1.5px solid rgba(212, 175, 55, 0.28);
   display: flex;
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 10px;
-  background: #FAFAFA;
+  gap: 12px;
+  background: linear-gradient(180deg, #FFFFFF 0%, #FDFBF7 100%);
+  border-radius: 0 0 16px 16px;
+  box-shadow: 0 -4px 16px rgba(0, 0, 0, 0.02);
 }
 
 .nta-toolbar-left {
@@ -5947,94 +5950,138 @@ input:focus-visible,
 
 /* Standard Button Base */
 .nta-btn {
-  min-height: 38px;
-  padding: 8px 18px;
-  border-radius: 6px;
+  min-height: 42px;
+  padding: 10px 20px;
+  border-radius: 10px;
   font-family: "Poppins", sans-serif;
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.15s ease;
+  transition: all 0.18s cubic-bezier(0.16, 1, 0.3, 1);
   border: 1px solid transparent;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  gap: 7px;
   white-space: nowrap;
   box-sizing: border-box;
+  user-select: none;
+}
+
+.nta-btn svg {
+  display: block;
+  flex-shrink: 0;
+  transition: transform 0.18s ease;
 }
 
 .nta-btn:active {
-  transform: translateY(1px);
+  transform: translateY(1px) scale(0.98);
 }
 
 /* 1. Mark for Review & Next — Amber / Gold */
 #reviewButton.nta-btn-review {
-  background-color: #D97706 !important;
+  background: linear-gradient(135deg, #D97706 0%, #B45309 100%) !important;
   color: #FFFFFF !important;
-  border-color: #D97706 !important;
+  border-color: #B45309 !important;
+  box-shadow: 0 4px 12px rgba(217, 119, 6, 0.28);
 }
 
 #reviewButton.nta-btn-review:hover {
-  background-color: #B45309 !important;
-  border-color: #B45309 !important;
+  background: linear-gradient(135deg, #F59E0B 0%, #D97706 100%) !important;
+  border-color: #D97706 !important;
+  box-shadow: 0 6px 18px rgba(217, 119, 6, 0.38);
+  transform: translateY(-1.5px);
 }
 
-/* 2. Clear Response — White with gray border */
+#reviewButton.nta-btn-review:hover svg {
+  transform: scale(1.1);
+}
+
+/* 2. Clear Response — Clean Soft Card Button */
 #clearButton.nta-btn-clear {
   background-color: #FFFFFF !important;
-  color: #374151 !important;
-  border-color: #D1D5DB !important;
+  color: #475569 !important;
+  border: 1.5px solid #CBD5E1 !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
 }
 
 #clearButton.nta-btn-clear:hover {
-  background-color: #F3F4F6 !important;
-  border-color: #9CA3AF !important;
+  background-color: #FEF2F2 !important;
+  color: #DC2626 !important;
+  border-color: #FCA5A5 !important;
+  box-shadow: 0 4px 12px rgba(220, 38, 38, 0.15);
+  transform: translateY(-1.5px);
 }
 
-/* 3. Previous — White with gray border */
+#clearButton.nta-btn-clear:hover svg {
+  transform: rotate(-30deg);
+}
+
+/* 3. Previous — Crisp Navigation Pill */
 #previousButton.nta-btn-prev {
   background-color: #FFFFFF !important;
-  color: #374151 !important;
-  border-color: #D1D5DB !important;
+  color: #475569 !important;
+  border: 1.5px solid #CBD5E1 !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
 }
 
 #previousButton.nta-btn-prev:hover:not(:disabled) {
-  background-color: #F3F4F6 !important;
-  border-color: #9CA3AF !important;
+  background-color: #F1F5F9 !important;
+  color: #0F172A !important;
+  border-color: #94A3B8 !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  transform: translateY(-1.5px);
+}
+
+#previousButton.nta-btn-prev:hover:not(:disabled) svg {
+  transform: translateX(-2px);
 }
 
 #previousButton.nta-btn-prev:disabled {
-  opacity: 0.45;
+  opacity: 0.42;
   cursor: not-allowed;
-  border-color: #E5E7EB !important;
+  border-color: #E2E8F0 !important;
+  box-shadow: none;
 }
 
-/* 4. Save & Next — Deep Maroon */
+/* 4. Save & Next — Deep Maroon (Hero Action) */
 #saveNextButton.nta-btn-savenext {
-  background-color: #6B1D2F !important;
+  background: linear-gradient(135deg, #6B1D2F 0%, #4A101D 100%) !important;
   color: #FFFFFF !important;
-  border-color: #6B1D2F !important;
-  padding: 8px 22px;
+  border: 1px solid #581423 !important;
+  padding: 10px 24px;
+  box-shadow: 0 4px 14px rgba(107, 29, 47, 0.35);
 }
 
 #saveNextButton.nta-btn-savenext:hover {
-  background-color: #551624 !important;
-  border-color: #551624 !important;
-  box-shadow: 0 2px 6px rgba(107, 29, 47, 0.25);
+  background: linear-gradient(135deg, #7D2237 0%, #581423 100%) !important;
+  border-color: #7D2237 !important;
+  box-shadow: 0 6px 20px rgba(107, 29, 47, 0.48);
+  transform: translateY(-1.5px);
+}
+
+#saveNextButton.nta-btn-savenext:hover svg {
+  transform: translateX(2px);
 }
 
 /* 5. Submit — Emerald Green */
 #submitButton.nta-btn-submit {
-  background-color: #10B981 !important;
+  background: linear-gradient(135deg, #10B981 0%, #059669 100%) !important;
   color: #FFFFFF !important;
-  border-color: #10B981 !important;
-  padding: 8px 22px;
+  border: 1px solid #059669 !important;
+  padding: 10px 24px;
+  box-shadow: 0 4px 14px rgba(16, 185, 129, 0.35);
 }
 
 #submitButton.nta-btn-submit:hover {
-  background-color: #059669 !important;
-  border-color: #059669 !important;
-  box-shadow: 0 2px 6px rgba(16, 185, 129, 0.25);
+  background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
+  border-color: #047857 !important;
+  box-shadow: 0 6px 20px rgba(16, 185, 129, 0.48);
+  transform: translateY(-1.5px);
+}
+
+#submitButton.nta-btn-submit:hover svg {
+  transform: scale(1.1);
 }
 
 /* ================= Right Column: Question Palette (STABLE / LOCKED ON SCROLL) ================= */
@@ -6451,17 +6498,29 @@ input:focus-visible,
 
   .nta-action-toolbar {
     padding: 12px 14px;
+    gap: 10px;
   }
 
   .nta-toolbar-left,
   .nta-toolbar-right {
-    flex-direction: column;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
     width: 100%;
     gap: 8px;
   }
 
   .nta-btn {
-    width: 100%;
+    flex: 1;
+    min-height: 40px;
+    padding: 8px 6px;
+    font-size: 11.5px;
+    gap: 5px;
+  }
+
+  .nta-btn svg {
+    width: 13px;
+    height: 13px;
   }
 
   .nta-palette-card {
