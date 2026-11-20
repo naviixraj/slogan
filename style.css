@@ -734,7 +734,7 @@ select:focus-visible {
 
     min-height: 76px;
 
-    background: #0B1F3A;
+    background: #6B1D2F;
 
     color: #FFFFFF;
 
@@ -747,6 +747,8 @@ select:focus-visible {
     padding: 0 5%;
 
     border-bottom: 3px solid #D4AF37;
+
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 
 }
 
@@ -785,6 +787,12 @@ select:focus-visible {
     letter-spacing: 1px;
 
     margin-bottom: 2px;
+
+    color: #D4AF37;
+
+    font-family: "Poppins", sans-serif;
+
+    font-weight: 700;
 
 }
 
@@ -851,7 +859,7 @@ select:focus-visible {
 
     border-radius: 10px;
 
-    background: #0B1F3A;
+    background: #6B1D2F;
 
     color: #D4AF37;
 
@@ -865,12 +873,14 @@ select:focus-visible {
 
     font-weight: 700;
 
+    box-shadow: 0 4px 12px rgba(107, 29, 47, 0.2);
+
 }
 
 
 .page-heading h2 {
 
-    color: #0B1F3A;
+    color: #6B1D2F;
 
     font-size: 24px;
 
@@ -3645,9 +3655,10 @@ select:focus-visible {
 ========================================================= */
 
 .result-header {
-    background: #0B1F3A;
+    background: #6B1D2F;
     color: #FFFFFF;
     border-bottom: 3px solid #D4AF37;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
 }
 
 
@@ -5397,7 +5408,7 @@ input:focus-visible,
 }
 
 .neat-match-header {
-  background: #0B1F3A;
+  background: #6B1D2F;
   color: #FFFFFF;
   padding: 10px 16px;
   font-size: 13.5px;
