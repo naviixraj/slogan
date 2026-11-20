@@ -169,7 +169,9 @@ function getExamDurationMs() {
         /*
         -----------------------------------------------------
         CASE 1: Page was refreshed mid-exam for same candidate
-        Restore the existing countdown safely
+        Put timer in STANDBY display: show the remaining time
+        statically in the timer badge without counting down yet.
+        Countdown resumes ONLY when question is rendered on screen!
         -----------------------------------------------------
         */
 
@@ -180,7 +182,11 @@ function getExamDurationMs() {
         ) {
 
             restoreTimer();
-            startTimer();
+            if (endTime) {
+                const remainingSeconds = Math.max(0, Math.floor((endTime - Date.now()) / 1000));
+                updateDisplay(remainingSeconds);
+            }
+            console.log("SLOGON TIMER: Standby mode on refresh. Waiting for questions to render before resuming countdown...");
             return;
         }
 
@@ -296,13 +302,25 @@ function getExamDurationMs() {
         timerElement = document.getElementById("timer") || timerElement;
         const candidateKey = getCandidateKey();
 
-        startNewTimer(candidateKey);
-        localStorage.setItem(STORAGE_KEYS.liveStarted, "true");
+        const savedCandidateKey = localStorage.getItem(STORAGE_KEYS.candidateKey);
+        const isLiveStarted = localStorage.getItem(STORAGE_KEYS.liveStarted) === "true";
+        const savedEndTime = localStorage.getItem(STORAGE_KEYS.endTime);
+
+        if (
+            savedCandidateKey === candidateKey &&
+            isLiveStarted &&
+            savedEndTime
+        ) {
+            restoreTimer();
+        } else {
+            startNewTimer(candidateKey);
+            localStorage.setItem(STORAGE_KEYS.liveStarted, "true");
+        }
 
         startTimer();
 
         console.log(
-            `SLOGON TIMER: Question paper rendered. Timer countdown officially started for ${getExamDurationMinutes()} minutes.`
+            `SLOGON TIMER: Question paper rendered. Timer countdown officially active.`
         );
     }
 

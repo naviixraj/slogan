@@ -118,7 +118,8 @@ if (window.location.hostname === "127.0.0.1" || window.location.hostname === "lo
 
         cacheDOM();
 
-        await loadCandidateInfo();
+        // Start candidate authentication verification
+        const candidateAuthPromise = loadCandidateInfo();
 
         try {
 
@@ -142,6 +143,9 @@ if (window.location.hostname === "127.0.0.1" || window.location.hostname === "lo
             }
 
             initializeExam();
+
+            // Await auth confirmation in background
+            await candidateAuthPromise;
 
         } catch (error) {
 
@@ -254,6 +258,35 @@ function closeMobilePaletteDrawer() {
 ===================================================== */
 
 async function loadCandidateInfo() {
+
+    // 1. Instant local hydration (0ms UI display on refresh)
+    try {
+        const localCandidateData = localStorage.getItem("candidateInfo");
+        if (localCandidateData) {
+            const cachedCandidate = JSON.parse(localCandidateData);
+            if (cachedCandidate) {
+                if (candidateNameEl && cachedCandidate.name) {
+                    candidateNameEl.textContent = cachedCandidate.name;
+                }
+                if (candidateRegisterEl && (cachedCandidate.userId || cachedCandidate.registerNumber)) {
+                    candidateRegisterEl.textContent = cachedCandidate.userId || cachedCandidate.registerNumber;
+                }
+                const currentTitle = localStorage.getItem("currentExamTitle");
+                const currentSubject = localStorage.getItem("currentExamSubject");
+                const examTitleEl = document.getElementById("examTitle");
+                if (examTitleEl && currentTitle) {
+                    examTitleEl.textContent = currentTitle;
+                }
+                if (candidateSubjectEl) {
+                    candidateSubjectEl.textContent =
+                        currentSubject || cachedCandidate.subject || "General Paper";
+                }
+                window.slogonCandidate = cachedCandidate;
+            }
+        }
+    } catch (e) {
+        console.warn("Could not parse cached candidateInfo:", e);
+    }
 
     try {
 

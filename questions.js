@@ -32,10 +32,85 @@
 
 
     /* -----------------------------------------------------
+    function processAndStoreQuestions(result) {
+        if (!result || !result.success || !Array.isArray(result.questions)) {
+            throw new Error(
+                (result && result.message) || `Unable to load question set "${selectedTestId}".`
+            );
+        }
+
+        if (result.duration) {
+            localStorage.setItem("examDuration", String(result.duration * 60));
+        }
+        if (result.testTitle) {
+            localStorage.setItem("currentExamTitle", result.testTitle);
+        }
+        if (result.subject) {
+            localStorage.setItem("currentExamSubject", result.subject);
+        }
+
+        const questions = result.questions;
+
+        // Normalize and guarantee unique sequential 1-based IDs and numbers
+        questions.forEach((q, idx) => {
+            q.id = idx + 1;
+            q.number = idx + 1;
+        });
+
+        if (!Array.isArray(questions)) {
+            throw new Error("Question data must be a JSON array.");
+        }
+
+        if (questions.length === 0) {
+            throw new Error("questions.json contains no questions.");
+        }
+
+        const validationResult = validateQuestions(questions);
+        if (!validationResult.valid) {
+            throw new Error(validationResult.message);
+        }
+
+        questions.sort((a, b) => (Number(a.number || a.id) || 0) - (Number(b.number || b.id) || 0));
+
+        window.examQuestions = questions;
+        window.questionsLoaded = true;
+
+        console.log(
+            `SLOGON ACADEMY: ${questions.length} questions loaded successfully.`
+        );
+
+        window.dispatchEvent(
+            new CustomEvent("questionsLoaded", {
+                detail: {
+                    questions: questions,
+                    totalQuestions: questions.length
+                }
+            })
+        );
+
+        return questions;
+    }
+
+    /* -----------------------------------------------------
        LOAD QUESTIONS
        ----------------------------------------------------- */
 
     async function loadQuestions() {
+        const CACHE_KEY = `slogon_cached_questions_${selectedTestId}`;
+
+        // 1. Instant load from sessionStorage cache (0ms delay on refresh)
+        try {
+            const cachedRaw = sessionStorage.getItem(CACHE_KEY);
+            if (cachedRaw) {
+                const cachedResult = JSON.parse(cachedRaw);
+                if (cachedResult && cachedResult.success && Array.isArray(cachedResult.questions) && cachedResult.questions.length > 0) {
+                    console.log(`SLOGON ACADEMY: Instant load from sessionStorage cache for ${selectedTestId}.`);
+                    return processAndStoreQuestions(cachedResult);
+                }
+            }
+        } catch (cacheErr) {
+            console.warn("SLOGON ACADEMY: Question cache read error:", cacheErr);
+        }
 
         try {
 
@@ -46,132 +121,22 @@
                 credentials: "same-origin"
             });
 
-
-            /* ---------------------------------------------
-               CHECK HTTP RESPONSE
-               --------------------------------------------- */
-
             if (!response.ok) {
-
                 throw new Error(
                     `Unable to load question set "${selectedTestId}". HTTP Status: ${response.status}`
                 );
-
             }
-
-
-            /* ---------------------------------------------
-               CONVERT JSON
-               --------------------------------------------- */
 
             const result = await response.json();
 
-            if (!result.success || !Array.isArray(result.questions)) {
-                throw new Error(
-                    result.message || `Unable to load question set "${selectedTestId}".`
-                );
+            // Save in sessionStorage cache for instant loading on page refresh
+            try {
+                sessionStorage.setItem(CACHE_KEY, JSON.stringify(result));
+            } catch (storageErr) {
+                console.warn("SLOGON ACADEMY: Could not store questions in sessionStorage:", storageErr);
             }
 
-            if (result.duration) {
-                localStorage.setItem("examDuration", String(result.duration * 60));
-            }
-            if (result.testTitle) {
-                localStorage.setItem("currentExamTitle", result.testTitle);
-            }
-            if (result.subject) {
-                localStorage.setItem("currentExamSubject", result.subject);
-            }
-
-            const questions = result.questions;
-
-            // Normalize and guarantee unique sequential 1-based IDs and numbers
-            questions.forEach((q, idx) => {
-                q.id = idx + 1;
-                q.number = idx + 1;
-            });
-
-
-            /* ---------------------------------------------
-               CHECK WHETHER DATA IS ARRAY
-               --------------------------------------------- */
-
-            if (!Array.isArray(questions)) {
-
-                throw new Error(
-                    "Question data must be a JSON array."
-                );
-
-            }
-
-
-            /* ---------------------------------------------
-               CHECK EMPTY QUESTION FILE
-               --------------------------------------------- */
-
-            if (questions.length === 0) {
-
-                throw new Error(
-                    "questions.json contains no questions."
-                );
-
-            }
-
-
-            /* ---------------------------------------------
-               VALIDATE QUESTION DATA
-               --------------------------------------------- */
-
-            const validationResult = validateQuestions(questions);
-
-
-            if (!validationResult.valid) {
-
-                throw new Error(validationResult.message);
-
-            }
-
-
-            /* ---------------------------------------------
-               STORE QUESTIONS (Strictly Numerical Order)
-               --------------------------------------------- */
-
-            questions.sort((a, b) => (Number(a.number || a.id) || 0) - (Number(b.number || b.id) || 0));
-
-            window.examQuestions = questions;
-
-            window.questionsLoaded = true;
-
-
-            /* ---------------------------------------------
-               DISPLAY SUCCESS INFORMATION
-               --------------------------------------------- */
-
-            console.log(
-                `SLOGON ACADEMY: ${questions.length} questions loaded successfully.`
-            );
-
-
-            console.log(
-                "Question Data:",
-                window.examQuestions
-            );
-
-
-            /* ---------------------------------------------
-               SEND EVENT TO exam.js
-               --------------------------------------------- */
-
-            window.dispatchEvent(
-                new CustomEvent("questionsLoaded", {
-                    detail: {
-                        questions: questions,
-                        totalQuestions: questions.length
-                    }
-                })
-            );
-
-
-            return questions;
+            return processAndStoreQuestions(result);
 
         } catch (error) {
 
