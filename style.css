@@ -1581,9 +1581,11 @@ select:focus-visible {
 
 .instructions-footer {
 
-    background: #0B1F3A;
+    background: #6B1D2F;
 
-    color: rgba(255,255,255,0.7);
+    border-top: 1px solid rgba(212, 175, 55, 0.35);
+
+    color: #FCEEE9;
 
     text-align: center;
 
@@ -3074,9 +3076,11 @@ select:focus-visible {
 
     padding: 0 24px;
 
-    background: #0B1F3A;
+    background: #6B1D2F;
 
-    color: #AEB9C8;
+    border-top: 1px solid rgba(212, 175, 55, 0.35);
+
+    color: #FCEEE9;
 
     display: flex;
 
@@ -4263,7 +4267,9 @@ select:focus-visible {
 
     gap: 20px;
 
-    background: #0B1F3A;
+    background: #6B1D2F;
+
+    border-top: 1px solid rgba(212, 175, 55, 0.35);
 
     color: #FFFFFF;
 }
