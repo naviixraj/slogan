@@ -23,7 +23,7 @@
 
     <!-- Main CSS -->
     <link rel="stylesheet"
-        href="style.css?v=20261119-v2">
+        href="style.css?v=20261120-v1">
 
 </head>
 
@@ -100,7 +100,15 @@
                     <!-- Question Header: QUESTION 41 OF 50 -->
                     <div class="nta-question-header">
                         <div class="nta-question-tracker">
-                            QUESTION <span id="currentQuestionNumber">1</span> OF <span id="totalQuestionNumber">50</span>
+                            <!-- Mobile Palette Drawer Trigger (Right-pointing chevron) -->
+                            <button type="button" class="mobile-palette-toggle" id="mobilePaletteToggle" aria-label="Open Question Palette" title="View Question Palette">
+                                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </button>
+                            <span class="nta-tracker-text">
+                                QUESTION <span id="currentQuestionNumber">1</span> OF <span id="totalQuestionNumber">50</span>
+                            </span>
                             <span id="questionNumber" style="display: none;">1</span>
                         </div>
                         <div class="question-type nta-type-badge">MCQ</div>
@@ -163,11 +171,24 @@
                  RIGHT COLUMN: QUESTION PALETTE
             ================================================== -->
 
-            <aside class="exam-sidebar nta-exam-sidebar">
+            <aside class="exam-sidebar nta-exam-sidebar" id="examSidebar">
 
                 <div class="palette-card nta-palette-card">
 
-                    <h3 class="nta-palette-title">
+                    <!-- Mobile Drawer Header with Left-Facing Arrow -->
+                    <div class="mobile-drawer-header">
+                        <button type="button" class="mobile-drawer-close" id="mobileDrawerClose" aria-label="Close Question Palette" title="Close Question Palette">
+                            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="15 18 9 12 15 6"></polyline>
+                            </svg>
+                        </button>
+                        <h3 class="mobile-drawer-title">
+                            Question Palette
+                        </h3>
+                    </div>
+
+                    <!-- Desktop Palette Title -->
+                    <h3 class="nta-palette-title desktop-palette-title">
                         Question Palette
                     </h3>
 
@@ -211,6 +232,9 @@
                 </div>
 
             </aside>
+
+            <!-- Mobile Off-Canvas Backdrop -->
+            <div class="mobile-palette-backdrop" id="mobilePaletteBackdrop"></div>
 
 
         </main>
@@ -353,7 +377,7 @@
 
     <script src="timer.js?v=20261119-v3"></script>
 
-    <script src="exam.js?v=20261119-v3"></script>
+    <script src="exam.js?v=20261120-v1"></script>
 
 
 </body>

@@ -95,6 +95,11 @@ if (window.location.hostname === "127.0.0.1" || window.location.hostname === "lo
     let modalContinueEl;
     let modalSubmitEl;
 
+    let mobilePaletteToggleEl;
+    let mobileDrawerCloseEl;
+    let mobilePaletteBackdropEl;
+    let examSidebarEl;
+
 
     /* =====================================================
        INITIALIZATION
@@ -196,6 +201,49 @@ if (window.location.hostname === "127.0.0.1" || window.location.hostname === "lo
     // These IDs must match exam.html
     modalContinueEl = document.getElementById("cancelSubmit");
     modalSubmitEl = document.getElementById("confirmSubmit");
+
+    // Mobile Question Palette Drawer controls
+    mobilePaletteToggleEl = document.getElementById("mobilePaletteToggle");
+    mobileDrawerCloseEl = document.getElementById("mobileDrawerClose");
+    mobilePaletteBackdropEl = document.getElementById("mobilePaletteBackdrop");
+    examSidebarEl = document.getElementById("examSidebar");
+}
+
+
+/* =====================================================
+   MOBILE PALETTE OFF-CANVAS DRAWER
+===================================================== */
+
+function openMobilePaletteDrawer() {
+    if (!examSidebarEl) {
+        examSidebarEl = document.getElementById("examSidebar");
+    }
+    if (examSidebarEl) {
+        examSidebarEl.classList.add("mobile-drawer-open");
+    }
+    if (!mobilePaletteBackdropEl) {
+        mobilePaletteBackdropEl = document.getElementById("mobilePaletteBackdrop");
+    }
+    if (mobilePaletteBackdropEl) {
+        mobilePaletteBackdropEl.classList.add("active");
+    }
+    document.body.classList.add("mobile-drawer-locked");
+}
+
+function closeMobilePaletteDrawer() {
+    if (!examSidebarEl) {
+        examSidebarEl = document.getElementById("examSidebar");
+    }
+    if (examSidebarEl) {
+        examSidebarEl.classList.remove("mobile-drawer-open");
+    }
+    if (!mobilePaletteBackdropEl) {
+        mobilePaletteBackdropEl = document.getElementById("mobilePaletteBackdrop");
+    }
+    if (mobilePaletteBackdropEl) {
+        mobilePaletteBackdropEl.classList.remove("active");
+    }
+    document.body.classList.remove("mobile-drawer-locked");
 }
 
 
@@ -1079,6 +1127,8 @@ if (totalNumberEl) {
         renderQuestion();
 
         scrollToQuestion();
+
+        closeMobilePaletteDrawer();
     }
 
 
@@ -1756,8 +1806,36 @@ if (totalNumberEl) {
 
                     closeSubmitModal();
                 }
+
+                if (event.key === "Escape") {
+                    closeMobilePaletteDrawer();
+                }
             }
         );
+
+
+        /* ---------- Mobile Palette Off-Canvas Drawer ---------- */
+
+        if (mobilePaletteToggleEl) {
+            mobilePaletteToggleEl.addEventListener(
+                "click",
+                openMobilePaletteDrawer
+            );
+        }
+
+        if (mobileDrawerCloseEl) {
+            mobileDrawerCloseEl.addEventListener(
+                "click",
+                closeMobilePaletteDrawer
+            );
+        }
+
+        if (mobilePaletteBackdropEl) {
+            mobilePaletteBackdropEl.addEventListener(
+                "click",
+                closeMobilePaletteDrawer
+            );
+        }
 
 
         /* ---------- Keyboard navigation ---------- */
