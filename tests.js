@@ -306,11 +306,6 @@ async function loadCandidate() {
             return;
         }
 
-        if (result.needsProfileSetup || (result.candidate && result.candidate.needsProfileSetup)) {
-            window.location.replace("login.html?completeProfile=1");
-            return;
-        }
-
         const name = result.candidate.name || "Student";
         const userId = result.candidate.userId || "";
         const role = result.candidate.role || "Student";

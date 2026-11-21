@@ -9,14 +9,6 @@ if (window.location.hostname === "127.0.0.1" || window.location.hostname === "lo
 const loginForm = document.getElementById("loginForm");
 const message = document.getElementById("message");
 const loginButton = document.getElementById("loginButton");
-const loginView = document.getElementById("loginView");
-const profileSetupView = document.getElementById("profileSetupView");
-const profileSetupForm = document.getElementById("profileSetupForm");
-const setupName = document.getElementById("setupName");
-const setupEmail = document.getElementById("setupEmail");
-const setupPhone = document.getElementById("setupPhone");
-const saveProfileButton = document.getElementById("saveProfileButton");
-const setupMessage = document.getElementById("setupMessage");
 
 /* PASSWORD VISIBILITY TOGGLE */
 const passwordInput = document.getElementById("password");
@@ -56,41 +48,6 @@ const allowedPages = [
 ];
 
 const redirectPage = "tests.html";
-
-function showProfileSetup(candidate = {}) {
-    if (loginView) loginView.style.display = "none";
-    if (profileSetupView) profileSetupView.style.display = "block";
-
-    if (candidate.name && !candidate.name.startsWith("Candidate ") && setupName) {
-        setupName.value = candidate.name;
-    }
-    if (candidate.email && !candidate.email.endsWith("@slogon.edu") && setupEmail) {
-        setupEmail.value = candidate.email;
-    }
-    if (candidate.phone && setupPhone) {
-        setupPhone.value = candidate.phone;
-    }
-
-    if (setupName && !setupName.value) {
-        setupName.focus();
-    } else if (setupEmail && !setupEmail.value) {
-        setupEmail.focus();
-    } else if (setupPhone) {
-        setupPhone.focus();
-    }
-}
-
-// Check if user was redirected back to complete their profile
-if (params.get("completeProfile") === "1") {
-    fetch("/api/me", { credentials: "same-origin" })
-        .then(r => r.json())
-        .then(data => {
-            if (data.success && data.needsProfileSetup) {
-                showProfileSetup(data.candidate);
-            }
-        })
-        .catch(err => console.log("Profile check skipped:", err));
-}
 
 loginForm.addEventListener("submit", async (event) => {
 
@@ -163,14 +120,6 @@ loginForm.addEventListener("submit", async (event) => {
             );
         }
 
-        /* CHECK IF FIRST-TIME PROFILE SETUP IS REQUIRED */
-        if (result.firstLogin === true || sessionData.needsProfileSetup === true) {
-            loginButton.disabled = false;
-            loginButton.textContent = "LOGIN";
-            showProfileSetup(result.candidate || sessionData.candidate);
-            return;
-        }
-
         /* REDIRECT BASED ON USER ROLE */
 
         const userRole = (sessionData.candidate && sessionData.candidate.role) || "Student";
@@ -201,95 +150,5 @@ loginForm.addEventListener("submit", async (event) => {
     }
 
 });
-
-/* SUBMIT PROFILE COMPLETION FORM */
-if (profileSetupForm) {
-    profileSetupForm.addEventListener("submit", async (e) => {
-        e.preventDefault();
-
-        const candidateName = setupName ? setupName.value.trim() : "";
-        const email = setupEmail ? setupEmail.value.trim() : "";
-        const phone = setupPhone ? setupPhone.value.trim() : "";
-
-        if (setupMessage) {
-            setupMessage.textContent = "";
-            setupMessage.style.color = "";
-        }
-
-        if (!candidateName || candidateName.length < 2) {
-            if (setupMessage) {
-                setupMessage.textContent = "Please enter your full name.";
-                setupMessage.style.color = "#DC2626";
-            }
-            if (setupName) setupName.focus();
-            return;
-        }
-
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!email || !emailRegex.test(email)) {
-            if (setupMessage) {
-                setupMessage.textContent = "Please enter a valid email address.";
-                setupMessage.style.color = "#DC2626";
-            }
-            if (setupEmail) setupEmail.focus();
-            return;
-        }
-
-        const cleanPhone = phone.replace(/[\s\-\(\)]/g, "");
-        if (!phone || cleanPhone.length < 10) {
-            if (setupMessage) {
-                setupMessage.textContent = "Please enter a valid 10-digit mobile number.";
-                setupMessage.style.color = "#DC2626";
-            }
-            if (setupPhone) setupPhone.focus();
-            return;
-        }
-
-        if (saveProfileButton) {
-            saveProfileButton.disabled = true;
-            saveProfileButton.textContent = "SAVING DETAILS...";
-        }
-
-        try {
-            const resp = await fetch("/api/complete-profile", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                credentials: "same-origin",
-                body: JSON.stringify({
-                    candidateName,
-                    email,
-                    phone
-                })
-            });
-
-            const data = await resp.json();
-
-            if (!resp.ok || !data.success) {
-                throw new Error(data.message || "Failed to save profile details.");
-            }
-
-            if (setupMessage) {
-                setupMessage.style.color = "#16A34A";
-                setupMessage.textContent = "✓ Details saved! Redirecting to your examination dashboard...";
-            }
-
-            const targetPage = requestedPage && requestedPage !== "admin.html" && allowedPages.includes(requestedPage) ? requestedPage : redirectPage;
-            setTimeout(() => {
-                window.location.replace(targetPage);
-            }, 600);
-
-        } catch (err) {
-            console.error("Save profile error:", err);
-            if (setupMessage) {
-                setupMessage.style.color = "#DC2626";
-                setupMessage.textContent = err.message || "Failed to update profile. Please try again.";
-            }
-            if (saveProfileButton) {
-                saveProfileButton.disabled = false;
-                saveProfileButton.textContent = "SAVE & ENTER EXAMINATION PORTAL";
-            }
-        }
-    });
-}
 
 

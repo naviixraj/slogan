@@ -31,54 +31,8 @@ if (isSupabase) {
 // CANDIDATES (ADMIN & STUDENTS)
 // -------------------------------------------------------------
 
-let supabaseColCheck = null;
-
-async function checkSupabaseCandidateCols() {
-    if (supabaseColCheck !== null) return supabaseColCheck;
-    if (!isSupabase) {
-        supabaseColCheck = { hasPhone: true, hasFirstLogin: true };
-        return supabaseColCheck;
-    }
-    try {
-        const { error } = await supabase.from("candidates").select("phone, first_login").limit(1);
-        if (error) {
-            supabaseColCheck = { hasPhone: false, hasFirstLogin: false };
-        } else {
-            supabaseColCheck = { hasPhone: true, hasFirstLogin: true };
-        }
-    } catch (e) {
-        supabaseColCheck = { hasPhone: false, hasFirstLogin: false };
-    }
-    return supabaseColCheck;
-}
-
-function normalizeCandidate(c) {
-    if (!c) return null;
-    let phone = c.phone || null;
-    let email = c.email || "";
-    let firstLogin = c.first_login !== undefined && c.first_login !== null ? Number(c.first_login) === 1 : false;
-
-    if (email.includes("|tel:")) {
-        const parts = email.split("|tel:");
-        email = parts[0];
-        phone = parts[1];
-        firstLogin = false;
-    } else if (email === "PENDING_SETUP" || email.endsWith("|pending")) {
-        firstLogin = true;
-        email = email === "PENDING_SETUP" ? "" : email.replace("|pending", "");
-    }
-
-    return {
-        ...c,
-        email: email,
-        phone: phone,
-        first_login: firstLogin ? 1 : 0
-    };
-}
-
 async function findCandidateByUserId(userId) {
     const cleanId = String(userId || "").trim();
-    let raw = null;
     if (isSupabase) {
         const { data, error } = await supabase
             .from("candidates")
@@ -86,15 +40,13 @@ async function findCandidateByUserId(userId) {
             .ilike("user_id", cleanId)
             .maybeSingle();
         if (error) console.error("Supabase findCandidate error:", error.message);
-        raw = data || null;
+        return data || null;
     } else {
-        raw = sqliteDb.prepare("SELECT * FROM candidates WHERE LOWER(TRIM(user_id)) = LOWER(TRIM(?))").get(cleanId) || null;
+        return sqliteDb.prepare("SELECT * FROM candidates WHERE LOWER(TRIM(user_id)) = LOWER(TRIM(?))").get(cleanId) || null;
     }
-    return normalizeCandidate(raw);
 }
 
 async function findCandidateById(id) {
-    let raw = null;
     if (isSupabase) {
         const { data, error } = await supabase
             .from("candidates")
@@ -102,131 +54,58 @@ async function findCandidateById(id) {
             .eq("id", id)
             .maybeSingle();
         if (error) console.error("Supabase findCandidateById error:", error.message);
-        raw = data || null;
+        return data || null;
     } else {
-        raw = sqliteDb.prepare("SELECT * FROM candidates WHERE id = ?").get(id) || null;
+        return sqliteDb.prepare("SELECT * FROM candidates WHERE id = ?").get(id) || null;
     }
-    return normalizeCandidate(raw);
 }
 
 async function listCandidates() {
-    let list = [];
     if (isSupabase) {
-        const cols = await checkSupabaseCandidateCols();
-        const selectFields = cols.hasPhone && cols.hasFirstLogin
-            ? "id, user_id, candidate_name, email, phone, role, active, first_login, created_at"
-            : "id, user_id, candidate_name, email, role, active, created_at";
         const { data, error } = await supabase
             .from("candidates")
-            .select(selectFields)
+            .select("id, user_id, candidate_name, email, role, active, created_at")
             .order("created_at", { ascending: false });
         if (error) console.error("Supabase listCandidates error:", error.message);
-        list = data || [];
+        return data || [];
     } else {
-        list = sqliteDb.prepare(`
-            SELECT id, user_id, candidate_name, email, phone, role, active, first_login, created_at
+        return sqliteDb.prepare(`
+            SELECT id, user_id, candidate_name, email, role, active, created_at
             FROM candidates
             ORDER BY datetime(created_at) DESC
         `).all() || [];
     }
-    return list.map(normalizeCandidate);
 }
 
-async function createCandidate({ userId, passwordHash, candidateName, email, phone, role = "Student", firstLogin = 1 }) {
-    const isStudent = (role !== "Admin" && role !== "Master Admin");
-    const mustFirstLogin = isStudent ? (firstLogin !== undefined ? firstLogin : 1) : 0;
-    const cleanUserId = userId.trim();
-    const cleanName = candidateName ? candidateName.trim() : "";
-    const cleanEmail = email ? email.trim() : "";
-    const cleanPhone = phone ? phone.trim() : "";
-
+async function createCandidate({ userId, passwordHash, candidateName, email, role = "Student" }) {
     if (isSupabase) {
-        const cols = await checkSupabaseCandidateCols();
-        let insertObj = {
-            user_id: cleanUserId,
-            password_hash: passwordHash,
-            candidate_name: cleanName || cleanUserId,
-            role: role,
-            active: 1
-        };
-
-        if (cols.hasPhone && cols.hasFirstLogin) {
-            insertObj.email = cleanEmail || null;
-            insertObj.phone = cleanPhone || null;
-            insertObj.first_login = mustFirstLogin;
-        } else {
-            // Metadata fallback if columns not yet added to Supabase
-            if (mustFirstLogin) {
-                insertObj.email = cleanEmail ? `${cleanEmail}|pending` : "PENDING_SETUP";
-            } else {
-                insertObj.email = cleanPhone ? `${cleanEmail}|tel:${cleanPhone}` : (cleanEmail || null);
-            }
-        }
-
         const { data, error } = await supabase
             .from("candidates")
-            .insert([insertObj])
-            .select()
+            .insert([{
+                user_id: userId,
+                password_hash: passwordHash,
+                candidate_name: candidateName,
+                email: email || null,
+                role: role,
+                active: 1
+            }])
+            .select("id, user_id, candidate_name, email, role, active")
             .single();
         if (error) throw new Error(error.message);
-        return normalizeCandidate(data);
+        return data;
     } else {
         const info = sqliteDb.prepare(`
-            INSERT INTO candidates (user_id, password_hash, candidate_name, email, phone, role, active, first_login)
-            VALUES (?, ?, ?, ?, ?, ?, 1, ?)
-        `).run(cleanUserId, passwordHash, cleanName || cleanUserId, cleanEmail || null, cleanPhone || null, role, mustFirstLogin);
+            INSERT INTO candidates (user_id, password_hash, candidate_name, email, role, active)
+            VALUES (?, ?, ?, ?, ?, 1)
+        `).run(userId, passwordHash, candidateName, email, role);
         return {
             id: info.lastInsertRowid,
-            user_id: cleanUserId,
-            candidate_name: cleanName || cleanUserId,
-            email: cleanEmail || null,
-            phone: cleanPhone || null,
+            user_id: userId,
+            candidate_name: candidateName,
+            email: email,
             role: role,
-            active: 1,
-            first_login: mustFirstLogin
-        };
-    }
-}
-
-async function updateCandidateProfile(userId, { candidateName, email, phone }) {
-    const cleanUserId = String(userId || "").trim();
-    const cleanName = String(candidateName || "").trim();
-    const cleanEmail = String(email || "").trim();
-    const cleanPhone = String(phone || "").trim();
-
-    if (isSupabase) {
-        const cols = await checkSupabaseCandidateCols();
-        let updateObj = {
-            candidate_name: cleanName,
             active: 1
         };
-
-        if (cols.hasPhone && cols.hasFirstLogin) {
-            updateObj.email = cleanEmail;
-            updateObj.phone = cleanPhone;
-            updateObj.first_login = 0;
-        } else {
-            // Metadata fallback
-            updateObj.email = cleanPhone ? `${cleanEmail}|tel:${cleanPhone}` : cleanEmail;
-        }
-
-        const { data, error } = await supabase
-            .from("candidates")
-            .update(updateObj)
-            .ilike("user_id", cleanUserId)
-            .select()
-            .maybeSingle();
-        if (error) throw new Error(error.message);
-        return normalizeCandidate(data);
-    } else {
-        sqliteDb.prepare(`
-            UPDATE candidates
-            SET candidate_name = ?, email = ?, phone = ?, first_login = 0
-            WHERE LOWER(TRIM(user_id)) = LOWER(TRIM(?))
-        `).run(cleanName, cleanEmail, cleanPhone, cleanUserId);
-
-        const updated = sqliteDb.prepare("SELECT * FROM candidates WHERE LOWER(TRIM(user_id)) = LOWER(TRIM(?))").get(cleanUserId);
-        return normalizeCandidate(updated);
     }
 }
 
@@ -468,7 +347,6 @@ module.exports = {
     listCandidates,
     createCandidate,
     deleteCandidate,
-    updateCandidateProfile,
     listQuestionSets,
     getQuestionSetById,
     countQuestionSets,
