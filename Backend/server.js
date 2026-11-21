@@ -264,6 +264,136 @@ app.post("/api/login", loginLimiter, async (req, res) => {
     });
 });
 
+// -------------------------------------------------------------
+// AUTOMATED WHATSAPP GREETING NOTIFICATION SERVICE
+// Supports Meta Official WhatsApp Cloud API + Twilio Fallback
+// -------------------------------------------------------------
+
+async function sendWhatsAppWelcomeMessage({ phone, candidateName, userId }) {
+    if (!phone) return { success: false, reason: "no_phone" };
+
+    // Standardize phone number to international format without '+'
+    let cleanPhone = String(phone).replace(/[^0-9]/g, "");
+    if (!cleanPhone || cleanPhone.length < 10) {
+        return { success: false, reason: "invalid_phone" };
+    }
+
+    // Default to Indian country code (91) if 10 digits provided
+    if (cleanPhone.length === 10) {
+        cleanPhone = "91" + cleanPhone;
+    }
+
+    const metaToken = process.env.WHATSAPP_ACCESS_TOKEN || process.env.META_WA_TOKEN;
+    const metaPhoneId = process.env.WHATSAPP_PHONE_NUMBER_ID || process.env.META_WA_PHONE_ID;
+
+    const portalUrl = process.env.APP_URL || "https://slogan-two.vercel.app";
+
+    const greetingText =
+`🎓 *Welcome to SLOGON ACADEMY!* 🎓\n\n` +
+`Hello *${candidateName || "Candidate"}*,\n` +
+`Your student account for the *Online Examination Portal* has been registered successfully! 🎉\n\n` +
+`📋 *Account Credentials:*\n` +
+`• *Candidate ID:* ${userId}\n` +
+`• *Status:* Active / Ready for Mock Tests\n` +
+`• *Exam Portal:* ${portalUrl}/login.html\n\n` +
+`You can now log in, take practice examinations, and review your performance.\n\n` +
+`_Best wishes for your UGC NET and competitive examination preparation!_\n` +
+`*SLOGON ACADEMY*`;
+
+    // 1. Meta Official Cloud API (1,000 Free Messages/Month)
+    if (metaToken && metaPhoneId) {
+        try {
+            const endpoint = `https://graph.facebook.com/v21.0/${metaPhoneId}/messages`;
+            const payload = {
+                messaging_product: "whatsapp",
+                recipient_type: "individual",
+                to: cleanPhone,
+                type: "text",
+                text: {
+                    preview_url: true,
+                    body: greetingText
+                }
+            };
+
+            const response = await fetch(endpoint, {
+                method: "POST",
+                headers: {
+                    "Authorization": `Bearer ${metaToken}`,
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify(payload)
+            });
+
+            const data = await response.json();
+            if (response.ok) {
+                console.log(`[WHATSAPP DELIVERED] Meta Cloud API sent greeting to +${cleanPhone} (${userId})`);
+                return { success: true, provider: "meta", data };
+            } else {
+                console.warn(`[WHATSAPP META ERROR]`, data);
+                return { success: false, provider: "meta", error: data };
+            }
+        } catch (err) {
+            console.error(`[WHATSAPP META NETWORK FAILED]:`, err.message);
+            return { success: false, provider: "meta", error: err.message };
+        }
+    }
+
+    // 2. Twilio WhatsApp API Fallback
+    const twilioSid = process.env.TWILIO_ACCOUNT_SID;
+    const twilioAuth = process.env.TWILIO_AUTH_TOKEN;
+    const twilioFrom = process.env.TWILIO_WHATSAPP_FROM;
+
+    if (twilioSid && twilioAuth && twilioFrom) {
+        try {
+            const twilioUrl = `https://api.twilio.com/2010-04-01/Accounts/${twilioSid}/Messages.json`;
+            const authHeader = Buffer.from(`${twilioSid}:${twilioAuth}`).toString("base64");
+            const params = new URLSearchParams({
+                From: twilioFrom.startsWith("whatsapp:") ? twilioFrom : `whatsapp:${twilioFrom}`,
+                To: `whatsapp:+${cleanPhone}`,
+                Body: greetingText
+            });
+
+            const twilioRes = await fetch(twilioUrl, {
+                method: "POST",
+                headers: {
+                    "Authorization": `Basic ${authHeader}`,
+                    "Content-Type": "application/x-www-form-urlencoded"
+                },
+                body: params.toString()
+            });
+
+            const twilioData = await twilioRes.json();
+            if (twilioRes.ok) {
+                console.log(`[WHATSAPP DELIVERED] Twilio sent greeting to +${cleanPhone} (${userId})`);
+                return { success: true, provider: "twilio", data: twilioData };
+            } else {
+                console.warn(`[WHATSAPP TWILIO ERROR]`, twilioData);
+                return { success: false, provider: "twilio", error: twilioData };
+            }
+        } catch (err) {
+            console.error(`[WHATSAPP TWILIO NETWORK FAILED]:`, err.message);
+            return { success: false, provider: "twilio", error: err.message };
+        }
+    }
+
+    // Log gracefully when credentials are not yet added to .env
+    console.log(`[WHATSAPP READY (PENDING API KEYS)] Greeting queued for +${cleanPhone} (${userId})`);
+    return { success: false, reason: "credentials_not_configured" };
+}
+
+// WhatsApp Config API Status
+app.get("/api/whatsapp/config", (req, res) => {
+    const hasMeta = Boolean(process.env.WHATSAPP_ACCESS_TOKEN && process.env.WHATSAPP_PHONE_NUMBER_ID);
+    const hasTwilio = Boolean(process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN && process.env.TWILIO_WHATSAPP_FROM);
+
+    res.json({
+        success: true,
+        configured: hasMeta || hasTwilio,
+        provider: hasMeta ? "meta" : (hasTwilio ? "twilio" : "none"),
+        metaPhoneId: process.env.WHATSAPP_PHONE_NUMBER_ID ? `***${process.env.WHATSAPP_PHONE_NUMBER_ID.slice(-4)}` : null
+    });
+});
+
 // Candidate Self-Registration API
 app.post("/api/register", async (req, res) => {
     try {
@@ -348,6 +478,13 @@ app.post("/api/register", async (req, res) => {
         });
 
         console.log(`[REGISTER SUCCESS] New student account created: "${candidate.user_id}" (${candidate.candidate_name})`);
+
+        // Automated WhatsApp Welcome Greeting (non-blocking)
+        sendWhatsAppWelcomeMessage({
+            phone: cleanPhone,
+            candidateName: cleanName,
+            userId: cleanUserId
+        }).catch((err) => console.warn("[WHATSAPP] Dispatch notice:", err.message));
 
         req.session.regenerate((error) => {
             if (error) {
@@ -723,6 +860,13 @@ app.post("/api/auth/google/complete-registration", async (req, res) => {
         });
 
         console.log(`[GOOGLE REGISTRATION COMPLETE] Created student: "${newCandidate.user_id}" with password & phone.`);
+
+        // Automated WhatsApp Welcome Greeting (non-blocking)
+        sendWhatsAppWelcomeMessage({
+            phone: cleanPhone,
+            candidateName,
+            userId: cleanUserId
+        }).catch((err) => console.warn("[WHATSAPP] Dispatch notice:", err.message));
 
         req.session.regenerate((error) => {
             if (error) {
@@ -1789,7 +1933,7 @@ app.get("/api/admin/students", requireAdmin, async (req, res) => {
 // Add new Student
 app.post("/api/admin/students", requireAdmin, async (req, res) => {
     try {
-        const { userId, password, candidateName, email, role } = req.body;
+        const { userId, password, candidateName, email, phone, role } = req.body;
 
         if (!userId || !password || !candidateName) {
             return res.status(400).json({ success: false, message: "User ID, Candidate Name, and Password are required." });
@@ -1803,6 +1947,7 @@ app.post("/api/admin/students", requireAdmin, async (req, res) => {
 
         const passwordHash = bcrypt.hashSync(password, 12);
         const candidateEmail = email && email.trim() ? email.trim() : `${cleanUserId.toLowerCase()}@slogon.edu`;
+        const candidatePhone = phone && phone.trim() ? phone.trim() : "";
         const candidateRole = role === "Admin" ? "Admin" : "Student";
 
         const created = await unifiedDb.createCandidate({
@@ -1810,8 +1955,17 @@ app.post("/api/admin/students", requireAdmin, async (req, res) => {
             passwordHash,
             candidateName: candidateName.trim(),
             email: candidateEmail,
+            phone: candidatePhone,
             role: candidateRole
         });
+
+        if (candidatePhone) {
+            sendWhatsAppWelcomeMessage({
+                phone: candidatePhone,
+                candidateName: candidateName.trim(),
+                userId: cleanUserId
+            }).catch((err) => console.warn("[WHATSAPP] Admin student dispatch notice:", err.message));
+        }
 
         return res.json({
             success: true,
