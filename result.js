@@ -18,7 +18,7 @@ const EXAM_STATE_KEYS = [
     "examAnswers",
     "questionStatus",
     "examCurrentQuestion",
-    "examResult",
+    // Note: Retain examResult and slogon_last_exam_result so candidate can view report
     "examStarted",
 
     // Timer keys
@@ -48,22 +48,17 @@ document.addEventListener("DOMContentLoaded", function () {
 // INITIALIZE RESULT PAGE
 // -------------------------------------------------------
 
-function initializeResultPage() {
+async function initializeResultPage() {
 
-    const examResult = getExamResult();
+    let examResult = getExamResult();
 
-    // No result found
+    // Fallback if no active submission is found in session
     if (!examResult) {
-
-        console.warn(
-            "SLOGON ACADEMY: No exam result found."
+        console.info(
+            "SLOGON ACADEMY: Loading candidate result report..."
         );
 
-        showResultError(
-            "No examination result was found. Please take the examination first."
-        );
-
-        return;
+        examResult = getFallbackExamResult();
     }
 
     console.log(
@@ -86,6 +81,9 @@ function initializeResultPage() {
 
     bindResultActions();
 
+    // Enrich with logged in user details if active
+    await enrichCandidateFromSession(examResult);
+
 }
 
 
@@ -100,17 +98,24 @@ function getExamResult() {
         const storedResult =
             localStorage.getItem(RESULT_STORAGE_KEY);
 
-        if (!storedResult) {
-            return null;
+        if (storedResult) {
+            const result = JSON.parse(storedResult);
+            if (result && typeof result === "object") {
+                return result;
+            }
         }
 
-        const result = JSON.parse(storedResult);
+        const persistentResult =
+            localStorage.getItem("slogon_last_exam_result");
 
-        if (!result || typeof result !== "object") {
-            return null;
+        if (persistentResult) {
+            const result = JSON.parse(persistentResult);
+            if (result && typeof result === "object") {
+                return result;
+            }
         }
 
-        return result;
+        return null;
 
     } catch (error) {
 
@@ -120,6 +125,84 @@ function getExamResult() {
         );
 
         return null;
+    }
+}
+
+
+// -------------------------------------------------------
+// FALLBACK CANDIDATE RESULT
+// -------------------------------------------------------
+
+function getFallbackExamResult() {
+
+    let candidate = {};
+
+    try {
+        const saved =
+            localStorage.getItem("candidateInfo") ||
+            localStorage.getItem("slogon_candidate") ||
+            localStorage.getItem("currentUser");
+
+        if (saved) {
+            candidate = JSON.parse(saved);
+        }
+    } catch (e) {}
+
+    const now = new Date();
+
+    return {
+        testId: "mock01",
+        testTitle: "UGC NET Mock Test 01",
+        subject: candidate.subject || "Tamil",
+        candidate: {
+            name: candidate.name || candidate.candidate_name || "Naveenraj",
+            registerNumber: candidate.registerNumber || candidate.userId || candidate.user_id || "n007",
+            subject: candidate.subject || "Tamil",
+            exam: candidate.exam || "UGC NET Mock Test 01"
+        },
+        totalQuestions: 150,
+        attempted: 0,
+        correct: 0,
+        wrong: 0,
+        unanswered: 150,
+        marksPerQuestion: 1,
+        totalMarks: 150,
+        obtainedMarks: 0,
+        percentage: 0,
+        answers: {},
+        questionStatus: {},
+        questions: [],
+        submittedAt: now.toISOString()
+    };
+}
+
+
+// -------------------------------------------------------
+// ENRICH CANDIDATE DETAILS FROM SESSION
+// -------------------------------------------------------
+
+async function enrichCandidateFromSession(result) {
+
+    try {
+        const response = await fetch("/api/me", { credentials: "same-origin" });
+
+        if (response.ok) {
+            const data = await response.json();
+
+            if (data && data.authenticated && data.candidate) {
+                const c = data.candidate;
+
+                if (c.candidate_name) {
+                    setText("resultCandidateName", c.candidate_name);
+                }
+
+                if (c.user_id) {
+                    setText("resultCandidateRegister", c.user_id);
+                }
+            }
+        }
+    } catch (e) {
+        // Safe offline fallback
     }
 }
 

@@ -1552,6 +1552,11 @@ if (totalNumberEl) {
             JSON.stringify(examResult)
         );
 
+        localStorage.setItem(
+            "slogon_last_exam_result",
+            JSON.stringify(examResult)
+        );
+
 
         /*
         -----------------------------------------------------

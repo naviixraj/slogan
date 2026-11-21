@@ -3758,10 +3758,10 @@ select:focus-visible {
 ========================================================= */
 
 .result-header {
-    background: #176B52;
+    background: #6B1D2F;
     color: #FFFFFF;
     border-bottom: 3px solid #D4AF37;
-    box-shadow: 0 4px 14px rgba(23, 107, 82, 0.15);
+    box-shadow: 0 4px 14px rgba(107, 29, 47, 0.25);
 }
 
 
@@ -4078,26 +4078,24 @@ select:focus-visible {
 
 .candidate-details-grid {
     display: grid;
-
-    grid-template-columns:
-        repeat(4, 1fr);
-
+    grid-template-columns: repeat(4, 1fr);
     gap: 1px;
-
     margin-top: 20px;
-
     background: #E5E7EB;
-
-    border-top: 1px solid #E5E7EB;
+    border: 1px solid #E5E7EB;
+    border-radius: 8px;
+    overflow: hidden;
 }
 
 
 .candidate-detail-item {
     min-height: 82px;
-
     padding: 16px 20px;
+    background: #FFFFFF;
+}
 
-    background: rgba(255, 255, 255, 0.78);
+.candidate-detail-item:last-child {
+    grid-column: 1 / -1;
 }
 
 
@@ -4700,7 +4698,7 @@ select:focus-visible {
     align-items: center;
     justify-content: space-between;
     gap: 20px;
-    background: #11563F;
+    background: #6B1D2F;
     border-top: 2px solid #D4AF37;
     color: #FFFFFF;
     margin-top: auto;
