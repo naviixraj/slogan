@@ -228,12 +228,14 @@ app.post("/api/login", loginLimiter, async (req, res) => {
 
         const candidateEmail = candidate.email || `${candidate.user_id}@slogon.edu`;
         const candidateRole = candidate.role || "Student";
+        const candidatePhone = candidate.phone || "";
 
         req.session.candidate = {
             id: candidate.id,
             userId: candidate.user_id,
             name: candidate.candidate_name,
             email: candidateEmail,
+            phone: candidatePhone,
             role: candidateRole
         };
 
@@ -253,11 +255,136 @@ app.post("/api/login", loginLimiter, async (req, res) => {
                     userId: candidate.user_id,
                     name: candidate.candidate_name,
                     email: candidateEmail,
+                    phone: candidatePhone,
                     role: candidateRole
                 }
             });
         });
     });
+});
+
+// Candidate Self-Registration API
+app.post("/api/register", async (req, res) => {
+    try {
+        const { candidateName, email, phone, userId, password, confirmPassword } = req.body;
+
+        const cleanName = String(candidateName || "").trim();
+        const cleanEmail = String(email || "").trim().toLowerCase();
+        const cleanPhone = String(phone || "").trim();
+        const cleanUserId = String(userId || "").trim().toLowerCase();
+        const cleanPassword = String(password || "");
+        const cleanConfirm = String(confirmPassword || "");
+
+        if (!cleanName || cleanName.length < 2) {
+            return res.status(400).json({
+                success: false,
+                message: "Please enter your full name (minimum 2 characters)."
+            });
+        }
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!cleanEmail || !emailRegex.test(cleanEmail)) {
+            return res.status(400).json({
+                success: false,
+                message: "Please enter a valid email address."
+            });
+        }
+
+        const phoneDigits = cleanPhone.replace(/[\s\-\(\)]/g, "");
+        if (!cleanPhone || cleanPhone.length < 10 || !/^\+?[0-9]{10,15}$/.test(phoneDigits)) {
+            return res.status(400).json({
+                success: false,
+                message: "Please enter a valid 10-digit mobile phone number."
+            });
+        }
+
+        if (!cleanUserId || cleanUserId.length < 3 || cleanUserId.length > 30) {
+            return res.status(400).json({
+                success: false,
+                message: "Account User ID must be between 3 and 30 characters."
+            });
+        }
+
+        if (!/^[a-zA-Z0-9_\-\.]+$/.test(cleanUserId)) {
+            return res.status(400).json({
+                success: false,
+                message: "Account User ID may only contain letters, numbers, underscores, hyphens, and periods (no spaces)."
+            });
+        }
+
+        if (!cleanPassword || cleanPassword.length < 6) {
+            return res.status(400).json({
+                success: false,
+                message: "Password must be at least 6 characters long."
+            });
+        }
+
+        if (cleanPassword !== cleanConfirm) {
+            return res.status(400).json({
+                success: false,
+                message: "Passwords do not match. Please re-enter your password."
+            });
+        }
+
+        // Check if User ID already exists
+        const existingUser = await unifiedDb.findCandidateByUserId(cleanUserId);
+        if (existingUser) {
+            return res.status(400).json({
+                success: false,
+                message: `Account User ID "${cleanUserId}" is already registered. Please choose a different User ID.`
+            });
+        }
+
+        const passwordHash = bcrypt.hashSync(cleanPassword, 12);
+
+        const candidate = await unifiedDb.createCandidate({
+            userId: cleanUserId,
+            passwordHash,
+            candidateName: cleanName,
+            email: cleanEmail,
+            phone: cleanPhone,
+            role: "Student"
+        });
+
+        console.log(`[REGISTER SUCCESS] New student account created: "${candidate.user_id}" (${candidate.candidate_name})`);
+
+        req.session.regenerate((error) => {
+            if (error) {
+                console.error("Session error on registration:", error);
+                return res.json({
+                    success: true,
+                    message: "Account registered successfully! Please log in with your new credentials."
+                });
+            }
+
+            req.session.candidate = {
+                id: candidate.id,
+                userId: candidate.user_id,
+                name: candidate.candidate_name,
+                email: candidate.email,
+                phone: candidate.phone || cleanPhone,
+                role: "Student"
+            };
+
+            req.session.save((saveErr) => {
+                if (saveErr) {
+                    console.error("Session save error on registration:", saveErr);
+                }
+                return res.json({
+                    success: true,
+                    message: "Account created successfully! Welcome to SLOGON Academy.",
+                    candidate: req.session.candidate
+                });
+            });
+        });
+
+    } catch (err) {
+        console.error("Registration error:", err);
+        return res.status(500).json({
+            success: false,
+            message: "Failed to register account: " + err.message
+        });
+    }
 });
 
 // Check current login

@@ -22,6 +22,7 @@ try {
             password_hash TEXT NOT NULL,
             candidate_name TEXT NOT NULL,
             email TEXT,
+            phone TEXT,
             role TEXT DEFAULT 'Student',
             active INTEGER NOT NULL DEFAULT 1,
             created_at TEXT DEFAULT CURRENT_TIMESTAMP
@@ -31,6 +32,10 @@ try {
     // Migration for existing database columns
     try {
         db.exec("ALTER TABLE candidates ADD COLUMN email TEXT;");
+    } catch (e) {}
+
+    try {
+        db.exec("ALTER TABLE candidates ADD COLUMN phone TEXT;");
     } catch (e) {}
 
     try {

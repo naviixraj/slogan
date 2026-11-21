@@ -1323,11 +1323,12 @@ function renderStudents() {
         const idMatch = (s.user_id || "").toLowerCase().includes(term);
         const nameMatch = (s.candidate_name || "").toLowerCase().includes(term);
         const emailMatch = (s.email || "").toLowerCase().includes(term);
-        return idMatch || nameMatch || emailMatch;
+        const phoneMatch = (s.phone || "").toLowerCase().includes(term);
+        return idMatch || nameMatch || emailMatch || phoneMatch;
     });
 
     if (!filtered.length) {
-        studentTableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--muted); padding: 25px;">No students match your query.</td></tr>`;
+        studentTableBody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--muted); padding: 25px;">No students match your query.</td></tr>`;
         return;
     }
 
@@ -1343,6 +1344,9 @@ function renderStudents() {
 
         const emailTd = document.createElement("td");
         emailTd.textContent = s.email || "—";
+
+        const phoneTd = document.createElement("td");
+        phoneTd.textContent = s.phone || "—";
 
         const roleTd = document.createElement("td");
         roleTd.innerHTML = `<span style="font-size: 11px; font-weight: 700; color: ${s.role === 'Admin' ? '#D97706' : 'var(--emerald-dark)'};">${s.role || 'Student'}</span>`;
@@ -1372,7 +1376,7 @@ function renderStudents() {
             actionTd.innerHTML = `<span style="font-size: 11px; color: var(--muted); font-weight: 600;">Master Account</span>`;
         }
 
-        tr.append(idTd, nameTd, emailTd, roleTd, statusTd, actionTd);
+        tr.append(idTd, nameTd, emailTd, phoneTd, roleTd, statusTd, actionTd);
         studentTableBody.appendChild(tr);
     });
 }

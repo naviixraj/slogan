@@ -8,10 +8,13 @@ CREATE TABLE IF NOT EXISTS candidates (
     password_hash TEXT NOT NULL,
     candidate_name TEXT NOT NULL,
     email TEXT,
+    phone TEXT,
     role TEXT DEFAULT 'Student',
     active INTEGER NOT NULL DEFAULT 1,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
+
+ALTER TABLE candidates ADD COLUMN IF NOT EXISTS phone TEXT;
 
 -- 2. Question Sets Table
 CREATE TABLE IF NOT EXISTS question_sets (
