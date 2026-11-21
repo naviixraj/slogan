@@ -344,7 +344,37 @@ async function sendWhatsAppWelcomeMessage({ phone, candidateName, userId }) {
                 console.log(`[WHATSAPP DELIVERED] Meta Cloud API sent greeting to +${cleanPhone} (${userId})`);
                 return { success: true, provider: "meta", data };
             } else {
-                console.warn(`[WHATSAPP META ERROR]`, data);
+                console.warn(`[WHATSAPP META TEXT ERROR]:`, data);
+                // If freeform text is restricted outside 24h window, fallback to pre-approved template
+                try {
+                    const templatePayload = {
+                        messaging_product: "whatsapp",
+                        recipient_type: "individual",
+                        to: cleanPhone,
+                        type: "template",
+                        template: {
+                            name: "hello_world",
+                            language: { code: "en_US" }
+                        }
+                    };
+                    const tmplRes = await fetch(endpoint, {
+                        method: "POST",
+                        headers: {
+                            "Authorization": `Bearer ${metaToken}`,
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify(templatePayload)
+                    });
+                    const tmplData = await tmplRes.json();
+                    if (tmplRes.ok) {
+                        console.log(`[WHATSAPP DELIVERED] Meta pre-approved template delivered to +${cleanPhone}`);
+                        return { success: true, provider: "meta_template", data: tmplData };
+                    } else {
+                        console.warn(`[WHATSAPP META TEMPLATE ERROR]:`, tmplData);
+                    }
+                } catch (tmplErr) {
+                    console.error(`[WHATSAPP TEMPLATE FAILED]:`, tmplErr.message);
+                }
                 return { success: false, provider: "meta", error: data };
             }
         } catch (err) {
