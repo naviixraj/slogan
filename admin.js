@@ -164,6 +164,7 @@ const logoutCloseIconButton = document.getElementById("logoutCloseIconButton");
 const sidebarName = document.getElementById("sidebarName");
 const sidebarAvatar = document.getElementById("sidebarAvatar");
 const topAvatar = document.getElementById("topAvatar");
+const dropdownAvatar = document.getElementById("dropdownAvatar");
 const dropdownCandidateName = document.getElementById("dropdownCandidateName");
 const dropdownUserId = document.getElementById("dropdownUserId");
 const dropdownRole = document.getElementById("dropdownRole");
@@ -1517,6 +1518,7 @@ async function loadAdminProfile() {
 
         renderAvatar(sidebarAvatar, picture, inits);
         renderAvatar(topAvatar, picture, inits);
+        renderAvatar(dropdownAvatar, picture, inits);
     } catch (e) {
         console.log("Profile verification error:", e);
         window.location.replace("login.html?next=admin.html");

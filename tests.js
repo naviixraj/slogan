@@ -18,6 +18,7 @@ const candidateAvatar = document.getElementById("sidebarAvatar");
 const topAvatar = document.getElementById("topAvatar");
 const topAvatarButton = document.getElementById("topAvatarButton");
 const profileDropdownMenu = document.getElementById("profileDropdownMenu");
+const dropdownAvatar = document.getElementById("dropdownAvatar");
 const dropdownCandidateName = document.getElementById("dropdownCandidateName");
 const dropdownUserId = document.getElementById("dropdownUserId");
 const dropdownRole = document.getElementById("dropdownRole");
@@ -328,6 +329,7 @@ async function loadCandidate() {
         candidateName.textContent = name;
         renderAvatar(candidateAvatar, picture, tag);
         renderAvatar(topAvatar, picture, tag);
+        renderAvatar(dropdownAvatar, picture, tag);
 
         // Populate Profile Dropdown dynamically for any logged-in user
         if (dropdownCandidateName) dropdownCandidateName.textContent = name;
