@@ -181,6 +181,7 @@ function launchExamination() {
 
     /* START EXAM */
     localStorage.setItem("examStarted", "true");
+    sessionStorage.setItem("slogon_active_exam_session", "active_" + Date.now());
 
     /* REDIRECT TO EXAM */
     window.location.href = "exam.html";

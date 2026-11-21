@@ -1577,6 +1577,9 @@ if (totalNumberEl) {
             STORAGE_KEYS.currentQuestion
         );
 
+        sessionStorage.removeItem("slogon_active_exam_session");
+        localStorage.setItem("examStarted", "false");
+
 
         /*
         -----------------------------------------------------

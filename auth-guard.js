@@ -1,0 +1,78 @@
+/**
+ * SLOGON ACADEMY - ENTERPRISE ZERO-FLASH SECURITY & ROUTE GUARD
+ * File: auth-guard.js
+ * 
+ * Protects internal portal pages against:
+ * 1. Deep-linking / URL sharing / direct copy-pasting
+ * 2. Unauthorized role access (Students accessing Admin)
+ * 3. Bypassing exam flow (Opening exam.html directly)
+ * 4. Browser history and Back-Forward Cache (bfcache) peeking
+ */
+(function () {
+    "use strict";
+
+    // 1. Immediately hide document to prevent any UI flashing before verification
+    if (document.documentElement) {
+        document.documentElement.style.visibility = "hidden";
+    }
+
+    // 2. Prevent Back-Forward Cache (bfcache) peeking after logout
+    window.addEventListener("pageshow", function (event) {
+        if (event.persisted) {
+            window.location.reload();
+        }
+    });
+
+    // Identify current page requirements
+    var pathname = window.location.pathname.toLowerCase();
+    var isAdminPage = pathname.indexOf("admin") !== -1;
+    var isExamPage = pathname.indexOf("exam.html") !== -1;
+
+    // 3. Verify session credentials against server
+    fetch("/api/me", { credentials: "include" })
+        .then(function (res) {
+            if (!res.ok) throw new Error("Unauthenticated");
+            return res.json();
+        })
+        .then(function (data) {
+            if (!data || !data.authenticated || !data.candidate) {
+                throw new Error("Unauthorized");
+            }
+
+            var candidate = data.candidate;
+            var role = String(candidate.role || "Student").toLowerCase();
+
+            // Admin Page Guard: Only Admins are permitted
+            if (isAdminPage && role !== "admin") {
+                console.warn("[SECURITY GUARD] Student attempted to access Admin portal. Redirecting to tests.html.");
+                window.location.replace("tests.html");
+                return;
+            }
+
+            // Exam Page Guard: Direct URL access without starting from portal is blocked
+            if (isExamPage) {
+                var activeSession = sessionStorage.getItem("slogon_active_exam_session");
+                var examStarted = localStorage.getItem("examStarted");
+
+                if (!activeSession || examStarted !== "true") {
+                    console.warn("[SECURITY GUARD] Direct URL copy-paste to exam.html blocked. Must start test properly.");
+                    window.location.replace("tests.html");
+                    return;
+                }
+            }
+
+            // Save verified candidate in window scope for instant page availability
+            window.slogonVerifiedCandidate = candidate;
+
+            // Authentication & Authorization passed: Reveal UI
+            if (document.documentElement) {
+                document.documentElement.style.visibility = "visible";
+            }
+        })
+        .catch(function () {
+            // Not authenticated: Redirect immediately to login.html with return destination
+            console.warn("[SECURITY GUARD] Unauthenticated deep-link blocked. Redirecting to login.");
+            var returnUrl = encodeURIComponent(window.location.pathname + window.location.search);
+            window.location.replace("login.html?next=" + returnUrl);
+        });
+})();
