@@ -310,7 +310,7 @@ async function sendWhatsAppWelcomeMessage({ phone, candidateName, userId }) {
 `📋 *Account Credentials:*\n` +
 `• *Candidate ID:* ${userId}\n` +
 `• *Status:* Active / Ready for Mock Tests\n` +
-`• *Exam Portal:* ${portalUrl}/login.html\n\n` +
+`• *Exam Portal:* ${portalUrl}/login\n\n` +
 `You can now log in, take practice examinations, and review your performance.\n\n` +
 `_Best wishes for your UGC NET and competitive examination preparation!_\n` +
 `*SLOGON ACADEMY*`;
