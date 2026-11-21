@@ -312,10 +312,22 @@ async function loadCandidate() {
         const email = result.candidate.email || `${userId}@slogon.edu`;
 
         const tag = initials(name);
+        const picture = result.candidate.picture || "";
+
+        function renderAvatar(elem, pic, text) {
+            if (!elem) return;
+            if (pic && typeof pic === "string" && pic.startsWith("http")) {
+                elem.innerHTML = `<img src="${pic}" alt="Profile" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block;" onerror="this.onerror=null; this.parentElement.textContent='${text}';">`;
+                elem.style.padding = "0";
+                elem.style.overflow = "hidden";
+            } else {
+                elem.textContent = text;
+            }
+        }
 
         candidateName.textContent = name;
-        candidateAvatar.textContent = tag;
-        topAvatar.textContent = tag;
+        renderAvatar(candidateAvatar, picture, tag);
+        renderAvatar(topAvatar, picture, tag);
 
         // Populate Profile Dropdown dynamically for any logged-in user
         if (dropdownCandidateName) dropdownCandidateName.textContent = name;
@@ -329,6 +341,7 @@ async function loadCandidate() {
             registerNumber: userId,
             email: email,
             role: role,
+            picture: picture,
             subject: "Tamil",
             exam: "UGC NET Mock Test 01"
         }));

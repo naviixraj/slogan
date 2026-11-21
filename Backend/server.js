@@ -504,6 +504,7 @@ app.get("/api/auth/google/callback", async (req, res) => {
 
         const googleEmail = String(payload.email).trim().toLowerCase();
         const googleName = String(payload.name || payload.given_name || "Google Candidate").trim();
+        const googlePicture = String(payload.picture || "").trim();
         const googleSub = String(payload.sub || "");
 
         console.log(`[GOOGLE OAUTH] Verified account: ${googleEmail} (${googleName})`);
@@ -536,10 +537,12 @@ app.get("/api/auth/google/callback", async (req, res) => {
                     name: candidate.candidate_name,
                     email: candidate.email || googleEmail,
                     phone: candidate.phone || "",
-                    role: candidate.role || "Student"
+                    role: candidate.role || "Student",
+                    picture: googlePicture || candidate.picture || candidate.avatar_url || ""
                 };
                 req.session.save(() => {
-                    res.redirect("/tests.html");
+                    const nextUrl = candidate.role === "Admin" ? "/admin.html" : "/tests.html";
+                    res.redirect(nextUrl);
                 });
             });
         } else {
@@ -547,7 +550,8 @@ app.get("/api/auth/google/callback", async (req, res) => {
             const regToken = generateRegistrationToken({
                 email: googleEmail,
                 name: googleName,
-                googleId: googleSub
+                googleId: googleSub,
+                picture: googlePicture
             });
             const redirectUrl = `/login.html?complete_reg=1&token=${encodeURIComponent(regToken)}&email=${encodeURIComponent(googleEmail)}&name=${encodeURIComponent(googleName)}`;
             res.redirect(redirectUrl);
@@ -573,6 +577,7 @@ app.post("/api/auth/google", async (req, res) => {
 
         const googleEmail = String(payload.email).trim().toLowerCase();
         const googleName = String(payload.name || payload.given_name || "Google Candidate").trim();
+        const googlePicture = String(payload.picture || "").trim();
         const googleSub = String(payload.sub || "");
 
         console.log(`[GOOGLE AUTH] Verified Google identity for "${googleEmail}" (${googleName})`);
@@ -597,7 +602,8 @@ app.post("/api/auth/google", async (req, res) => {
             const regToken = generateRegistrationToken({
                 email: googleEmail,
                 name: googleName,
-                googleId: googleSub
+                googleId: googleSub,
+                picture: googlePicture
             });
             return res.json({
                 success: true,
@@ -605,7 +611,8 @@ app.post("/api/auth/google", async (req, res) => {
                 needsPasswordSetup: true,
                 token: regToken,
                 email: googleEmail,
-                name: googleName
+                name: googleName,
+                picture: googlePicture
             });
         }
 
@@ -622,7 +629,8 @@ app.post("/api/auth/google", async (req, res) => {
                 name: candidate.candidate_name,
                 email: candidate.email || googleEmail,
                 phone: candidate.phone || "",
-                role: candidate.role || "Student"
+                role: candidate.role || "Student",
+                picture: googlePicture || candidate.picture || candidate.avatar_url || ""
             };
 
             req.session.save((saveErr) => {
@@ -632,7 +640,7 @@ app.post("/api/auth/google", async (req, res) => {
                     isNew: false,
                     needsPasswordSetup: false,
                     message: `Welcome back, ${googleName}!`,
-                    redirect: "/tests.html"
+                    redirect: candidate.role === "Admin" ? "/admin.html" : "/tests.html"
                 });
             });
         });
@@ -728,7 +736,8 @@ app.post("/api/auth/google/complete-registration", async (req, res) => {
                 name: newCandidate.candidate_name,
                 email: newCandidate.email,
                 phone: newCandidate.phone || cleanPhone,
-                role: newCandidate.role || "Student"
+                role: newCandidate.role || "Student",
+                picture: tokenData.picture || ""
             };
 
             req.session.save((saveErr) => {

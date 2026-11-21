@@ -1502,8 +1502,21 @@ async function loadAdminProfile() {
         if (dropdownEmail) dropdownEmail.textContent = email;
 
         const inits = name.split(" ").map(w => w[0]).join("").toUpperCase().slice(0, 2) || "MA";
-        if (sidebarAvatar) sidebarAvatar.textContent = inits;
-        if (topAvatar) topAvatar.textContent = inits;
+        const picture = data.candidate.picture || "";
+
+        function renderAvatar(elem, pic, text) {
+            if (!elem) return;
+            if (pic && typeof pic === "string" && pic.startsWith("http")) {
+                elem.innerHTML = `<img src="${pic}" alt="Profile" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block;" onerror="this.onerror=null; this.parentElement.textContent='${text}';">`;
+                elem.style.padding = "0";
+                elem.style.overflow = "hidden";
+            } else {
+                elem.textContent = text;
+            }
+        }
+
+        renderAvatar(sidebarAvatar, picture, inits);
+        renderAvatar(topAvatar, picture, inits);
     } catch (e) {
         console.log("Profile verification error:", e);
         window.location.replace("login.html?next=admin.html");
