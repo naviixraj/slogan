@@ -254,7 +254,7 @@ async function confirmLogout() {
     try {
         await fetch("/api/logout", { method: "POST", credentials: "same-origin" });
     } catch (e) {}
-    window.location.replace("login.html");
+    window.location.replace("login");
 }
 
 // -----------------------------------------------------
@@ -472,7 +472,7 @@ async function inspectSet(setId) {
                 }
             } else if (res.status === 401 || res.status === 403) {
                 alert("Session expired. Please log in as Master Administrator.");
-                window.location.replace("login.html?next=admin.html");
+                window.location.replace("login?next=admin");
                 return;
             } else {
                 const res2 = await fetch(`/api/mock-tests/${setId}/questions`, { credentials: "same-origin" });
@@ -1417,7 +1417,7 @@ async function handleCreateStudentSubmit() {
         if (!res.ok || !data.success) {
             if (res.status === 401 || res.status === 403) {
                 alert("Session Expired: Master Administrator privileges required. Please log in with your Admin credentials.");
-                window.location.replace("login.html?next=admin.html");
+                window.location.replace("login?next=admin");
                 return;
             }
             throw new Error(data.message || "Failed to create student account.");
@@ -1475,19 +1475,19 @@ async function loadAdminProfile() {
     try {
         const res = await fetch("/api/me", { credentials: "same-origin" });
         if (!res.ok) {
-            window.location.replace("login.html?next=admin.html");
+            window.location.replace("login?next=admin");
             return;
         }
 
         const data = await res.json();
         if (!data.success || !data.candidate) {
-            window.location.replace("login.html?next=admin.html");
+            window.location.replace("login?next=admin");
             return;
         }
 
         if (data.candidate.role !== "Admin") {
             alert("Access restricted: You are currently signed in as a student candidate. Redirecting to Candidate Examination Dashboard.");
-            window.location.replace("tests.html");
+            window.location.replace("tests");
             return;
         }
 
@@ -1521,7 +1521,7 @@ async function loadAdminProfile() {
         renderAvatar(dropdownAvatar, picture, inits);
     } catch (e) {
         console.log("Profile verification error:", e);
-        window.location.replace("login.html?next=admin.html");
+        window.location.replace("login?next=admin");
     }
 }
 

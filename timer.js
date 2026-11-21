@@ -998,7 +998,7 @@ function getExamDurationMs() {
         }
 
         // 4. Absolute fallback
-        window.location.href = "result.html";
+        window.location.href = "result";
     }
 
 

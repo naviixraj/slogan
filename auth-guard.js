@@ -2,20 +2,20 @@
  * SLOGON ACADEMY - ENTERPRISE ZERO-FLASH SECURITY & ROUTE GUARD
  * File: auth-guard.js
  * 
- * Strict Single-Tab Isolation & Anti-Copy-Paste Security:
+ * Strict Single-Tab Isolation & Clean URL Protection:
  * 1. Blocks any copied/pasted link from opening in another tab or window.
  * 2. Only allows authenticated navigation within the active browser tab.
  * 3. Restricts Admin pages to Administrator role only.
- * 4. Locks exam.html so it can only be started from instructions.
- * 5. Prevents Back/Forward Cache peeking on browser back-button.
+ * 4. Locks exam so it can only be started from instructions.
+ * 5. Uses clean, professional URLs without .html extensions.
  */
 (function () {
     "use strict";
 
     var pathname = (window.location.pathname || "").toLowerCase();
 
-    // Do nothing if already on login page
-    if (pathname.indexOf("login") !== -1 || pathname === "/" || pathname === "") {
+    // Do nothing if already on login page or root
+    if (pathname === "/" || pathname === "" || pathname.indexOf("/login") !== -1 || pathname.indexOf("login.html") !== -1) {
         return;
     }
 
@@ -40,8 +40,8 @@
         console.warn("[SECURITY LOCK] Direct URL copy-paste detected! Blocked access to:", pathname);
         // Wipe any storage to prevent session leakage
         sessionStorage.clear();
-        // Redirect immediately to login.html
-        window.location.replace("login.html");
+        // Redirect immediately to clean /login
+        window.location.replace("login");
         return;
     }
 
@@ -53,7 +53,7 @@
     });
 
     var isAdminPage = pathname.indexOf("admin") !== -1;
-    var isExamPage = pathname.indexOf("exam.html") !== -1;
+    var isExamPage = pathname.indexOf("exam") !== -1;
 
     // 5. Verify session credentials against server
     fetch("/api/me", {
@@ -75,8 +75,8 @@
 
             // Admin Page Guard: Only Admins are permitted
             if (isAdminPage && role !== "admin") {
-                console.warn("[SECURITY GUARD] Student attempted to access Admin portal. Redirecting to tests.html.");
-                window.location.replace("tests.html");
+                console.warn("[SECURITY GUARD] Student attempted to access Admin portal. Redirecting to tests.");
+                window.location.replace("tests");
                 return;
             }
 
@@ -86,8 +86,8 @@
                 var examStarted = localStorage.getItem("examStarted");
 
                 if (!activeSession || examStarted !== "true") {
-                    console.warn("[SECURITY GUARD] Direct URL copy-paste to exam.html blocked. Must start test properly.");
-                    window.location.replace("tests.html");
+                    console.warn("[SECURITY GUARD] Direct URL copy-paste to exam blocked. Must start test properly.");
+                    window.location.replace("tests");
                     return;
                 }
             }
@@ -101,8 +101,8 @@
             }
         })
         .catch(function () {
-            // Not authenticated: Redirect immediately to login.html
+            // Not authenticated: Redirect immediately to clean /login
             sessionStorage.clear();
-            window.location.replace("login.html");
+            window.location.replace("login");
         });
 })();

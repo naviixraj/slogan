@@ -67,8 +67,8 @@ const authSwitchWrapper = document.querySelector(".auth-switch-wrapper");
 // Destination Navigation
 const params = new URLSearchParams(window.location.search);
 const requestedPage = params.get("next");
-const allowedPages = ["exam.html", "tests.html", "admin.html"];
-const redirectPage = "tests.html";
+const allowedPages = ["exam", "tests", "admin", "instructions", "result", "exam.html", "tests.html", "admin.html"];
+const redirectPage = "tests";
 
 // -------------------------------------------------------------
 // SLIDING TAB SWITCH CONTROLLER
@@ -309,8 +309,9 @@ async function handleGoogleCredentialResponse(response) {
         sessionStorage.setItem("slogon_tab_session", "verified_" + Date.now());
 
         setTimeout(() => {
-            const targetPage = requestedPage && requestedPage !== "admin.html" && allowedPages.includes(requestedPage)
-                ? requestedPage
+            const cleanTarget = requestedPage ? requestedPage.replace(/\.html$/, "") : "";
+            const targetPage = cleanTarget && cleanTarget !== "admin" && (allowedPages.includes(cleanTarget) || allowedPages.includes(requestedPage))
+                ? cleanTarget
                 : redirectPage;
             window.location.replace(targetPage);
         }, 500);
@@ -599,10 +600,11 @@ if (loginForm) {
             const userRole = (sessionData.candidate && sessionData.candidate.role) || "Student";
             setTimeout(() => {
                 if (userRole === "Admin" || userRole === "Master Admin") {
-                    window.location.replace("admin.html");
+                    window.location.replace("admin");
                 } else {
-                    const targetPage = requestedPage && requestedPage !== "admin.html" && allowedPages.includes(requestedPage)
-                        ? requestedPage
+                    const cleanTarget = requestedPage ? requestedPage.replace(/\.html$/, "") : "";
+                    const targetPage = cleanTarget && cleanTarget !== "admin" && (allowedPages.includes(cleanTarget) || allowedPages.includes(requestedPage))
+                        ? cleanTarget
                         : redirectPage;
                     window.location.replace(targetPage);
                 }

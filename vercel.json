@@ -1,5 +1,7 @@
 {
   "version": 2,
+  "cleanUrls": true,
+  "trailingSlash": false,
   "headers": [
     {
       "source": "/(.*)",
@@ -19,7 +21,7 @@
       ]
     },
     {
-      "source": "/(.*)\\.html",
+      "source": "/(.*)",
       "headers": [
         {
           "key": "Cache-Control",
@@ -44,6 +46,34 @@
     {
       "source": "/",
       "destination": "/login.html"
+    },
+    {
+      "source": "/login",
+      "destination": "/login.html"
+    },
+    {
+      "source": "/tests",
+      "destination": "/tests.html"
+    },
+    {
+      "source": "/admin",
+      "destination": "/admin.html"
+    },
+    {
+      "source": "/exam",
+      "destination": "/exam.html"
+    },
+    {
+      "source": "/instructions",
+      "destination": "/instructions.html"
+    },
+    {
+      "source": "/result",
+      "destination": "/result.html"
+    },
+    {
+      "source": "/review",
+      "destination": "/review.html"
     }
   ]
 }

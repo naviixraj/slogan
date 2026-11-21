@@ -492,7 +492,7 @@
             Unable to load examination questions.<br>
             <span style="font-size: 13px; color: #7F1D1D;">${(error && error.message) ? error.message : "Please check your network connection or login session."}</span>
             <div style="margin-top: 10px;">
-                <a href="tests.html" style="color: #991B1B; font-weight: 700; text-decoration: underline;">Return to Examinations Dashboard</a>
+                <a href="tests" style="color: #991B1B; font-weight: 700; text-decoration: underline;">Return to Examinations Dashboard</a>
             </div>
         `;
 

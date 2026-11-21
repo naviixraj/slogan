@@ -184,7 +184,7 @@ function launchExamination() {
     sessionStorage.setItem("slogon_active_exam_session", "active_" + Date.now());
 
     /* REDIRECT TO EXAM */
-    window.location.href = "exam.html";
+    window.location.href = "exam";
 }
 
 if (instructionCheckbox && proceedButton) {

@@ -146,27 +146,42 @@ app.use((req, res, next) => {
     next();
 });
 
-// Guard: Master Admin portal page
-app.get("/admin.html", (req, res, next) => {
+// Clean URL Page Routes & Guards
+app.get(["/admin", "/admin.html"], (req, res, next) => {
     if (!req.session.candidate) {
-        return res.redirect("/login.html?next=admin.html");
+        return res.redirect("/login?next=admin");
     }
     if (req.session.candidate.role !== "Admin") {
-        return res.redirect("/tests.html");
+        return res.redirect("/tests");
     }
-    next();
+    res.sendFile(path.join(ROOT, "admin.html"));
 });
 
-// Guard: Candidate dashboard page
-app.get("/tests.html", (req, res, next) => {
+app.get(["/tests", "/tests.html"], (req, res, next) => {
     if (!req.session.candidate) {
-        return res.redirect("/login.html?next=tests.html");
+        return res.redirect("/login?next=tests");
     }
-    next();
+    res.sendFile(path.join(ROOT, "tests.html"));
+});
+
+app.get(["/instructions", "/instructions.html"], (req, res) => {
+    res.sendFile(path.join(ROOT, "instructions.html"));
+});
+
+app.get(["/exam", "/exam.html"], (req, res) => {
+    res.sendFile(path.join(ROOT, "exam.html"));
+});
+
+app.get(["/result", "/result.html"], (req, res) => {
+    res.sendFile(path.join(ROOT, "result.html"));
+});
+
+app.get(["/review", "/review.html"], (req, res) => {
+    res.sendFile(path.join(ROOT, "review.html"));
 });
 
 // Main login page
-app.get("/", (req, res) => {
+app.get(["/", "/login", "/login.html"], (req, res) => {
     res.sendFile(path.join(ROOT, "login.html"));
 });
 

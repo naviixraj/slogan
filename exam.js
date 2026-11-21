@@ -41,7 +41,7 @@ if (window.location.hostname === "127.0.0.1" || window.location.hostname === "lo
         result: "examResult"
     };
 
-    const RESULT_PAGE = "result.html";
+    const RESULT_PAGE = "result";
 
 
     /* =====================================================
@@ -313,7 +313,7 @@ async function loadCandidateInfo() {
         if (!response.ok || !data.success || !data.candidate) {
 
             window.location.href =
-                "login.html?next=exam.html";
+                "login?next=exam";
 
             return false;
         }
@@ -369,7 +369,7 @@ async function loadCandidateInfo() {
         );
 
         window.location.href =
-            "login.html?next=exam.html";
+            "login?next=exam";
 
         return false;
     }

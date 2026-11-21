@@ -902,7 +902,7 @@ function bindResultActions() {
 // REVIEW ANSWERS
 if (reviewAnswersButton) {
     reviewAnswersButton.addEventListener("click", function () {
-        window.location.href = "review.html";
+        window.location.href = "review";
     });
 }
     }
@@ -993,7 +993,7 @@ function handleRetakeTest() {
      */
 
     window.location.href =
-        "instructions.html";
+        "instructions";
 
 }
 
@@ -1042,7 +1042,7 @@ function handleBackToHome() {
 
 
     window.location.href =
-        "tests.html";
+        "tests";
 
 }
 
@@ -1196,7 +1196,7 @@ function showResultError(message) {
     if (homeButton) {
         homeButton.addEventListener("click", function () {
             clearExamSession();
-            window.location.href = "tests.html";
+            window.location.href = "tests";
         });
     }
 }

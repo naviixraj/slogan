@@ -227,7 +227,7 @@ function renderTests() {
                 localStorage.setItem("currentExamSubject", subj);
 
                 // Continue to the examination instructions.
-                window.location.href = "instructions.html";
+                window.location.href = "instructions";
             };
 
             // Enable whole-card clicking across grid and list views
@@ -303,7 +303,7 @@ async function loadCandidate() {
         const result = await response.json();
 
         if (!response.ok || !result.success || !result.candidate) {
-            window.location.replace("login.html");
+            window.location.replace("login");
             return;
         }
 
@@ -465,7 +465,7 @@ if (confirmLogoutButton) {
                 throw new Error(result.message || "Logout failed.");
             }
 
-            window.location.replace("login.html");
+            window.location.replace("login");
 
         } catch (error) {
             alert("Logout error: " + error.message);
