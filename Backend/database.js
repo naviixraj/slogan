@@ -22,8 +22,10 @@ try {
             password_hash TEXT NOT NULL,
             candidate_name TEXT NOT NULL,
             email TEXT,
+            phone TEXT,
             role TEXT DEFAULT 'Student',
             active INTEGER NOT NULL DEFAULT 1,
+            first_login INTEGER DEFAULT 0,
             created_at TEXT DEFAULT CURRENT_TIMESTAMP
         );
     `);
@@ -34,7 +36,15 @@ try {
     } catch (e) {}
 
     try {
+        db.exec("ALTER TABLE candidates ADD COLUMN phone TEXT;");
+    } catch (e) {}
+
+    try {
         db.exec("ALTER TABLE candidates ADD COLUMN role TEXT DEFAULT 'Student';");
+    } catch (e) {}
+
+    try {
+        db.exec("ALTER TABLE candidates ADD COLUMN first_login INTEGER DEFAULT 0;");
     } catch (e) {}
 
     // Seed default Admin and Student accounts if missing

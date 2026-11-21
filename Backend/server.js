@@ -157,9 +157,24 @@ app.get("/admin.html", (req, res, next) => {
 });
 
 // Guard: Candidate dashboard page
+// Guard: Candidate dashboard page
 app.get("/tests.html", (req, res, next) => {
     if (!req.session.candidate) {
         return res.redirect("/login.html?next=tests.html");
+    }
+    if (req.session.candidate.needsProfileSetup) {
+        return res.redirect("/login.html?completeProfile=1");
+    }
+    next();
+});
+
+// Guard: Candidate examination runner page
+app.get("/index.html", (req, res, next) => {
+    if (!req.session.candidate) {
+        return res.redirect("/login.html?next=index.html");
+    }
+    if (req.session.candidate.needsProfileSetup) {
+        return res.redirect("/login.html?completeProfile=1");
     }
     next();
 });
@@ -217,6 +232,8 @@ app.post("/api/login", loginLimiter, async (req, res) => {
 
     console.log(`[LOGIN SUCCESS] Authenticated as "${candidate.user_id}" (${candidate.role})`);
 
+    const isFirstLogin = Boolean(candidate.first_login) && candidate.role !== "Admin";
+
     req.session.regenerate((error) => {
         if (error) {
             console.error("Session error:", error);
@@ -228,13 +245,16 @@ app.post("/api/login", loginLimiter, async (req, res) => {
 
         const candidateEmail = candidate.email || `${candidate.user_id}@slogon.edu`;
         const candidateRole = candidate.role || "Student";
+        const candidatePhone = candidate.phone || "";
 
         req.session.candidate = {
             id: candidate.id,
             userId: candidate.user_id,
             name: candidate.candidate_name,
             email: candidateEmail,
-            role: candidateRole
+            phone: candidatePhone,
+            role: candidateRole,
+            needsProfileSetup: isFirstLogin
         };
 
         req.session.save((saveError) => {
@@ -248,16 +268,98 @@ app.post("/api/login", loginLimiter, async (req, res) => {
 
             return res.json({
                 success: true,
-                message: "Login successful.",
+                message: isFirstLogin ? "First login. Profile setup required." : "Login successful.",
+                firstLogin: isFirstLogin,
                 candidate: {
                     userId: candidate.user_id,
                     name: candidate.candidate_name,
                     email: candidateEmail,
+                    phone: candidatePhone,
                     role: candidateRole
                 }
             });
         });
     });
+});
+
+// Candidate complete first-time profile setup
+app.post("/api/complete-profile", async (req, res) => {
+    if (!req.session.candidate) {
+        return res.status(401).json({
+            success: false,
+            message: "Authentication required. Please log in first."
+        });
+    }
+
+    const { candidateName, email, phone } = req.body;
+    const cleanName = String(candidateName || "").trim();
+    const cleanEmail = String(email || "").trim().toLowerCase();
+    const cleanPhone = String(phone || "").trim();
+
+    if (!cleanName || cleanName.length < 2) {
+        return res.status(400).json({
+            success: false,
+            message: "Please enter your full name (minimum 2 characters)."
+        });
+    }
+
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!cleanEmail || !emailRegex.test(cleanEmail)) {
+        return res.status(400).json({
+            success: false,
+            message: "Please enter a valid email address."
+        });
+    }
+
+    const phoneDigits = cleanPhone.replace(/[\s\-\(\)]/g, "");
+    if (!cleanPhone || cleanPhone.length < 7 || !/^\+?[0-9]{7,15}$/.test(phoneDigits)) {
+        return res.status(400).json({
+            success: false,
+            message: "Please enter a valid phone number (at least 10 digits)."
+        });
+    }
+
+    try {
+        await unifiedDb.updateCandidateProfile(req.session.candidate.userId, {
+            candidateName: cleanName,
+            email: cleanEmail,
+            phone: cleanPhone
+        });
+
+        // Update active session
+        req.session.candidate.name = cleanName;
+        req.session.candidate.email = cleanEmail;
+        req.session.candidate.phone = cleanPhone;
+        req.session.candidate.needsProfileSetup = false;
+
+        req.session.save((saveErr) => {
+            if (saveErr) {
+                console.error("Session update error:", saveErr);
+                return res.status(500).json({
+                    success: false,
+                    message: "Profile updated, but failed to refresh session."
+                });
+            }
+
+            return res.json({
+                success: true,
+                message: "Profile completed successfully! Welcome to SLOGON Examination Portal.",
+                candidate: {
+                    userId: req.session.candidate.userId,
+                    name: cleanName,
+                    email: cleanEmail,
+                    phone: cleanPhone,
+                    role: req.session.candidate.role
+                }
+            });
+        });
+    } catch (err) {
+        console.error("Complete profile error:", err);
+        return res.status(500).json({
+            success: false,
+            message: "Failed to update profile: " + err.message
+        });
+    }
 });
 
 // Check current login
@@ -271,7 +373,8 @@ app.get("/api/me", (req, res) => {
 
     res.json({
         success: true,
-        candidate: req.session.candidate
+        candidate: req.session.candidate,
+        needsProfileSetup: Boolean(req.session.candidate.needsProfileSetup)
     });
 });
 
@@ -1293,10 +1396,10 @@ app.get("/api/admin/students", requireAdmin, async (req, res) => {
 // Add new Student
 app.post("/api/admin/students", requireAdmin, async (req, res) => {
     try {
-        const { userId, password, candidateName, email, role } = req.body;
+        const { userId, password, candidateName, email, phone, role } = req.body;
 
-        if (!userId || !password || !candidateName) {
-            return res.status(400).json({ success: false, message: "User ID, Candidate Name, and Password are required." });
+        if (!userId || !password) {
+            return res.status(400).json({ success: false, message: "User ID and Password are required." });
         }
 
         const cleanUserId = userId.trim();
@@ -1306,22 +1409,27 @@ app.post("/api/admin/students", requireAdmin, async (req, res) => {
         }
 
         const passwordHash = bcrypt.hashSync(password, 12);
-        const candidateEmail = email && email.trim() ? email.trim() : `${cleanUserId.toLowerCase()}@slogon.edu`;
         const candidateRole = role === "Admin" ? "Admin" : "Student";
+        const candidateNameVal = candidateName && candidateName.trim() ? candidateName.trim() : `Candidate ${cleanUserId}`;
+        const candidateEmail = email && email.trim() ? email.trim() : `${cleanUserId.toLowerCase()}@slogon.edu`;
+        const candidatePhone = phone && phone.trim() ? phone.trim() : "";
+        const isFirstLogin = candidateRole === "Student" ? 1 : 0;
 
         const created = await unifiedDb.createCandidate({
             userId: cleanUserId,
             passwordHash,
-            candidateName: candidateName.trim(),
+            candidateName: candidateNameVal,
             email: candidateEmail,
-            role: candidateRole
+            phone: candidatePhone,
+            role: candidateRole,
+            firstLogin: isFirstLogin
         });
 
         return res.json({
             success: true,
             id: created.id,
             student: created,
-            message: `Candidate account for "${candidateName.trim()}" (${cleanUserId}) created successfully!`
+            message: `Candidate account for "${candidateNameVal}" (${cleanUserId}) created successfully!`
         });
     } catch (error) {
         return res.status(500).json({ success: false, message: "Failed to create student account: " + error.message });

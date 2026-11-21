@@ -122,6 +122,7 @@ const createStudentBtn = document.getElementById("createStudentBtn");
 const newUserId = document.getElementById("newUserId");
 const newName = document.getElementById("newName");
 const newEmail = document.getElementById("newEmail");
+const newPhone = document.getElementById("newPhone");
 const newPass = document.getElementById("newPass");
 
 // Edit Question Set Modal
@@ -1323,11 +1324,12 @@ function renderStudents() {
         const idMatch = (s.user_id || "").toLowerCase().includes(term);
         const nameMatch = (s.candidate_name || "").toLowerCase().includes(term);
         const emailMatch = (s.email || "").toLowerCase().includes(term);
-        return idMatch || nameMatch || emailMatch;
+        const phoneMatch = (s.phone || "").toLowerCase().includes(term);
+        return idMatch || nameMatch || emailMatch || phoneMatch;
     });
 
     if (!filtered.length) {
-        studentTableBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--muted); padding: 25px;">No students match your query.</td></tr>`;
+        studentTableBody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--muted); padding: 25px;">No students match your query.</td></tr>`;
         return;
     }
 
@@ -1344,11 +1346,20 @@ function renderStudents() {
         const emailTd = document.createElement("td");
         emailTd.textContent = s.email || "—";
 
+        const phoneTd = document.createElement("td");
+        phoneTd.textContent = s.phone || "—";
+
         const roleTd = document.createElement("td");
         roleTd.innerHTML = `<span style="font-size: 11px; font-weight: 700; color: ${s.role === 'Admin' ? '#D97706' : 'var(--emerald-dark)'};">${s.role || 'Student'}</span>`;
 
         const statusTd = document.createElement("td");
-        statusTd.innerHTML = `<span class="status available">${s.active === 1 ? 'Active' : 'Disabled'}</span>`;
+        if (s.active !== 1) {
+            statusTd.innerHTML = `<span class="status" style="background:#FEE2E2;color:#DC2626;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:700;">Disabled</span>`;
+        } else if (s.first_login === 1) {
+            statusTd.innerHTML = `<span class="status" style="background:#FEF3C7;color:#D97706;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:700;white-space:nowrap;">Pending 1st Login</span>`;
+        } else {
+            statusTd.innerHTML = `<span class="status available" style="background:#DCFCE7;color:#16A34A;padding:3px 8px;border-radius:12px;font-size:11px;font-weight:700;">Active</span>`;
+        }
 
         const actionTd = document.createElement("td");
         if (s.role !== "Admin") {
@@ -1372,7 +1383,7 @@ function renderStudents() {
             actionTd.innerHTML = `<span style="font-size: 11px; color: var(--muted); font-weight: 600;">Master Account</span>`;
         }
 
-        tr.append(idTd, nameTd, emailTd, roleTd, statusTd, actionTd);
+        tr.append(idTd, nameTd, emailTd, phoneTd, roleTd, statusTd, actionTd);
         studentTableBody.appendChild(tr);
     });
 }
@@ -1381,10 +1392,11 @@ async function handleCreateStudentSubmit() {
     const userIdVal = newUserId ? newUserId.value.trim() : "";
     const nameVal = newName ? newName.value.trim() : "";
     const emailVal = newEmail ? newEmail.value.trim() : "";
+    const phoneVal = newPhone ? newPhone.value.trim() : "";
     const passVal = newPass ? newPass.value.trim() : "";
 
-    if (!userIdVal || !nameVal || !passVal) {
-        alert("User ID, Full Name, and Password are required to create a student account.");
+    if (!userIdVal || !passVal) {
+        alert("User ID and Password are required to create a student account.");
         return;
     }
 
@@ -1403,6 +1415,7 @@ async function handleCreateStudentSubmit() {
                 userId: userIdVal,
                 candidateName: nameVal,
                 email: emailVal,
+                phone: phoneVal,
                 password: passVal,
                 role: "Student"
             })
@@ -1419,15 +1432,16 @@ async function handleCreateStudentSubmit() {
         }
 
         closeModal(studentModal);
-        alert(`🎉 ${data.message}\nThe student can now immediately log in with User ID: ${userIdVal}`);
+        alert(`🎉 ${data.message}\nThe student can now log in with User ID: ${userIdVal}\n(On first login, they will complete their profile details).`);
         if (newUserId) newUserId.value = "";
         if (newName) newName.value = "";
         if (newEmail) newEmail.value = "";
+        if (newPhone) newPhone.value = "";
         if (newPass) newPass.value = "";
         await fetchStudents();
     } catch (err) {
         if (err.name === "TypeError" && (err.message || "").toLowerCase().includes("fetch")) {
-            alert("❌ Connection Error: Unable to reach the server.\n\nThe server was momentarily restarting to load new PDF capabilities. Please refresh the page (F5) and try again.");
+            alert("❌ Connection Error: Unable to reach the server.\n\nPlease check server connection and try again.");
         } else {
             alert(`❌ Enrollment Failed: ${err.message}`);
         }
