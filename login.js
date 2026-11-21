@@ -15,7 +15,8 @@ if (window.location.hostname === "127.0.0.1" || window.location.hostname === "lo
 const authSwitchBg = document.getElementById("authSwitchBg");
 const tabLoginBtn = document.getElementById("tabLoginBtn");
 const tabRegisterBtn = document.getElementById("tabRegisterBtn");
-const authTrack = document.getElementById("authTrack");
+const loginSlide = document.getElementById("loginSlide");
+const registerSlide = document.getElementById("registerSlide");
 const authCard = document.getElementById("authCard");
 const linkToRegister = document.getElementById("linkToRegister");
 const linkToLogin = document.getElementById("linkToLogin");
@@ -60,7 +61,6 @@ let currentTab = "login"; // "login" or "register"
 function switchToLogin() {
     currentTab = "login";
     if (authSwitchBg) authSwitchBg.style.transform = "translateX(0%)";
-    if (authTrack) authTrack.style.transform = "translateX(0%)";
 
     if (tabLoginBtn) {
         tabLoginBtn.classList.add("active");
@@ -71,15 +71,20 @@ function switchToLogin() {
         tabRegisterBtn.setAttribute("aria-selected", "false");
     }
 
+    if (registerSlide) {
+        registerSlide.classList.remove("active", "slide-in-right", "slide-in-left");
+    }
+    if (loginSlide) {
+        loginSlide.classList.remove("slide-in-right");
+        loginSlide.classList.add("active", "slide-in-left");
+    }
+
     if (regMessage) regMessage.textContent = "";
-    const userField = document.getElementById("userId");
-    if (userField && !userField.value) userField.focus();
 }
 
 function switchToRegister() {
     currentTab = "register";
     if (authSwitchBg) authSwitchBg.style.transform = "translateX(100%)";
-    if (authTrack) authTrack.style.transform = "translateX(-50%)";
 
     if (tabRegisterBtn) {
         tabRegisterBtn.classList.add("active");
@@ -90,8 +95,18 @@ function switchToRegister() {
         tabLoginBtn.setAttribute("aria-selected", "false");
     }
 
+    if (loginSlide) {
+        loginSlide.classList.remove("active", "slide-in-right", "slide-in-left");
+    }
+    if (registerSlide) {
+        registerSlide.classList.remove("slide-in-left");
+        registerSlide.classList.add("active", "slide-in-right");
+    }
+
     if (message) message.textContent = "";
-    if (regName && !regName.value) regName.focus();
+    if (regName && !regName.value) {
+        setTimeout(() => regName.focus({ preventScroll: true }), 100);
+    }
 }
 
 if (tabLoginBtn) tabLoginBtn.addEventListener("click", switchToLogin);
@@ -142,13 +157,10 @@ function handleGesture() {
     const deltaX = touchEndX - touchStartX;
     const deltaY = touchEndY - touchStartY;
 
-    // Ensure it's primarily a horizontal swipe rather than vertical scroll
     if (Math.abs(deltaX) > 60 && Math.abs(deltaX) > Math.abs(deltaY) * 1.5) {
         if (deltaX < 0 && currentTab === "login") {
-            // Swiped Left -> Go to Register
             switchToRegister();
         } else if (deltaX > 0 && currentTab === "register") {
-            // Swiped Right -> Go to Login
             switchToLogin();
         }
     }
@@ -171,7 +183,7 @@ if (togglePasswordButton && passwordInput) {
         const label = isPassword ? "Hide password" : "Show password";
         togglePasswordButton.setAttribute("aria-label", label);
         togglePasswordButton.setAttribute("title", label);
-        passwordInput.focus();
+        passwordInput.focus({ preventScroll: true });
     });
 }
 
@@ -191,7 +203,7 @@ if (toggleRegPassword && regPassword) {
         const label = isPassword ? "Hide password" : "Show password";
         toggleRegPassword.setAttribute("aria-label", label);
         toggleRegPassword.setAttribute("title", label);
-        regPassword.focus();
+        regPassword.focus({ preventScroll: true });
     });
 }
 
@@ -212,7 +224,7 @@ function handleGoogleAuthPrompt(isRegister = false) {
             if (regName && !regName.value) regName.value = nameGuess;
             const userGuess = clean.split("@")[0].replace(/[^a-zA-Z0-9_]/g, "").slice(0, 20);
             if (regUserId && !regUserId.value) regUserId.value = userGuess;
-            if (regPhone) regPhone.focus();
+            if (regPhone) regPhone.focus({ preventScroll: true });
             if (regMessage) {
                 regMessage.style.color = "#16A34A";
                 regMessage.textContent = `✓ Google details autofilled from ${clean}. Please set your phone & SLOGON password.`;
@@ -220,7 +232,7 @@ function handleGoogleAuthPrompt(isRegister = false) {
         } else {
             const userField = document.getElementById("userId");
             if (userField) userField.value = clean.split("@")[0];
-            if (passwordInput) passwordInput.focus();
+            if (passwordInput) passwordInput.focus({ preventScroll: true });
         }
     }
 }
@@ -343,7 +355,7 @@ if (registerForm) {
                 regMessage.style.color = "#DC2626";
                 regMessage.textContent = "Please enter your full name (minimum 2 characters).";
             }
-            if (regName) regName.focus();
+            if (regName) regName.focus({ preventScroll: true });
             return;
         }
 
@@ -353,7 +365,7 @@ if (registerForm) {
                 regMessage.style.color = "#DC2626";
                 regMessage.textContent = "Please enter a valid email address.";
             }
-            if (regEmail) regEmail.focus();
+            if (regEmail) regEmail.focus({ preventScroll: true });
             return;
         }
 
@@ -363,7 +375,7 @@ if (registerForm) {
                 regMessage.style.color = "#DC2626";
                 regMessage.textContent = "Please enter a valid 10-digit mobile phone number.";
             }
-            if (regPhone) regPhone.focus();
+            if (regPhone) regPhone.focus({ preventScroll: true });
             return;
         }
 
@@ -372,7 +384,7 @@ if (registerForm) {
                 regMessage.style.color = "#DC2626";
                 regMessage.textContent = "Account User ID must be between 3 and 30 characters.";
             }
-            if (regUserId) regUserId.focus();
+            if (regUserId) regUserId.focus({ preventScroll: true });
             return;
         }
 
@@ -381,7 +393,7 @@ if (registerForm) {
                 regMessage.style.color = "#DC2626";
                 regMessage.textContent = "User ID may only contain letters, numbers, underscores, and dots (no spaces).";
             }
-            if (regUserId) regUserId.focus();
+            if (regUserId) regUserId.focus({ preventScroll: true });
             return;
         }
 
@@ -390,7 +402,7 @@ if (registerForm) {
                 regMessage.style.color = "#DC2626";
                 regMessage.textContent = "Password must be at least 6 characters long.";
             }
-            if (regPassword) regPassword.focus();
+            if (regPassword) regPassword.focus({ preventScroll: true });
             return;
         }
 
@@ -399,7 +411,7 @@ if (registerForm) {
                 regMessage.style.color = "#DC2626";
                 regMessage.textContent = "Passwords do not match. Please re-enter your password.";
             }
-            if (regConfirmPassword) regConfirmPassword.focus();
+            if (regConfirmPassword) regConfirmPassword.focus({ preventScroll: true });
             return;
         }
 
