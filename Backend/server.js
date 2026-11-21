@@ -679,7 +679,7 @@ app.get("/api/auth/google/callback", async (req, res) => {
                 };
                 req.session.save(() => {
                     const nextUrl = candidate.role === "Admin" ? "/admin.html" : "/tests.html";
-                    res.redirect(nextUrl);
+                    res.redirect(nextUrl + "?auth_token=" + Date.now());
                 });
             });
         } else {

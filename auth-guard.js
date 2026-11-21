@@ -2,11 +2,12 @@
  * SLOGON ACADEMY - ENTERPRISE ZERO-FLASH SECURITY & ROUTE GUARD
  * File: auth-guard.js
  * 
- * Protects internal portal pages against:
- * 1. Deep-linking / URL sharing / direct copy-pasting
- * 2. Unauthorized role access (Students accessing Admin)
- * 3. Bypassing exam flow (Opening exam.html directly)
- * 4. Browser history and Back-Forward Cache (bfcache) peeking
+ * Strict Single-Tab Isolation & Anti-Copy-Paste Security:
+ * 1. Blocks any copied/pasted link from opening in another tab or window.
+ * 2. Only allows authenticated navigation within the active browser tab.
+ * 3. Restricts Admin pages to Administrator role only.
+ * 4. Locks exam.html so it can only be started from instructions.
+ * 5. Prevents Back/Forward Cache peeking on browser back-button.
  */
 (function () {
     "use strict";
@@ -18,26 +19,33 @@
         return;
     }
 
-    // 1. Immediately hide document to prevent any UI flashing before verification
+    // 1. Immediately hide document to prevent any UI flashing
     if (document.documentElement) {
         document.documentElement.style.visibility = "hidden";
     }
 
-    // Safety fallback: reveal page after 3.5 seconds if network hangs
-    var revealTimer = setTimeout(function () {
-        if (document.documentElement) {
-            document.documentElement.style.visibility = "visible";
-        }
-    }, 3500);
-
-    function revealUI() {
-        clearTimeout(revealTimer);
-        if (document.documentElement) {
-            document.documentElement.style.visibility = "visible";
-        }
+    // 2. CHECK ONE-TIME ENTRY TOKEN (From Google OAuth redirect)
+    var urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.has("auth_token")) {
+        sessionStorage.setItem("slogon_tab_session", "verified_" + Date.now());
+        // Clean URL immediately so token cannot be copied or shared
+        urlParams.delete("auth_token");
+        var cleanSearch = urlParams.toString() ? ("?" + urlParams.toString()) : "";
+        window.history.replaceState({}, document.title, window.location.pathname + cleanSearch);
     }
 
-    // 2. Prevent Back-Forward Cache (bfcache) peeking after logout
+    // 3. STRICT TAB ISOLATION (Detect direct URL copy-paste into new tab/window)
+    var tabSession = sessionStorage.getItem("slogon_tab_session");
+    if (!tabSession) {
+        console.warn("[SECURITY LOCK] Direct URL copy-paste detected! Blocked access to:", pathname);
+        // Wipe any storage to prevent session leakage
+        sessionStorage.clear();
+        // Redirect immediately to login.html
+        window.location.replace("login.html");
+        return;
+    }
+
+    // 4. Prevent Back-Forward Cache (bfcache) peeking
     window.addEventListener("pageshow", function (event) {
         if (event.persisted) {
             window.location.reload();
@@ -47,7 +55,7 @@
     var isAdminPage = pathname.indexOf("admin") !== -1;
     var isExamPage = pathname.indexOf("exam.html") !== -1;
 
-    // 3. Verify session credentials against server
+    // 5. Verify session credentials against server
     fetch("/api/me", {
         method: "GET",
         credentials: "same-origin",
@@ -88,27 +96,13 @@
             window.slogonVerifiedCandidate = candidate;
 
             // Authentication & Authorization passed: Reveal UI
-            revealUI();
-        })
-        .catch(function (err) {
-            console.warn("[SECURITY GUARD] Access check failed:", err.message);
-
-            // Check if candidate is remembered in localStorage as temporary fallback before kicking
-            var localCandidate = null;
-            try {
-                var raw = localStorage.getItem("candidateInfo") || localStorage.getItem("currentUser");
-                if (raw) localCandidate = JSON.parse(raw);
-            } catch (e) {}
-
-            if (localCandidate && localCandidate.userId && !isAdminPage) {
-                // Allow student to proceed with local credentials
-                revealUI();
-                return;
+            if (document.documentElement) {
+                document.documentElement.style.visibility = "visible";
             }
-
-            // Redirect immediately to login.html with return destination
-            console.warn("[SECURITY GUARD] Unauthenticated deep-link blocked. Redirecting to login.");
-            var returnUrl = encodeURIComponent(window.location.pathname + window.location.search);
-            window.location.replace("login.html?next=" + returnUrl);
+        })
+        .catch(function () {
+            // Not authenticated: Redirect immediately to login.html
+            sessionStorage.clear();
+            window.location.replace("login.html");
         });
 })();

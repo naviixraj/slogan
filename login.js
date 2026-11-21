@@ -305,6 +305,9 @@ async function handleGoogleCredentialResponse(response) {
             activeMsg.textContent = "✓ " + (data.message || "Google verification successful! Redirecting...");
         }
 
+        // Secure Tab Isolation: Authorize only this browser tab
+        sessionStorage.setItem("slogon_tab_session", "verified_" + Date.now());
+
         setTimeout(() => {
             const targetPage = requestedPage && requestedPage !== "admin.html" && allowedPages.includes(requestedPage)
                 ? requestedPage
@@ -590,6 +593,9 @@ if (loginForm) {
                 message.textContent = "✓ Login successful! Opening examination portal...";
             }
 
+            // Secure Tab Isolation: Authorize only this browser tab
+            sessionStorage.setItem("slogon_tab_session", "verified_" + Date.now());
+
             const userRole = (sessionData.candidate && sessionData.candidate.role) || "Student";
             setTimeout(() => {
                 if (userRole === "Admin" || userRole === "Master Admin") {
@@ -732,6 +738,9 @@ if (registerForm) {
             const targetPage = requestedPage && requestedPage !== "admin.html" && allowedPages.includes(requestedPage)
                 ? requestedPage
                 : redirectPage;
+
+            // Secure Tab Isolation: Authorize only this browser tab
+            sessionStorage.setItem("slogon_tab_session", "verified_" + Date.now());
 
             setTimeout(() => {
                 window.location.replace(targetPage);
