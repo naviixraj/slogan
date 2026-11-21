@@ -1,7 +1,5 @@
 {
   "version": 2,
-  "cleanUrls": true,
-  "trailingSlash": false,
   "headers": [
     {
       "source": "/(.*)",
@@ -21,7 +19,7 @@
       ]
     },
     {
-      "source": "/(.*)",
+      "source": "/(.*)\\.html",
       "headers": [
         {
           "key": "Cache-Control",
@@ -36,6 +34,43 @@
           "value": "0"
         }
       ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/login.html",
+      "destination": "/login",
+      "permanent": true
+    },
+    {
+      "source": "/tests.html",
+      "destination": "/tests",
+      "permanent": true
+    },
+    {
+      "source": "/admin.html",
+      "destination": "/admin",
+      "permanent": true
+    },
+    {
+      "source": "/instructions.html",
+      "destination": "/instructions",
+      "permanent": true
+    },
+    {
+      "source": "/exam.html",
+      "destination": "/exam",
+      "permanent": true
+    },
+    {
+      "source": "/result.html",
+      "destination": "/result",
+      "permanent": true
+    },
+    {
+      "source": "/review.html",
+      "destination": "/review",
+      "permanent": true
     }
   ],
   "rewrites": [
