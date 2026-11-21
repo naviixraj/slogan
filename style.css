@@ -3745,14 +3745,11 @@ select:focus-visible {
 ========================================================= */
 
 .result-page {
-    background-color: #F5F6F8;
-    background-image: url('slogon-bg.png');
-    background-repeat: no-repeat;
-    background-position: center center;
-    background-attachment: fixed;
-    background-size: min(600px, 75vw);
+    background-color: #F8FAF9;
     color: #1F2937;
     min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
 
@@ -3761,10 +3758,10 @@ select:focus-visible {
 ========================================================= */
 
 .result-header {
-    background: #6B1D2F;
+    background: #176B52;
     color: #FFFFFF;
     border-bottom: 3px solid #D4AF37;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 14px rgba(23, 107, 82, 0.15);
 }
 
 
@@ -3860,10 +3857,115 @@ select:focus-visible {
 ========================================================= */
 
 .result-main {
+    flex: 1;
     width: min(1100px, 94%);
     margin: 0 auto;
-
     padding: 35px 0 50px;
+    display: flex;
+    flex-direction: column;
+}
+
+/* =========================================================
+   MODERN RESULT ERROR / EMPTY STATE
+========================================================= */
+
+.result-error-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 40px 16px;
+    width: 100%;
+    min-height: calc(100vh - 220px);
+}
+
+.result-error-card {
+    background: #FFFFFF;
+    border: 1px solid #E2E8F0;
+    border-radius: 20px;
+    padding: 48px 32px;
+    max-width: 480px;
+    width: 100%;
+    text-align: center;
+    box-shadow: 0 10px 30px -5px rgba(23, 107, 82, 0.08), 0 4px 14px rgba(0, 0, 0, 0.03);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: resultCardFadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes resultCardFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(16px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.result-error-icon-box {
+    width: 68px;
+    height: 68px;
+    background: #FEF3C7;
+    border: 2px solid #FDE68A;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(217, 119, 6, 0.12);
+}
+
+.result-error-card h2 {
+    font-family: Poppins, sans-serif;
+    font-size: 22px;
+    font-weight: 700;
+    color: #1B2A23;
+    margin: 0 0 10px;
+    letter-spacing: -0.3px;
+}
+
+.result-error-card p {
+    font-size: 14.5px;
+    color: #5C6A63;
+    line-height: 1.6;
+    margin: 0 0 28px;
+    max-width: 380px;
+}
+
+.result-error-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 9px;
+    background: #176B52;
+    color: #FFFFFF !important;
+    text-decoration: none;
+    font-family: Poppins, sans-serif;
+    font-size: 14.5px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    padding: 13px 28px;
+    border-radius: 10px;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 14px rgba(23, 107, 82, 0.25);
+    transition: background 0.18s ease, transform 0.15s ease, box-shadow 0.18s ease;
+    width: 100%;
+    max-width: 280px;
+}
+
+.result-error-btn:hover {
+    background: #11563F;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(23, 107, 82, 0.35);
+    color: #FFFFFF !important;
+}
+
+.result-error-btn:active {
+    transform: scale(0.99);
 }
 
 
@@ -4592,21 +4694,16 @@ select:focus-visible {
 ========================================================= */
 
 .result-footer {
-    min-height: 75px;
-
-    padding: 18px 3%;
-
+    min-height: 65px;
+    padding: 16px 4%;
     display: flex;
     align-items: center;
     justify-content: space-between;
-
     gap: 20px;
-
-    background: #6B1D2F;
-
-    border-top: 1px solid rgba(212, 175, 55, 0.35);
-
+    background: #11563F;
+    border-top: 2px solid #D4AF37;
     color: #FFFFFF;
+    margin-top: auto;
 }
 
 
