@@ -905,12 +905,14 @@ app.get("/api/me", (req, res) => {
     if (!req.session.candidate) {
         return res.status(401).json({
             success: false,
+            authenticated: false,
             message: "Please log in."
         });
     }
 
     res.json({
         success: true,
+        authenticated: true,
         candidate: req.session.candidate
     });
 });
