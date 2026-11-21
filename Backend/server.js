@@ -387,6 +387,127 @@ app.post("/api/register", async (req, res) => {
     }
 });
 
+// Google Auth Configuration
+app.get("/api/auth/google/config", (req, res) => {
+    res.json({
+        success: true,
+        clientId: process.env.GOOGLE_CLIENT_ID || "",
+        configured: Boolean(process.env.GOOGLE_CLIENT_ID)
+    });
+});
+
+// Helper: Decode and extract payload from Google JWT
+function decodeGoogleCredential(token) {
+    if (!token || typeof token !== "string") return null;
+    const parts = token.split(".");
+    if (parts.length !== 3) return null;
+    try {
+        const payloadBase64 = parts[1].replace(/-/g, "+").replace(/_/g, "/");
+        const jsonStr = Buffer.from(payloadBase64, "base64").toString("utf8");
+        return JSON.parse(jsonStr);
+    } catch (e) {
+        return null;
+    }
+}
+
+// Google OAuth Credential Verification & Auto-Login/Registration
+app.post("/api/auth/google", async (req, res) => {
+    try {
+        const { credential } = req.body;
+        if (!credential) {
+            return res.status(400).json({ success: false, message: "Missing Google credential token." });
+        }
+
+        const payload = decodeGoogleCredential(credential);
+        if (!payload || !payload.email) {
+            return res.status(400).json({ success: false, message: "Invalid Google credential token." });
+        }
+
+        const googleEmail = String(payload.email).trim().toLowerCase();
+        const googleName = String(payload.name || payload.given_name || "Google Candidate").trim();
+
+        console.log(`[GOOGLE AUTH] Verified Google identity for "${googleEmail}" (${googleName})`);
+
+        // Check if candidate already exists by email or derived userId
+        let candidate = null;
+        if (unifiedDb.isSupabase) {
+            const { data } = await unifiedDb.supabase
+                .from("candidates")
+                .select("*")
+                .ilike("email", googleEmail)
+                .maybeSingle();
+            if (data) candidate = data;
+        }
+
+        if (!candidate) {
+            const baseUserId = googleEmail.split("@")[0].replace(/[^a-zA-Z0-9_]/g, "").slice(0, 20);
+            candidate = await unifiedDb.findCandidateByUserId(baseUserId);
+        }
+
+        let isNew = false;
+        if (!candidate) {
+            // Auto-register new student with Google verified details
+            isNew = true;
+            let cleanUserId = googleEmail.split("@")[0].replace(/[^a-zA-Z0-9_]/g, "").slice(0, 20);
+            if (cleanUserId.length < 3) cleanUserId = "stu_" + cleanUserId;
+
+            // Ensure unique ID
+            let checkExisting = await unifiedDb.findCandidateByUserId(cleanUserId);
+            if (checkExisting) {
+                cleanUserId = cleanUserId.slice(0, 15) + "_" + Math.floor(100 + Math.random() * 900);
+            }
+
+            const randomPassword = "G-" + Math.random().toString(36).slice(-8) + "-" + Date.now().toString(36);
+            const passwordHash = bcrypt.hashSync(randomPassword, 10);
+
+            candidate = await unifiedDb.createCandidate({
+                userId: cleanUserId,
+                passwordHash,
+                candidateName: googleName,
+                email: googleEmail,
+                phone: "",
+                role: "Student"
+            });
+            console.log(`[GOOGLE REGISTER] Automatically created account: "${candidate.user_id}"`);
+        }
+
+        // Establish session
+        req.session.regenerate((error) => {
+            if (error) {
+                console.error("Session error during Google login:", error);
+                return res.status(500).json({ success: false, message: "Unable to create session." });
+            }
+
+            req.session.candidate = {
+                id: candidate.id,
+                userId: candidate.user_id,
+                name: candidate.candidate_name,
+                email: candidate.email || googleEmail,
+                phone: candidate.phone || "",
+                role: candidate.role || "Student"
+            };
+
+            req.session.save((saveErr) => {
+                if (saveErr) {
+                    console.error("Session save error during Google login:", saveErr);
+                }
+                return res.json({
+                    success: true,
+                    isNew,
+                    message: isNew
+                        ? `Welcome to SLOGON Academy, ${googleName}! Your account has been verified from Google.`
+                        : `Welcome back, ${googleName}!`,
+                    candidate: req.session.candidate
+                });
+            });
+        });
+
+    } catch (err) {
+        console.error("Google Auth Error:", err);
+        return res.status(500).json({ success: false, message: "Google authentication failed: " + err.message });
+    }
+});
+
 // Check current login
 app.get("/api/me", (req, res) => {
     if (!req.session.candidate) {

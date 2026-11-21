@@ -208,42 +208,117 @@ if (toggleRegPassword && regPassword) {
 }
 
 // -------------------------------------------------------------
-// GOOGLE AUTH & AUTOFILL PROMPT
+// GOOGLE IDENTITY SERVICES (GIS) AUTHENTICATION
 // -------------------------------------------------------------
 
-function handleGoogleAuthPrompt(isRegister = false) {
-    const emailHint = prompt(
-        "Google Authentication:\nEnter your Google Email to autofill your SLOGON candidate profile:"
-    );
+let googleClientId = null;
 
-    if (emailHint && emailHint.trim()) {
-        const clean = emailHint.trim().toLowerCase();
-        if (isRegister) {
-            if (regEmail) regEmail.value = clean;
-            const nameGuess = clean.split("@")[0].replace(/[._]/g, " ").replace(/\b\w/g, c => c.toUpperCase());
-            if (regName && !regName.value) regName.value = nameGuess;
-            const userGuess = clean.split("@")[0].replace(/[^a-zA-Z0-9_]/g, "").slice(0, 20);
-            if (regUserId && !regUserId.value) regUserId.value = userGuess;
-            if (regPhone) regPhone.focus({ preventScroll: true });
-            if (regMessage) {
-                regMessage.style.color = "#16A34A";
-                regMessage.textContent = `✓ Google details autofilled from ${clean}. Please set your phone & SLOGON password.`;
+async function checkGoogleConfig() {
+    try {
+        const res = await fetch("/api/auth/google/config");
+        if (res.ok) {
+            const data = await res.json();
+            if (data.success && data.clientId) {
+                googleClientId = data.clientId;
+                initGoogleClient();
             }
-        } else {
-            const userField = document.getElementById("userId");
-            if (userField) userField.value = clean.split("@")[0];
-            if (passwordInput) passwordInput.focus({ preventScroll: true });
+        }
+    } catch (e) {
+        console.log("Google config lookup skipped:", e);
+    }
+}
+
+function initGoogleClient() {
+    if (!googleClientId) return;
+    if (typeof google === "undefined" || !google.accounts || !google.accounts.id) {
+        setTimeout(initGoogleClient, 200);
+        return;
+    }
+
+    try {
+        google.accounts.id.initialize({
+            client_id: googleClientId,
+            callback: handleGoogleCredentialResponse,
+            auto_select: false,
+            cancel_on_tap_outside: true
+        });
+        console.log("Google Identity Services initialized successfully.");
+    } catch (e) {
+        console.error("GIS init error:", e);
+    }
+}
+
+async function handleGoogleCredentialResponse(response) {
+    const token = response && response.credential;
+    if (!token) return;
+
+    const activeMsg = currentTab === "register" ? regMessage : message;
+    if (activeMsg) {
+        activeMsg.style.color = "#176B52";
+        activeMsg.textContent = "Verifying your Google account...";
+    }
+
+    try {
+        const res = await fetch("/api/auth/google", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            credentials: "same-origin",
+            body: JSON.stringify({ credential: token })
+        });
+
+        const data = await res.json();
+        if (!res.ok || !data.success) {
+            throw new Error(data.message || "Google verification failed.");
+        }
+
+        if (activeMsg) {
+            activeMsg.style.color = "#16A34A";
+            activeMsg.textContent = "✓ " + (data.message || "Google verification successful! Redirecting...");
+        }
+
+        setTimeout(() => {
+            const targetPage = requestedPage && requestedPage !== "admin.html" && allowedPages.includes(requestedPage)
+                ? requestedPage
+                : redirectPage;
+            window.location.replace(targetPage);
+        }, 500);
+
+    } catch (err) {
+        console.error("Google Auth verification error:", err);
+        if (activeMsg) {
+            activeMsg.style.color = "#DC2626";
+            activeMsg.textContent = err.message || "Failed to authenticate with Google.";
         }
     }
 }
 
+function triggerGoogleAuth() {
+    const activeMsg = currentTab === "register" ? regMessage : message;
+
+    if (googleClientId && typeof google !== "undefined" && google.accounts && google.accounts.id) {
+        // Trigger the official Google Account Chooser popup
+        google.accounts.id.prompt((notification) => {
+            if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
+                console.log("Google One Tap prompt skipped or not displayed:", notification.getNotDisplayedReason());
+            }
+        });
+    } else {
+        // Clear informative guidance when Client ID is pending setup in .env
+        const note = "ℹ️ Google Account Chooser Setup:\n\nTo allow 1-click Google account selection directly from Google:\n1. Open Google Cloud Console (console.cloud.google.com)\n2. Create an OAuth 2.0 Web Client ID\n3. Set GOOGLE_CLIENT_ID in your .env file.\n\nIn the meantime, candidates can register and sign in directly using their SLOGON Account ID and Password!";
+        alert(note);
+    }
+}
+
 if (googleLoginBtn) {
-    googleLoginBtn.addEventListener("click", () => handleGoogleAuthPrompt(false));
+    googleLoginBtn.addEventListener("click", triggerGoogleAuth);
 }
 
 if (googleRegisterBtn) {
-    googleRegisterBtn.addEventListener("click", () => handleGoogleAuthPrompt(true));
+    googleRegisterBtn.addEventListener("click", triggerGoogleAuth);
 }
+
+// Check Google config on page load
+checkGoogleConfig();
 
 // -------------------------------------------------------------
 // LOGIN FORM SUBMISSION
