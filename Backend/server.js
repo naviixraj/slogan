@@ -4,6 +4,7 @@ const express = require("express");
 const path = require("path");
 const fs = require("fs");
 const https = require("https");
+const crypto = require("crypto");
 const bcrypt = require("bcryptjs");
 const session = require("express-session");
 const helmet = require("helmet");
@@ -387,6 +388,39 @@ app.post("/api/register", async (req, res) => {
     }
 });
 
+// -------------------------------------------------------------
+// GOOGLE OAUTH 2.0 & IDENTITY SERVICES
+// -------------------------------------------------------------
+
+function generateRegistrationToken(data) {
+    const payload = Buffer.from(JSON.stringify({ ...data, exp: Date.now() + 15 * 60 * 1000 })).toString("base64url");
+    const sig = crypto.createHmac("sha256", SESSION_SECRET).update(payload).digest("base64url");
+    return `${payload}.${sig}`;
+}
+
+function verifyRegistrationToken(tokenStr) {
+    if (!tokenStr || typeof tokenStr !== "string") return null;
+    const parts = tokenStr.split(".");
+    if (parts.length !== 2) return null;
+    const [payload, sig] = parts;
+    const expectedSig = crypto.createHmac("sha256", SESSION_SECRET).update(payload).digest("base64url");
+    if (sig !== expectedSig) return null;
+    try {
+        const data = JSON.parse(Buffer.from(payload, "base64url").toString("utf8"));
+        if (!data || !data.exp || Date.now() > data.exp) return null;
+        return data;
+    } catch (e) {
+        return null;
+    }
+}
+
+function getAppBaseUrl(req) {
+    if (process.env.APP_URL) return process.env.APP_URL.replace(/\/$/, "");
+    const proto = req.headers["x-forwarded-proto"] || req.protocol || "http";
+    const host = req.headers["x-forwarded-host"] || req.get("host") || `localhost:${PORT}`;
+    return `${proto}://${host}`;
+}
+
 // Google Auth Configuration
 app.get("/api/auth/google/config", (req, res) => {
     res.json({
@@ -394,6 +428,24 @@ app.get("/api/auth/google/config", (req, res) => {
         clientId: process.env.GOOGLE_CLIENT_ID || "",
         configured: Boolean(process.env.GOOGLE_CLIENT_ID)
     });
+});
+
+// Start Google OAuth flow (Account Picker)
+app.get("/api/auth/google/start", (req, res) => {
+    const clientId = process.env.GOOGLE_CLIENT_ID;
+    if (!clientId) {
+        return res.redirect("/login.html?error=google_not_configured");
+    }
+    const baseUrl = getAppBaseUrl(req);
+    const redirectUri = `${baseUrl}/api/auth/google/callback`;
+    const googleAuthUrl = `https://accounts.google.com/o/oauth2/v2/auth?` +
+        `client_id=${encodeURIComponent(clientId)}&` +
+        `redirect_uri=${encodeURIComponent(redirectUri)}&` +
+        `response_type=code&` +
+        `scope=${encodeURIComponent("openid email profile")}&` +
+        `prompt=select_account&` +
+        `access_type=offline`;
+    res.redirect(googleAuthUrl);
 });
 
 // Helper: Decode and extract payload from Google JWT
@@ -410,25 +462,52 @@ function decodeGoogleCredential(token) {
     }
 }
 
-// Google OAuth Credential Verification & Auto-Login/Registration
-app.post("/api/auth/google", async (req, res) => {
+// Google OAuth Callback (Exchanges authorization code for profile)
+app.get("/api/auth/google/callback", async (req, res) => {
+    const { code, error } = req.query;
+    if (error) {
+        console.warn("[GOOGLE OAUTH] Google returned error:", error);
+        return res.redirect("/login.html?error=google_denied");
+    }
+    if (!code) {
+        return res.redirect("/login.html");
+    }
+
     try {
-        const { credential } = req.body;
-        if (!credential) {
-            return res.status(400).json({ success: false, message: "Missing Google credential token." });
+        const clientId = process.env.GOOGLE_CLIENT_ID;
+        const clientSecret = process.env.GOOGLE_CLIENT_SECRET || "";
+        const baseUrl = getAppBaseUrl(req);
+        const redirectUri = `${baseUrl}/api/auth/google/callback`;
+
+        const tokenRes = await fetch("https://oauth2.googleapis.com/token", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams({
+                code: String(code),
+                client_id: clientId,
+                client_secret: clientSecret,
+                redirect_uri: redirectUri,
+                grant_type: "authorization_code"
+            })
+        });
+
+        const tokenData = await tokenRes.json();
+        if (!tokenRes.ok || !tokenData.id_token) {
+            console.error("[GOOGLE OAUTH] Token exchange failed:", tokenData);
+            return res.redirect("/login.html?error=google_token_failed");
         }
 
-        const payload = decodeGoogleCredential(credential);
+        const payload = decodeGoogleCredential(tokenData.id_token);
         if (!payload || !payload.email) {
-            return res.status(400).json({ success: false, message: "Invalid Google credential token." });
+            return res.redirect("/login.html?error=invalid_google_profile");
         }
 
         const googleEmail = String(payload.email).trim().toLowerCase();
         const googleName = String(payload.name || payload.given_name || "Google Candidate").trim();
+        const googleSub = String(payload.sub || "");
 
-        console.log(`[GOOGLE AUTH] Verified Google identity for "${googleEmail}" (${googleName})`);
+        console.log(`[GOOGLE OAUTH] Verified account: ${googleEmail} (${googleName})`);
 
-        // Check if candidate already exists by email or derived userId
         let candidate = null;
         if (unifiedDb.isSupabase) {
             const { data } = await unifiedDb.supabase
@@ -444,34 +523,93 @@ app.post("/api/auth/google", async (req, res) => {
             candidate = await unifiedDb.findCandidateByUserId(baseUserId);
         }
 
-        let isNew = false;
-        if (!candidate) {
-            // Auto-register new student with Google verified details
-            isNew = true;
-            let cleanUserId = googleEmail.split("@")[0].replace(/[^a-zA-Z0-9_]/g, "").slice(0, 20);
-            if (cleanUserId.length < 3) cleanUserId = "stu_" + cleanUserId;
-
-            // Ensure unique ID
-            let checkExisting = await unifiedDb.findCandidateByUserId(cleanUserId);
-            if (checkExisting) {
-                cleanUserId = cleanUserId.slice(0, 15) + "_" + Math.floor(100 + Math.random() * 900);
-            }
-
-            const randomPassword = "G-" + Math.random().toString(36).slice(-8) + "-" + Date.now().toString(36);
-            const passwordHash = bcrypt.hashSync(randomPassword, 10);
-
-            candidate = await unifiedDb.createCandidate({
-                userId: cleanUserId,
-                passwordHash,
-                candidateName: googleName,
-                email: googleEmail,
-                phone: "",
-                role: "Student"
+        if (candidate) {
+            // Existing student -> Log in immediately!
+            req.session.regenerate((err) => {
+                if (err) {
+                    console.error("Session error:", err);
+                    return res.redirect("/login.html?error=session_error");
+                }
+                req.session.candidate = {
+                    id: candidate.id,
+                    userId: candidate.user_id,
+                    name: candidate.candidate_name,
+                    email: candidate.email || googleEmail,
+                    phone: candidate.phone || "",
+                    role: candidate.role || "Student"
+                };
+                req.session.save(() => {
+                    res.redirect("/tests.html");
+                });
             });
-            console.log(`[GOOGLE REGISTER] Automatically created account: "${candidate.user_id}"`);
+        } else {
+            // New student -> Redirect to Create SLOGON Password slide!
+            const regToken = generateRegistrationToken({
+                email: googleEmail,
+                name: googleName,
+                googleId: googleSub
+            });
+            const redirectUrl = `/login.html?complete_reg=1&token=${encodeURIComponent(regToken)}&email=${encodeURIComponent(googleEmail)}&name=${encodeURIComponent(googleName)}`;
+            res.redirect(redirectUrl);
+        }
+    } catch (err) {
+        console.error("[GOOGLE OAUTH] Callback error:", err);
+        res.redirect("/login.html?error=auth_failed");
+    }
+});
+
+// Google One-Tap / GIS verification endpoint (Supports instant check)
+app.post("/api/auth/google", async (req, res) => {
+    try {
+        const { credential } = req.body;
+        if (!credential) {
+            return res.status(400).json({ success: false, message: "Missing Google credential token." });
         }
 
-        // Establish session
+        const payload = decodeGoogleCredential(credential);
+        if (!payload || !payload.email) {
+            return res.status(400).json({ success: false, message: "Invalid Google credential token." });
+        }
+
+        const googleEmail = String(payload.email).trim().toLowerCase();
+        const googleName = String(payload.name || payload.given_name || "Google Candidate").trim();
+        const googleSub = String(payload.sub || "");
+
+        console.log(`[GOOGLE AUTH] Verified Google identity for "${googleEmail}" (${googleName})`);
+
+        let candidate = null;
+        if (unifiedDb.isSupabase) {
+            const { data } = await unifiedDb.supabase
+                .from("candidates")
+                .select("*")
+                .ilike("email", googleEmail)
+                .maybeSingle();
+            if (data) candidate = data;
+        }
+
+        if (!candidate) {
+            const baseUserId = googleEmail.split("@")[0].replace(/[^a-zA-Z0-9_]/g, "").slice(0, 20);
+            candidate = await unifiedDb.findCandidateByUserId(baseUserId);
+        }
+
+        if (!candidate) {
+            // New Candidate -> Return registration token so UI transitions to "Create Password"
+            const regToken = generateRegistrationToken({
+                email: googleEmail,
+                name: googleName,
+                googleId: googleSub
+            });
+            return res.json({
+                success: true,
+                isNew: true,
+                needsPasswordSetup: true,
+                token: regToken,
+                email: googleEmail,
+                name: googleName
+            });
+        }
+
+        // Existing student -> establish session
         req.session.regenerate((error) => {
             if (error) {
                 console.error("Session error during Google login:", error);
@@ -488,16 +626,13 @@ app.post("/api/auth/google", async (req, res) => {
             };
 
             req.session.save((saveErr) => {
-                if (saveErr) {
-                    console.error("Session save error during Google login:", saveErr);
-                }
+                if (saveErr) console.error("Session save error:", saveErr);
                 return res.json({
                     success: true,
-                    isNew,
-                    message: isNew
-                        ? `Welcome to SLOGON Academy, ${googleName}! Your account has been verified from Google.`
-                        : `Welcome back, ${googleName}!`,
-                    candidate: req.session.candidate
+                    isNew: false,
+                    needsPasswordSetup: false,
+                    message: `Welcome back, ${googleName}!`,
+                    redirect: "/tests.html"
                 });
             });
         });
@@ -505,6 +640,110 @@ app.post("/api/auth/google", async (req, res) => {
     } catch (err) {
         console.error("Google Auth Error:", err);
         return res.status(500).json({ success: false, message: "Google authentication failed: " + err.message });
+    }
+});
+
+// Complete Google Student Registration (Sets Slogan Password & Phone)
+app.post("/api/auth/google/complete-registration", async (req, res) => {
+    try {
+        const { token, phone, userId, password, confirmPassword } = req.body;
+        if (!token) {
+            return res.status(400).json({ success: false, message: "Missing registration session token." });
+        }
+
+        const tokenData = verifyRegistrationToken(token);
+        if (!tokenData) {
+            return res.status(400).json({
+                success: false,
+                message: "Registration session has expired. Please tap 'Continue with Google' again."
+            });
+        }
+
+        const cleanEmail = String(tokenData.email).trim().toLowerCase();
+        const candidateName = String(tokenData.name).trim();
+
+        if (!phone || typeof phone !== "string") {
+            return res.status(400).json({ success: false, message: "Please enter your mobile phone number." });
+        }
+        const cleanPhone = phone.replace(/[^0-9]/g, "");
+        if (cleanPhone.length < 10 || cleanPhone.length > 15) {
+            return res.status(400).json({ success: false, message: "Mobile number must be at least 10 digits." });
+        }
+
+        if (!userId || typeof userId !== "string") {
+            return res.status(400).json({ success: false, message: "Please choose a SLOGON User ID." });
+        }
+        const cleanUserId = userId.trim().replace(/[^a-zA-Z0-9_]/g, "");
+        if (cleanUserId.length < 3 || cleanUserId.length > 30) {
+            return res.status(400).json({ success: false, message: "User ID must be between 3 and 30 characters (letters, numbers, underscores)." });
+        }
+
+        if (!password || typeof password !== "string" || password.length < 6) {
+            return res.status(400).json({ success: false, message: "Password must be at least 6 characters long." });
+        }
+        if (confirmPassword !== undefined && password !== confirmPassword) {
+            return res.status(400).json({ success: false, message: "Passwords do not match." });
+        }
+
+        // Check if userId is already taken
+        const existing = await unifiedDb.findCandidateByUserId(cleanUserId);
+        if (existing) {
+            return res.status(400).json({ success: false, message: `The User ID "${cleanUserId}" is already taken. Please choose another.` });
+        }
+
+        // Check if email already registered
+        if (unifiedDb.isSupabase) {
+            const { data: emailExisting } = await unifiedDb.supabase
+                .from("candidates")
+                .select("id")
+                .ilike("email", cleanEmail)
+                .maybeSingle();
+            if (emailExisting) {
+                return res.status(400).json({ success: false, message: `An account with ${cleanEmail} already exists. Please sign in instead.` });
+            }
+        }
+
+        const passwordHash = bcrypt.hashSync(password, 12);
+
+        const newCandidate = await unifiedDb.createCandidate({
+            userId: cleanUserId,
+            passwordHash,
+            candidateName,
+            email: cleanEmail,
+            phone: cleanPhone,
+            role: "Student"
+        });
+
+        console.log(`[GOOGLE REGISTRATION COMPLETE] Created student: "${newCandidate.user_id}" with password & phone.`);
+
+        req.session.regenerate((error) => {
+            if (error) {
+                console.error("Session error after Google registration:", error);
+                return res.status(500).json({ success: false, message: "Unable to establish session." });
+            }
+
+            req.session.candidate = {
+                id: newCandidate.id,
+                userId: newCandidate.user_id,
+                name: newCandidate.candidate_name,
+                email: newCandidate.email,
+                phone: newCandidate.phone || cleanPhone,
+                role: newCandidate.role || "Student"
+            };
+
+            req.session.save((saveErr) => {
+                if (saveErr) console.error("Session save error:", saveErr);
+                return res.json({
+                    success: true,
+                    message: "Account created successfully! Redirecting to test portal...",
+                    redirect: "/tests.html"
+                });
+            });
+        });
+
+    } catch (err) {
+        console.error("Google complete registration error:", err);
+        return res.status(500).json({ success: false, message: "Registration failed: " + err.message });
     }
 });
 

@@ -46,6 +46,24 @@ const eyeOpenRegIcon = document.getElementById("eyeOpenRegIcon");
 const eyeClosedRegIcon = document.getElementById("eyeClosedRegIcon");
 const googleRegisterBtn = document.getElementById("googleRegisterBtn");
 
+// Google Setup Elements (Password Creation)
+const googleSetupSlide = document.getElementById("googleSetupSlide");
+const googleSetupForm = document.getElementById("googleSetupForm");
+const gSetupToken = document.getElementById("gSetupToken");
+const gSetupPhone = document.getElementById("gSetupPhone");
+const gSetupUserId = document.getElementById("gSetupUserId");
+const gSetupPassword = document.getElementById("gSetupPassword");
+const gSetupConfirmPassword = document.getElementById("gSetupConfirmPassword");
+const gSetupSubmitBtn = document.getElementById("gSetupSubmitBtn");
+const gSetupMessage = document.getElementById("gSetupMessage");
+const gVerifiedName = document.getElementById("gVerifiedName");
+const gVerifiedEmail = document.getElementById("gVerifiedEmail");
+const toggleGSetupPassword = document.getElementById("toggleGSetupPassword");
+const eyeOpenGSetupIcon = document.getElementById("eyeOpenGSetupIcon");
+const eyeClosedGSetupIcon = document.getElementById("eyeClosedGSetupIcon");
+const linkBackFromGSetup = document.getElementById("linkBackFromGSetup");
+const authSwitchWrapper = document.querySelector(".auth-switch-wrapper");
+
 // Destination Navigation
 const params = new URLSearchParams(window.location.search);
 const requestedPage = params.get("next");
@@ -271,6 +289,17 @@ async function handleGoogleCredentialResponse(response) {
             throw new Error(data.message || "Google verification failed.");
         }
 
+        // If new student, transition to Create SLOGON Password screen
+        if (data.isNew && data.needsPasswordSetup) {
+            showGoogleSetupSlide({
+                token: data.token,
+                email: data.email,
+                name: data.name
+            });
+            return;
+        }
+
+        // Existing student: redirect to test portal
         if (activeMsg) {
             activeMsg.style.color = "#16A34A";
             activeMsg.textContent = "✓ " + (data.message || "Google verification successful! Redirecting...");
@@ -295,18 +324,180 @@ async function handleGoogleCredentialResponse(response) {
 function triggerGoogleAuth() {
     const activeMsg = currentTab === "register" ? regMessage : message;
 
-    if (googleClientId && typeof google !== "undefined" && google.accounts && google.accounts.id) {
-        // Trigger the official Google Account Chooser popup
-        google.accounts.id.prompt((notification) => {
-            if (notification.isNotDisplayed() || notification.isSkippedMoment()) {
-                console.log("Google One Tap prompt skipped or not displayed:", notification.getNotDisplayedReason());
-            }
-        });
+    if (googleClientId) {
+        // Direct to Google's official Account Chooser screen
+        // Opens the standard Google account selection UI on both mobile and desktop
+        window.location.href = "/api/auth/google/start";
     } else {
-        // Clear informative guidance when Client ID is pending setup in .env
-        const note = "ℹ️ Google Account Chooser Setup:\n\nTo allow 1-click Google account selection directly from Google:\n1. Open Google Cloud Console (console.cloud.google.com)\n2. Create an OAuth 2.0 Web Client ID\n3. Set GOOGLE_CLIENT_ID in your .env file.\n\nIn the meantime, candidates can register and sign in directly using their SLOGON Account ID and Password!";
-        alert(note);
+        // Graceful inline notice if Google credentials are being configured in .env / Vercel
+        if (activeMsg) {
+            activeMsg.style.color = "#D97706";
+            activeMsg.textContent = "Google Sign-In is initializing. Please sign in or register with your User ID & Password below.";
+        }
     }
+}
+
+// -------------------------------------------------------------
+// GOOGLE SETUP SLIDE CONTROLLER (PASSWORD & PHONE CREATION)
+// -------------------------------------------------------------
+
+function showGoogleSetupSlide(data) {
+    if (!googleSetupSlide) return;
+
+    if (loginSlide) {
+        loginSlide.classList.remove("active", "slide-in-right", "slide-in-left");
+        loginSlide.style.display = "none";
+    }
+    if (registerSlide) {
+        registerSlide.classList.remove("active", "slide-in-right", "slide-in-left");
+        registerSlide.style.display = "none";
+    }
+
+    if (authSwitchWrapper) {
+        authSwitchWrapper.style.display = "none";
+    }
+
+    if (gSetupToken) gSetupToken.value = data.token || "";
+    if (gVerifiedName) gVerifiedName.textContent = data.name || "Google Candidate";
+    if (gVerifiedEmail) gVerifiedEmail.textContent = data.email || "";
+
+    // Prepopulate suggested User ID from email prefix
+    if (gSetupUserId && !gSetupUserId.value && data.email) {
+        const base = data.email.split("@")[0].replace(/[^a-zA-Z0-9_]/g, "");
+        gSetupUserId.value = base.slice(0, 20);
+    }
+
+    googleSetupSlide.style.display = "block";
+    googleSetupSlide.classList.add("active", "slide-in-right");
+
+    if (gSetupPhone) {
+        setTimeout(() => gSetupPhone.focus({ preventScroll: true }), 150);
+    }
+}
+
+function hideGoogleSetupSlide() {
+    if (!googleSetupSlide) return;
+    googleSetupSlide.classList.remove("active", "slide-in-right", "slide-in-left");
+    googleSetupSlide.style.display = "none";
+
+    if (authSwitchWrapper) {
+        authSwitchWrapper.style.display = "flex";
+    }
+
+    switchToLogin();
+}
+
+if (linkBackFromGSetup) {
+    linkBackFromGSetup.addEventListener("click", (e) => {
+        e.preventDefault();
+        hideGoogleSetupSlide();
+    });
+}
+
+// Password visibility toggle for Google setup
+if (toggleGSetupPassword && gSetupPassword) {
+    toggleGSetupPassword.addEventListener("click", () => {
+        const isPassword = gSetupPassword.type === "password";
+        gSetupPassword.type = isPassword ? "text" : "password";
+        if (eyeOpenGSetupIcon && eyeClosedGSetupIcon) {
+            eyeOpenGSetupIcon.style.display = isPassword ? "none" : "block";
+            eyeClosedGSetupIcon.style.display = isPassword ? "block" : "none";
+        }
+    });
+}
+
+// Handle Google Setup Form Submission (Finish Registration & Set Password)
+if (googleSetupForm) {
+    googleSetupForm.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        if (gSetupMessage) gSetupMessage.textContent = "";
+
+        const token = gSetupToken ? gSetupToken.value : "";
+        const phone = gSetupPhone ? gSetupPhone.value.trim() : "";
+        const userId = gSetupUserId ? gSetupUserId.value.trim() : "";
+        const password = gSetupPassword ? gSetupPassword.value : "";
+        const confirmPassword = gSetupConfirmPassword ? gSetupConfirmPassword.value : "";
+
+        const cleanPhone = phone.replace(/[^0-9]/g, "");
+        if (cleanPhone.length < 10) {
+            if (gSetupMessage) {
+                gSetupMessage.style.color = "#DC2626";
+                gSetupMessage.textContent = "Please enter a valid 10-digit mobile phone number.";
+            }
+            if (gSetupPhone) gSetupPhone.focus({ preventScroll: true });
+            return;
+        }
+
+        if (!userId || userId.length < 3) {
+            if (gSetupMessage) {
+                gSetupMessage.style.color = "#DC2626";
+                gSetupMessage.textContent = "Please choose a User ID with at least 3 characters.";
+            }
+            if (gSetupUserId) gSetupUserId.focus({ preventScroll: true });
+            return;
+        }
+
+        if (!password || password.length < 6) {
+            if (gSetupMessage) {
+                gSetupMessage.style.color = "#DC2626";
+                gSetupMessage.textContent = "Password must be at least 6 characters long.";
+            }
+            if (gSetupPassword) gSetupPassword.focus({ preventScroll: true });
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            if (gSetupMessage) {
+                gSetupMessage.style.color = "#DC2626";
+                gSetupMessage.textContent = "Passwords do not match. Please re-enter.";
+            }
+            if (gSetupConfirmPassword) gSetupConfirmPassword.focus({ preventScroll: true });
+            return;
+        }
+
+        if (gSetupSubmitBtn) {
+            gSetupSubmitBtn.disabled = true;
+            gSetupSubmitBtn.textContent = "FINISHING REGISTRATION...";
+        }
+
+        try {
+            const res = await fetch("/api/auth/google/complete-registration", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                credentials: "same-origin",
+                body: JSON.stringify({ token, phone, userId, password, confirmPassword })
+            });
+
+            const data = await res.json();
+            if (!res.ok || !data.success) {
+                throw new Error(data.message || "Registration failed. Please try again.");
+            }
+
+            if (gSetupMessage) {
+                gSetupMessage.style.color = "#16A34A";
+                gSetupMessage.textContent = "✓ " + (data.message || "Account created! Redirecting to test portal...");
+            }
+
+            const targetPage = requestedPage && requestedPage !== "admin.html" && allowedPages.includes(requestedPage)
+                ? requestedPage
+                : redirectPage;
+
+            setTimeout(() => {
+                window.location.replace(targetPage);
+            }, 600);
+
+        } catch (err) {
+            console.error("Complete registration error:", err);
+            if (gSetupMessage) {
+                gSetupMessage.style.color = "#DC2626";
+                gSetupMessage.textContent = err.message;
+            }
+            if (gSetupSubmitBtn) {
+                gSetupSubmitBtn.disabled = false;
+                gSetupSubmitBtn.textContent = "FINISH REGISTRATION & START";
+            }
+        }
+    });
 }
 
 if (googleLoginBtn) {
@@ -315,6 +506,25 @@ if (googleLoginBtn) {
 
 if (googleRegisterBtn) {
     googleRegisterBtn.addEventListener("click", triggerGoogleAuth);
+}
+
+// Check URL query parameters for Google OAuth return or errors
+if (params.get("complete_reg") === "1" && params.get("token")) {
+    showGoogleSetupSlide({
+        token: params.get("token"),
+        email: params.get("email") || "",
+        name: params.get("name") || ""
+    });
+} else if (params.get("error") === "google_not_configured") {
+    if (message) {
+        message.style.color = "#D97706";
+        message.textContent = "Google Sign-In is initializing. Please sign in with your User ID & Password.";
+    }
+} else if (params.get("error") === "google_denied") {
+    if (message) {
+        message.style.color = "#D97706";
+        message.textContent = "Google account selection was cancelled.";
+    }
 }
 
 // Check Google config on page load
