@@ -51,6 +51,13 @@ function normalizeCandidate(candidate) {
     if (!candidate) return null;
     let phone = candidate.phone || null;
     let email = candidate.email || null;
+    let examCombination = candidate.exam_combination || candidate.examCombination || null;
+
+    if (email && email.includes("|combo:")) {
+        const parts = email.split("|combo:");
+        email = parts[0] || null;
+        examCombination = parts[1] || examCombination;
+    }
 
     if (!phone && email && email.includes("|tel:")) {
         const parts = email.split("|tel:");
@@ -61,7 +68,8 @@ function normalizeCandidate(candidate) {
     return {
         ...candidate,
         email,
-        phone
+        phone,
+        examCombination: examCombination || "Paper 1 - General Paper"
     };
 }
 
@@ -115,11 +123,12 @@ async function listCandidates() {
     }
 }
 
-async function createCandidate({ userId, passwordHash, candidateName, email, phone, role = "Student" }) {
+async function createCandidate({ userId, passwordHash, candidateName, email, phone, examCombination, role = "Student" }) {
     const cleanUserId = String(userId || "").trim();
     const cleanName = candidateName ? String(candidateName).trim() : cleanUserId;
     const cleanEmail = email ? String(email).trim() : "";
     const cleanPhone = phone ? String(phone).trim() : "";
+    const cleanCombo = examCombination ? String(examCombination).trim() : "Paper 1 - General Paper";
 
     if (isSupabase) {
         const hasPhone = await checkSupabaseHasPhone();
@@ -131,12 +140,17 @@ async function createCandidate({ userId, passwordHash, candidateName, email, pho
             active: 1
         };
 
+        let encodedEmail = cleanEmail;
+        if (cleanCombo) {
+            encodedEmail = `${encodedEmail}|combo:${cleanCombo}`;
+        }
+
         if (hasPhone) {
-            insertObj.email = cleanEmail || null;
+            insertObj.email = encodedEmail || null;
             insertObj.phone = cleanPhone || null;
         } else {
             // Encode phone fallback in email if native column is not yet added in Supabase
-            insertObj.email = cleanPhone ? `${cleanEmail}|tel:${cleanPhone}` : (cleanEmail || null);
+            insertObj.email = cleanPhone ? `${encodedEmail}|tel:${cleanPhone}` : (encodedEmail || null);
         }
 
         const { data, error } = await supabase
@@ -148,15 +162,16 @@ async function createCandidate({ userId, passwordHash, candidateName, email, pho
         return normalizeCandidate(data);
     } else {
         const info = sqliteDb.prepare(`
-            INSERT INTO candidates (user_id, password_hash, candidate_name, email, phone, role, active)
-            VALUES (?, ?, ?, ?, ?, ?, 1)
-        `).run(cleanUserId, passwordHash, cleanName, cleanEmail || null, cleanPhone || null, role);
+            INSERT INTO candidates (user_id, password_hash, candidate_name, email, phone, exam_combination, role, active)
+            VALUES (?, ?, ?, ?, ?, ?, ?, 1)
+        `).run(cleanUserId, passwordHash, cleanName, cleanEmail || null, cleanPhone || null, cleanCombo, role);
         return {
             id: info.lastInsertRowid,
             user_id: cleanUserId,
             candidate_name: cleanName,
             email: cleanEmail || null,
             phone: cleanPhone || null,
+            examCombination: cleanCombo,
             role: role,
             active: 1
         };

@@ -38,6 +38,7 @@ const regMessage = document.getElementById("regMessage");
 const regName = document.getElementById("regName");
 const regEmail = document.getElementById("regEmail");
 const regPhone = document.getElementById("regPhone");
+const regExamCombination = document.getElementById("regExamCombination");
 const regUserId = document.getElementById("regUserId");
 const regPassword = document.getElementById("regPassword");
 const regConfirmPassword = document.getElementById("regConfirmPassword");
@@ -51,6 +52,7 @@ const googleSetupSlide = document.getElementById("googleSetupSlide");
 const googleSetupForm = document.getElementById("googleSetupForm");
 const gSetupToken = document.getElementById("gSetupToken");
 const gSetupPhone = document.getElementById("gSetupPhone");
+const gSetupExamCombination = document.getElementById("gSetupExamCombination");
 const gSetupUserId = document.getElementById("gSetupUserId");
 const gSetupPassword = document.getElementById("gSetupPassword");
 const gSetupConfirmPassword = document.getElementById("gSetupConfirmPassword");
@@ -418,6 +420,7 @@ if (googleSetupForm) {
 
         const token = gSetupToken ? gSetupToken.value : "";
         const phone = gSetupPhone ? gSetupPhone.value.trim() : "";
+        const examCombination = gSetupExamCombination ? gSetupExamCombination.value.trim() : "";
         const userId = gSetupUserId ? gSetupUserId.value.trim() : "";
         const password = gSetupPassword ? gSetupPassword.value : "";
         const confirmPassword = gSetupConfirmPassword ? gSetupConfirmPassword.value : "";
@@ -429,6 +432,15 @@ if (googleSetupForm) {
                 gSetupMessage.textContent = "Please enter a valid 10-digit mobile phone number.";
             }
             if (gSetupPhone) gSetupPhone.focus({ preventScroll: true });
+            return;
+        }
+
+        if (!examCombination) {
+            if (gSetupMessage) {
+                gSetupMessage.style.color = "#DC2626";
+                gSetupMessage.textContent = "Please choose your Exam Combination.";
+            }
+            if (gSetupExamCombination) gSetupExamCombination.focus({ preventScroll: true });
             return;
         }
 
@@ -469,7 +481,7 @@ if (googleSetupForm) {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 credentials: "same-origin",
-                body: JSON.stringify({ token, phone, userId, password, confirmPassword })
+                body: JSON.stringify({ token, phone, examCombination, userId, password, confirmPassword })
             });
 
             const data = await res.json();
@@ -672,6 +684,16 @@ if (registerForm) {
             return;
         }
 
+        const examCombination = regExamCombination ? regExamCombination.value.trim() : "";
+        if (!examCombination) {
+            if (regMessage) {
+                regMessage.style.color = "#DC2626";
+                regMessage.textContent = "Please choose your Exam Combination.";
+            }
+            if (regExamCombination) regExamCombination.focus({ preventScroll: true });
+            return;
+        }
+
         if (!userId || userId.length < 3 || userId.length > 30) {
             if (regMessage) {
                 regMessage.style.color = "#DC2626";
@@ -720,6 +742,7 @@ if (registerForm) {
                     candidateName,
                     email,
                     phone,
+                    examCombination,
                     userId,
                     password,
                     confirmPassword

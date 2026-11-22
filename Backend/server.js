@@ -442,11 +442,12 @@ app.get("/api/whatsapp/config", (req, res) => {
 // Candidate Self-Registration API
 app.post("/api/register", async (req, res) => {
     try {
-        const { candidateName, email, phone, userId, password, confirmPassword } = req.body;
+        const { candidateName, email, phone, examCombination, userId, password, confirmPassword } = req.body;
 
         const cleanName = String(candidateName || "").trim();
         const cleanEmail = String(email || "").trim().toLowerCase();
         const cleanPhone = String(phone || "").trim();
+        const cleanExamCombination = String(examCombination || "Paper 1 - General Paper").trim();
         const cleanUserId = String(userId || "").trim().toLowerCase();
         const cleanPassword = String(password || "");
         const cleanConfirm = String(confirmPassword || "");
@@ -519,10 +520,11 @@ app.post("/api/register", async (req, res) => {
             candidateName: cleanName,
             email: cleanEmail,
             phone: cleanPhone,
+            examCombination: cleanExamCombination,
             role: "Student"
         });
 
-        console.log(`[REGISTER SUCCESS] New student account created: "${candidate.user_id}" (${candidate.candidate_name})`);
+        console.log(`[REGISTER SUCCESS] New student account created: "${candidate.user_id}" (${candidate.candidate_name}) [Combo: ${cleanExamCombination}]`);
 
         // Automated WhatsApp Welcome Greeting (non-blocking)
         sendWhatsAppWelcomeMessage({
@@ -546,6 +548,7 @@ app.post("/api/register", async (req, res) => {
                 name: candidate.candidate_name,
                 email: candidate.email,
                 phone: candidate.phone || cleanPhone,
+                examCombination: cleanExamCombination,
                 role: "Student"
             };
 
@@ -836,10 +839,12 @@ app.post("/api/auth/google", async (req, res) => {
 // Complete Google Student Registration (Sets Slogan Password & Phone)
 app.post("/api/auth/google/complete-registration", async (req, res) => {
     try {
-        const { token, phone, userId, password, confirmPassword } = req.body;
+        const { token, phone, examCombination, userId, password, confirmPassword } = req.body;
         if (!token) {
             return res.status(400).json({ success: false, message: "Missing registration session token." });
         }
+
+        const cleanExamCombination = String(examCombination || "Paper 1 - General Paper").trim();
 
         const tokenData = verifyRegistrationToken(token);
         if (!tokenData) {
@@ -901,10 +906,11 @@ app.post("/api/auth/google/complete-registration", async (req, res) => {
             candidateName,
             email: cleanEmail,
             phone: cleanPhone,
+            examCombination: cleanExamCombination,
             role: "Student"
         });
 
-        console.log(`[GOOGLE REGISTRATION COMPLETE] Created student: "${newCandidate.user_id}" with password & phone.`);
+        console.log(`[GOOGLE REGISTRATION COMPLETE] Created student: "${newCandidate.user_id}" with password & phone. [Combo: ${cleanExamCombination}]`);
 
         // Automated WhatsApp Welcome Greeting (non-blocking)
         sendWhatsAppWelcomeMessage({
@@ -925,6 +931,7 @@ app.post("/api/auth/google/complete-registration", async (req, res) => {
                 name: newCandidate.candidate_name,
                 email: newCandidate.email,
                 phone: newCandidate.phone || cleanPhone,
+                examCombination: cleanExamCombination,
                 role: newCandidate.role || "Student",
                 picture: tokenData.picture || ""
             };

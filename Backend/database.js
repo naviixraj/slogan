@@ -42,6 +42,10 @@ try {
         db.exec("ALTER TABLE candidates ADD COLUMN role TEXT DEFAULT 'Student';");
     } catch (e) {}
 
+    try {
+        db.exec("ALTER TABLE candidates ADD COLUMN exam_combination TEXT;");
+    } catch (e) {}
+
     // Seed default Admin and Student accounts if missing
     const bcrypt = require("bcryptjs");
     try {
