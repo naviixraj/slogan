@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SLOGON ACADEMY | Candidate Authentication</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Mukta+Malar:wght@500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <style>
@@ -22,13 +24,40 @@
             font-family: 'Poppins', Arial, sans-serif;
             background: #F8FAF7;
             color: #26332D;
-            /* Background Image Setup */
+            /* Mobile Default Background Image */
             background-image: url('loginbg.png');
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
             background-attachment: fixed;
             background-color: #f4f5f0;
+        }
+
+        /* Default Wrapper Elements (Mobile First) */
+        .desktop-topbar,
+        .auth-left-showcase,
+        .desktop-welcome-header,
+        .desktop-bottom-bar {
+            display: none;
+        }
+
+        .auth-page-wrapper {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .desktop-auth-container {
+            width: 100%;
+            display: flex;
+            justify-content: center;
+        }
+
+        .auth-right-panel {
+            width: 100%;
+            display: flex;
+            justify-content: center;
         }
 
         .login-card {
@@ -416,7 +445,7 @@
             font-size: 12px;
         }
 
-        /* MOBILE ADJUSTMENTS */
+        /* MOBILE ADJUSTMENTS (<= 600px) */
         @media (max-width: 600px) {
             body {
                 padding: 18px 12px;
@@ -439,11 +468,447 @@
                 font-size: 19px;
             }
         }
+
+        /* =============================================================
+           DESKTOP UNIFIED VIEW (>= 901px)
+           Unified soft lavender canvas (#EEE7F7) with royal slate-purple
+           floating card overlay and Thirukkural inspiration showcase
+        ============================================================== */
+        @media (min-width: 901px) {
+            body {
+                background: #EEE7F7 !important;
+                background-image: none !important;
+                min-height: 100vh;
+                margin: 0;
+                padding: 0 !important;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+                align-items: stretch;
+            }
+
+            .auth-page-wrapper {
+                min-height: 100vh;
+                width: 100%;
+                max-width: 1340px;
+                margin: 0 auto;
+                padding: 22px 42px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-between;
+            }
+
+            /* Desktop Topbar */
+            .desktop-topbar {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 4px 0 16px;
+            }
+
+            .topbar-brand {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+            }
+
+            .topbar-logo-badge {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: 40px;
+                height: 40px;
+                background: #523F73;
+                color: #FFFFFF;
+                border-radius: 12px;
+                box-shadow: 0 4px 14px rgba(82, 63, 115, 0.28);
+            }
+
+            .topbar-brand-text {
+                display: flex;
+                flex-direction: column;
+            }
+
+            .topbar-title {
+                font-size: 19px;
+                font-weight: 700;
+                letter-spacing: 0.6px;
+                color: #2D2042;
+                line-height: 1.2;
+            }
+
+            .topbar-tagline {
+                font-size: 11.5px;
+                font-weight: 500;
+                color: #6E5F86;
+                letter-spacing: 0.2px;
+            }
+
+            .topbar-support {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .support-text {
+                font-size: 13.5px;
+                color: #6E5F86;
+                font-weight: 500;
+            }
+
+            .support-link {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                padding: 7px 16px;
+                background: #0F684B;
+                color: #FFFFFF !important;
+                font-size: 13px;
+                font-weight: 600;
+                border-radius: 20px;
+                text-decoration: none;
+                box-shadow: 0 3px 10px rgba(15, 104, 75, 0.25);
+                transition: transform 0.18s ease, background 0.18s ease;
+            }
+
+            .support-link:hover {
+                background: #0B523B;
+                transform: translateY(-1px);
+            }
+
+            /* 2-Column Grid Container */
+            .desktop-auth-container {
+                display: grid;
+                grid-template-columns: 1.08fr 0.92fr;
+                gap: 52px;
+                align-items: center;
+                margin: auto 0;
+                padding: 14px 0;
+            }
+
+            /* Left Showcase Column */
+            .auth-left-showcase {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 22px;
+            }
+
+            .showcase-quote-card {
+                background: rgba(255, 255, 255, 0.72);
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
+                border: 1px solid rgba(255, 255, 255, 0.95);
+                border-radius: 18px;
+                padding: 20px 24px;
+                width: 100%;
+                max-width: 470px;
+                box-shadow: 0 10px 26px rgba(82, 63, 115, 0.08);
+            }
+
+            .quote-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 8px;
+            }
+
+            .quote-mark {
+                font-size: 26px;
+                color: #523F73;
+                line-height: 1;
+                opacity: 0.85;
+            }
+
+            .kural-badge {
+                font-size: 11.5px;
+                font-weight: 700;
+                background: #523F73;
+                color: #FFFFFF;
+                padding: 3px 12px;
+                border-radius: 14px;
+                letter-spacing: 0.4px;
+            }
+
+            .tamil-quote {
+                font-family: 'Mukta Malar', 'Poppins', sans-serif;
+                font-size: 16px;
+                font-weight: 700;
+                line-height: 1.65;
+                color: #2D2042;
+                margin: 0 0 6px;
+            }
+
+            .quote-meaning {
+                font-size: 11.5px;
+                color: #6E5F86;
+                margin: 0;
+                line-height: 1.45;
+                font-style: italic;
+            }
+
+            .showcase-image-wrapper {
+                width: 100%;
+                max-width: 470px;
+                display: flex;
+                justify-content: center;
+            }
+
+            .scholar-img {
+                width: 100%;
+                max-height: 375px;
+                object-fit: cover;
+                border-radius: 20px;
+                box-shadow: 0 16px 36px rgba(60, 40, 90, 0.16);
+            }
+
+            /* Right Panel */
+            .auth-right-panel {
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                width: 100%;
+            }
+
+            .desktop-welcome-header {
+                display: block;
+                width: 100%;
+                max-width: 440px;
+                margin-bottom: 14px;
+                text-align: left;
+            }
+
+            .desktop-welcome-header h2 {
+                font-size: 21px;
+                font-weight: 700;
+                color: #2D2042;
+                margin: 0 0 4px;
+            }
+
+            .desktop-welcome-header p {
+                font-size: 13px;
+                color: #6E5F86;
+                margin: 0;
+                line-height: 1.4;
+            }
+
+            /* Royal Slate-Purple Floating Overlay Card */
+            .login-card {
+                background: linear-gradient(160deg, #58447D 0%, #483568 100%) !important;
+                border: 1px solid rgba(255, 255, 255, 0.18) !important;
+                border-radius: 22px !important;
+                box-shadow: 0 24px 55px -10px rgba(35, 20, 60, 0.42), 0 10px 24px rgba(0, 0, 0, 0.15) !important;
+                padding: 32px 30px !important;
+                color: #FFFFFF !important;
+                max-width: 440px !important;
+            }
+
+            .login-card .brand {
+                display: none !important;
+            }
+
+            .login-card h2 {
+                color: #FFFFFF !important;
+                font-size: 20px !important;
+            }
+
+            .login-card .subtitle {
+                color: rgba(255, 255, 255, 0.82) !important;
+                font-size: 13px !important;
+            }
+
+            .login-card label {
+                color: #FFFFFF !important;
+                font-size: 13px !important;
+                font-weight: 600 !important;
+            }
+
+            .login-card .req-star {
+                color: #FCA5A5 !important;
+            }
+
+            /* Crisp White Inputs on Desktop */
+            .login-card input,
+            .login-card select {
+                background: #FFFFFF !important;
+                color: #0F172A !important;
+                border: 1.5px solid #CBD5E1 !important;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.06);
+            }
+
+            .login-card input:focus,
+            .login-card select:focus {
+                background: #FFFFFF !important;
+                border-color: #10B981 !important;
+                box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.28) !important;
+            }
+
+            /* Pill Switch */
+            .login-card .auth-switch-wrapper {
+                background: rgba(28, 16, 45, 0.5) !important;
+                border: 1px solid rgba(255, 255, 255, 0.12) !important;
+            }
+
+            .login-card .auth-switch-bg {
+                background: #0F684B !important;
+                box-shadow: 0 3px 12px rgba(15, 104, 75, 0.45) !important;
+            }
+
+            .login-card .auth-switch-btn {
+                color: rgba(255, 255, 255, 0.72) !important;
+            }
+
+            .login-card .auth-switch-btn.active {
+                color: #FFFFFF !important;
+            }
+
+            /* Primary & Google Buttons */
+            .login-card button.btn-primary {
+                background: #0F684B !important;
+                color: #FFFFFF !important;
+                font-weight: 700;
+                box-shadow: 0 4px 14px rgba(15, 104, 75, 0.35);
+            }
+
+            .login-card button.btn-primary:hover {
+                background: #0B523B !important;
+                box-shadow: 0 6px 18px rgba(15, 104, 75, 0.45);
+            }
+
+            .login-card .btn-google-auth {
+                background: #FFFFFF !important;
+                color: #1E293B !important;
+                border: 1px solid #E2E8F0 !important;
+                box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+            }
+
+            .login-card .btn-google-auth:hover {
+                background: #F8FAFC !important;
+            }
+
+            .login-card .auth-divider {
+                color: rgba(255, 255, 255, 0.65) !important;
+            }
+
+            .login-card .auth-divider::before,
+            .login-card .auth-divider::after {
+                border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
+            }
+
+            .login-card .auth-switch-hint {
+                color: rgba(255, 255, 255, 0.8) !important;
+            }
+
+            .login-card .auth-switch-hint a {
+                color: #6EE7B7 !important;
+                text-decoration: underline;
+                font-weight: 600;
+            }
+
+            .login-card .auth-switch-hint a:hover {
+                color: #A7F3D0 !important;
+            }
+
+            .login-card .toggle-password-btn {
+                color: #64748B !important;
+            }
+
+            .login-card .toggle-password-btn:hover {
+                color: #0F684B !important;
+            }
+
+            .login-card .footer {
+                display: none !important;
+            }
+
+            /* Desktop Bottom Footer */
+            .desktop-bottom-bar {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 16px 0 6px;
+                font-size: 13px;
+                color: #6E5F86;
+                border-top: 1px solid rgba(82, 63, 115, 0.14);
+            }
+
+            .footer-left {
+                font-weight: 600;
+            }
+
+            .footer-right {
+                font-style: italic;
+            }
+        }
     </style>
 </head>
 <body>
 
-    <main class="login-card" id="authCard">
+    <div class="auth-page-wrapper">
+
+        <!-- DESKTOP TOP BAR (Only visible on >= 901px) -->
+        <header class="desktop-topbar">
+            <div class="topbar-brand">
+                <div class="topbar-logo-badge">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                        <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                    </svg>
+                </div>
+                <div class="topbar-brand-text">
+                    <span class="topbar-title">SLOGON ACADEMY</span>
+                    <span class="topbar-tagline">Candidate Assessment Portal</span>
+                </div>
+            </div>
+
+            <div class="topbar-support">
+                <span class="support-text">Need a hand?</span>
+                <a href="https://wa.me/919940822295?text=Hello%20Slogon%20Academy%20Support" target="_blank" rel="noopener noreferrer" class="support-link">
+                    <span>Get help</span>
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="7" y1="17" x2="17" y2="7"></line>
+                        <polyline points="7 7 17 7 17 17"></polyline>
+                    </svg>
+                </a>
+            </div>
+        </header>
+
+        <!-- MAIN 2-COLUMN CONTAINER -->
+        <div class="desktop-auth-container">
+
+            <!-- LEFT SHOWCASE COLUMN (Only visible on >= 901px) -->
+            <section class="auth-left-showcase" aria-label="Academy Motivation and Scholar Showcase">
+                
+                <div class="showcase-quote-card">
+                    <div class="quote-header">
+                        <span class="quote-mark">❝</span>
+                        <div class="kural-badge">குறள் : 772</div>
+                    </div>
+                    <p class="tamil-quote">
+                        கான முயலெய்த அம்பினில் யானை<br>
+                        பிழைத்தவேல் ஏந்தல் இனிது
+                    </p>
+                    <p class="quote-meaning">
+                        (Aim high: It is nobler to miss an elephant with a spear than to hit a rabbit with an arrow.)
+                    </p>
+                </div>
+
+                <div class="showcase-image-wrapper">
+                    <img src="scholar-showcase.png" alt="Slogon Academy Scholar Learning" class="scholar-img">
+                </div>
+
+            </section>
+
+            <!-- RIGHT PANEL (Desktop Welcome Header + Auth Card) -->
+            <div class="auth-right-panel">
+
+                <div class="desktop-welcome-header">
+                    <h2>🏆 Welcome, Future Scholars</h2>
+                    <p>Sharpen your preparation with live TNPSC mock assessments.</p>
+                </div>
+
+                <main class="login-card" id="authCard">
 
         <header class="brand">
             <h1>SLOGON ACADEMY</h1>
@@ -755,6 +1220,22 @@
         </footer>
 
     </main>
+
+            </div><!-- /.auth-right-panel -->
+
+        </div><!-- /.desktop-auth-container -->
+
+        <!-- DESKTOP BOTTOM FOOTER (Only visible on >= 901px) -->
+        <footer class="desktop-bottom-bar">
+            <div class="footer-left">
+                © SLOGON ACADEMY | Mock Test Portal
+            </div>
+            <div class="footer-right">
+                Learn with purpose. Achieve with confidence.
+            </div>
+        </footer>
+
+    </div><!-- /.auth-page-wrapper -->
 
     <script src="login.js"></script>
 
