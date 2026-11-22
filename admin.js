@@ -16,11 +16,8 @@ if (window.location.hostname === "127.0.0.1" || window.location.hostname === "lo
 // Initial default question sets (loaded dynamically from database via /api/admin/sets)
 const DEFAULT_SETS = [];
 
-// Initial default student records
-const DEFAULT_STUDENTS = [
-    { id: 6, user_id: "navi", candidate_name: "Navi", email: "navi@slogon.edu", role: "Student", active: 1 },
-    { id: 2, user_id: "admin", candidate_name: "Master Administrator", email: "admin@slogon.edu", role: "Admin", active: 1 }
-];
+// Initial default student records (loaded dynamically from database via /api/admin/students)
+const DEFAULT_STUDENTS = [];
 
 // Active State
 let activeSets = [...DEFAULT_SETS];
@@ -34,6 +31,7 @@ let activeStudents = [...DEFAULT_STUDENTS];
 const questionsNav = document.getElementById("questionsNav");
 const studentsNav = document.getElementById("studentsNav");
 const helpNav = document.getElementById("helpNav");
+const refreshStudentsBtn = document.getElementById("refreshStudentsBtn");
 
 // Workspaces
 const examSection = document.getElementById("examSection");
@@ -218,6 +216,7 @@ function showStudentsSection() {
     if (pageTitle) pageTitle.textContent = "Students Directory";
     if (pageSubtitle) pageSubtitle.textContent = "Manage registered candidates and generate examination logins.";
     renderStudents();
+    fetchStudents();
 }
 
 function showHelpSection() {
@@ -1558,7 +1557,10 @@ async function fetchSets() {
 
 async function fetchStudents() {
     try {
-        const res = await fetch("/api/admin/students", { credentials: "same-origin" });
+        const res = await fetch(`/api/admin/students?_t=${Date.now()}`, {
+            cache: "no-store",
+            credentials: "same-origin"
+        });
         if (res.ok) {
             const data = await res.json();
             if (data.success && Array.isArray(data.students)) {
@@ -1796,6 +1798,18 @@ function bindEventListeners() {
     if (questionsNav) questionsNav.addEventListener("click", showQuestionsSection);
     if (studentsNav) studentsNav.addEventListener("click", showStudentsSection);
     if (helpNav) helpNav.addEventListener("click", showHelpSection);
+    if (refreshStudentsBtn) {
+        refreshStudentsBtn.addEventListener("click", async () => {
+            refreshStudentsBtn.disabled = true;
+            const originalHTML = refreshStudentsBtn.innerHTML;
+            refreshStudentsBtn.innerHTML = `<span>Refreshing...</span>`;
+            await fetchStudents();
+            setTimeout(() => {
+                refreshStudentsBtn.disabled = false;
+                refreshStudentsBtn.innerHTML = originalHTML;
+            }, 300);
+        });
+    }
 
     // Inspector & Bulk Actions
     if (backToSetsButton) backToSetsButton.addEventListener("click", backToSets);

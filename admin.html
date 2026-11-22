@@ -2996,7 +2996,11 @@
                         <input id="studentSearchInput" type="search" placeholder="Search students by name or ID...">
                     </label>
 
-                    <div class="actions">
+                    <div class="actions" style="display: flex; gap: 8px; align-items: center;">
+                        <button class="btn-back-sets" id="refreshStudentsBtn" type="button" style="display: inline-flex; align-items: center; gap: 6px; padding: 7px 12px; font-size: 13px; font-weight: 600; cursor: pointer; border-radius: 8px; border: 1px solid var(--border); background: #fff; color: var(--navy);">
+                            <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M23 4v6h-6"></path><path d="M1 20v-6h6"></path><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+                            <span>Refresh</span>
+                        </button>
                         <button class="btn-upload-set" id="openStudentModalButton" type="button">
                             <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
                             <span>Add Student</span>
@@ -3019,14 +3023,7 @@
                         </thead>
                         <tbody id="studentTableBody">
                             <tr>
-                                <td><strong>naveenraj</strong></td>
-                                <td>Naveen Raj</td>
-                                <td>naveenraj@slogon.edu</td>
-                                <td>Student</td>
-                                <td><span class="status available">Active</span></td>
-                                <td>
-                                    <button class="btn-back-sets" style="padding: 4px 10px; font-size: 11px;">Reset Pass</button>
-                                </td>
+                                <td colspan="7" style="text-align: center; color: var(--muted); padding: 25px;">Loading registered students...</td>
                             </tr>
                         </tbody>
                     </table>

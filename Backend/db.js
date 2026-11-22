@@ -53,16 +53,37 @@ function normalizeCandidate(candidate) {
     let email = candidate.email || null;
     let examCombination = candidate.exam_combination || candidate.examCombination || null;
 
-    if (email && email.includes("|combo:")) {
-        const parts = email.split("|combo:");
-        email = parts[0] || null;
-        examCombination = parts[1] || examCombination;
+    if (email) {
+        if (email.includes("|combo:")) {
+            const parts = email.split("|combo:");
+            email = parts[0] || null;
+            const comboPart = parts[1] || "";
+            if (comboPart.includes("|tel:")) {
+                const subParts = comboPart.split("|tel:");
+                examCombination = subParts[0] || examCombination;
+                if (!phone) phone = subParts[1] || null;
+            } else {
+                examCombination = comboPart || examCombination;
+            }
+        }
+        if (email && email.includes("|tel:")) {
+            const parts = email.split("|tel:");
+            email = parts[0] || null;
+            const telPart = parts[1] || "";
+            if (telPart.includes("|combo:")) {
+                const subParts = telPart.split("|combo:");
+                if (!phone) phone = subParts[0] || null;
+                examCombination = subParts[1] || examCombination;
+            } else {
+                if (!phone) phone = telPart || null;
+            }
+        }
     }
 
-    if (!phone && email && email.includes("|tel:")) {
-        const parts = email.split("|tel:");
-        email = parts[0] || null;
-        phone = parts[1] || null;
+    if (examCombination && examCombination.includes("|tel:")) {
+        const parts = examCombination.split("|tel:");
+        examCombination = parts[0] || examCombination;
+        if (!phone) phone = parts[1] || null;
     }
 
     return {

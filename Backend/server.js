@@ -1977,6 +1977,7 @@ app.put("/api/admin/sets/:id/questions/:qNum", requireAdmin, async (req, res) =>
 // Get all Candidates
 app.get("/api/admin/students", requireAdmin, async (req, res) => {
     try {
+        res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
         const candidates = await unifiedDb.listCandidates();
         return res.json({ success: true, students: candidates });
     } catch (error) {
