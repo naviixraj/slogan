@@ -245,6 +245,7 @@ app.post("/api/login", loginLimiter, async (req, res) => {
         const candidateEmail = candidate.email || `${candidate.user_id}@slogon.edu`;
         const candidateRole = candidate.role || "Student";
         const candidatePhone = candidate.phone || "";
+        const candidateCombo = candidate.examCombination || candidate.exam_combination || "Paper 1 - General Paper";
 
         req.session.candidate = {
             id: candidate.id,
@@ -252,6 +253,7 @@ app.post("/api/login", loginLimiter, async (req, res) => {
             name: candidate.candidate_name,
             email: candidateEmail,
             phone: candidatePhone,
+            examCombination: candidateCombo,
             role: candidateRole
         };
 
@@ -720,12 +722,14 @@ app.get("/api/auth/google/callback", async (req, res) => {
                     console.error("Session error:", err);
                     return res.redirect("/login.html?error=session_error");
                 }
+                const candidateCombo = candidate.examCombination || candidate.exam_combination || "Paper 1 - General Paper";
                 req.session.candidate = {
                     id: candidate.id,
                     userId: candidate.user_id,
                     name: candidate.candidate_name,
                     email: candidate.email || googleEmail,
                     phone: candidate.phone || "",
+                    examCombination: candidateCombo,
                     role: candidate.role || "Student",
                     picture: googlePicture || candidate.picture || candidate.avatar_url || ""
                 };
@@ -812,12 +816,14 @@ app.post("/api/auth/google", async (req, res) => {
                 return res.status(500).json({ success: false, message: "Unable to create session." });
             }
 
+            const candidateCombo = candidate.examCombination || candidate.exam_combination || "Paper 1 - General Paper";
             req.session.candidate = {
                 id: candidate.id,
                 userId: candidate.user_id,
                 name: candidate.candidate_name,
                 email: candidate.email || googleEmail,
                 phone: candidate.phone || "",
+                examCombination: candidateCombo,
                 role: candidate.role || "Student",
                 picture: googlePicture || candidate.picture || candidate.avatar_url || ""
             };
@@ -2064,12 +2070,71 @@ app.delete("/api/admin/students/:id", requireAdmin, async (req, res) => {
 // STUDENT APIS: DYNAMIC TESTS CATALOG & EXAM LOADER
 // -----------------------------------------------------
 
-// Get dynamic test catalog for student tests.html
+// Helper to determine if a candidate is eligible for a test based on their registered exam combination
+function isCandidateEligibleForSubject(studentCombo, testSubject) {
+    const studentStr = String(studentCombo || "Paper 1 - General Paper").trim().toLowerCase();
+    const subjectStr = String(testSubject || "All").trim().toLowerCase();
+
+    // "All", "all students", or empty means open to all registered students
+    if (!subjectStr || subjectStr === "all" || subjectStr.includes("all")) {
+        return true;
+    }
+
+    // Exact match
+    if (studentStr === subjectStr) {
+        return true;
+    }
+
+    // If student registered for both Paper 1 + Paper 2 (Combo)
+    const studentHasBoth = studentStr.includes("+") || (studentStr.includes("paper 1") && studentStr.includes("paper 2"));
+    if (studentHasBoth) {
+        if (subjectStr.includes("paper 1") || subjectStr.includes("paper 2")) {
+            return true;
+        }
+    }
+
+    // If student registered ONLY for Paper 1
+    const studentOnlyPaper1 = studentStr.includes("paper 1") && !studentStr.includes("paper 2") && !studentStr.includes("+");
+    if (studentOnlyPaper1) {
+        if (subjectStr.includes("paper 1") && !subjectStr.includes("+") && !subjectStr.includes("paper 2")) {
+            return true;
+        }
+        return false;
+    }
+
+    // If student registered ONLY for Paper 2
+    const studentOnlyPaper2 = studentStr.includes("paper 2") && !studentStr.includes("paper 1") && !studentStr.includes("+");
+    if (studentOnlyPaper2) {
+        if (subjectStr.includes("paper 2") && !subjectStr.includes("+") && !subjectStr.includes("paper 1")) {
+            return true;
+        }
+        return false;
+    }
+
+    return false;
+}
+
+// Get dynamic test catalog for student tests.html (filtered by registered paper combination)
 app.get("/api/student/tests", async (req, res) => {
     try {
-        const tests = await unifiedDb.listQuestionSets();
-        return res.json({ success: true, tests });
+        const allTests = await unifiedDb.listQuestionSets();
+        const candidate = req.session ? req.session.candidate : null;
+
+        // Admins or guests preview see all tests
+        if (!candidate || candidate.role === "Admin") {
+            return res.json({ success: true, tests: allTests });
+        }
+
+        const studentCombo = candidate.examCombination || candidate.exam_combination || "Paper 1 - General Paper";
+
+        // Filter tests so students only see questions assigned to their chosen paper stream or 'All'
+        const filteredTests = allTests.filter(test => {
+            return isCandidateEligibleForSubject(studentCombo, test.subject);
+        });
+
+        return res.json({ success: true, tests: filteredTests, studentCombo });
     } catch (error) {
+        console.error("Error loading student tests catalog:", error);
         return res.status(500).json({ success: false, message: "Failed to load examination catalog." });
     }
 });
@@ -2106,6 +2171,18 @@ app.get("/api/mock-tests/:testId/questions", async (req, res) => {
             });
         }
 
+        // Stream eligibility check: protect against direct URL bypass
+        const candidate = req.session.candidate;
+        if (candidate.role !== "Admin" && row && row.subject) {
+            const studentCombo = candidate.examCombination || candidate.exam_combination || "Paper 1 - General Paper";
+            if (!isCandidateEligibleForSubject(studentCombo, row.subject)) {
+                return res.status(403).json({
+                    success: false,
+                    message: `This examination is designated specifically for "${row.subject}". Your registered paper stream is "${studentCombo}".`
+                });
+            }
+        }
+
         // Guarantee unique sequential IDs and numbers for client examination engines
         questions.forEach((q, idx) => {
             q.id = idx + 1;
@@ -2117,7 +2194,7 @@ app.get("/api/mock-tests/:testId/questions", async (req, res) => {
             success: true,
             testId: rawId,
             testTitle: testTitle,
-            subject: (row && row.subject) ? row.subject : "General Paper",
+            subject: (row && row.subject) ? row.subject : "All",
             duration: (row && row.duration) ? row.duration : 180,
             totalQuestions: questions.length,
             questions: questions

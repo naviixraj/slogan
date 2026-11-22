@@ -359,7 +359,7 @@ function renderSets() {
 
         const metaDiv = document.createElement("div");
         metaDiv.className = "meta";
-        const subj = set.subject || "Paper 1 (General) & Paper 2 (Subject)";
+        const subj = set.subject || "All";
         [`${qCount} Questions`, subj, `${dur} Minutes`].forEach(text => {
             const item = document.createElement("span");
             item.textContent = text;
@@ -1138,7 +1138,7 @@ Explanation: Total in 2021 = 300. Total in 2023 = 480. Increase = 180. Percentag
 
 async function handleUploadSetSubmit() {
     const title = uploadExamTitle ? uploadExamTitle.value.trim() : "";
-    const subject = uploadSubject ? uploadSubject.value.trim() : "General Paper";
+    const subject = uploadSubject ? uploadSubject.value.trim() : "All";
     const duration = uploadDuration ? uploadDuration.value.trim() : "180";
 
     if (!title) {
@@ -1167,7 +1167,7 @@ async function handleUploadSetSubmit() {
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify({
                     title: title,
-                    subject: subject || "General Paper",
+                    subject: subject || "All",
                     duration: duration || "180",
                     textContent: textContent
                 }),
@@ -1219,7 +1219,7 @@ async function handleUploadSetSubmit() {
 
     const formData = new FormData();
     formData.append("title", title);
-    formData.append("subject", subject || "General Paper");
+    formData.append("subject", subject || "All");
     formData.append("duration", duration || "180");
     formData.append("file", setFileInput.files[0]);
 
@@ -1595,7 +1595,10 @@ function openEditSetModal(setOrId) {
 
     if (editSetId) editSetId.value = setObj.id;
     if (editSetTitle) editSetTitle.value = setObj.title || "";
-    if (editSetSubject) editSetSubject.value = setObj.subject || "General Paper";
+    if (editSetSubject) {
+        editSetSubject.value = setObj.subject || "All";
+        if (!editSetSubject.value) editSetSubject.value = "All";
+    }
     if (editSetDuration) editSetDuration.value = setObj.duration || 180;
 
     openModal(editSetModal);
@@ -1608,7 +1611,7 @@ function closeEditSetModal() {
 async function handleSaveSetDetails() {
     const setId = editSetId ? editSetId.value.trim() : "";
     const newTitle = editSetTitle ? editSetTitle.value.trim() : "";
-    const newSubject = editSetSubject ? editSetSubject.value.trim() : "";
+    const newSubject = editSetSubject ? editSetSubject.value.trim() : "All";
     const newDuration = editSetDuration ? parseInt(editSetDuration.value, 10) : 180;
 
     if (!setId) {
@@ -1641,7 +1644,7 @@ async function handleSaveSetDetails() {
             credentials: "same-origin",
             body: JSON.stringify({
                 title: newTitle,
-                subject: newSubject || "General Paper",
+                subject: newSubject || "All",
                 duration: newDuration
             })
         });
@@ -1655,7 +1658,7 @@ async function handleSaveSetDetails() {
         const targetSet = activeSets.find(s => String(s.id).toUpperCase() === String(setId).toUpperCase());
         if (targetSet) {
             targetSet.title = newTitle;
-            targetSet.subject = newSubject || "General Paper";
+            targetSet.subject = newSubject || "All";
             targetSet.duration = newDuration;
         }
 

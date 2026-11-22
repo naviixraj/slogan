@@ -54,15 +54,17 @@ let mockTests = Array.from({ length: 10 }, (_, i) => ({
 
 async function loadStudentTests() {
     try {
-        const res = await fetch("/api/student/tests");
+        const res = await fetch("/api/student/tests", {
+            credentials: "same-origin"
+        });
         if (res.ok) {
             const data = await res.json();
-            if (data.success && Array.isArray(data.tests) && data.tests.length > 0) {
+            if (data.success && Array.isArray(data.tests)) {
                 const dbTests = data.tests.map(t => ({
                     id: t.id,
                     title: t.title,
                     status: t.status || "available",
-                    subject: t.subject,
+                    subject: t.subject || "All",
                     questionsCount: t.questions_count,
                     duration: t.duration,
                     isDb: true
@@ -337,6 +339,7 @@ async function loadCandidate() {
         if (dropdownRole) dropdownRole.textContent = role;
         if (dropdownEmail) dropdownEmail.textContent = email;
 
+        const candidateCombo = result.candidate.examCombination || result.candidate.exam_combination || "Paper 1 - General Paper";
         // Save candidate info for instructions and exam pages
         localStorage.setItem("candidateInfo", JSON.stringify({
             name: name,
@@ -344,7 +347,8 @@ async function loadCandidate() {
             email: email,
             role: role,
             picture: picture,
-            subject: "Tamil",
+            examCombination: candidateCombo,
+            subject: candidateCombo,
             exam: "UGC NET Mock Test 01"
         }));
 

@@ -3263,8 +3263,13 @@
 
             <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px;">
                 <div class="form-field">
-                    <label for="uploadSubject">Subject / Stream</label>
-                    <input type="text" id="uploadSubject" placeholder="e.g. Science / General Studies" value="General Paper">
+                    <label for="uploadSubject">Subject / Target Paper Stream</label>
+                    <select id="uploadSubject">
+                        <option value="All" selected>All (All Students)</option>
+                        <option value="Paper 1 - General Paper">Paper 1 - General Paper</option>
+                        <option value="Paper 1 + Paper 2 - Tamil">Paper 1 + Paper 2 - Tamil</option>
+                        <option value="Paper 2 - Tamil">Paper 2 - Tamil</option>
+                    </select>
                 </div>
                 <div class="form-field">
                     <label for="uploadDuration">Time Duration (Minutes)</label>
@@ -3388,8 +3393,13 @@ Ans: B
                 <input type="text" id="editSetTitle" placeholder="e.g. UGC NET Paper 1 - Full Mock Test">
             </div>
             <div class="form-field">
-                <label for="editSetSubject">Subject / Category</label>
-                <input type="text" id="editSetSubject" placeholder="e.g. Computer Science / General Paper">
+                <label for="editSetSubject">Subject / Target Paper Stream</label>
+                <select id="editSetSubject">
+                    <option value="All">All (All Students)</option>
+                    <option value="Paper 1 - General Paper">Paper 1 - General Paper</option>
+                    <option value="Paper 1 + Paper 2 - Tamil">Paper 1 + Paper 2 - Tamil</option>
+                    <option value="Paper 2 - Tamil">Paper 2 - Tamil</option>
+                </select>
             </div>
             <div class="form-field">
                 <label for="editSetDuration">Time Duration (Minutes)</label>
