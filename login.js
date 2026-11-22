@@ -45,7 +45,11 @@ const regConfirmPassword = document.getElementById("regConfirmPassword");
 const toggleRegPassword = document.getElementById("toggleRegPassword");
 const eyeOpenRegIcon = document.getElementById("eyeOpenRegIcon");
 const eyeClosedRegIcon = document.getElementById("eyeClosedRegIcon");
+const toggleRegConfirmPassword = document.getElementById("toggleRegConfirmPassword");
+const eyeOpenRegConfirmIcon = document.getElementById("eyeOpenRegConfirmIcon");
+const eyeClosedRegConfirmIcon = document.getElementById("eyeClosedRegConfirmIcon");
 const googleRegisterBtn = document.getElementById("googleRegisterBtn");
+const topbarHelpLink = document.getElementById("topbarHelpLink");
 
 // Google Setup Elements (Password Creation)
 const googleSetupSlide = document.getElementById("googleSetupSlide");
@@ -245,9 +249,6 @@ if (toggleRegPassword && regPassword) {
     toggleRegPassword.addEventListener("click", () => {
         const isPassword = regPassword.type === "password";
         regPassword.type = isPassword ? "text" : "password";
-        if (regConfirmPassword) {
-            regConfirmPassword.type = isPassword ? "text" : "password";
-        }
 
         if (eyeOpenRegIcon && eyeClosedRegIcon) {
             eyeOpenRegIcon.style.display = isPassword ? "none" : "block";
@@ -258,6 +259,32 @@ if (toggleRegPassword && regPassword) {
         toggleRegPassword.setAttribute("aria-label", label);
         toggleRegPassword.setAttribute("title", label);
         regPassword.focus({ preventScroll: true });
+    });
+}
+
+if (toggleRegConfirmPassword && regConfirmPassword) {
+    toggleRegConfirmPassword.addEventListener("click", () => {
+        const isPassword = regConfirmPassword.type === "password";
+        regConfirmPassword.type = isPassword ? "text" : "password";
+
+        if (eyeOpenRegConfirmIcon && eyeClosedRegConfirmIcon) {
+            eyeOpenRegConfirmIcon.style.display = isPassword ? "none" : "block";
+            eyeClosedRegConfirmIcon.style.display = isPassword ? "block" : "none";
+        }
+
+        const label = isPassword ? "Hide password" : "Show password";
+        toggleRegConfirmPassword.setAttribute("aria-label", label);
+        toggleRegConfirmPassword.setAttribute("title", label);
+        regConfirmPassword.focus({ preventScroll: true });
+    });
+}
+
+// Help Link: currently configured to take no action on click as requested
+if (topbarHelpLink) {
+    topbarHelpLink.addEventListener("click", (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        // No action taken
     });
 }
 
@@ -740,10 +767,37 @@ if (registerForm) {
             return;
         }
 
+        if (!password || password.length < 6) {
+            if (regMessage) {
+                regMessage.style.color = "#DC2626";
+                regMessage.textContent = "Please create a password (minimum 6 characters).";
+            }
+            if (regPassword) regPassword.focus({ preventScroll: true });
+            return;
+        }
+
+        if (!confirmPassword) {
+            if (regMessage) {
+                regMessage.style.color = "#DC2626";
+                regMessage.textContent = "Please confirm your password.";
+            }
+            if (regConfirmPassword) regConfirmPassword.focus({ preventScroll: true });
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            if (regMessage) {
+                regMessage.style.color = "#DC2626";
+                regMessage.textContent = "Passwords do not match. Please re-enter your password.";
+            }
+            if (regConfirmPassword) regConfirmPassword.focus({ preventScroll: true });
+            return;
+        }
+
         const cleanPhoneDigits = cleanPhone.replace(/[\s\-\(\)\+]/g, "");
         const finalUserId = (userId || cleanPhoneDigits || email.split("@")[0].replace(/[^a-zA-Z0-9_\-\.]/g, "")).toLowerCase();
-        const finalPassword = password || cleanPhoneDigits || "slogon123";
-        const finalConfirm = confirmPassword || finalPassword;
+        const finalPassword = password;
+        const finalConfirm = confirmPassword;
 
         if (userId && (userId.length < 3 || userId.length > 30)) {
             if (regMessage) {
@@ -760,24 +814,6 @@ if (registerForm) {
                 regMessage.textContent = "User ID may only contain letters, numbers, underscores, and dots (no spaces).";
             }
             if (regUserId) regUserId.focus({ preventScroll: true });
-            return;
-        }
-
-        if (password && password.length < 6) {
-            if (regMessage) {
-                regMessage.style.color = "#DC2626";
-                regMessage.textContent = "Password must be at least 6 characters long.";
-            }
-            if (regPassword) regPassword.focus({ preventScroll: true });
-            return;
-        }
-
-        if (password && confirmPassword && password !== confirmPassword) {
-            if (regMessage) {
-                regMessage.style.color = "#DC2626";
-                regMessage.textContent = "Passwords do not match. Please re-enter your password.";
-            }
-            if (regConfirmPassword) regConfirmPassword.focus({ preventScroll: true });
             return;
         }
 
