@@ -448,9 +448,10 @@ app.post("/api/register", async (req, res) => {
         const cleanEmail = String(email || "").trim().toLowerCase();
         const cleanPhone = String(phone || "").trim();
         const cleanExamCombination = String(examCombination || "Paper 1 - General Paper").trim();
-        const cleanUserId = String(userId || "").trim().toLowerCase();
-        const cleanPassword = String(password || "");
-        const cleanConfirm = String(confirmPassword || "");
+        const phoneDigits = cleanPhone.replace(/[\s\-\(\)\+]/g, "");
+        const cleanUserId = String(userId || phoneDigits || cleanEmail.split("@")[0].replace(/[^a-zA-Z0-9_\-\.]/g, "")).trim().toLowerCase();
+        const cleanPassword = String(password || phoneDigits || "slogon123");
+        const cleanConfirm = String(confirmPassword || cleanPassword);
 
         if (!cleanName || cleanName.length < 2) {
             return res.status(400).json({
@@ -467,7 +468,6 @@ app.post("/api/register", async (req, res) => {
             });
         }
 
-        const phoneDigits = cleanPhone.replace(/[\s\-\(\)]/g, "");
         if (!cleanPhone || cleanPhone.length < 10 || !/^\+?[0-9]{10,15}$/.test(phoneDigits)) {
             return res.status(400).json({
                 success: false,

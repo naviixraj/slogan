@@ -76,7 +76,7 @@ const redirectPage = "tests";
 // SLIDING TAB SWITCH CONTROLLER
 // -------------------------------------------------------------
 
-let currentTab = "login"; // "login" or "register"
+let currentTab = "register"; // "register" (default exact mockup) or "login"
 
 function switchToLogin() {
     currentTab = "login";
@@ -166,8 +166,10 @@ if (linkToLogin) {
     });
 }
 
-// Check URL param: ?tab=register or ?action=register
-if (params.get("tab") === "register" || params.get("register") === "1") {
+// Check URL param: ?tab=login or ?login=1
+if (params.get("tab") === "login" || params.get("login") === "1") {
+    switchToLogin();
+} else {
     switchToRegister();
 }
 
@@ -726,7 +728,12 @@ if (registerForm) {
             return;
         }
 
-        if (!userId || userId.length < 3 || userId.length > 30) {
+        const cleanPhoneDigits = cleanPhone.replace(/[\s\-\(\)\+]/g, "");
+        const finalUserId = (userId || cleanPhoneDigits || email.split("@")[0].replace(/[^a-zA-Z0-9_\-\.]/g, "")).toLowerCase();
+        const finalPassword = password || cleanPhoneDigits || "slogon123";
+        const finalConfirm = confirmPassword || finalPassword;
+
+        if (userId && (userId.length < 3 || userId.length > 30)) {
             if (regMessage) {
                 regMessage.style.color = "#DC2626";
                 regMessage.textContent = "Account User ID must be between 3 and 30 characters.";
@@ -735,7 +742,7 @@ if (registerForm) {
             return;
         }
 
-        if (!/^[a-zA-Z0-9_\-\.]+$/.test(userId)) {
+        if (userId && !/^[a-zA-Z0-9_\-\.]+$/.test(userId)) {
             if (regMessage) {
                 regMessage.style.color = "#DC2626";
                 regMessage.textContent = "User ID may only contain letters, numbers, underscores, and dots (no spaces).";
@@ -744,7 +751,7 @@ if (registerForm) {
             return;
         }
 
-        if (!password || password.length < 6) {
+        if (password && password.length < 6) {
             if (regMessage) {
                 regMessage.style.color = "#DC2626";
                 regMessage.textContent = "Password must be at least 6 characters long.";
@@ -753,7 +760,7 @@ if (registerForm) {
             return;
         }
 
-        if (password !== confirmPassword) {
+        if (password && confirmPassword && password !== confirmPassword) {
             if (regMessage) {
                 regMessage.style.color = "#DC2626";
                 regMessage.textContent = "Passwords do not match. Please re-enter your password.";
@@ -775,9 +782,9 @@ if (registerForm) {
                     email,
                     phone,
                     examCombination,
-                    userId,
-                    password,
-                    confirmPassword
+                    userId: finalUserId,
+                    password: finalPassword,
+                    confirmPassword: finalConfirm
                 })
             });
 

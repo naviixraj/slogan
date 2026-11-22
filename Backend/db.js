@@ -96,16 +96,54 @@ function normalizeCandidate(candidate) {
 
 async function findCandidateByUserId(userId) {
     const cleanId = String(userId || "").trim();
+    if (!cleanId) return null;
+    const phoneDigits = cleanId.replace(/[^0-9]/g, "");
+
     if (isSupabase) {
-        const { data, error } = await supabase
+        let { data, error } = await supabase
             .from("candidates")
             .select("*")
             .ilike("user_id", cleanId)
             .maybeSingle();
+
+        if (!data && cleanId.includes("@")) {
+            const res = await supabase
+                .from("candidates")
+                .select("*")
+                .ilike("email", `${cleanId}%`)
+                .limit(1);
+            if (res.data && res.data.length > 0) data = res.data[0];
+        }
+
+        if (!data && phoneDigits.length >= 10) {
+            const hasPhone = await checkSupabaseHasPhone();
+            if (hasPhone) {
+                const res = await supabase
+                    .from("candidates")
+                    .select("*")
+                    .ilike("phone", `%${phoneDigits.slice(-10)}%`)
+                    .limit(1);
+                if (res.data && res.data.length > 0) data = res.data[0];
+            } else {
+                const res = await supabase
+                    .from("candidates")
+                    .select("*")
+                    .ilike("email", `%|tel:%${phoneDigits.slice(-10)}%`)
+                    .limit(1);
+                if (res.data && res.data.length > 0) data = res.data[0];
+            }
+        }
+
         if (error) console.error("Supabase findCandidate error:", error.message);
         return normalizeCandidate(data);
     } else {
-        const row = sqliteDb.prepare("SELECT * FROM candidates WHERE LOWER(TRIM(user_id)) = LOWER(TRIM(?))").get(cleanId);
+        let row = sqliteDb.prepare("SELECT * FROM candidates WHERE LOWER(TRIM(user_id)) = LOWER(TRIM(?))").get(cleanId);
+        if (!row && cleanId.includes("@")) {
+            row = sqliteDb.prepare("SELECT * FROM candidates WHERE LOWER(TRIM(email)) = LOWER(TRIM(?))").get(cleanId);
+        }
+        if (!row && phoneDigits.length >= 10) {
+            row = sqliteDb.prepare("SELECT * FROM candidates WHERE phone LIKE ?").get(`%${phoneDigits.slice(-10)}%`);
+        }
         return normalizeCandidate(row);
     }
 }
