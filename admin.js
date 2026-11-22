@@ -31,7 +31,6 @@ let activeStudents = [...DEFAULT_STUDENTS];
 const questionsNav = document.getElementById("questionsNav");
 const studentsNav = document.getElementById("studentsNav");
 const helpNav = document.getElementById("helpNav");
-const refreshStudentsBtn = document.getElementById("refreshStudentsBtn");
 
 // Workspaces
 const examSection = document.getElementById("examSection");
@@ -1798,18 +1797,6 @@ function bindEventListeners() {
     if (questionsNav) questionsNav.addEventListener("click", showQuestionsSection);
     if (studentsNav) studentsNav.addEventListener("click", showStudentsSection);
     if (helpNav) helpNav.addEventListener("click", showHelpSection);
-    if (refreshStudentsBtn) {
-        refreshStudentsBtn.addEventListener("click", async () => {
-            refreshStudentsBtn.disabled = true;
-            const originalHTML = refreshStudentsBtn.innerHTML;
-            refreshStudentsBtn.innerHTML = `<span>Refreshing...</span>`;
-            await fetchStudents();
-            setTimeout(() => {
-                refreshStudentsBtn.disabled = false;
-                refreshStudentsBtn.innerHTML = originalHTML;
-            }, 300);
-        });
-    }
 
     // Inspector & Bulk Actions
     if (backToSetsButton) backToSetsButton.addEventListener("click", backToSets);
