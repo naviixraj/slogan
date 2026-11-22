@@ -16,12 +16,8 @@ if (window.location.hostname === "127.0.0.1" || window.location.hostname === "lo
 // Initial default question sets (loaded dynamically from database via /api/admin/sets)
 const DEFAULT_SETS = [];
 
-// Initial default student records (loaded dynamically from database via /api/admin/students)
-const DEFAULT_STUDENTS = [];
-
 // Active State
 let activeSets = [...DEFAULT_SETS];
-let activeStudents = [...DEFAULT_STUDENTS];
 
 // -----------------------------------------------------
 // DOM ELEMENTS
@@ -29,12 +25,10 @@ let activeStudents = [...DEFAULT_STUDENTS];
 
 // Sidebar Nav
 const questionsNav = document.getElementById("questionsNav");
-const studentsNav = document.getElementById("studentsNav");
 const helpNav = document.getElementById("helpNav");
 
 // Workspaces
 const examSection = document.getElementById("examSection");
-const studentsSection = document.getElementById("studentsSection");
 const helpSection = document.getElementById("helpSection");
 
 // Sets Directory vs Question Inspector
@@ -108,19 +102,6 @@ const changeFileBtn = document.getElementById("changeFileBtn");
 
 let currentUploadMode = "file"; // "file" or "paste"
 
-// Students Directory
-const studentTableBody = document.getElementById("studentTableBody");
-const studentSearchInput = document.getElementById("studentSearchInput");
-const openStudentModalButton = document.getElementById("openStudentModalButton");
-const studentModal = document.getElementById("studentModal");
-const closeStudentModalButton = document.getElementById("closeStudentModalButton");
-const cancelStudentButton = document.getElementById("cancelStudentButton");
-const createStudentBtn = document.getElementById("createStudentBtn");
-const newUserId = document.getElementById("newUserId");
-const newName = document.getElementById("newName");
-const newEmail = document.getElementById("newEmail");
-const newPass = document.getElementById("newPass");
-const newExamCombination = document.getElementById("newExamCombination");
 
 // Edit Question Set Modal
 const editSetModal = document.getElementById("editSetModal");
@@ -173,7 +154,7 @@ const dropdownEmail = document.getElementById("dropdownEmail");
 // -----------------------------------------------------
 
 function setActiveNav(activeBtn) {
-    [questionsNav, studentsNav, helpNav].forEach(btn => {
+    [questionsNav, helpNav].forEach(btn => {
         if (btn) btn.classList.remove("active");
     });
     if (activeBtn) activeBtn.classList.add("active");
@@ -197,36 +178,19 @@ function resetSearchBar(inputEl, renderFn) {
 
 function showQuestionsSection() {
     setActiveNav(questionsNav);
-    resetSearchBar(studentSearchInput, renderStudents);
     resetSearchBar(searchInput, renderSets);
     if (examSection) examSection.style.display = "block";
-    if (studentsSection) studentsSection.style.display = "none";
     if (helpSection) helpSection.style.display = "none";
     backToSets();
-}
-
-function showStudentsSection() {
-    setActiveNav(studentsNav);
-    resetSearchBar(searchInput, renderSets);
-    resetSearchBar(studentSearchInput, renderStudents);
-    if (examSection) examSection.style.display = "none";
-    if (studentsSection) studentsSection.style.display = "block";
-    if (helpSection) helpSection.style.display = "none";
-    if (pageTitle) pageTitle.textContent = "Students Directory";
-    if (pageSubtitle) pageSubtitle.textContent = "Manage registered candidates and generate examination logins.";
-    renderStudents();
-    fetchStudents();
 }
 
 function showHelpSection() {
     setActiveNav(helpNav);
     resetSearchBar(searchInput, renderSets);
-    resetSearchBar(studentSearchInput, renderStudents);
     if (examSection) examSection.style.display = "none";
-    if (studentsSection) studentsSection.style.display = "none";
     if (helpSection) helpSection.style.display = "block";
     if (pageTitle) pageTitle.textContent = "Administrator Help";
-    if (pageSubtitle) pageSubtitle.textContent = "Guidance on Excel question formats, auto-splitting, and student access.";
+    if (pageSubtitle) pageSubtitle.textContent = "Guidance on Excel question formats, auto-splitting, and paper stream assignments.";
 }
 
 // -----------------------------------------------------
@@ -277,7 +241,7 @@ function toggleDashboardView() {
 }
 
 // -----------------------------------------------------
-// MODALS (UPLOAD & STUDENT)
+// MODAL CONTROLS
 // -----------------------------------------------------
 
 function openModal(modalEl) {
@@ -1311,175 +1275,6 @@ async function deleteSingleQuestion(setId, qNum) {
     }
 }
 
-// -----------------------------------------------------
-// RENDER STUDENTS & MANAGE
-// -----------------------------------------------------
-
-function renderStudents() {
-    if (!studentTableBody) return;
-
-    const term = (studentSearchInput && studentSearchInput.value ? studentSearchInput.value : "").trim().toLowerCase();
-    const filtered = activeStudents.filter(s => {
-        const idMatch = (s.user_id || "").toLowerCase().includes(term);
-        const nameMatch = (s.candidate_name || "").toLowerCase().includes(term);
-        const emailMatch = (s.email || "").toLowerCase().includes(term);
-        const phoneMatch = (s.phone || "").toLowerCase().includes(term);
-        const comboMatch = (s.examCombination || s.exam_combination || "").toLowerCase().includes(term);
-        return idMatch || nameMatch || emailMatch || phoneMatch || comboMatch;
-    });
-
-    if (!filtered.length) {
-        studentTableBody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--muted); padding: 25px;">No students match your query.</td></tr>`;
-        return;
-    }
-
-    studentTableBody.innerHTML = "";
-    filtered.forEach(s => {
-        const tr = document.createElement("tr");
-
-        const idTd = document.createElement("td");
-        idTd.innerHTML = `<strong>${s.user_id}</strong>`;
-
-        const nameTd = document.createElement("td");
-        nameTd.textContent = s.candidate_name;
-
-        const emailTd = document.createElement("td");
-        emailTd.textContent = s.email || "—";
-
-        const phoneTd = document.createElement("td");
-        phoneTd.textContent = s.phone || "—";
-
-        const paperTd = document.createElement("td");
-        if (s.role === "Admin") {
-            paperTd.innerHTML = `<span style="display: inline-block; white-space: nowrap; font-size: 11px; font-weight: 700; color: #D97706; background: #FEF3C7; padding: 4px 10px; border-radius: 6px;">Master Admin</span>`;
-        } else {
-            const combo = String(s.examCombination || s.exam_combination || "").toLowerCase();
-            const isPaper2 = combo.includes("paper 2") || combo.includes("paper2") || combo.includes("tamil");
-            if (isPaper2) {
-                paperTd.innerHTML = `<span style="display: inline-block; white-space: nowrap; font-size: 11.5px; font-weight: 700; color: #4338CA; background: #EEF2FF; padding: 4px 12px; border-radius: 6px; border: 1px solid #C7D2FE;">Paper 2</span>`;
-            } else {
-                paperTd.innerHTML = `<span style="display: inline-block; white-space: nowrap; font-size: 11.5px; font-weight: 700; color: #065F46; background: #ECFDF5; padding: 4px 12px; border-radius: 6px; border: 1px solid #A7F3D0;">Paper 1</span>`;
-            }
-        }
-
-        const statusTd = document.createElement("td");
-        statusTd.innerHTML = `<span class="status available">${s.active === 1 ? 'Active' : 'Disabled'}</span>`;
-
-        const actionTd = document.createElement("td");
-        if (s.role !== "Admin") {
-            const delBtn = document.createElement("button");
-            delBtn.type = "button";
-            delBtn.className = "bin-btn";
-            delBtn.title = `Delete Student Account "${s.user_id}"`;
-            delBtn.setAttribute("aria-label", `Delete Student Account "${s.user_id}"`);
-            delBtn.innerHTML = `
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M3 6h18"></path>
-                    <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
-                    <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
-                    <line x1="10" y1="11" x2="10" y2="17"></line>
-                    <line x1="14" y1="11" x2="14" y2="17"></line>
-                </svg>
-            `;
-            delBtn.addEventListener("click", () => deleteStudent(s.id, s.user_id));
-            actionTd.appendChild(delBtn);
-        } else {
-            actionTd.innerHTML = `<span style="font-size: 11px; color: var(--muted); font-weight: 600;">Master Account</span>`;
-        }
-
-        tr.append(idTd, nameTd, emailTd, phoneTd, paperTd, statusTd, actionTd);
-        studentTableBody.appendChild(tr);
-    });
-}
-
-async function handleCreateStudentSubmit() {
-    const userIdVal = newUserId ? newUserId.value.trim() : "";
-    const nameVal = newName ? newName.value.trim() : "";
-    const emailVal = newEmail ? newEmail.value.trim() : "";
-    const passVal = newPass ? newPass.value.trim() : "";
-
-    const comboVal = newExamCombination ? newExamCombination.value : "Paper 1";
-
-    if (!userIdVal || !nameVal || !passVal) {
-        alert("User ID, Full Name, and Password are required to create a student account.");
-        return;
-    }
-
-    const prevText = createStudentBtn ? createStudentBtn.textContent : "";
-    if (createStudentBtn) {
-        createStudentBtn.disabled = true;
-        createStudentBtn.textContent = "Creating Account...";
-    }
-
-    try {
-        const res = await fetch("/api/admin/students", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            credentials: "same-origin",
-            body: JSON.stringify({
-                userId: userIdVal,
-                candidateName: nameVal,
-                email: emailVal,
-                password: passVal,
-                examCombination: comboVal,
-                role: "Student"
-            })
-        });
-
-        const data = await res.json();
-        if (!res.ok || !data.success) {
-            if (res.status === 401 || res.status === 403) {
-                alert("Session Expired: Master Administrator privileges required. Please log in with your Admin credentials.");
-                window.location.replace("login?next=admin");
-                return;
-            }
-            throw new Error(data.message || "Failed to create student account.");
-        }
-
-        closeModal(studentModal);
-        alert(`🎉 ${data.message}\nThe student can now immediately log in with User ID: ${userIdVal}`);
-        if (newUserId) newUserId.value = "";
-        if (newName) newName.value = "";
-        if (newEmail) newEmail.value = "";
-        if (newPass) newPass.value = "";
-        if (newExamCombination) newExamCombination.value = "Paper 1";
-        await fetchStudents();
-    } catch (err) {
-        if (err.name === "TypeError" && (err.message || "").toLowerCase().includes("fetch")) {
-            alert("❌ Connection Error: Unable to reach the server.\n\nThe server was momentarily restarting to load new PDF capabilities. Please refresh the page (F5) and try again.");
-        } else {
-            alert(`❌ Enrollment Failed: ${err.message}`);
-        }
-    } finally {
-        if (createStudentBtn) {
-            createStudentBtn.disabled = false;
-            createStudentBtn.textContent = prevText;
-        }
-    }
-}
-
-async function deleteStudent(id, userIdStr) {
-    if (!confirm(`Are you sure you want to permanently delete student account "${userIdStr}"? This will remove the student account totally from the system.`)) {
-        return;
-    }
-
-    try {
-        const res = await fetch(`/api/admin/students/${id}`, {
-            method: "DELETE",
-            credentials: "same-origin"
-        });
-
-        const data = await res.json();
-        if (!res.ok || !data.success) {
-            throw new Error(data.message || "Failed to delete student.");
-        }
-
-        alert(`Student account "${userIdStr}" has been completely deleted.`);
-        await fetchStudents();
-    } catch (err) {
-        alert("Failed to delete candidate: " + err.message);
-    }
-}
 
 // -----------------------------------------------------
 // SERVER SYNC
@@ -1554,23 +1349,6 @@ async function fetchSets() {
     }
 }
 
-async function fetchStudents() {
-    try {
-        const res = await fetch(`/api/admin/students?_t=${Date.now()}`, {
-            cache: "no-store",
-            credentials: "same-origin"
-        });
-        if (res.ok) {
-            const data = await res.json();
-            if (data.success && Array.isArray(data.students)) {
-                activeStudents = data.students;
-                renderStudents();
-            }
-        }
-    } catch (e) {
-        console.log("Students offline");
-    }
-}
 
 // -----------------------------------------------------
 // EDIT QUESTION SET DETAILS
@@ -1798,7 +1576,6 @@ async function handleSaveQuestion() {
 function bindEventListeners() {
     // Navigation
     if (questionsNav) questionsNav.addEventListener("click", showQuestionsSection);
-    if (studentsNav) studentsNav.addEventListener("click", showStudentsSection);
     if (helpNav) helpNav.addEventListener("click", showHelpSection);
 
     // Inspector & Bulk Actions
@@ -2165,19 +1942,6 @@ function bindEventListeners() {
         });
     }
 
-    // Student Modal & Table
-    if (openStudentModalButton) openStudentModalButton.addEventListener("click", () => openModal(studentModal));
-    if (closeStudentModalButton) closeStudentModalButton.addEventListener("click", () => closeModal(studentModal));
-    if (cancelStudentButton) cancelStudentButton.addEventListener("click", () => closeModal(studentModal));
-    if (createStudentBtn) createStudentBtn.addEventListener("click", handleCreateStudentSubmit);
-    if (studentSearchInput) {
-        studentSearchInput.addEventListener("input", renderStudents);
-        studentSearchInput.addEventListener("keydown", (e) => {
-            if (e.key === "Escape") {
-                resetSearchBar(studentSearchInput, renderStudents);
-            }
-        });
-    }
 
     // Edit Question Set Modal
     if (editSetFromInspectorButton) editSetFromInspectorButton.addEventListener("click", () => openEditSetModal(currentInspectedSetId));
@@ -2293,11 +2057,9 @@ function bindEventListeners() {
 
 function initAdminPortal() {
     renderSets();
-    renderStudents();
     bindEventListeners();
     loadAdminProfile();
     fetchSets();
-    fetchStudents();
 }
 
 // Run immediately
