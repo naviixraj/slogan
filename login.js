@@ -91,12 +91,22 @@ function switchToLogin() {
         tabRegisterBtn.setAttribute("aria-selected", "false");
     }
 
+    if (googleSetupSlide) {
+        googleSetupSlide.classList.remove("active", "slide-in-right", "slide-in-left");
+        googleSetupSlide.style.display = "";
+    }
     if (registerSlide) {
         registerSlide.classList.remove("active", "slide-in-right", "slide-in-left");
+        registerSlide.style.display = "";
     }
     if (loginSlide) {
         loginSlide.classList.remove("slide-in-right");
+        loginSlide.style.display = "";
         loginSlide.classList.add("active", "slide-in-left");
+    }
+
+    if (authSwitchWrapper) {
+        authSwitchWrapper.style.display = "flex";
     }
 
     if (regMessage) regMessage.textContent = "";
@@ -115,12 +125,22 @@ function switchToRegister() {
         tabLoginBtn.setAttribute("aria-selected", "false");
     }
 
+    if (googleSetupSlide) {
+        googleSetupSlide.classList.remove("active", "slide-in-right", "slide-in-left");
+        googleSetupSlide.style.display = "";
+    }
     if (loginSlide) {
         loginSlide.classList.remove("active", "slide-in-right", "slide-in-left");
+        loginSlide.style.display = "";
     }
     if (registerSlide) {
         registerSlide.classList.remove("slide-in-left");
+        registerSlide.style.display = "";
         registerSlide.classList.add("active", "slide-in-right");
+    }
+
+    if (authSwitchWrapper) {
+        authSwitchWrapper.style.display = "flex";
     }
 
     if (message) message.textContent = "";
@@ -373,7 +393,7 @@ function showGoogleSetupSlide(data) {
         gSetupUserId.value = base.slice(0, 20);
     }
 
-    googleSetupSlide.style.display = "block";
+    googleSetupSlide.style.display = "";
     googleSetupSlide.classList.add("active", "slide-in-right");
 
     if (gSetupPhone) {
@@ -382,9 +402,17 @@ function showGoogleSetupSlide(data) {
 }
 
 function hideGoogleSetupSlide() {
-    if (!googleSetupSlide) return;
-    googleSetupSlide.classList.remove("active", "slide-in-right", "slide-in-left");
-    googleSetupSlide.style.display = "none";
+    if (googleSetupSlide) {
+        googleSetupSlide.classList.remove("active", "slide-in-right", "slide-in-left");
+        googleSetupSlide.style.display = "";
+    }
+
+    if (loginSlide) {
+        loginSlide.style.display = "";
+    }
+    if (registerSlide) {
+        registerSlide.style.display = "";
+    }
 
     if (authSwitchWrapper) {
         authSwitchWrapper.style.display = "flex";
