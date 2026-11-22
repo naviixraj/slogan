@@ -661,7 +661,7 @@ if (loginForm) {
                 message.textContent = error.message;
             }
             loginButton.disabled = false;
-            loginButton.textContent = "LOGIN";
+            loginButton.textContent = "Sign In →";
         }
     });
 }
@@ -849,7 +849,7 @@ if (registerForm) {
                 regMessage.textContent = error.message;
             }
             registerButton.disabled = false;
-            registerButton.textContent = "CREATE ACCOUNT";
+            registerButton.textContent = "Create Account →";
         }
     });
 }

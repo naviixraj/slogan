@@ -445,6 +445,34 @@
             font-size: 12px;
         }
 
+        /* INPUT WITH ICON WRAPPER (Universal) */
+        .input-with-icon {
+            position: relative;
+            width: 100%;
+        }
+
+        .input-with-icon .field-svg-icon {
+            position: absolute;
+            left: 13px;
+            top: 50%;
+            transform: translateY(-50%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #64748B;
+            pointer-events: none;
+            z-index: 2;
+        }
+
+        .input-with-icon input,
+        .input-with-icon select {
+            padding-left: 40px !important;
+        }
+
+        .input-with-icon.password-wrapper input {
+            padding-right: 42px !important;
+        }
+
         /* MOBILE ADJUSTMENTS (<= 600px) */
         @media (max-width: 600px) {
             body {
@@ -471,343 +499,305 @@
 
         /* =============================================================
            DESKTOP UNIFIED VIEW (>= 901px)
-           Unified soft lavender canvas (#EEE7F7) with royal slate-purple
-           floating card overlay and Thirukkural inspiration showcase
+           Exact Match to Reference Design (media_1795342428754.jpg)
         ============================================================== */
         @media (min-width: 901px) {
             body {
-                background: #EEE7F7 !important;
+                background: #EDE7F6 !important;
                 background-image: none !important;
                 min-height: 100vh;
                 margin: 0;
                 padding: 0 !important;
                 display: flex;
                 flex-direction: column;
-                justify-content: space-between;
-                align-items: stretch;
+                justify-content: flex-start;
+                align-items: center;
             }
 
             .auth-page-wrapper {
                 min-height: 100vh;
                 width: 100%;
-                max-width: 1340px;
-                margin: 0 auto;
-                padding: 22px 42px;
                 display: flex;
                 flex-direction: column;
                 justify-content: space-between;
+                padding: 0;
+                box-sizing: border-box;
             }
 
-            /* Desktop Topbar */
+            /* TOPBAR (Logo Left, Brand Center, Help Right) */
             .desktop-topbar {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
-                padding: 4px 0 16px;
+                padding: 14px 44px 10px;
+                width: 100%;
+                box-sizing: border-box;
             }
 
-            .topbar-brand {
+            .topbar-logo-side {
                 display: flex;
                 align-items: center;
-                gap: 12px;
+                width: 180px;
             }
 
-            .topbar-logo-badge {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                width: 40px;
-                height: 40px;
-                background: #523F73;
-                color: #FFFFFF;
-                border-radius: 12px;
-                box-shadow: 0 4px 14px rgba(82, 63, 115, 0.28);
+            .topbar-logo-circle {
+                width: 46px;
+                height: 46px;
+                border-radius: 50%;
+                object-fit: cover;
+                background: #FFFFFF;
+                border: 1px solid rgba(158, 116, 46, 0.25);
+                box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+                display: block;
             }
 
-            .topbar-brand-text {
-                display: flex;
-                flex-direction: column;
+            .topbar-center-brand {
+                text-align: center;
+                flex: 1;
             }
 
-            .topbar-title {
-                font-size: 19px;
-                font-weight: 700;
-                letter-spacing: 0.6px;
-                color: #2D2042;
-                line-height: 1.2;
+            .topbar-academy-title {
+                margin: 0;
+                font-size: 21px;
+                font-weight: 800;
+                letter-spacing: 0.8px;
+                color: #9E742E;
+                line-height: 1.15;
             }
 
-            .topbar-tagline {
+            .topbar-academy-subtitle {
+                margin: 3px 0 0;
                 font-size: 11.5px;
                 font-weight: 500;
-                color: #6E5F86;
+                color: #135242;
                 letter-spacing: 0.2px;
             }
 
-            .topbar-support {
+            .topbar-help-side {
                 display: flex;
                 align-items: center;
-                gap: 10px;
-            }
-
-            .support-text {
-                font-size: 13.5px;
-                color: #6E5F86;
-                font-weight: 500;
-            }
-
-            .support-link {
-                display: inline-flex;
-                align-items: center;
+                justify-content: flex-end;
                 gap: 6px;
-                padding: 7px 16px;
-                background: #0F684B;
-                color: #FFFFFF !important;
-                font-size: 13px;
+                font-size: 13.5px;
+                font-weight: 500;
+                color: #484258;
+                width: 180px;
+            }
+
+            .topbar-help-side .help-link {
+                color: #2563EB;
                 font-weight: 600;
-                border-radius: 20px;
                 text-decoration: none;
-                box-shadow: 0 3px 10px rgba(15, 104, 75, 0.25);
-                transition: transform 0.18s ease, background 0.18s ease;
+                transition: opacity 0.2s ease;
             }
 
-            .support-link:hover {
-                background: #0B523B;
-                transform: translateY(-1px);
+            .topbar-help-side .help-link:hover {
+                text-decoration: underline;
             }
 
-            /* 2-Column Grid Container */
+            /* 2-COLUMN MAIN WORKSPACE */
             .desktop-auth-container {
                 display: grid;
-                grid-template-columns: 1.08fr 0.92fr;
-                gap: 52px;
+                grid-template-columns: 1fr 1fr;
+                gap: 50px;
                 align-items: center;
-                margin: auto 0;
-                padding: 14px 0;
+                justify-content: center;
+                max-width: 1040px;
+                margin: 16px auto 36px;
+                padding: 0 24px;
+                width: 100%;
+                box-sizing: border-box;
+                flex: 1;
             }
 
-            /* Left Showcase Column */
+            /* LEFT SHOWCASE (Quote without box + Scholar Visual) */
             .auth-left-showcase {
                 display: flex;
                 flex-direction: column;
-                align-items: center;
+                align-items: flex-start;
                 justify-content: center;
-                gap: 22px;
-            }
-
-            .showcase-quote-card {
-                background: rgba(255, 255, 255, 0.72);
-                backdrop-filter: blur(10px);
-                -webkit-backdrop-filter: blur(10px);
-                border: 1px solid rgba(255, 255, 255, 0.95);
-                border-radius: 18px;
-                padding: 20px 24px;
+                gap: 20px;
                 width: 100%;
-                max-width: 470px;
-                box-shadow: 0 10px 26px rgba(82, 63, 115, 0.08);
             }
 
-            .quote-header {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                margin-bottom: 8px;
+            .kural-quote-block {
+                width: 100%;
+                max-width: 440px;
             }
 
-            .quote-mark {
-                font-size: 26px;
-                color: #523F73;
-                line-height: 1;
-                opacity: 0.85;
-            }
-
-            .kural-badge {
-                font-size: 11.5px;
-                font-weight: 700;
-                background: #523F73;
-                color: #FFFFFF;
-                padding: 3px 12px;
-                border-radius: 14px;
-                letter-spacing: 0.4px;
-            }
-
-            .tamil-quote {
+            .kural-quote-text {
                 font-family: 'Mukta Malar', 'Poppins', sans-serif;
-                font-size: 16px;
+                font-size: 22px;
                 font-weight: 700;
-                line-height: 1.65;
-                color: #2D2042;
-                margin: 0 0 6px;
+                line-height: 1.5;
+                color: #1E1B4B;
+                margin: 0 0 10px;
+                letter-spacing: -0.2px;
             }
 
-            .quote-meaning {
-                font-size: 11.5px;
-                color: #6E5F86;
-                margin: 0;
-                line-height: 1.45;
-                font-style: italic;
-            }
-
-            .showcase-image-wrapper {
-                width: 100%;
-                max-width: 470px;
+            .kural-author-line {
                 display: flex;
-                justify-content: center;
+                align-items: center;
+                justify-content: flex-end;
+                gap: 8px;
+                margin-right: 12px;
             }
 
-            .scholar-img {
+            .kural-green-dash {
+                width: 28px;
+                height: 2px;
+                background: #0D6643;
+                display: inline-block;
+            }
+
+            .kural-number {
+                font-family: 'Mukta Malar', 'Poppins', sans-serif;
+                font-size: 14px;
+                font-weight: 600;
+                color: #0D6643;
+            }
+
+            .scholar-image-container {
                 width: 100%;
-                max-height: 375px;
-                object-fit: cover;
-                border-radius: 20px;
-                box-shadow: 0 16px 36px rgba(60, 40, 90, 0.16);
+                max-width: 440px;
             }
 
-            /* Right Panel */
+            .scholar-visual-image {
+                width: 100%;
+                height: auto;
+                border-radius: 20px;
+                box-shadow: 0 16px 36px rgba(50, 30, 80, 0.16);
+                display: block;
+            }
+
+            /* RIGHT PANEL (Trophy Header + Royal Purple Card) */
             .auth-right-panel {
                 display: flex;
                 flex-direction: column;
                 align-items: center;
+                justify-content: center;
                 width: 100%;
             }
 
             .desktop-welcome-header {
                 display: block;
+                text-align: center;
+                margin-bottom: 16px;
                 width: 100%;
-                max-width: 440px;
-                margin-bottom: 14px;
-                text-align: left;
+                max-width: 430px;
             }
 
-            .desktop-welcome-header h2 {
-                font-size: 21px;
+            .welcome-trophy {
+                font-size: 24px;
+                line-height: 1;
+                margin-bottom: 4px;
+            }
+
+            .welcome-heading {
+                font-size: 22px;
                 font-weight: 700;
-                color: #2D2042;
+                color: #1E1B4B;
                 margin: 0 0 4px;
             }
 
-            .desktop-welcome-header p {
+            .welcome-subtext {
                 font-size: 13px;
-                color: #6E5F86;
+                color: #5A5270;
                 margin: 0;
-                line-height: 1.4;
             }
 
-            /* Royal Slate-Purple Floating Overlay Card */
+            /* SOLID ROYAL SLATE-PURPLE LOGIN CARD */
             .login-card {
-                background: linear-gradient(160deg, #58447D 0%, #483568 100%) !important;
-                border: 1px solid rgba(255, 255, 255, 0.18) !important;
-                border-radius: 22px !important;
-                box-shadow: 0 24px 55px -10px rgba(35, 20, 60, 0.42), 0 10px 24px rgba(0, 0, 0, 0.15) !important;
-                padding: 32px 30px !important;
+                background: #5B4870 !important;
+                border: none !important;
+                border-radius: 24px !important;
+                box-shadow: 0 24px 50px rgba(45, 25, 75, 0.35) !important;
+                padding: 30px 28px !important;
                 color: #FFFFFF !important;
-                max-width: 440px !important;
+                max-width: 430px !important;
+                width: 100% !important;
             }
 
             .login-card .brand {
                 display: none !important;
             }
 
-            .login-card h2 {
-                color: #FFFFFF !important;
-                font-size: 20px !important;
-            }
-
-            .login-card .subtitle {
-                color: rgba(255, 255, 255, 0.82) !important;
-                font-size: 13px !important;
-            }
-
-            .login-card label {
-                color: #FFFFFF !important;
-                font-size: 13px !important;
-                font-weight: 600 !important;
-            }
-
-            .login-card .req-star {
-                color: #FCA5A5 !important;
-            }
-
-            /* Crisp White Inputs on Desktop */
-            .login-card input,
-            .login-card select {
-                background: #FFFFFF !important;
-                color: #0F172A !important;
-                border: 1.5px solid #CBD5E1 !important;
-                box-shadow: 0 2px 5px rgba(0,0,0,0.06);
-            }
-
-            .login-card input:focus,
-            .login-card select:focus {
-                background: #FFFFFF !important;
-                border-color: #10B981 !important;
-                box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.28) !important;
-            }
-
-            /* Pill Switch */
+            /* Switch Pill */
             .login-card .auth-switch-wrapper {
-                background: rgba(28, 16, 45, 0.5) !important;
-                border: 1px solid rgba(255, 255, 255, 0.12) !important;
+                background: #453358 !important;
+                border-radius: 30px !important;
+                padding: 4px !important;
+                border: none !important;
+                margin-bottom: 22px !important;
             }
 
             .login-card .auth-switch-bg {
-                background: #0F684B !important;
-                box-shadow: 0 3px 12px rgba(15, 104, 75, 0.45) !important;
+                background: #0D6643 !important;
+                border-radius: 26px !important;
+                box-shadow: 0 2px 8px rgba(13, 102, 67, 0.4) !important;
             }
 
             .login-card .auth-switch-btn {
-                color: rgba(255, 255, 255, 0.72) !important;
+                color: #DDD6E6 !important;
+                font-size: 13.5px !important;
+                font-weight: 600 !important;
             }
 
             .login-card .auth-switch-btn.active {
                 color: #FFFFFF !important;
+                font-weight: 700 !important;
             }
 
-            /* Primary & Google Buttons */
-            .login-card button.btn-primary {
-                background: #0F684B !important;
+            /* Card Titles & Subtitles */
+            .login-card h2 {
                 color: #FFFFFF !important;
-                font-weight: 700;
-                box-shadow: 0 4px 14px rgba(15, 104, 75, 0.35);
+                font-size: 20px !important;
+                font-weight: 700 !important;
+                text-align: center !important;
+                margin: 0 0 4px !important;
             }
 
-            .login-card button.btn-primary:hover {
-                background: #0B523B !important;
-                box-shadow: 0 6px 18px rgba(15, 104, 75, 0.45);
+            .login-card .subtitle {
+                color: #DDD6E6 !important;
+                font-size: 12.5px !important;
+                text-align: center !important;
+                margin: 0 0 18px !important;
             }
 
-            .login-card .btn-google-auth {
+            /* Labels */
+            .login-card label {
+                color: #FFFFFF !important;
+                font-size: 12.5px !important;
+                font-weight: 600 !important;
+                margin: 12px 0 6px !important;
+            }
+
+            .login-card .req-star {
+                display: none !important;
+            }
+
+            /* Input boxes */
+            .login-card .input-with-icon input,
+            .login-card .input-with-icon select {
                 background: #FFFFFF !important;
-                color: #1E293B !important;
+                color: #1F2937 !important;
                 border: 1px solid #E2E8F0 !important;
-                box-shadow: 0 3px 10px rgba(0,0,0,0.15);
+                border-radius: 9px !important;
+                padding: 11px 14px 11px 38px !important;
+                font-size: 13.5px !important;
+                height: 44px !important;
+                box-shadow: none !important;
             }
 
-            .login-card .btn-google-auth:hover {
-                background: #F8FAFC !important;
+            .login-card .input-with-icon input::placeholder {
+                color: #717D96 !important;
+                font-size: 13px !important;
             }
 
-            .login-card .auth-divider {
-                color: rgba(255, 255, 255, 0.65) !important;
-            }
-
-            .login-card .auth-divider::before,
-            .login-card .auth-divider::after {
-                border-bottom: 1px solid rgba(255, 255, 255, 0.2) !important;
-            }
-
-            .login-card .auth-switch-hint {
-                color: rgba(255, 255, 255, 0.8) !important;
-            }
-
-            .login-card .auth-switch-hint a {
-                color: #6EE7B7 !important;
-                text-decoration: underline;
-                font-weight: 600;
-            }
-
-            .login-card .auth-switch-hint a:hover {
-                color: #A7F3D0 !important;
+            .login-card .input-with-icon input:focus,
+            .login-card .input-with-icon select:focus {
+                border-color: #0D6643 !important;
+                box-shadow: 0 0 0 3px rgba(13, 102, 67, 0.25) !important;
             }
 
             .login-card .toggle-password-btn {
@@ -815,30 +805,82 @@
             }
 
             .login-card .toggle-password-btn:hover {
-                color: #0F684B !important;
+                color: #0D6643 !important;
+            }
+
+            /* Primary Action Button */
+            .login-card button.btn-primary {
+                background: #0D6643 !important;
+                color: #FFFFFF !important;
+                font-weight: 700 !important;
+                font-size: 14.5px !important;
+                border-radius: 9px !important;
+                padding: 12px !important;
+                height: 46px !important;
+                margin-top: 18px !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: center !important;
+                gap: 6px !important;
+                box-shadow: 0 3px 10px rgba(13, 102, 67, 0.3) !important;
+                transition: background 0.18s ease, transform 0.12s ease !important;
+            }
+
+            .login-card button.btn-primary:hover {
+                background: #095235 !important;
+                transform: translateY(-1px);
+            }
+
+            /* Divider */
+            .login-card .auth-divider {
+                color: #C4B9D6 !important;
+                font-size: 11.5px !important;
+                font-weight: 500 !important;
+                margin: 14px 0 12px !important;
+                text-transform: lowercase !important;
+            }
+
+            .login-card .auth-divider::before,
+            .login-card .auth-divider::after {
+                border-bottom: 1px solid rgba(255, 255, 255, 0.18) !important;
+            }
+
+            /* Google Button */
+            .login-card .btn-google-auth {
+                background: #FFFFFF !important;
+                color: #1F2937 !important;
+                border: none !important;
+                border-radius: 9px !important;
+                height: 44px !important;
+                font-size: 13.5px !important;
+                font-weight: 600 !important;
+                box-shadow: 0 2px 8px rgba(0,0,0,0.08) !important;
+                margin-bottom: 14px !important;
+            }
+
+            .login-card .btn-google-auth:hover {
+                background: #F8FAFC !important;
+            }
+
+            /* Switch hint */
+            .login-card .auth-switch-hint {
+                color: #DDD6E6 !important;
+                font-size: 13px !important;
+                margin-top: 14px !important;
+            }
+
+            .login-card .auth-switch-hint a {
+                color: #F5C542 !important;
+                font-weight: 600 !important;
+                text-decoration: none !important;
+            }
+
+            .login-card .auth-switch-hint a:hover {
+                text-decoration: underline !important;
             }
 
             .login-card .footer {
                 display: none !important;
-            }
-
-            /* Desktop Bottom Footer */
-            .desktop-bottom-bar {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                padding: 16px 0 6px;
-                font-size: 13px;
-                color: #6E5F86;
-                border-top: 1px solid rgba(82, 63, 115, 0.14);
-            }
-
-            .footer-left {
-                font-weight: 600;
-            }
-
-            .footer-right {
-                font-style: italic;
             }
         }
     </style>
@@ -847,393 +889,472 @@
 
     <div class="auth-page-wrapper">
 
-        <!-- DESKTOP TOP BAR (Only visible on >= 901px) -->
+        <!-- TOP BAR (Logo Left, Brand Center, Help Right) -->
         <header class="desktop-topbar">
-            <div class="topbar-brand">
-                <div class="topbar-logo-badge">
-                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
-                        <path d="M6 12v5c3 3 9 3 12 0v-5"/>
-                    </svg>
-                </div>
-                <div class="topbar-brand-text">
-                    <span class="topbar-title">SLOGON ACADEMY</span>
-                    <span class="topbar-tagline">Candidate Assessment Portal</span>
-                </div>
+            <div class="topbar-logo-side">
+                <img src="Logoicon.png" alt="SLOGON Academy Logo" class="topbar-logo-circle">
             </div>
-
-            <div class="topbar-support">
-                <span class="support-text">Need a hand?</span>
-                <a href="https://wa.me/919940822295?text=Hello%20Slogon%20Academy%20Support" target="_blank" rel="noopener noreferrer" class="support-link">
-                    <span>Get help</span>
-                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="7" y1="17" x2="17" y2="7"></line>
-                        <polyline points="7 7 17 7 17 17"></polyline>
-                    </svg>
-                </a>
+            <div class="topbar-center-brand">
+                <h1 class="topbar-academy-title">SLOGON ACADEMY</h1>
+                <p class="topbar-academy-subtitle">Candidate Assessment & Examination Portal</p>
+            </div>
+            <div class="topbar-help-side">
+                <span class="help-label">Need a hand?</span>
+                <a href="https://wa.me/919940822295?text=Hello%20Slogon%20Academy%20Support" target="_blank" rel="noopener noreferrer" class="help-link">Get help ↗</a>
             </div>
         </header>
 
         <!-- MAIN 2-COLUMN CONTAINER -->
         <div class="desktop-auth-container">
 
-            <!-- LEFT SHOWCASE COLUMN (Only visible on >= 901px) -->
+            <!-- LEFT SHOWCASE COLUMN -->
             <section class="auth-left-showcase" aria-label="Academy Motivation and Scholar Showcase">
                 
-                <div class="showcase-quote-card">
-                    <div class="quote-header">
-                        <span class="quote-mark">❝</span>
-                        <div class="kural-badge">குறள் : 772</div>
-                    </div>
-                    <p class="tamil-quote">
+                <div class="kural-quote-block">
+                    <p class="kural-quote-text">
                         கான முயலெய்த அம்பினில் யானை<br>
                         பிழைத்தவேல் ஏந்தல் இனிது
                     </p>
-                    <p class="quote-meaning">
-                        (Aim high: It is nobler to miss an elephant with a spear than to hit a rabbit with an arrow.)
-                    </p>
+                    <div class="kural-author-line">
+                        <span class="kural-green-dash"></span>
+                        <span class="kural-number">குறள் : 772</span>
+                    </div>
                 </div>
 
-                <div class="showcase-image-wrapper">
-                    <img src="scholar-showcase.png" alt="Slogon Academy Scholar Learning" class="scholar-img">
+                <div class="scholar-image-container">
+                    <img src="scholar-showcase.png" alt="Scholar Student in Hallway" class="scholar-visual-image">
                 </div>
 
             </section>
 
-            <!-- RIGHT PANEL (Desktop Welcome Header + Auth Card) -->
+            <!-- RIGHT PANEL (Desktop Header + Auth Card) -->
             <div class="auth-right-panel">
 
                 <div class="desktop-welcome-header">
-                    <h2>🏆 Welcome, Future Scholars</h2>
-                    <p>Sharpen your preparation with live TNPSC mock assessments.</p>
+                    <div class="welcome-trophy">🏆</div>
+                    <h2 class="welcome-heading">Welcome, Future Scholars</h2>
+                    <p class="welcome-subtext">Every great achievement begins with a sign in.</p>
                 </div>
 
                 <main class="login-card" id="authCard">
 
-        <header class="brand">
-            <h1>SLOGON ACADEMY</h1>
-            <p>Candidate Assessment & Examination Portal</p>
-        </header>
+                    <header class="brand">
+                        <h1>SLOGON ACADEMY</h1>
+                        <p>Candidate Assessment & Examination Portal</p>
+                    </header>
 
-        <!-- SEGMENTED SLIDER PILL SWITCH -->
-        <div class="auth-switch-wrapper" role="tablist" aria-label="Sign in or Register">
-            <div class="auth-switch-bg" id="authSwitchBg"></div>
-            <button type="button" class="auth-switch-btn active" id="tabLoginBtn" role="tab" aria-selected="true">
-                Sign In
-            </button>
-            <button type="button" class="auth-switch-btn" id="tabRegisterBtn" role="tab" aria-selected="false">
-                Register
-            </button>
-        </div>
-
-        <!-- ==============================================
-             SLIDE 1: CANDIDATE SIGN IN
-        =============================================== -->
-        <div class="auth-slide active" id="loginSlide">
-            <h2>Candidate Login</h2>
-            <p class="subtitle">Sign in to access your assigned mock tests.</p>
-
-            <form id="loginForm">
-                <label for="userId">Candidate User ID</label>
-                <input
-                    type="text"
-                    id="userId"
-                    name="userId"
-                    placeholder="Enter your User ID"
-                    autocomplete="username"
-                    required
-                >
-
-                <label for="password">Password</label>
-                <div class="password-wrapper">
-                    <input
-                        type="password"
-                        id="password"
-                        name="password"
-                        placeholder="Enter your password"
-                        autocomplete="current-password"
-                        required
-                    >
-                    <button type="button" id="togglePassword" class="toggle-password-btn" aria-label="Show password" title="Show password">
-                        <svg id="eyeOpenIcon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                            <circle cx="12" cy="12" r="3"></circle>
-                        </svg>
-                        <svg id="eyeClosedIcon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
-                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
-                            <line x1="1" y1="23" x2="23" y2="1"></line>
-                        </svg>
-                    </button>
-                </div>
-
-                <button type="submit" id="loginButton" class="btn-primary">
-                    LOGIN
-                </button>
-
-                <div class="auth-divider"><span>OR</span></div>
-
-                <button type="button" class="btn-google-auth" id="googleLoginBtn">
-                    <svg width="18" height="18" viewBox="0 0 24 24">
-                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
-                    </svg>
-                    <span>Continue with Google</span>
-                </button>
-
-                <p id="message" class="auth-message" role="status" aria-live="polite"></p>
-
-                <div class="auth-switch-hint">
-                    Don't have an account? <a href="#" id="linkToRegister">Register here →</a>
-                </div>
-            </form>
-        </div>
-
-        <!-- ==============================================
-             SLIDE 2: CANDIDATE REGISTRATION
-        =============================================== -->
-        <div class="auth-slide" id="registerSlide">
-            <h2>Create Account</h2>
-            <p class="subtitle">Enroll today to begin your mock examinations.</p>
-
-            <form id="registerForm">
-                <label for="regName">Full Name <span class="req-star">*</span></label>
-                <input
-                    type="text"
-                    id="regName"
-                    name="candidateName"
-                    placeholder="e.g. Surya Kumar"
-                    autocomplete="name"
-                    required
-                >
-
-                <label for="regEmail">Email Address <span class="req-star">*</span></label>
-                <input
-                    type="email"
-                    id="regEmail"
-                    name="email"
-                    placeholder="e.g. suryakumar@gmail.com"
-                    autocomplete="email"
-                    required
-                >
-
-                <label for="regPhone">Mobile Phone Number <span class="req-star">*</span></label>
-                <input
-                    type="tel"
-                    id="regPhone"
-                    name="phone"
-                    placeholder="10-digit mobile number"
-                    maxlength="15"
-                    autocomplete="tel"
-                    required
-                >
-
-                <label for="regExamCombination">Choose Your Exam Combination <span class="req-star">*</span></label>
-                <select
-                    id="regExamCombination"
-                    name="examCombination"
-                    required
-                >
-                    <option value="" disabled selected>-- Select Exam Combination --</option>
-                    <option value="Paper 1 - General Paper">Paper 1 - General Paper</option>
-                    <option value="Paper 1 + Paper 2 - Tamil">Paper 1 + Paper 2 - Tamil</option>
-                </select>
-
-                <label for="regUserId">SLOGON Account ID <span class="req-star">*</span></label>
-                <input
-                    type="text"
-                    id="regUserId"
-                    name="userId"
-                    placeholder="Choose your User ID (e.g. surya24)"
-                    autocomplete="username"
-                    required
-                >
-
-                <label for="regPassword">SLOGON Password <span class="req-star">*</span></label>
-                <div class="password-wrapper">
-                    <input
-                        type="password"
-                        id="regPassword"
-                        name="password"
-                        placeholder="Create password (min 6 characters)"
-                        autocomplete="new-password"
-                        required
-                    >
-                    <button type="button" id="toggleRegPassword" class="toggle-password-btn" aria-label="Show password" title="Show password">
-                        <svg id="eyeOpenRegIcon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                            <circle cx="12" cy="12" r="3"></circle>
-                        </svg>
-                        <svg id="eyeClosedRegIcon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
-                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
-                            <line x1="1" y1="23" x2="23" y2="1"></line>
-                        </svg>
-                    </button>
-                </div>
-
-                <label for="regConfirmPassword">Confirm Password <span class="req-star">*</span></label>
-                <div class="password-wrapper">
-                    <input
-                        type="password"
-                        id="regConfirmPassword"
-                        name="confirmPassword"
-                        placeholder="Re-enter your password"
-                        autocomplete="new-password"
-                        required
-                    >
-                </div>
-
-                <button type="submit" id="registerButton" class="btn-primary">
-                    CREATE ACCOUNT
-                </button>
-
-                <div class="auth-divider"><span>OR</span></div>
-
-                <button type="button" class="btn-google-auth" id="googleRegisterBtn">
-                    <svg width="18" height="18" viewBox="0 0 24 24">
-                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
-                    </svg>
-                    <span>Register with Google</span>
-                </button>
-
-                <p id="regMessage" class="auth-message" role="status" aria-live="polite"></p>
-
-                <div class="auth-switch-hint">
-                    Already have an account? <a href="#" id="linkToLogin">Sign in here</a>
-                </div>
-            </form>
-        </div>
-
-        <!-- ==============================================
-             SLIDE 3: GOOGLE AUTH - SET SLOGON PASSWORD
-        =============================================== -->
-        <div class="auth-slide" id="googleSetupSlide">
-            <h2>Complete Registration</h2>
-            <p class="subtitle">Set your SLOGON password to finish your student account.</p>
-
-            <div class="google-verified-card">
-                <div class="google-verified-icon">
-                    <svg width="20" height="20" viewBox="0 0 24 24">
-                        <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-                        <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-                        <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
-                        <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
-                    </svg>
-                </div>
-                <div class="google-verified-info">
-                    <div class="google-verified-badge">
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
-                        <span>Verified with Google</span>
+                    <!-- SEGMENTED SLIDER PILL SWITCH -->
+                    <div class="auth-switch-wrapper" role="tablist" aria-label="Sign in or Register">
+                        <div class="auth-switch-bg" id="authSwitchBg"></div>
+                        <button type="button" class="auth-switch-btn active" id="tabLoginBtn" role="tab" aria-selected="true">
+                            Sign In
+                        </button>
+                        <button type="button" class="auth-switch-btn" id="tabRegisterBtn" role="tab" aria-selected="false">
+                            Register
+                        </button>
                     </div>
-                    <div class="google-verified-name" id="gVerifiedName">Candidate Name</div>
-                    <div class="google-verified-email" id="gVerifiedEmail">email@gmail.com</div>
-                </div>
-            </div>
 
-            <form id="googleSetupForm">
-                <input type="hidden" id="gSetupToken" name="token">
+                    <!-- ==============================================
+                         SLIDE 1: CANDIDATE SIGN IN
+                    =============================================== -->
+                    <div class="auth-slide active" id="loginSlide">
+                        <h2>Candidate Login</h2>
+                        <p class="subtitle">Sign in to access your assigned mock tests.</p>
 
-                <label for="gSetupPhone">Mobile Phone Number <span class="req-star">*</span></label>
-                <input
-                    type="tel"
-                    id="gSetupPhone"
-                    name="phone"
-                    placeholder="10-digit mobile number"
-                    maxlength="15"
-                    autocomplete="tel"
-                    required
-                >
+                        <form id="loginForm">
+                            <label for="userId">Candidate User ID</label>
+                            <div class="input-with-icon">
+                                <span class="field-svg-icon">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </svg>
+                                </span>
+                                <input
+                                    type="text"
+                                    id="userId"
+                                    name="userId"
+                                    placeholder="Enter your User ID"
+                                    autocomplete="username"
+                                    required
+                                >
+                            </div>
 
-                <label for="gSetupExamCombination">Choose Your Exam Combination <span class="req-star">*</span></label>
-                <select
-                    id="gSetupExamCombination"
-                    name="examCombination"
-                    required
-                >
-                    <option value="" disabled selected>-- Select Exam Combination --</option>
-                    <option value="Paper 1 - General Paper">Paper 1 - General Paper</option>
-                    <option value="Paper 1 + Paper 2 - Tamil">Paper 1 + Paper 2 - Tamil</option>
-                </select>
+                            <label for="password">Password</label>
+                            <div class="input-with-icon password-wrapper">
+                                <span class="field-svg-icon">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                    </svg>
+                                </span>
+                                <input
+                                    type="password"
+                                    id="password"
+                                    name="password"
+                                    placeholder="Enter your password"
+                                    autocomplete="current-password"
+                                    required
+                                >
+                                <button type="button" id="togglePassword" class="toggle-password-btn" aria-label="Show password" title="Show password">
+                                    <svg id="eyeOpenIcon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                    <svg id="eyeClosedIcon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+                                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                        <line x1="1" y1="23" x2="23" y2="1"></line>
+                                    </svg>
+                                </button>
+                            </div>
 
-                <label for="gSetupUserId">SLOGON Account User ID <span class="req-star">*</span></label>
-                <input
-                    type="text"
-                    id="gSetupUserId"
-                    name="userId"
-                    placeholder="Choose your User ID (e.g. surya24)"
-                    autocomplete="username"
-                    required
-                >
+                            <button type="submit" id="loginButton" class="btn-primary">
+                                Sign In →
+                            </button>
 
-                <label for="gSetupPassword">Create SLOGON Password <span class="req-star">*</span></label>
-                <div class="password-wrapper">
-                    <input
-                        type="password"
-                        id="gSetupPassword"
-                        name="password"
-                        placeholder="Create password (min 6 characters)"
-                        autocomplete="new-password"
-                        required
-                    >
-                    <button type="button" id="toggleGSetupPassword" class="toggle-password-btn" aria-label="Show password" title="Show password">
-                        <svg id="eyeOpenGSetupIcon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
-                            <circle cx="12" cy="12" r="3"></circle>
-                        </svg>
-                        <svg id="eyeClosedGSetupIcon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
-                            <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
-                            <line x1="1" y1="23" x2="23" y2="1"></line>
-                        </svg>
-                    </button>
-                </div>
+                            <div class="auth-divider"><span>or continue with</span></div>
 
-                <label for="gSetupConfirmPassword">Confirm Password <span class="req-star">*</span></label>
-                <div class="password-wrapper">
-                    <input
-                        type="password"
-                        id="gSetupConfirmPassword"
-                        name="confirmPassword"
-                        placeholder="Re-enter your password"
-                        autocomplete="new-password"
-                        required
-                    >
-                </div>
+                            <button type="button" class="btn-google-auth" id="googleLoginBtn">
+                                <svg width="18" height="18" viewBox="0 0 24 24">
+                                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                                </svg>
+                                <span>Continue with Google</span>
+                            </button>
 
-                <button type="submit" id="gSetupSubmitBtn" class="btn-primary">
-                    FINISH REGISTRATION & START
-                </button>
+                            <p id="message" class="auth-message" role="status" aria-live="polite"></p>
 
-                <p id="gSetupMessage" class="auth-message" role="status" aria-live="polite"></p>
+                            <div class="auth-switch-hint">
+                                Don't have an account? <a href="#" id="linkToRegister">Register here →</a>
+                            </div>
+                        </form>
+                    </div>
 
-                <div class="auth-switch-hint">
-                    <a href="#" id="linkBackFromGSetup">← Cancel & Return to Login</a>
-                </div>
-            </form>
-        </div>
+                    <!-- ==============================================
+                         SLIDE 2: CANDIDATE REGISTRATION
+                    =============================================== -->
+                    <div class="auth-slide" id="registerSlide">
+                        <h2>Candidate Registration</h2>
+                        <p class="subtitle">Create your scholar profile to begin UGC NET/JRF mock tests.</p>
 
-        <footer class="footer">
-            © SLOGON ACADEMY | Mock Test Portal
-        </footer>
+                        <form id="registerForm">
+                            <label for="regName">Full Name</label>
+                            <div class="input-with-icon">
+                                <span class="field-svg-icon">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="3" y="4" width="18" height="16" rx="3"></rect>
+                                        <circle cx="9" cy="10" r="2"></circle>
+                                        <line x1="15" y1="8" x2="17" y2="8"></line>
+                                        <line x1="15" y1="12" x2="17" y2="12"></line>
+                                        <line x1="7" y1="16" x2="17" y2="16"></line>
+                                    </svg>
+                                </span>
+                                <input
+                                    type="text"
+                                    id="regName"
+                                    name="candidateName"
+                                    placeholder="Enter your full name"
+                                    autocomplete="name"
+                                    required
+                                >
+                            </div>
 
-    </main>
+                            <label for="regEmail">Email or Candidate ID</label>
+                            <div class="input-with-icon">
+                                <span class="field-svg-icon">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
+                                        <polyline points="22,6 12,13 2,6"></polyline>
+                                    </svg>
+                                </span>
+                                <input
+                                    type="email"
+                                    id="regEmail"
+                                    name="email"
+                                    placeholder="scholar@slogonacademy.edu.in"
+                                    autocomplete="email"
+                                    required
+                                >
+                            </div>
+
+                            <label for="regPhone">Mobile Number</label>
+                            <div class="input-with-icon">
+                                <span class="field-svg-icon">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                                    </svg>
+                                </span>
+                                <input
+                                    type="tel"
+                                    id="regPhone"
+                                    name="phone"
+                                    placeholder="+91 98765 43210"
+                                    maxlength="15"
+                                    autocomplete="tel"
+                                    required
+                                >
+                            </div>
+
+                            <label for="regExamCombination">Choose your exam combination</label>
+                            <div class="input-with-icon">
+                                <span class="field-svg-icon">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                                    </svg>
+                                </span>
+                                <select
+                                    id="regExamCombination"
+                                    name="examCombination"
+                                    required
+                                >
+                                    <option value="" disabled selected>Choose your exam combination</option>
+                                    <option value="Paper 1 - General Paper">Paper 1 - General Paper</option>
+                                    <option value="Paper 1 + Paper 2 - Tamil">Paper 1 + Paper 2 - Tamil</option>
+                                </select>
+                            </div>
+
+                            <label for="regUserId">SLOGON Account ID</label>
+                            <div class="input-with-icon">
+                                <span class="field-svg-icon">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </svg>
+                                </span>
+                                <input
+                                    type="text"
+                                    id="regUserId"
+                                    name="userId"
+                                    placeholder="Choose your User ID (e.g. surya24)"
+                                    autocomplete="username"
+                                    required
+                                >
+                            </div>
+
+                            <label for="regPassword">SLOGON Password</label>
+                            <div class="input-with-icon password-wrapper">
+                                <span class="field-svg-icon">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                    </svg>
+                                </span>
+                                <input
+                                    type="password"
+                                    id="regPassword"
+                                    name="password"
+                                    placeholder="Create password (min 6 characters)"
+                                    autocomplete="new-password"
+                                    required
+                                >
+                                <button type="button" id="toggleRegPassword" class="toggle-password-btn" aria-label="Show password" title="Show password">
+                                    <svg id="eyeOpenRegIcon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                    <svg id="eyeClosedRegIcon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+                                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                        <line x1="1" y1="23" x2="23" y2="1"></line>
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <label for="regConfirmPassword">Confirm Password</label>
+                            <div class="input-with-icon password-wrapper">
+                                <span class="field-svg-icon">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                    </svg>
+                                </span>
+                                <input
+                                    type="password"
+                                    id="regConfirmPassword"
+                                    name="confirmPassword"
+                                    placeholder="Re-enter your password"
+                                    autocomplete="new-password"
+                                    required
+                                >
+                            </div>
+
+                            <button type="submit" id="registerButton" class="btn-primary">
+                                Create Account →
+                            </button>
+
+                            <div class="auth-divider"><span>or continue with</span></div>
+
+                            <button type="button" class="btn-google-auth" id="googleRegisterBtn">
+                                <svg width="18" height="18" viewBox="0 0 24 24">
+                                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                                </svg>
+                                <span>Continue with Google</span>
+                            </button>
+
+                            <p id="regMessage" class="auth-message" role="status" aria-live="polite"></p>
+
+                            <div class="auth-switch-hint">
+                                Already registered? <a href="#" id="linkToLogin">Sign in here →</a>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- ==============================================
+                         SLIDE 3: GOOGLE AUTH - SET SLOGON PASSWORD
+                    =============================================== -->
+                    <div class="auth-slide" id="googleSetupSlide">
+                        <h2>Complete Registration</h2>
+                        <p class="subtitle">Set your SLOGON password to finish your student account.</p>
+
+                        <div class="google-verified-card">
+                            <div class="google-verified-icon">
+                                <svg width="20" height="20" viewBox="0 0 24 24">
+                                    <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
+                                    <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
+                                    <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.06H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.94l2.85-2.22.81-.63z"/>
+                                    <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.06l3.66 2.84c.87-2.6 3.3-4.52 6.16-4.52z"/>
+                                </svg>
+                            </div>
+                            <div class="google-verified-info">
+                                <div class="google-verified-badge">
+                                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><polyline points="20 6 9 17 4 12"/></svg>
+                                    <span>Verified with Google</span>
+                                </div>
+                                <div class="google-verified-name" id="gVerifiedName">Candidate Name</div>
+                                <div class="google-verified-email" id="gVerifiedEmail">email@gmail.com</div>
+                            </div>
+                        </div>
+
+                        <form id="googleSetupForm">
+                            <input type="hidden" id="gSetupToken" name="token">
+
+                            <label for="gSetupPhone">Mobile Number</label>
+                            <div class="input-with-icon">
+                                <span class="field-svg-icon">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                                    </svg>
+                                </span>
+                                <input
+                                    type="tel"
+                                    id="gSetupPhone"
+                                    name="phone"
+                                    placeholder="+91 98765 43210"
+                                    maxlength="15"
+                                    autocomplete="tel"
+                                    required
+                                >
+                            </div>
+
+                            <label for="gSetupExamCombination">Choose your exam combination</label>
+                            <div class="input-with-icon">
+                                <span class="field-svg-icon">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                                    </svg>
+                                </span>
+                                <select
+                                    id="gSetupExamCombination"
+                                    name="examCombination"
+                                    required
+                                >
+                                    <option value="" disabled selected>Choose your exam combination</option>
+                                    <option value="Paper 1 - General Paper">Paper 1 - General Paper</option>
+                                    <option value="Paper 1 + Paper 2 - Tamil">Paper 1 + Paper 2 - Tamil</option>
+                                </select>
+                            </div>
+
+                            <label for="gSetupUserId">SLOGON Account User ID</label>
+                            <div class="input-with-icon">
+                                <span class="field-svg-icon">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                                        <circle cx="12" cy="7" r="4"></circle>
+                                    </svg>
+                                </span>
+                                <input
+                                    type="text"
+                                    id="gSetupUserId"
+                                    name="userId"
+                                    placeholder="Choose your User ID (e.g. surya24)"
+                                    autocomplete="username"
+                                    required
+                                >
+                            </div>
+
+                            <label for="gSetupPassword">Create SLOGON Password</label>
+                            <div class="input-with-icon password-wrapper">
+                                <span class="field-svg-icon">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                    </svg>
+                                </span>
+                                <input
+                                    type="password"
+                                    id="gSetupPassword"
+                                    name="password"
+                                    placeholder="Create password (min 6 characters)"
+                                    autocomplete="new-password"
+                                    required
+                                >
+                                <button type="button" id="toggleGSetupPassword" class="toggle-password-btn" aria-label="Show password" title="Show password">
+                                    <svg id="eyeOpenGSetupIcon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path>
+                                        <circle cx="12" cy="12" r="3"></circle>
+                                    </svg>
+                                    <svg id="eyeClosedGSetupIcon" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="display: none;">
+                                        <path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path>
+                                        <line x1="1" y1="23" x2="23" y2="1"></line>
+                                    </svg>
+                                </button>
+                            </div>
+
+                            <label for="gSetupConfirmPassword">Confirm Password</label>
+                            <div class="input-with-icon password-wrapper">
+                                <span class="field-svg-icon">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                                        <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                                    </svg>
+                                </span>
+                                <input
+                                    type="password"
+                                    id="gSetupConfirmPassword"
+                                    name="confirmPassword"
+                                    placeholder="Re-enter your password"
+                                    autocomplete="new-password"
+                                    required
+                                >
+                            </div>
+
+                            <button type="submit" id="gSetupSubmitBtn" class="btn-primary">
+                                Finish Registration & Start →
+                            </button>
+
+                            <p id="gSetupMessage" class="auth-message" role="status" aria-live="polite"></p>
+
+                            <div class="auth-switch-hint">
+                                <a href="#" id="linkBackFromGSetup">← Cancel & Return to Login</a>
+                            </div>
+                        </form>
+                    </div>
+
+                    <footer class="footer">
+                        © SLOGON ACADEMY | Mock Test Portal
+                    </footer>
+
+                </main>
 
             </div><!-- /.auth-right-panel -->
 
         </div><!-- /.desktop-auth-container -->
-
-        <!-- DESKTOP BOTTOM FOOTER (Only visible on >= 901px) -->
-        <footer class="desktop-bottom-bar">
-            <div class="footer-left">
-                © SLOGON ACADEMY | Mock Test Portal
-            </div>
-            <div class="footer-right">
-                Learn with purpose. Achieve with confidence.
-            </div>
-        </footer>
 
     </div><!-- /.auth-page-wrapper -->
 
