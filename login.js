@@ -109,6 +109,7 @@ function switchToLogin() {
         authSwitchWrapper.style.display = "flex";
     }
 
+    if (authCard) authCard.scrollTop = 0;
     if (regMessage) regMessage.textContent = "";
 }
 
@@ -143,10 +144,21 @@ function switchToRegister() {
         authSwitchWrapper.style.display = "flex";
     }
 
+    if (authCard) authCard.scrollTop = 0;
     if (message) message.textContent = "";
     if (regName && !regName.value) {
         setTimeout(() => regName.focus({ preventScroll: true }), 100);
     }
+}
+
+// Forward mouse wheel events on right panel directly to the scrollable card
+const authRightPanel = document.querySelector(".auth-right-panel");
+if (authRightPanel && authCard) {
+    authRightPanel.addEventListener("wheel", (e) => {
+        if (e.target !== authCard && !authCard.contains(e.target)) {
+            authCard.scrollTop += e.deltaY;
+        }
+    }, { passive: true });
 }
 
 if (tabLoginBtn) tabLoginBtn.addEventListener("click", switchToLogin);
