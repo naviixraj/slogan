@@ -1352,14 +1352,14 @@ function renderStudents() {
 
         const paperTd = document.createElement("td");
         if (s.role === "Admin") {
-            paperTd.innerHTML = `<span style="font-size: 11px; font-weight: 700; color: #D97706; background: #FEF3C7; padding: 4px 10px; border-radius: 6px;">Master Admin</span>`;
+            paperTd.innerHTML = `<span style="display: inline-block; white-space: nowrap; font-size: 11px; font-weight: 700; color: #D97706; background: #FEF3C7; padding: 4px 10px; border-radius: 6px;">Master Admin</span>`;
         } else {
-            const combo = s.examCombination || s.exam_combination || "Paper 1 - General Paper";
-            const isPaper2 = combo.includes("Paper 2") || combo.includes("Tamil");
+            const combo = String(s.examCombination || s.exam_combination || "").toLowerCase();
+            const isPaper2 = combo.includes("paper 2") || combo.includes("paper2") || combo.includes("tamil");
             if (isPaper2) {
-                paperTd.innerHTML = `<span style="display: inline-block; font-size: 11.5px; font-weight: 700; color: #4338CA; background: #EEF2FF; padding: 4px 10px; border-radius: 6px; border: 1px solid #C7D2FE;">Paper 1 + Paper 2 (Tamil)</span>`;
+                paperTd.innerHTML = `<span style="display: inline-block; white-space: nowrap; font-size: 11.5px; font-weight: 700; color: #4338CA; background: #EEF2FF; padding: 4px 12px; border-radius: 6px; border: 1px solid #C7D2FE;">Paper 2</span>`;
             } else {
-                paperTd.innerHTML = `<span style="display: inline-block; font-size: 11.5px; font-weight: 700; color: #065F46; background: #ECFDF5; padding: 4px 10px; border-radius: 6px; border: 1px solid #A7F3D0;">Paper 1 (General Paper)</span>`;
+                paperTd.innerHTML = `<span style="display: inline-block; white-space: nowrap; font-size: 11.5px; font-weight: 700; color: #065F46; background: #ECFDF5; padding: 4px 12px; border-radius: 6px; border: 1px solid #A7F3D0;">Paper 1</span>`;
             }
         }
 
@@ -1399,7 +1399,7 @@ async function handleCreateStudentSubmit() {
     const emailVal = newEmail ? newEmail.value.trim() : "";
     const passVal = newPass ? newPass.value.trim() : "";
 
-    const comboVal = newExamCombination ? newExamCombination.value : "Paper 1 - General Paper";
+    const comboVal = newExamCombination ? newExamCombination.value : "Paper 1";
 
     if (!userIdVal || !nameVal || !passVal) {
         alert("User ID, Full Name, and Password are required to create a student account.");
@@ -1443,7 +1443,7 @@ async function handleCreateStudentSubmit() {
         if (newName) newName.value = "";
         if (newEmail) newEmail.value = "";
         if (newPass) newPass.value = "";
-        if (newExamCombination) newExamCombination.value = "Paper 1 - General Paper";
+        if (newExamCombination) newExamCombination.value = "Paper 1";
         await fetchStudents();
     } catch (err) {
         if (err.name === "TypeError" && (err.message || "").toLowerCase().includes("fetch")) {
