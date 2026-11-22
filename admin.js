@@ -123,6 +123,7 @@ const newUserId = document.getElementById("newUserId");
 const newName = document.getElementById("newName");
 const newEmail = document.getElementById("newEmail");
 const newPass = document.getElementById("newPass");
+const newExamCombination = document.getElementById("newExamCombination");
 
 // Edit Question Set Modal
 const editSetModal = document.getElementById("editSetModal");
@@ -1325,7 +1326,8 @@ function renderStudents() {
         const nameMatch = (s.candidate_name || "").toLowerCase().includes(term);
         const emailMatch = (s.email || "").toLowerCase().includes(term);
         const phoneMatch = (s.phone || "").toLowerCase().includes(term);
-        return idMatch || nameMatch || emailMatch || phoneMatch;
+        const comboMatch = (s.examCombination || s.exam_combination || "").toLowerCase().includes(term);
+        return idMatch || nameMatch || emailMatch || phoneMatch || comboMatch;
     });
 
     if (!filtered.length) {
@@ -1349,8 +1351,18 @@ function renderStudents() {
         const phoneTd = document.createElement("td");
         phoneTd.textContent = s.phone || "—";
 
-        const roleTd = document.createElement("td");
-        roleTd.innerHTML = `<span style="font-size: 11px; font-weight: 700; color: ${s.role === 'Admin' ? '#D97706' : 'var(--emerald-dark)'};">${s.role || 'Student'}</span>`;
+        const paperTd = document.createElement("td");
+        if (s.role === "Admin") {
+            paperTd.innerHTML = `<span style="font-size: 11px; font-weight: 700; color: #D97706; background: #FEF3C7; padding: 4px 10px; border-radius: 6px;">Master Admin</span>`;
+        } else {
+            const combo = s.examCombination || s.exam_combination || "Paper 1 - General Paper";
+            const isPaper2 = combo.includes("Paper 2") || combo.includes("Tamil");
+            if (isPaper2) {
+                paperTd.innerHTML = `<span style="display: inline-block; font-size: 11.5px; font-weight: 700; color: #4338CA; background: #EEF2FF; padding: 4px 10px; border-radius: 6px; border: 1px solid #C7D2FE;">Paper 1 + Paper 2 (Tamil)</span>`;
+            } else {
+                paperTd.innerHTML = `<span style="display: inline-block; font-size: 11.5px; font-weight: 700; color: #065F46; background: #ECFDF5; padding: 4px 10px; border-radius: 6px; border: 1px solid #A7F3D0;">Paper 1 (General Paper)</span>`;
+            }
+        }
 
         const statusTd = document.createElement("td");
         statusTd.innerHTML = `<span class="status available">${s.active === 1 ? 'Active' : 'Disabled'}</span>`;
@@ -1377,7 +1389,7 @@ function renderStudents() {
             actionTd.innerHTML = `<span style="font-size: 11px; color: var(--muted); font-weight: 600;">Master Account</span>`;
         }
 
-        tr.append(idTd, nameTd, emailTd, phoneTd, roleTd, statusTd, actionTd);
+        tr.append(idTd, nameTd, emailTd, phoneTd, paperTd, statusTd, actionTd);
         studentTableBody.appendChild(tr);
     });
 }
@@ -1387,6 +1399,8 @@ async function handleCreateStudentSubmit() {
     const nameVal = newName ? newName.value.trim() : "";
     const emailVal = newEmail ? newEmail.value.trim() : "";
     const passVal = newPass ? newPass.value.trim() : "";
+
+    const comboVal = newExamCombination ? newExamCombination.value : "Paper 1 - General Paper";
 
     if (!userIdVal || !nameVal || !passVal) {
         alert("User ID, Full Name, and Password are required to create a student account.");
@@ -1409,6 +1423,7 @@ async function handleCreateStudentSubmit() {
                 candidateName: nameVal,
                 email: emailVal,
                 password: passVal,
+                examCombination: comboVal,
                 role: "Student"
             })
         });
@@ -1429,6 +1444,7 @@ async function handleCreateStudentSubmit() {
         if (newName) newName.value = "";
         if (newEmail) newEmail.value = "";
         if (newPass) newPass.value = "";
+        if (newExamCombination) newExamCombination.value = "Paper 1 - General Paper";
         await fetchStudents();
     } catch (err) {
         if (err.name === "TypeError" && (err.message || "").toLowerCase().includes("fetch")) {

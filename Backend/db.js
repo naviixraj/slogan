@@ -115,7 +115,7 @@ async function listCandidates() {
         return (data || []).map(normalizeCandidate);
     } else {
         const rows = sqliteDb.prepare(`
-            SELECT id, user_id, candidate_name, email, phone, role, active, created_at
+            SELECT id, user_id, candidate_name, email, phone, exam_combination, role, active, created_at
             FROM candidates
             ORDER BY datetime(created_at) DESC
         `).all() || [];

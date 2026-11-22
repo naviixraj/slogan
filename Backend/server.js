@@ -1987,7 +1987,7 @@ app.get("/api/admin/students", requireAdmin, async (req, res) => {
 // Add new Student
 app.post("/api/admin/students", requireAdmin, async (req, res) => {
     try {
-        const { userId, password, candidateName, email, phone, role } = req.body;
+        const { userId, password, candidateName, email, phone, examCombination, role } = req.body;
 
         if (!userId || !password || !candidateName) {
             return res.status(400).json({ success: false, message: "User ID, Candidate Name, and Password are required." });
@@ -2003,6 +2003,7 @@ app.post("/api/admin/students", requireAdmin, async (req, res) => {
         const candidateEmail = email && email.trim() ? email.trim() : `${cleanUserId.toLowerCase()}@slogon.edu`;
         const candidatePhone = phone && phone.trim() ? phone.trim() : "";
         const candidateRole = role === "Admin" ? "Admin" : "Student";
+        const cleanCombo = examCombination && examCombination.trim() ? examCombination.trim() : "Paper 1 - General Paper";
 
         const created = await unifiedDb.createCandidate({
             userId: cleanUserId,
@@ -2010,6 +2011,7 @@ app.post("/api/admin/students", requireAdmin, async (req, res) => {
             candidateName: candidateName.trim(),
             email: candidateEmail,
             phone: candidatePhone,
+            examCombination: cleanCombo,
             role: candidateRole
         });
 
