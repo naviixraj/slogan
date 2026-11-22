@@ -489,13 +489,17 @@ if (googleSetupForm) {
                 throw new Error(data.message || "Registration failed. Please try again.");
             }
 
+            // Secure Tab Isolation: Authorize only this browser tab
+            sessionStorage.setItem("slogon_tab_session", "verified_" + Date.now());
+
             if (gSetupMessage) {
                 gSetupMessage.style.color = "#16A34A";
-                gSetupMessage.textContent = "✓ " + (data.message || "Account created! Redirecting to test portal...");
+                gSetupMessage.textContent = "✓ " + (data.message || "Account created! Automatically logging you in...");
             }
 
-            const targetPage = requestedPage && requestedPage !== "admin.html" && allowedPages.includes(requestedPage)
-                ? requestedPage
+            const cleanTarget = requestedPage ? requestedPage.replace(/\.html$/, "") : "";
+            const targetPage = cleanTarget && cleanTarget !== "admin" && (allowedPages.includes(cleanTarget) || allowedPages.includes(requestedPage))
+                ? cleanTarget
                 : redirectPage;
 
             setTimeout(() => {
@@ -757,19 +761,58 @@ if (registerForm) {
 
             if (regMessage) {
                 regMessage.style.color = "#16A34A";
-                regMessage.textContent = "✓ Account created! Redirecting to your examination dashboard...";
+                regMessage.textContent = "✓ Account created! Automatically logging you in...";
             }
 
-            const targetPage = requestedPage && requestedPage !== "admin.html" && allowedPages.includes(requestedPage)
-                ? requestedPage
-                : redirectPage;
+            // Auto-Login Guarantee: verify session or immediately authenticate
+            let sessionVerified = false;
+            try {
+                const sessionRes = await fetch("/api/me", {
+                    method: "GET",
+                    credentials: "same-origin"
+                });
+                const sessionData = await sessionRes.json();
+                if (sessionRes.ok && sessionData.success && sessionData.authenticated) {
+                    sessionVerified = true;
+                }
+            } catch (sessErr) {
+                console.log("Pre-session check skipped:", sessErr);
+            }
+
+            if (!sessionVerified) {
+                // Instantly authenticate session using newly created credentials
+                try {
+                    await fetch("/api/login", {
+                        method: "POST",
+                        headers: { "Content-Type": "application/json" },
+                        credentials: "same-origin",
+                        body: JSON.stringify({ userId, password })
+                    });
+                } catch (loginErr) {
+                    console.warn("Direct login fallback notice:", loginErr);
+                }
+            }
 
             // Secure Tab Isolation: Authorize only this browser tab
             sessionStorage.setItem("slogon_tab_session", "verified_" + Date.now());
 
+            // Cache candidate info for immediate seamless load on tests.html
+            localStorage.setItem("candidateInfo", JSON.stringify({
+                name: candidateName,
+                registerNumber: userId,
+                email: email,
+                role: "Student",
+                examCombination: examCombination || "Paper 1"
+            }));
+
+            const cleanTarget = requestedPage ? requestedPage.replace(/\.html$/, "") : "";
+            const targetPage = cleanTarget && cleanTarget !== "admin" && (allowedPages.includes(cleanTarget) || allowedPages.includes(requestedPage))
+                ? cleanTarget
+                : redirectPage;
+
             setTimeout(() => {
                 window.location.replace(targetPage);
-            }, 600);
+            }, 500);
 
         } catch (error) {
             console.error("Register error:", error);

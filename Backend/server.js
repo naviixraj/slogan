@@ -533,25 +533,18 @@ app.post("/api/register", async (req, res) => {
             userId: cleanUserId
         }).catch((err) => console.warn("[WHATSAPP] Dispatch notice:", err.message));
 
-        req.session.regenerate((error) => {
-            if (error) {
-                console.error("Session error on registration:", error);
-                return res.json({
-                    success: true,
-                    message: "Account registered successfully! Please log in with your new credentials."
-                });
-            }
+        const sessionPayload = {
+            id: candidate.id,
+            userId: candidate.user_id,
+            name: candidate.candidate_name,
+            email: candidate.email,
+            phone: candidate.phone || cleanPhone,
+            examCombination: cleanExamCombination,
+            role: "Student"
+        };
 
-            req.session.candidate = {
-                id: candidate.id,
-                userId: candidate.user_id,
-                name: candidate.candidate_name,
-                email: candidate.email,
-                phone: candidate.phone || cleanPhone,
-                examCombination: cleanExamCombination,
-                role: "Student"
-            };
-
+        const attachAndRespond = () => {
+            req.session.candidate = sessionPayload;
             req.session.save((saveErr) => {
                 if (saveErr) {
                     console.error("Session save error on registration:", saveErr);
@@ -562,7 +555,18 @@ app.post("/api/register", async (req, res) => {
                     candidate: req.session.candidate
                 });
             });
-        });
+        };
+
+        if (typeof req.session.regenerate === "function") {
+            req.session.regenerate((error) => {
+                if (error) {
+                    console.warn("Session regenerate notice on registration, attaching directly:", error.message);
+                }
+                attachAndRespond();
+            });
+        } else {
+            attachAndRespond();
+        }
 
     } catch (err) {
         console.error("Registration error:", err);
