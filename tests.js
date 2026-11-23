@@ -686,8 +686,13 @@ function performQuestionPaperSearch() {
     }
     if (!paperSearchResults) return;
 
+    // Keep screen clean by default; only show results after entering details in search bar
+    if (!rawQuery) {
+        paperSearchResults.innerHTML = "";
+        return;
+    }
+
     const matches = mockTests.filter(test => {
-        if (!rawQuery) return true;
         const title = String(test.title || "").toLowerCase();
         const id = String(test.id || "").toLowerCase();
         const subj = String(test.subject || "").toLowerCase();
