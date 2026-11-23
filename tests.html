@@ -1455,52 +1455,42 @@
                 font-weight: 700;
             }
 
-            /* Search Section Styling */
-            .mobile-section-header {
+            /* =========================================================
+               HUMAN-CRAFTED SEARCH SECTION (DISCOVERY + STUDY CARDS)
+               ========================================================= */
+            .search-top-controls {
                 margin-bottom: 16px;
             }
 
-            .mobile-section-header h2 {
-                font-size: 20px;
-                font-weight: 800;
-                color: var(--charcoal);
-            }
-
-            .mobile-section-header p {
-                font-size: 12.5px;
-                color: var(--muted);
-                margin-top: 3px;
-            }
-
-            .mobile-search-box {
+            .modern-search-bar {
                 position: relative;
                 display: flex;
                 align-items: center;
                 background: #FFFFFF;
-                border: 1.5px solid #E2E8F0;
-                border-radius: 12px;
+                border: 1.5px solid #CBD5E1;
+                border-radius: 14px;
                 padding: 0 14px;
-                box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+                box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05);
                 transition: border-color 0.2s ease, box-shadow 0.2s ease;
             }
 
-            .mobile-search-box:focus-within {
+            .modern-search-bar:focus-within {
                 border-color: var(--emerald);
-                box-shadow: 0 0 0 3px rgba(15, 139, 109, 0.12);
+                box-shadow: 0 0 0 3px rgba(15, 139, 109, 0.15);
             }
 
-            .search-box-icon {
-                width: 18px;
-                height: 18px;
-                color: #94A3B8;
+            .search-icon-svg {
+                width: 19px;
+                height: 19px;
+                color: var(--emerald);
                 flex-shrink: 0;
             }
 
-            .mobile-search-box input {
+            .modern-search-bar input {
                 flex: 1;
                 border: none;
                 outline: none;
-                padding: 12px 10px;
+                padding: 13px 10px;
                 font-size: 14px;
                 background: transparent;
                 color: var(--charcoal);
@@ -1520,16 +1510,16 @@
                 cursor: pointer;
             }
 
-            .search-filter-pills {
+            .search-paper-filter-tabs {
                 display: flex;
                 gap: 8px;
-                margin: 14px 0 16px;
+                margin-top: 12px;
                 overflow-x: auto;
                 padding-bottom: 2px;
             }
 
-            .search-pill {
-                padding: 6px 14px;
+            .paper-filter-btn {
+                padding: 7px 14px;
                 border-radius: 20px;
                 border: 1px solid #E2E8F0;
                 background: #FFFFFF;
@@ -1541,126 +1531,434 @@
                 transition: all 0.18s ease;
             }
 
-            .search-pill.active {
-                background: var(--emerald-soft);
+            .paper-filter-btn.active {
+                background: var(--emerald);
                 border-color: var(--emerald);
-                color: var(--emerald-dark);
+                color: #FFFFFF;
+                box-shadow: 0 2px 8px rgba(15, 139, 109, 0.2);
             }
 
-            .search-results-meta {
-                font-size: 12px;
-                color: var(--muted);
-                margin-bottom: 12px;
-                font-weight: 600;
+            /* Discovery Panel */
+            .search-discovery-panel {
+                display: flex;
+                flex-direction: column;
+                gap: 18px;
             }
 
-            .search-empty-prompt {
-                text-align: center;
-                padding: 40px 20px;
-                background: #FFFFFF;
-                border-radius: 14px;
-                border: 1px dashed #CBD5E1;
-            }
-
-            .prompt-icon {
-                font-size: 36px;
-                margin-bottom: 10px;
-            }
-
-            .search-empty-prompt h3 {
-                font-size: 16px;
-                font-weight: 700;
-                color: var(--charcoal);
-                margin-bottom: 6px;
-            }
-
-            .search-empty-prompt p {
-                font-size: 12.5px;
-                color: var(--muted);
-                line-height: 1.5;
-                max-width: 320px;
-                margin: 0 auto;
-            }
-
-            .question-search-card {
-                background: #FFFFFF;
-                border-radius: 12px;
-                border: 1px solid #E2E8F0;
-                box-shadow: 0 3px 12px rgba(15, 23, 42, 0.04);
-                padding: 16px;
-                margin-bottom: 14px;
+            .discovery-section {
                 display: flex;
                 flex-direction: column;
                 gap: 10px;
             }
 
-            .q-card-header {
+            .discovery-section-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 0 2px;
+            }
+
+            .discovery-title-wrap {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+            }
+
+            .discovery-icon-pill {
+                font-size: 15px;
+            }
+
+            .discovery-heading {
+                font-size: 14px;
+                font-weight: 800;
+                color: var(--charcoal);
+            }
+
+            .discovery-heading-small {
+                font-size: 12px;
+                font-weight: 700;
+                color: #64748B;
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
+            }
+
+            .discovery-subtag {
+                font-size: 11px;
+                color: var(--emerald);
+                font-weight: 600;
+            }
+
+            /* Units Grid */
+            .units-grid {
+                display: grid;
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 10px;
+            }
+
+            .unit-tile {
+                background: #FFFFFF;
+                border: 1px solid #E2E8F0;
+                border-radius: 12px;
+                padding: 12px;
+                text-align: left;
+                cursor: pointer;
+                transition: transform 0.15s ease, border-color 0.18s ease, box-shadow 0.18s ease;
+                display: flex;
+                flex-direction: column;
+                gap: 4px;
+                box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+            }
+
+            .unit-tile:active {
+                transform: scale(0.97);
+            }
+
+            .unit-tile:hover {
+                border-color: #B7D9CC;
+                box-shadow: 0 4px 12px rgba(15, 139, 109, 0.08);
+            }
+
+            .unit-tile-top {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 2px;
+            }
+
+            .unit-emoji {
+                font-size: 18px;
+            }
+
+            .unit-code {
+                font-size: 9.5px;
+                font-weight: 800;
+                color: var(--emerald-dark);
+                background: var(--emerald-soft);
+                padding: 2px 6px;
+                border-radius: 4px;
+                letter-spacing: 0.5px;
+            }
+
+            .unit-name {
+                font-size: 13px;
+                font-weight: 700;
+                color: var(--charcoal);
+                line-height: 1.3;
+            }
+
+            .unit-desc {
+                font-size: 10.5px;
+                color: #64748B;
+                line-height: 1.3;
+            }
+
+            /* Quick Question Jump */
+            .quick-jump-card {
+                background: linear-gradient(135deg, #F8FAFC 0%, #F1F5F9 100%);
+                border: 1px solid #E2E8F0;
+                border-radius: 14px;
+                padding: 14px;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .quick-jump-title {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+                font-size: 13px;
+                color: var(--charcoal);
+            }
+
+            .jump-zap {
+                color: #D97706;
+            }
+
+            .quick-jump-text {
+                font-size: 11px;
+                color: #64748B;
+                margin-top: 2px;
+            }
+
+            .quick-jump-input-row {
+                display: flex;
+                gap: 8px;
+            }
+
+            .quick-jump-input-row input {
+                flex: 1;
+                background: #FFFFFF;
+                border: 1px solid #CBD5E1;
+                border-radius: 8px;
+                padding: 9px 12px;
+                font-size: 13.5px;
+                font-weight: 700;
+                color: var(--charcoal);
+                outline: none;
+            }
+
+            .quick-jump-input-row input:focus {
+                border-color: var(--emerald);
+            }
+
+            .quick-jump-btn {
+                background: var(--charcoal);
+                color: #FFFFFF;
+                border: none;
+                border-radius: 8px;
+                padding: 8px 16px;
+                font-size: 12.5px;
+                font-weight: 700;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                gap: 4px;
+                transition: background 0.18s ease;
+            }
+
+            .quick-jump-btn:active {
+                background: #1E293B;
+            }
+
+            /* Popular Tags Flow */
+            .popular-tags-flow {
+                display: flex;
+                flex-wrap: wrap;
+                gap: 7px;
+            }
+
+            .study-tag {
+                background: #FFFFFF;
+                border: 1px solid #E2E8F0;
+                border-radius: 16px;
+                padding: 6px 12px;
+                font-size: 11.5px;
+                font-weight: 600;
+                color: #475569;
+                cursor: pointer;
+                transition: all 0.18s ease;
+            }
+
+            .study-tag:hover,
+            .study-tag:active {
+                background: var(--emerald-soft);
+                border-color: var(--emerald);
+                color: var(--emerald-dark);
+            }
+
+            /* Results Header */
+            .results-header-bar {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 14px;
+                padding: 0 2px;
+            }
+
+            .results-count-text {
+                font-size: 13px;
+                font-weight: 800;
+                color: var(--charcoal);
+            }
+
+            .btn-clear-filter {
+                background: none;
+                border: none;
+                font-size: 11.5px;
+                font-weight: 700;
+                color: var(--emerald);
+                cursor: pointer;
+                padding: 4px 6px;
+            }
+
+            /* Question Cards in Results */
+            .search-cards-stream {
+                display: flex;
+                flex-direction: column;
+                gap: 14px;
+            }
+
+            .question-study-card {
+                background: #FFFFFF;
+                border: 1px solid #E2E8F0;
+                border-radius: 14px;
+                padding: 16px;
+                box-shadow: 0 3px 12px rgba(15, 23, 42, 0.04);
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .card-meta-top {
                 display: flex;
                 align-items: center;
                 justify-content: space-between;
                 gap: 8px;
             }
 
-            .q-num-tag {
-                font-size: 11px;
-                font-weight: 700;
-                color: var(--emerald-dark);
-                background: var(--emerald-soft);
-                padding: 3px 8px;
-                border-radius: 6px;
+            .card-meta-left {
+                display: flex;
+                align-items: center;
+                gap: 6px;
             }
 
-            .q-set-badge {
+            .paper-badge-pill {
+                font-size: 10px;
+                font-weight: 800;
+                color: var(--emerald-dark);
+                background: var(--emerald-soft);
+                padding: 2px 7px;
+                border-radius: 4px;
+                text-transform: uppercase;
+            }
+
+            .q-number-pill {
+                font-size: 11px;
+                font-weight: 800;
+                color: var(--charcoal);
+                background: #F1F5F9;
+                padding: 2px 8px;
+                border-radius: 4px;
+            }
+
+            .test-origin-badge {
                 font-size: 11px;
                 color: #64748B;
                 font-weight: 600;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
-                max-width: 60%;
+                max-width: 48%;
             }
 
-            .q-statement {
+            .study-q-statement {
                 font-size: 13.5px;
-                font-weight: 600;
+                font-weight: 700;
                 color: var(--charcoal);
-                line-height: 1.45;
+                line-height: 1.5;
             }
 
-            .q-options-preview {
+            .q-highlight {
+                background: #FEF08A;
+                color: #713F12;
+                border-radius: 3px;
+                padding: 1px 3px;
+                font-weight: 800;
+            }
+
+            .study-options-list {
                 display: flex;
                 flex-direction: column;
-                gap: 5px;
-                background: #F8FAFC;
-                border-radius: 8px;
-                padding: 10px 12px;
-                font-size: 12px;
-                color: #475569;
+                gap: 6px;
             }
 
-            .q-opt-item {
+            .study-opt-row {
+                display: flex;
+                align-items: flex-start;
+                gap: 8px;
+                background: #F8FAFC;
+                border: 1px solid #F1F5F9;
+                border-radius: 8px;
+                padding: 8px 10px;
+                font-size: 12px;
+                color: #334155;
                 line-height: 1.35;
             }
 
-            .btn-start-from-search {
-                margin-top: 4px;
-                background: var(--emerald);
-                color: #FFFFFF;
-                border: none;
-                border-radius: 8px;
-                padding: 9px 14px;
-                font-size: 12px;
-                font-weight: 700;
-                cursor: pointer;
+            .opt-letter-circle {
+                width: 19px;
+                height: 19px;
+                border-radius: 50%;
+                background: #E2E8F0;
+                color: #475569;
+                font-size: 9.5px;
+                font-weight: 800;
+                display: grid;
+                place-items: center;
+                flex-shrink: 0;
+                margin-top: 1px;
+            }
+
+            .study-card-actions {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin-top: 2px;
+            }
+
+            .btn-toggle-solution {
+                flex: 1;
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 gap: 6px;
+                background: #F8FAFC;
+                border: 1px solid #E2E8F0;
+                border-radius: 8px;
+                padding: 8px 12px;
+                font-size: 11.5px;
+                font-weight: 700;
+                color: #475569;
+                cursor: pointer;
+                transition: all 0.18s ease;
+            }
+
+            .btn-toggle-solution:active {
+                background: #F1F5F9;
+            }
+
+            .btn-start-exam-link {
+                flex: 1;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 6px;
+                background: var(--emerald);
+                color: #FFFFFF;
+                border: none;
+                border-radius: 8px;
+                padding: 8px 12px;
+                font-size: 11.5px;
+                font-weight: 700;
+                cursor: pointer;
                 transition: background 0.18s ease;
             }
 
-            .btn-start-from-search:hover {
+            .btn-start-exam-link:active {
                 background: var(--emerald-dark);
+            }
+
+            /* Solution Drawer */
+            .solution-drawer {
+                display: none;
+                background: #FEF3C7;
+                border: 1px solid #FDE68A;
+                border-radius: 8px;
+                padding: 10px 12px;
+                font-size: 12px;
+                color: #78350F;
+                line-height: 1.45;
+            }
+
+            .solution-drawer.open {
+                display: block;
+            }
+
+            .sol-key-row {
+                font-weight: 800;
+                margin-bottom: 4px;
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+
+            .sol-key-badge {
+                background: #B45309;
+                color: #FFFFFF;
+                padding: 1px 6px;
+                border-radius: 4px;
+                font-size: 10.5px;
             }
 
             /* Mobile Profile Section */
@@ -2433,35 +2731,143 @@
 
             <!-- SEARCH QUESTIONS SECTION (MOBILE) -->
             <section id="searchSection" class="mobile-view-section" style="display: none;">
-                <div class="mobile-section-header">
-                    <h2>Question Search</h2>
-                    <p>Search questions across your assigned examination question sets.</p>
+                <!-- Modern Integrated Search Bar Header -->
+                <div class="search-top-controls">
+                    <div class="modern-search-bar">
+                        <svg class="search-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                        <input type="search" id="mobileQuestionSearchInput" placeholder="Search keywords, topics, e.g. 'Research'..." aria-label="Search questions" autocomplete="off">
+                        <button type="button" id="clearQuestionSearchBtn" class="clear-search-btn" aria-label="Clear search">✕</button>
+                    </div>
+
+                    <div class="search-paper-filter-tabs" id="searchFilterPills">
+                        <button type="button" class="paper-filter-btn active" data-subject="all">All Papers</button>
+                        <button type="button" class="paper-filter-btn" data-subject="paper1">Paper 1 (General)</button>
+                        <button type="button" class="paper-filter-btn" data-subject="paper2">Paper 2 (Domain)</button>
+                    </div>
                 </div>
 
-                <div class="mobile-search-box">
-                    <svg class="search-box-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-                        <circle cx="11" cy="11" r="8"></circle>
-                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                    </svg>
-                    <input type="search" id="mobileQuestionSearchInput" placeholder="Search keywords, questions, topics..." aria-label="Search questions">
-                    <button type="button" id="clearQuestionSearchBtn" class="clear-search-btn" aria-label="Clear search">✕</button>
+                <!-- STATE 1: DISCOVERY FEED (Visible when search input is empty) -->
+                <div class="search-discovery-panel" id="searchDiscoveryPanel">
+                    
+                    <!-- Syllabus Units Section -->
+                    <div class="discovery-section">
+                        <div class="discovery-section-header">
+                            <div class="discovery-title-wrap">
+                                <span class="discovery-icon-pill">📚</span>
+                                <h3 class="discovery-heading">Explore Syllabus Units</h3>
+                            </div>
+                            <span class="discovery-subtag">Tap to view questions</span>
+                        </div>
+
+                        <div class="units-grid" id="unitsGrid">
+                            <button type="button" class="unit-tile" data-query="Teaching Aptitude">
+                                <div class="unit-tile-top">
+                                    <span class="unit-emoji">🎓</span>
+                                    <span class="unit-code">UNIT 1</span>
+                                </div>
+                                <strong class="unit-name">Teaching Aptitude</strong>
+                                <span class="unit-desc">Learner models, evaluation, pedagogy</span>
+                            </button>
+
+                            <button type="button" class="unit-tile" data-query="Research">
+                                <div class="unit-tile-top">
+                                    <span class="unit-emoji">🔬</span>
+                                    <span class="unit-code">UNIT 2</span>
+                                </div>
+                                <strong class="unit-name">Research Methods</strong>
+                                <span class="unit-desc">Hypothesis, sampling, research ethics</span>
+                            </button>
+
+                            <button type="button" class="unit-tile" data-query="ICT">
+                                <div class="unit-tile-top">
+                                    <span class="unit-emoji">💻</span>
+                                    <span class="unit-code">UNIT 8</span>
+                                </div>
+                                <strong class="unit-name">ICT & Tech</strong>
+                                <span class="unit-desc">Digital initiatives, networks, tools</span>
+                            </button>
+
+                            <button type="button" class="unit-tile" data-query="Higher Education">
+                                <div class="unit-tile-top">
+                                    <span class="unit-emoji">🏛️</span>
+                                    <span class="unit-code">UNIT 10</span>
+                                </div>
+                                <strong class="unit-name">Higher Education</strong>
+                                <span class="unit-desc">NEP 2020, UGC, governance</span>
+                            </button>
+
+                            <button type="button" class="unit-tile" data-query="Reasoning">
+                                <div class="unit-tile-top">
+                                    <span class="unit-emoji">📊</span>
+                                    <span class="unit-code">UNIT 5/6</span>
+                                </div>
+                                <strong class="unit-name">Logic & Data</strong>
+                                <span class="unit-desc">Syllogisms, DI, series, fallacies</span>
+                            </button>
+
+                            <button type="button" class="unit-tile" data-query="Environment">
+                                <div class="unit-tile-top">
+                                    <span class="unit-emoji">🌿</span>
+                                    <span class="unit-code">UNIT 9</span>
+                                </div>
+                                <strong class="unit-name">People & Env</strong>
+                                <span class="unit-desc">SDGs, pollution, renewable energy</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Direct Question Jump Tool -->
+                    <div class="discovery-section">
+                        <div class="quick-jump-card">
+                            <div class="quick-jump-info">
+                                <div class="quick-jump-title">
+                                    <span class="jump-zap">⚡</span>
+                                    <strong>Direct Question Jump</strong>
+                                </div>
+                                <p class="quick-jump-text">Jump straight to a specific question number in your exam sets.</p>
+                            </div>
+                            <div class="quick-jump-input-row">
+                                <input type="number" id="quickJumpNumberInput" min="1" max="150" placeholder="e.g. 15" aria-label="Question Number">
+                                <button type="button" id="quickJumpSubmitBtn" class="quick-jump-btn">
+                                    <span>Jump</span>
+                                    <svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2.5">
+                                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Popular Topic Tags -->
+                    <div class="discovery-section">
+                        <div class="discovery-section-header">
+                            <span class="discovery-heading-small">Trending Study Topics</span>
+                        </div>
+                        <div class="popular-tags-flow" id="popularTagsFlow">
+                            <button type="button" class="study-tag" data-query="Bloom">Bloom's Taxonomy</button>
+                            <button type="button" class="study-tag" data-query="NEP">NEP 2020</button>
+                            <button type="button" class="study-tag" data-query="Hypothesis">Hypothesis Testing</button>
+                            <button type="button" class="study-tag" data-query="SDG">SDGs & MDGs</button>
+                            <button type="button" class="study-tag" data-query="Syllogism">Syllogism</button>
+                            <button type="button" class="study-tag" data-query="Evaluation">Evaluation Systems</button>
+                            <button type="button" class="study-tag" data-query="Sampling">Sampling Methods</button>
+                        </div>
+                    </div>
+
                 </div>
 
-                <div class="search-filter-pills" id="searchFilterPills">
-                    <button type="button" class="search-pill active" data-subject="all">All Papers</button>
-                    <button type="button" class="search-pill" data-subject="paper1">Paper 1</button>
-                    <button type="button" class="search-pill" data-subject="paper2">Paper 2</button>
-                </div>
+                <!-- STATE 2: ACTIVE SEARCH RESULTS (Visible when search query is entered) -->
+                <div class="search-results-panel" id="searchResultsPanel" style="display: none;">
+                    <div class="results-header-bar">
+                        <span class="results-count-text" id="searchResultsCount">Found 0 questions</span>
+                        <button type="button" class="btn-clear-filter" id="btnResetSearch">Clear & Back to Units</button>
+                    </div>
 
-                <div class="search-results-meta" id="searchResultsMeta" style="display: none;">
-                    <span id="searchResultsCount">0 questions found</span>
-                </div>
-
-                <div class="search-results-container" id="searchResultsContainer">
-                    <div class="search-empty-prompt" id="searchInitialPrompt">
-                        <div class="prompt-icon">🔍</div>
-                        <h3>Find Any Exam Question</h3>
-                        <p>Search for specific keywords, concepts, or question statements across your accessible test question banks.</p>
+                    <div class="search-cards-stream" id="searchResultsStream">
+                        <!-- Dynamically filled with rich question study cards -->
                     </div>
                 </div>
             </section>

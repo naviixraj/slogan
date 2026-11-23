@@ -656,14 +656,19 @@ if (mobileProfileLogoutBtn) {
 }
 
 /* =====================================================
-   MOBILE QUESTION SEARCH LOGIC
+   HUMAN-CRAFTED QUESTION SEARCH & STUDY DISCOVERY
    ===================================================== */
 
 const mobileQuestionSearchInput = document.getElementById("mobileQuestionSearchInput");
 const clearQuestionSearchBtn = document.getElementById("clearQuestionSearchBtn");
-const searchResultsContainer = document.getElementById("searchResultsContainer");
-const searchResultsMeta = document.getElementById("searchResultsMeta");
+const searchDiscoveryPanel = document.getElementById("searchDiscoveryPanel");
+const searchResultsPanel = document.getElementById("searchResultsPanel");
+const searchResultsStream = document.getElementById("searchResultsStream");
 const searchResultsCount = document.getElementById("searchResultsCount");
+const btnResetSearch = document.getElementById("btnResetSearch");
+const quickJumpNumberInput = document.getElementById("quickJumpNumberInput");
+const quickJumpSubmitBtn = document.getElementById("quickJumpSubmitBtn");
+
 let questionSearchTimeout = null;
 let currentFilterSubject = "all";
 
@@ -676,35 +681,42 @@ function escapeHtml(str) {
         .replace(/'/g, "&#039;");
 }
 
+function highlightText(text, query) {
+    if (!text) return "";
+    const safeText = escapeHtml(text);
+    if (!query) return safeText;
+    const cleanQ = String(query).replace(/^q\.?\s*/i, "").trim();
+    if (!cleanQ || cleanQ.length < 2) return safeText;
+    const safeQuery = escapeHtml(cleanQ).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+    const regex = new RegExp(`(${safeQuery})`, "gi");
+    return safeText.replace(regex, `<mark class="q-highlight">$1</mark>`);
+}
+
 async function performQuestionSearch() {
-    const query = mobileQuestionSearchInput ? mobileQuestionSearchInput.value.trim() : "";
-    if (!query) {
+    const rawQuery = mobileQuestionSearchInput ? mobileQuestionSearchInput.value.trim() : "";
+
+    if (!rawQuery) {
         if (clearQuestionSearchBtn) clearQuestionSearchBtn.style.display = "none";
-        if (searchResultsMeta) searchResultsMeta.style.display = "none";
-        if (searchResultsContainer) {
-            searchResultsContainer.innerHTML = `
-                <div class="search-empty-prompt" id="searchInitialPrompt">
-                    <div class="prompt-icon">🔍</div>
-                    <h3>Find Any Exam Question</h3>
-                    <p>Search for specific keywords, concepts, or question statements across your accessible test question banks.</p>
-                </div>
-            `;
-        }
+        if (searchDiscoveryPanel) searchDiscoveryPanel.style.display = "flex";
+        if (searchResultsPanel) searchResultsPanel.style.display = "none";
         return;
     }
 
     if (clearQuestionSearchBtn) clearQuestionSearchBtn.style.display = "flex";
+    if (searchDiscoveryPanel) searchDiscoveryPanel.style.display = "none";
+    if (searchResultsPanel) searchResultsPanel.style.display = "block";
 
-    if (searchResultsContainer) {
-        searchResultsContainer.innerHTML = `
-            <div style="text-align: center; padding: 30px; color: var(--muted); font-size: 13px;">
-                Searching question banks...
+    if (searchResultsStream) {
+        searchResultsStream.innerHTML = `
+            <div style="text-align: center; padding: 36px 14px; color: var(--muted); font-size: 13px;">
+                <div style="display: inline-block; width: 22px; height: 22px; border: 2.5px solid var(--emerald); border-top-color: transparent; border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 8px;"></div>
+                <div>Searching question banks for "${escapeHtml(rawQuery)}"...</div>
             </div>
         `;
     }
 
     try {
-        const res = await fetch(`/api/student/questions/search?q=${encodeURIComponent(query)}`, {
+        const res = await fetch(`/api/student/questions/search?q=${encodeURIComponent(rawQuery)}`, {
             credentials: "same-origin"
         });
         const data = await res.json();
@@ -723,57 +735,103 @@ async function performQuestionSearch() {
             });
         }
 
-        if (searchResultsMeta) {
-            searchResultsMeta.style.display = "block";
-            searchResultsCount.textContent = `Found ${list.length} matching question${list.length === 1 ? "" : "s"}`;
+        if (searchResultsCount) {
+            searchResultsCount.textContent = `Found ${list.length} question${list.length === 1 ? "" : "s"} for "${rawQuery}"`;
         }
 
         if (list.length === 0) {
-            searchResultsContainer.innerHTML = `
-                <div class="search-empty-prompt">
-                    <div class="prompt-icon">📄</div>
-                    <h3>No Questions Found</h3>
-                    <p>No questions matched "${escapeHtml(query)}". Try searching for other topics or keywords.</p>
+            searchResultsStream.innerHTML = `
+                <div style="text-align: center; padding: 36px 18px; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 14px;">
+                    <div style="font-size: 32px; margin-bottom: 8px;">📑</div>
+                    <h4 style="font-size: 15px; font-weight: 800; color: var(--charcoal); margin-bottom: 6px;">No Matching Questions Found</h4>
+                    <p style="font-size: 12.5px; color: var(--muted); line-height: 1.5; margin-bottom: 14px;">
+                        We couldn't find any questions matching "${escapeHtml(rawQuery)}".
+                    </p>
+                    <button type="button" class="btn-clear-filter" style="display: inline-block; background: var(--emerald-soft); color: var(--emerald-dark); border-radius: 8px; padding: 7px 14px; font-size: 12px;" onclick="if(mobileQuestionSearchInput){mobileQuestionSearchInput.value='';performQuestionSearch();}">
+                        Reset Search & Explore Units
+                    </button>
                 </div>
             `;
             return;
         }
 
-        searchResultsContainer.innerHTML = "";
+        searchResultsStream.innerHTML = "";
         list.forEach(q => {
             const card = document.createElement("article");
-            card.className = "question-search-card";
+            card.className = "question-study-card";
 
             const qNum = q.number || q.id || 1;
             const rawStmt = q.statement || "";
+            const isPaper2 = String(q.subject || "").toLowerCase().includes("paper 2");
+            const paperTag = isPaper2 ? "Paper 2" : "Paper 1";
 
-            let optsHtml = "";
+            let optionsHtml = "";
             if (Array.isArray(q.options) && q.options.length > 0) {
-                optsHtml = `<div class="q-options-preview">` +
+                optionsHtml = `<div class="study-options-list">` +
                     q.options.slice(0, 4).map((opt, oIdx) => {
-                        const letter = ["A", "B", "C", "D"][oIdx] || `(${oIdx + 1})`;
+                        const letter = ["A", "B", "C", "D"][oIdx] || String(oIdx + 1);
                         const txt = typeof opt === "string" ? opt : (opt.text || "");
-                        return `<div class="q-opt-item"><strong>${letter}:</strong> ${escapeHtml(txt)}</div>`;
+                        return `
+                            <div class="study-opt-row">
+                                <span class="opt-letter-circle">${letter}</span>
+                                <span class="opt-text">${highlightText(txt, rawQuery)}</span>
+                            </div>
+                        `;
                     }).join("") +
                 `</div>`;
             }
 
+            const answerKey = q.answer ? `Key: Option ${escapeHtml(q.answer)}` : "Verified Answer Key";
+            const explanationText = q.explanation ? escapeHtml(q.explanation) : "Detailed syllabus explanation available in formal test review.";
+
             card.innerHTML = `
-                <div class="q-card-header">
-                    <span class="q-num-tag">Question #${qNum}</span>
-                    <span class="q-set-badge" title="${escapeHtml(q.setTitle)}">${escapeHtml(q.setTitle)}</span>
+                <div class="card-meta-top">
+                    <div class="card-meta-left">
+                        <span class="paper-badge-pill">${paperTag}</span>
+                        <span class="q-number-pill">Q. ${qNum}</span>
+                    </div>
+                    <span class="test-origin-badge" title="${escapeHtml(q.setTitle)}">${escapeHtml(q.setTitle)}</span>
                 </div>
-                <div class="q-statement">${escapeHtml(rawStmt)}</div>
-                ${optsHtml}
-                <button type="button" class="btn-start-from-search">
-                    <span>Open Examination</span>
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                        <path d="m9 18 6-6-6-6"/>
-                    </svg>
-                </button>
+
+                <div class="study-q-statement">${highlightText(rawStmt, rawQuery)}</div>
+
+                ${optionsHtml}
+
+                <div class="study-card-actions">
+                    <button type="button" class="btn-toggle-solution">
+                        <span>💡 Solution & Key</span>
+                    </button>
+                    <button type="button" class="btn-start-exam-link" data-set-id="${q.setId}">
+                        <span>Take Test</span>
+                        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="solution-drawer">
+                    <div class="sol-key-row">
+                        <span class="sol-key-badge">${answerKey}</span>
+                    </div>
+                    <div class="sol-explanation-text">${explanationText}</div>
+                </div>
             `;
 
-            const launchBtn = card.querySelector(".btn-start-from-search");
+            // Toggle Solution Drawer
+            const solBtn = card.querySelector(".btn-toggle-solution");
+            const drawer = card.querySelector(".solution-drawer");
+            if (solBtn && drawer) {
+                solBtn.addEventListener("click", () => {
+                    const isOpen = drawer.classList.contains("open");
+                    drawer.classList.toggle("open", !isOpen);
+                    solBtn.style.background = isOpen ? "#F8FAFC" : "#FEF3C7";
+                    solBtn.style.borderColor = isOpen ? "#E2E8F0" : "#FDE68A";
+                    solBtn.style.color = isOpen ? "#475569" : "#92400E";
+                });
+            }
+
+            // Launch Examination
+            const launchBtn = card.querySelector(".btn-start-exam-link");
             if (launchBtn) {
                 launchBtn.addEventListener("click", () => {
                     const testIdClean = String(q.setId || "MOCK01").toLowerCase();
@@ -792,18 +850,21 @@ async function performQuestionSearch() {
                 });
             }
 
-            searchResultsContainer.appendChild(card);
+            searchResultsStream.appendChild(card);
         });
 
     } catch (err) {
-        searchResultsContainer.innerHTML = `
-            <div style="text-align: center; padding: 25px; color: #DC2626; font-size: 13px;">
-                Search error: ${escapeHtml(err.message)}
-            </div>
-        `;
+        if (searchResultsStream) {
+            searchResultsStream.innerHTML = `
+                <div style="text-align: center; padding: 25px; color: #DC2626; font-size: 13px;">
+                    Search error: ${escapeHtml(err.message)}
+                </div>
+            `;
+        }
     }
 }
 
+// Search input debounce
 if (mobileQuestionSearchInput) {
     mobileQuestionSearchInput.addEventListener("input", () => {
         clearTimeout(questionSearchTimeout);
@@ -811,6 +872,7 @@ if (mobileQuestionSearchInput) {
     });
 }
 
+// Clear search button
 if (clearQuestionSearchBtn) {
     clearQuestionSearchBtn.addEventListener("click", () => {
         if (mobileQuestionSearchInput) {
@@ -821,12 +883,63 @@ if (clearQuestionSearchBtn) {
     });
 }
 
-const filterPills = document.querySelectorAll("#searchFilterPills .search-pill");
-filterPills.forEach(pill => {
-    pill.addEventListener("click", () => {
-        filterPills.forEach(p => p.classList.remove("active"));
-        pill.classList.add("active");
-        currentFilterSubject = pill.dataset.subject || "all";
+// Reset / Back to Units button
+if (btnResetSearch) {
+    btnResetSearch.addEventListener("click", () => {
+        if (mobileQuestionSearchInput) {
+            mobileQuestionSearchInput.value = "";
+            performQuestionSearch();
+        }
+    });
+}
+
+// Quick Jump handler
+function executeQuickJump() {
+    const num = quickJumpNumberInput ? quickJumpNumberInput.value.trim() : "";
+    if (!num) return;
+    if (mobileQuestionSearchInput) {
+        mobileQuestionSearchInput.value = `Q${num}`;
+        performQuestionSearch();
+    }
+}
+if (quickJumpSubmitBtn) quickJumpSubmitBtn.addEventListener("click", executeQuickJump);
+if (quickJumpNumberInput) {
+    quickJumpNumberInput.addEventListener("keydown", (e) => {
+        if (e.key === "Enter") executeQuickJump();
+    });
+}
+
+// Unit tiles click (Discovery Mode)
+document.querySelectorAll(".unit-tile").forEach(tile => {
+    tile.addEventListener("click", () => {
+        const query = tile.dataset.query;
+        if (mobileQuestionSearchInput) {
+            mobileQuestionSearchInput.value = query;
+            performQuestionSearch();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+    });
+});
+
+// Popular study tags click
+document.querySelectorAll(".study-tag").forEach(tag => {
+    tag.addEventListener("click", () => {
+        const query = tag.dataset.query;
+        if (mobileQuestionSearchInput) {
+            mobileQuestionSearchInput.value = query;
+            performQuestionSearch();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        }
+    });
+});
+
+// Paper Filter tabs
+const paperFilterBtns = document.querySelectorAll(".paper-filter-btn");
+paperFilterBtns.forEach(btn => {
+    btn.addEventListener("click", () => {
+        paperFilterBtns.forEach(b => b.classList.remove("active"));
+        btn.classList.add("active");
+        currentFilterSubject = btn.dataset.subject || "all";
         performQuestionSearch();
     });
 });

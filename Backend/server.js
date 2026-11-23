@@ -2116,7 +2116,7 @@ app.get("/api/student/questions/search", async (req, res) => {
                                 ? q.options.map(o => (typeof o === "string" ? o : (o.text || ""))).join(" ").toLowerCase()
                                 : "";
 
-                            if (stmt.includes(query) || optsText.includes(query) || expl.includes(query) || `q${qNum}` === query || `q.${qNum}` === query || `question ${qNum}` === query) {
+                            if (stmt.includes(query) || optsText.includes(query) || expl.includes(query) || qNum === query || `q${qNum}` === query || `q.${qNum}` === query || `question ${qNum}` === query) {
                                 matchingQuestions.push({
                                     setId: set.id,
                                     setTitle: set.title,
@@ -2126,6 +2126,7 @@ app.get("/api/student/questions/search", async (req, res) => {
                                     id: q.id || (i + 1),
                                     statement: q.statement || q.question || "",
                                     options: q.options || [],
+                                    answer: q.answer || q.key || q.correct_option || "",
                                     explanation: q.explanation || ""
                                 });
                                 if (matchingQuestions.length >= 40) break;
@@ -2156,7 +2157,7 @@ app.get("/api/student/questions/search", async (req, res) => {
                                 ? q.options.map(o => (typeof o === "string" ? o : (o.text || ""))).join(" ").toLowerCase()
                                 : "";
 
-                            if (stmt.includes(query) || optsText.includes(query) || expl.includes(query) || `q${qNum}` === query || `q.${qNum}` === query || `question ${qNum}` === query) {
+                            if (stmt.includes(query) || optsText.includes(query) || expl.includes(query) || qNum === query || `q${qNum}` === query || `q.${qNum}` === query || `question ${qNum}` === query) {
                                 matchingQuestions.push({
                                     setId: "MOCK01",
                                     setTitle: "UGC NET Full-Length Mock Test 01",
@@ -2166,6 +2167,7 @@ app.get("/api/student/questions/search", async (req, res) => {
                                     id: q.id || (i + 1),
                                     statement: q.statement || q.question || "",
                                     options: q.options || [],
+                                    answer: q.answer || q.key || q.correct_option || "",
                                     explanation: q.explanation || ""
                                 });
                                 if (matchingQuestions.length >= 40) break;
