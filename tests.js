@@ -77,6 +77,9 @@ async function loadStudentTests() {
                     .map(m => ({ ...m, status: "coming" }));
                 mockTests = [...dbTests, ...upcoming];
                 renderTests();
+                if (typeof performQuestionPaperSearch === "function") {
+                    performQuestionPaperSearch();
+                }
             }
         }
     } catch (e) {
@@ -630,8 +633,11 @@ function switchStudentTab(tabName) {
         pageTitle.textContent = "Examinations";
         pageSubtitle.textContent = "Browse your available examinations and choose a test to begin.";
     } else if (tabName === "search") {
-        pageTitle.textContent = "Question Search";
-        pageSubtitle.textContent = "Search questions across your assigned examination question sets.";
+        pageTitle.textContent = "Question Papers";
+        pageSubtitle.textContent = "Search and launch full examination question papers.";
+        if (typeof performQuestionPaperSearch === "function") {
+            performQuestionPaperSearch();
+        }
         const input = document.getElementById("mobileQuestionSearchInput");
         if (input) setTimeout(() => input.focus(), 80);
     } else if (tabName === "profile") {
@@ -656,21 +662,13 @@ if (mobileProfileLogoutBtn) {
 }
 
 /* =====================================================
-   HUMAN-CRAFTED QUESTION SEARCH & STUDY DISCOVERY
+   SEARCH QUESTION PAPERS & EXAM SETS (TOTAL SETS ONLY)
    ===================================================== */
 
 const mobileQuestionSearchInput = document.getElementById("mobileQuestionSearchInput");
 const clearQuestionSearchBtn = document.getElementById("clearQuestionSearchBtn");
-const searchDiscoveryPanel = document.getElementById("searchDiscoveryPanel");
-const searchResultsPanel = document.getElementById("searchResultsPanel");
-const searchResultsStream = document.getElementById("searchResultsStream");
-const searchResultsCount = document.getElementById("searchResultsCount");
-const btnResetSearch = document.getElementById("btnResetSearch");
-const quickJumpNumberInput = document.getElementById("quickJumpNumberInput");
-const quickJumpSubmitBtn = document.getElementById("quickJumpSubmitBtn");
-
-let questionSearchTimeout = null;
-let currentFilterSubject = "all";
+const paperSearchResults = document.getElementById("paperSearchResults");
+let questionPaperSearchTimeout = null;
 
 function escapeHtml(str) {
     return String(str || "")
@@ -681,268 +679,146 @@ function escapeHtml(str) {
         .replace(/'/g, "&#039;");
 }
 
-function highlightText(text, query) {
-    if (!text) return "";
-    const safeText = escapeHtml(text);
-    if (!query) return safeText;
-    const cleanQ = String(query).replace(/^q\.?\s*/i, "").trim();
-    if (!cleanQ || cleanQ.length < 2) return safeText;
-    const safeQuery = escapeHtml(cleanQ).replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-    const regex = new RegExp(`(${safeQuery})`, "gi");
-    return safeText.replace(regex, `<mark class="q-highlight">$1</mark>`);
-}
+function performQuestionPaperSearch() {
+    const rawQuery = mobileQuestionSearchInput ? mobileQuestionSearchInput.value.trim().toLowerCase() : "";
+    if (clearQuestionSearchBtn) {
+        clearQuestionSearchBtn.style.display = rawQuery ? "flex" : "none";
+    }
+    if (!paperSearchResults) return;
 
-async function performQuestionSearch() {
-    const rawQuery = mobileQuestionSearchInput ? mobileQuestionSearchInput.value.trim() : "";
+    const matches = mockTests.filter(test => {
+        if (!rawQuery) return true;
+        const title = String(test.title || "").toLowerCase();
+        const id = String(test.id || "").toLowerCase();
+        const subj = String(test.subject || "").toLowerCase();
+        return title.includes(rawQuery) || id.includes(rawQuery) || subj.includes(rawQuery);
+    });
 
-    if (!rawQuery) {
-        if (clearQuestionSearchBtn) clearQuestionSearchBtn.style.display = "none";
-        if (searchDiscoveryPanel) searchDiscoveryPanel.style.display = "flex";
-        if (searchResultsPanel) searchResultsPanel.style.display = "none";
+    matches.sort((a, b) => {
+        const isAvailA = a.status === "available" ? 1 : 0;
+        const isAvailB = b.status === "available" ? 1 : 0;
+        if (isAvailA !== isAvailB) return isAvailB - isAvailA;
+        const idA = String(a.id || "").trim();
+        const idB = String(b.id || "").trim();
+        return idA.localeCompare(idB, undefined, { numeric: true, sensitivity: 'base' });
+    });
+
+    paperSearchResults.innerHTML = "";
+    if (matches.length === 0) {
+        paperSearchResults.innerHTML = `
+            <div class="paper-search-empty">
+                <strong>No Question Papers Found</strong>
+                <span>No question papers matched "${escapeHtml(rawQuery)}". Please try searching for another examination name.</span>
+            </div>
+        `;
         return;
     }
 
-    if (clearQuestionSearchBtn) clearQuestionSearchBtn.style.display = "flex";
-    if (searchDiscoveryPanel) searchDiscoveryPanel.style.display = "none";
-    if (searchResultsPanel) searchResultsPanel.style.display = "block";
+    matches.forEach(test => {
+        const isAvailable = test.status === "available";
+        const card = document.createElement("article");
+        card.className = "test-card";
 
-    if (searchResultsStream) {
-        searchResultsStream.innerHTML = `
-            <div style="text-align: center; padding: 36px 14px; color: var(--muted); font-size: 13px;">
-                <div style="display: inline-block; width: 22px; height: 22px; border: 2.5px solid var(--emerald); border-top-color: transparent; border-radius: 50%; animation: spin 0.8s linear infinite; margin-bottom: 8px;"></div>
-                <div>Searching question banks for "${escapeHtml(rawQuery)}"...</div>
-            </div>
-        `;
-    }
+        const accent = document.createElement("div");
+        accent.className = "accent";
 
-    try {
-        const res = await fetch(`/api/student/questions/search?q=${encodeURIComponent(rawQuery)}`, {
-            credentials: "same-origin"
+        const body = document.createElement("div");
+        body.className = "card-body";
+
+        const top = document.createElement("div");
+        top.className = "card-top";
+
+        const code = document.createElement("span");
+        code.className = "test-code";
+        code.textContent = `EXAM ${test.id}`;
+
+        const status = document.createElement("span");
+        status.className = isAvailable ? "status available" : "status coming";
+        status.textContent = isAvailable ? "AVAILABLE" : "COMING SOON";
+        top.append(code, status);
+
+        const title = document.createElement("h2");
+        title.textContent = test.title;
+
+        const description = document.createElement("p");
+        description.textContent = isAvailable
+            ? "Ready to begin. Complete the instructions before starting your examination."
+            : "This examination will be available once its question bank is ready.";
+
+        const meta = document.createElement("div");
+        meta.className = "meta";
+        const qCount = test.questionsCount || test.questions_count || 150;
+        const subj = test.subject || "General Paper";
+        const dur = test.duration || 180;
+        [`${qCount} Questions`, subj, `${dur} Minutes`].forEach(text => {
+            const item = document.createElement("span");
+            item.textContent = text;
+            meta.appendChild(item);
         });
-        const data = await res.json();
-        if (!res.ok || !data.success) {
-            throw new Error(data.message || "Failed to search questions.");
-        }
 
-        let list = Array.isArray(data.questions) ? data.questions : [];
-        if (currentFilterSubject !== "all") {
-            const target = currentFilterSubject.toLowerCase();
-            list = list.filter(q => {
-                const s = String(q.subject || "").toLowerCase();
-                if (target === "paper1") return s.includes("paper 1") || s.includes("general");
-                if (target === "paper2") return s.includes("paper 2");
-                return true;
+        const start = document.createElement("button");
+        start.className = "start";
+        start.type = "button";
+        start.disabled = !isAvailable;
+        start.textContent = isAvailable ? "START EXAMINATION" : "COMING SOON";
+
+        if (isAvailable) {
+            const launchExam = () => {
+                const testIdClean = String(test.id || "MOCK01").toLowerCase();
+                localStorage.setItem("selectedMockTest", testIdClean);
+                localStorage.setItem("selectedTestDetails", JSON.stringify({
+                    id: test.id,
+                    title: test.title,
+                    subject: subj,
+                    duration: dur,
+                    questionsCount: qCount
+                }));
+                localStorage.setItem("examDuration", String(dur * 60));
+                localStorage.setItem("currentExamTitle", test.title);
+                localStorage.setItem("currentExamSubject", subj);
+                window.location.href = "instructions";
+            };
+
+            card.classList.add("is-clickable");
+            card.style.cursor = "pointer";
+            card.setAttribute("role", "button");
+            card.setAttribute("tabindex", "0");
+            card.setAttribute("title", `Click to start ${test.title}`);
+            card.addEventListener("click", launchExam);
+            card.addEventListener("keydown", (e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    launchExam();
+                }
+            });
+            start.addEventListener("click", (e) => {
+                e.stopPropagation();
+                launchExam();
             });
         }
 
-        if (searchResultsCount) {
-            searchResultsCount.textContent = `Found ${list.length} question${list.length === 1 ? "" : "s"} for "${rawQuery}"`;
-        }
-
-        if (list.length === 0) {
-            searchResultsStream.innerHTML = `
-                <div style="text-align: center; padding: 36px 18px; background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 14px;">
-                    <div style="font-size: 32px; margin-bottom: 8px;">📑</div>
-                    <h4 style="font-size: 15px; font-weight: 800; color: var(--charcoal); margin-bottom: 6px;">No Matching Questions Found</h4>
-                    <p style="font-size: 12.5px; color: var(--muted); line-height: 1.5; margin-bottom: 14px;">
-                        We couldn't find any questions matching "${escapeHtml(rawQuery)}".
-                    </p>
-                    <button type="button" class="btn-clear-filter" style="display: inline-block; background: var(--emerald-soft); color: var(--emerald-dark); border-radius: 8px; padding: 7px 14px; font-size: 12px;" onclick="if(mobileQuestionSearchInput){mobileQuestionSearchInput.value='';performQuestionSearch();}">
-                        Reset Search & Explore Units
-                    </button>
-                </div>
-            `;
-            return;
-        }
-
-        searchResultsStream.innerHTML = "";
-        list.forEach(q => {
-            const card = document.createElement("article");
-            card.className = "question-study-card";
-
-            const qNum = q.number || q.id || 1;
-            const rawStmt = q.statement || "";
-            const isPaper2 = String(q.subject || "").toLowerCase().includes("paper 2");
-            const paperTag = isPaper2 ? "Paper 2" : "Paper 1";
-
-            let optionsHtml = "";
-            if (Array.isArray(q.options) && q.options.length > 0) {
-                optionsHtml = `<div class="study-options-list">` +
-                    q.options.slice(0, 4).map((opt, oIdx) => {
-                        const letter = ["A", "B", "C", "D"][oIdx] || String(oIdx + 1);
-                        const txt = typeof opt === "string" ? opt : (opt.text || "");
-                        return `
-                            <div class="study-opt-row">
-                                <span class="opt-letter-circle">${letter}</span>
-                                <span class="opt-text">${highlightText(txt, rawQuery)}</span>
-                            </div>
-                        `;
-                    }).join("") +
-                `</div>`;
-            }
-
-            const answerKey = q.answer ? `Key: Option ${escapeHtml(q.answer)}` : "Verified Answer Key";
-            const explanationText = q.explanation ? escapeHtml(q.explanation) : "Detailed syllabus explanation available in formal test review.";
-
-            card.innerHTML = `
-                <div class="card-meta-top">
-                    <div class="card-meta-left">
-                        <span class="paper-badge-pill">${paperTag}</span>
-                        <span class="q-number-pill">Q. ${qNum}</span>
-                    </div>
-                    <span class="test-origin-badge" title="${escapeHtml(q.setTitle)}">${escapeHtml(q.setTitle)}</span>
-                </div>
-
-                <div class="study-q-statement">${highlightText(rawStmt, rawQuery)}</div>
-
-                ${optionsHtml}
-
-                <div class="study-card-actions">
-                    <button type="button" class="btn-toggle-solution">
-                        <span>💡 Solution & Key</span>
-                    </button>
-                    <button type="button" class="btn-start-exam-link" data-set-id="${q.setId}">
-                        <span>Take Test</span>
-                        <svg viewBox="0 0 24 24" width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5">
-                            <path d="M5 12h14M12 5l7 7-7 7"/>
-                        </svg>
-                    </button>
-                </div>
-
-                <div class="solution-drawer">
-                    <div class="sol-key-row">
-                        <span class="sol-key-badge">${answerKey}</span>
-                    </div>
-                    <div class="sol-explanation-text">${explanationText}</div>
-                </div>
-            `;
-
-            // Toggle Solution Drawer
-            const solBtn = card.querySelector(".btn-toggle-solution");
-            const drawer = card.querySelector(".solution-drawer");
-            if (solBtn && drawer) {
-                solBtn.addEventListener("click", () => {
-                    const isOpen = drawer.classList.contains("open");
-                    drawer.classList.toggle("open", !isOpen);
-                    solBtn.style.background = isOpen ? "#F8FAFC" : "#FEF3C7";
-                    solBtn.style.borderColor = isOpen ? "#E2E8F0" : "#FDE68A";
-                    solBtn.style.color = isOpen ? "#475569" : "#92400E";
-                });
-            }
-
-            // Launch Examination
-            const launchBtn = card.querySelector(".btn-start-exam-link");
-            if (launchBtn) {
-                launchBtn.addEventListener("click", () => {
-                    const testIdClean = String(q.setId || "MOCK01").toLowerCase();
-                    localStorage.setItem("selectedMockTest", testIdClean);
-                    localStorage.setItem("selectedTestDetails", JSON.stringify({
-                        id: q.setId,
-                        title: q.setTitle,
-                        subject: q.subject || "General Paper",
-                        duration: q.duration || 180,
-                        questionsCount: 150
-                    }));
-                    localStorage.setItem("examDuration", String((q.duration || 180) * 60));
-                    localStorage.setItem("currentExamTitle", q.setTitle);
-                    localStorage.setItem("currentExamSubject", q.subject || "General Paper");
-                    window.location.href = "instructions";
-                });
-            }
-
-            searchResultsStream.appendChild(card);
-        });
-
-    } catch (err) {
-        if (searchResultsStream) {
-            searchResultsStream.innerHTML = `
-                <div style="text-align: center; padding: 25px; color: #DC2626; font-size: 13px;">
-                    Search error: ${escapeHtml(err.message)}
-                </div>
-            `;
-        }
-    }
-}
-
-// Search input debounce
-if (mobileQuestionSearchInput) {
-    mobileQuestionSearchInput.addEventListener("input", () => {
-        clearTimeout(questionSearchTimeout);
-        questionSearchTimeout = setTimeout(performQuestionSearch, 260);
+        body.append(top, title, description, meta, start);
+        card.append(accent, body);
+        paperSearchResults.appendChild(card);
     });
 }
 
-// Clear search button
+if (mobileQuestionSearchInput) {
+    mobileQuestionSearchInput.addEventListener("input", () => {
+        clearTimeout(questionPaperSearchTimeout);
+        questionPaperSearchTimeout = setTimeout(performQuestionPaperSearch, 180);
+    });
+}
+
 if (clearQuestionSearchBtn) {
     clearQuestionSearchBtn.addEventListener("click", () => {
         if (mobileQuestionSearchInput) {
             mobileQuestionSearchInput.value = "";
-            performQuestionSearch();
+            performQuestionPaperSearch();
             mobileQuestionSearchInput.focus();
         }
     });
 }
-
-// Reset / Back to Units button
-if (btnResetSearch) {
-    btnResetSearch.addEventListener("click", () => {
-        if (mobileQuestionSearchInput) {
-            mobileQuestionSearchInput.value = "";
-            performQuestionSearch();
-        }
-    });
-}
-
-// Quick Jump handler
-function executeQuickJump() {
-    const num = quickJumpNumberInput ? quickJumpNumberInput.value.trim() : "";
-    if (!num) return;
-    if (mobileQuestionSearchInput) {
-        mobileQuestionSearchInput.value = `Q${num}`;
-        performQuestionSearch();
-    }
-}
-if (quickJumpSubmitBtn) quickJumpSubmitBtn.addEventListener("click", executeQuickJump);
-if (quickJumpNumberInput) {
-    quickJumpNumberInput.addEventListener("keydown", (e) => {
-        if (e.key === "Enter") executeQuickJump();
-    });
-}
-
-// Unit tiles click (Discovery Mode)
-document.querySelectorAll(".unit-tile").forEach(tile => {
-    tile.addEventListener("click", () => {
-        const query = tile.dataset.query;
-        if (mobileQuestionSearchInput) {
-            mobileQuestionSearchInput.value = query;
-            performQuestionSearch();
-            window.scrollTo({ top: 0, behavior: "smooth" });
-        }
-    });
-});
-
-// Popular study tags click
-document.querySelectorAll(".study-tag").forEach(tag => {
-    tag.addEventListener("click", () => {
-        const query = tag.dataset.query;
-        if (mobileQuestionSearchInput) {
-            mobileQuestionSearchInput.value = query;
-            performQuestionSearch();
-            window.scrollTo({ top: 0, behavior: "smooth" });
-        }
-    });
-});
-
-// Paper Filter tabs
-const paperFilterBtns = document.querySelectorAll(".paper-filter-btn");
-paperFilterBtns.forEach(btn => {
-    btn.addEventListener("click", () => {
-        paperFilterBtns.forEach(b => b.classList.remove("active"));
-        btn.classList.add("active");
-        currentFilterSubject = btn.dataset.subject || "all";
-        performQuestionSearch();
-    });
-});
 
 /* -----------------------------------------------------
    INITIALIZE DASHBOARD
