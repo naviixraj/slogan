@@ -638,8 +638,6 @@ function switchStudentTab(tabName) {
         if (typeof performQuestionPaperSearch === "function") {
             performQuestionPaperSearch();
         }
-        const input = document.getElementById("mobileQuestionSearchInput");
-        if (input) setTimeout(() => input.focus(), 80);
     } else if (tabName === "profile") {
         pageTitle.textContent = "Candidate Profile";
         pageSubtitle.textContent = "View your registered credentials and examination details.";

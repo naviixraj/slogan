@@ -1494,6 +1494,17 @@
                 font-size: 14px;
                 background: transparent;
                 color: var(--charcoal);
+                -webkit-appearance: none;
+                appearance: none;
+            }
+
+            .modern-search-bar input::-webkit-search-cancel-button,
+            .modern-search-bar input::-webkit-search-decoration,
+            .modern-search-bar input::-webkit-search-results-button,
+            .modern-search-bar input::-webkit-search-results-decoration {
+                -webkit-appearance: none !important;
+                appearance: none !important;
+                display: none !important;
             }
 
             .clear-search-btn {
@@ -1508,6 +1519,7 @@
                 font-size: 11px;
                 color: #64748B;
                 cursor: pointer;
+                flex-shrink: 0;
             }
 
             .paper-search-results {
@@ -2312,7 +2324,7 @@
                             <circle cx="11" cy="11" r="8"></circle>
                             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                         </svg>
-                        <input type="search" id="mobileQuestionSearchInput" placeholder="Search question papers, mock tests..." aria-label="Search question papers" autocomplete="off">
+                        <input type="text" inputmode="search" enterkeyhint="search" id="mobileQuestionSearchInput" placeholder="Search question papers, mock tests..." aria-label="Search question papers" autocomplete="off" spellcheck="false">
                         <button type="button" id="clearQuestionSearchBtn" class="clear-search-btn" aria-label="Clear search">✕</button>
                     </div>
                 </div>
