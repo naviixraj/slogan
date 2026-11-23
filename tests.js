@@ -104,20 +104,42 @@ function initials(name) {
    RENDER MOCK TEST CARDS
    ----------------------------------------------------- */
 
+let currentHomeFilter = "all";
+
 function renderTests() {
 
     const term = searchInput.value.trim().toLowerCase();
-    const filter = statusFilter.value;
+    const filter = currentHomeFilter || (statusFilter ? statusFilter.value : "all");
+
+    // Dynamic stats for Hero Card & Chips
+    const activeTotal = mockTests.filter(t => t.status === "available").length;
+    const upcomingTotal = mockTests.filter(t => t.status !== "available").length;
+    const allTotal = mockTests.length;
+
+    const heroActive = document.getElementById("heroActiveCount");
+    const heroUpcoming = document.getElementById("heroUpcomingCount");
+    const heroTotal = document.getElementById("heroTotalCount");
+    if (heroActive) heroActive.textContent = activeTotal;
+    if (heroUpcoming) heroUpcoming.textContent = upcomingTotal;
+    if (heroTotal) heroTotal.textContent = allTotal;
+
+    const chipAll = document.getElementById("chipAllCount");
+    const chipAvail = document.getElementById("chipAvailCount");
+    const chipUp = document.getElementById("chipUpCount");
+    if (chipAll) chipAll.textContent = allTotal;
+    if (chipAvail) chipAvail.textContent = activeTotal;
+    if (chipUp) chipUp.textContent = upcomingTotal;
 
     const matches = mockTests.filter(test => {
 
         const matchesSearch =
+            !term ||
             test.title.toLowerCase().includes(term) ||
             test.id.toLowerCase().includes(term);
 
         const matchesFilter =
             filter === "all" ||
-            (filter === "coming" && test.status === "coming") ||
+            (filter === "coming" && test.status !== "available") ||
             (filter === "available" && test.status === "available");
 
         return matchesSearch && matchesFilter;
@@ -159,64 +181,63 @@ function renderTests() {
     matches.forEach(test => {
 
         const isAvailable = test.status === "available";
+        const testNum = String(test.id || "01").replace(/\D/g, "");
+        const testCode = `TEST ${testNum.padStart(2, "0")}`;
+        const qCount = test.questionsCount || test.questions_count || 150;
+        const dur = test.duration || 180;
+        const subj = test.subject || "General Paper";
+        const marks = test.totalMarks || (qCount * 2);
 
         const card = document.createElement("article");
-        card.className = "test-card";
+        card.className = "assessment-card";
 
-        const accent = document.createElement("div");
-        accent.className = "accent";
+        // Header (TEST 02 pill + AVAILABLE badge)
+        const header = document.createElement("div");
+        header.className = "assessment-card-header";
 
-        const body = document.createElement("div");
-        body.className = "card-body";
+        const codePill = document.createElement("span");
+        codePill.className = "assessment-test-code";
+        codePill.textContent = testCode;
 
-        const top = document.createElement("div");
-        top.className = "card-top";
+        const statusBadge = document.createElement("span");
+        statusBadge.className = isAvailable ? "assessment-status-badge available" : "assessment-status-badge upcoming";
+        statusBadge.innerHTML = `<span class="assessment-status-dot"></span>${isAvailable ? "AVAILABLE" : "UPCOMING"}`;
 
-        const code = document.createElement("span");
-        code.className = "test-code";
-        code.textContent = `EXAM ${test.id}`;
+        header.append(codePill, statusBadge);
 
-        const status = document.createElement("span");
-        status.className = isAvailable
-    ? "status available"
-    : "status coming";
-        status.textContent = isAvailable ? "AVAILABLE" : "COMING SOON";
-
-        top.append(code, status);
-
+        // Title
         const title = document.createElement("h2");
+        title.className = "assessment-title";
         title.textContent = test.title;
 
-        const description = document.createElement("p");
-        description.textContent = isAvailable
-            ? "Ready to begin. Complete the instructions before starting your examination."
-            : "This examination will be available once its question bank is ready.";
+        // Description
+        const desc = document.createElement("p");
+        desc.className = "assessment-desc";
+        desc.textContent = isAvailable
+            ? `Complete ${qCount}-question ${subj} simulation.`
+            : "This examination will be available once its question bank is configured.";
 
-        const meta = document.createElement("div");
-        meta.className = "meta";
-
-        const qCount = test.questionsCount || test.questions_count || 150;
-        const subj = test.subject || "General Paper";
-        const dur = test.duration || 180;
-
-        [`${qCount} Questions`, subj, `${dur} Minutes`].forEach(text => {
-            const item = document.createElement("span");
-            item.textContent = text;
-            meta.appendChild(item);
+        // Metrics row
+        const metrics = document.createElement("div");
+        metrics.className = "assessment-metrics";
+        [`${qCount} Qs`, `${dur} Mins`, `${marks} Marks`].forEach(txt => {
+            const pill = document.createElement("span");
+            pill.className = "assessment-metric-pill";
+            pill.textContent = txt;
+            metrics.appendChild(pill);
         });
 
-        const start = document.createElement("button");
-        start.className = "start";
-        start.type = "button";
-        start.disabled = !isAvailable;
-
-        start.textContent = isAvailable
-            ? "START EXAMINATION"
-            : "COMING SOON";
+        // Start button
+        const startBtn = document.createElement("button");
+        startBtn.type = "button";
+        startBtn.className = isAvailable ? "assessment-start-btn" : "assessment-start-btn is-disabled";
+        startBtn.disabled = !isAvailable;
+        startBtn.innerHTML = isAvailable
+            ? `<span>Start Examination</span> <span style="font-size: 16px;">&rarr;</span>`
+            : `<span>Coming Soon</span>`;
 
         if (isAvailable) {
             const launchExam = () => {
-                // Store the selected examination details
                 const testIdClean = String(test.id || "MOCK01").toLowerCase();
                 localStorage.setItem("selectedMockTest", testIdClean);
                 localStorage.setItem("selectedTestDetails", JSON.stringify({
@@ -226,17 +247,12 @@ function renderTests() {
                     duration: dur,
                     questionsCount: qCount
                 }));
-                // Set exact exam duration in seconds
                 localStorage.setItem("examDuration", String(dur * 60));
                 localStorage.setItem("currentExamTitle", test.title);
                 localStorage.setItem("currentExamSubject", subj);
-
-                // Continue to the examination instructions.
                 window.location.href = "instructions";
             };
 
-            // Enable whole-card clicking across grid and list views
-            card.classList.add("is-clickable");
             card.style.cursor = "pointer";
             card.setAttribute("role", "button");
             card.setAttribute("tabindex", "0");
@@ -250,18 +266,27 @@ function renderTests() {
                 }
             });
 
-            start.addEventListener("click", (e) => {
+            startBtn.addEventListener("click", (e) => {
                 e.stopPropagation();
                 launchExam();
             });
         }
 
-        body.append(top, title, description, meta, start);
-        card.append(accent, body);
-
+        card.append(header, title, desc, metrics, startBtn);
         testGrid.appendChild(card);
     });
 }
+
+// Wire Home filter chips (All, Available, Upcoming)
+const homeFilterChips = document.querySelectorAll(".home-filter-chip");
+homeFilterChips.forEach(chip => {
+    chip.addEventListener("click", () => {
+        homeFilterChips.forEach(c => c.classList.remove("active"));
+        chip.classList.add("active");
+        currentHomeFilter = chip.getAttribute("data-home-filter") || "all";
+        renderTests();
+    });
+});
 
 /* -----------------------------------------------------
    DASHBOARD NAVIGATION

@@ -1465,8 +1465,167 @@
             }
 
             /* =========================================================
-               HUMAN-CRAFTED SEARCH SECTION (DISCOVERY + STUDY CARDS)
+               HOME HERO BANNER & FILTER CHIPS (MATCHING OUR CSS MODEL)
                ========================================================= */
+            .home-hero-banner {
+                background: linear-gradient(135deg, #1E2538 0%, #151C2C 100%);
+                border-radius: 24px;
+                padding: 24px 20px 20px;
+                position: relative;
+                overflow: hidden;
+                box-shadow: 0 10px 28px rgba(15, 23, 42, 0.12);
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                color: #FFFFFF;
+                margin-bottom: 8px;
+            }
+
+            .home-hero-banner::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background-image: 
+                    linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+                background-size: 24px 24px;
+                pointer-events: none;
+            }
+
+            .hero-live-pill {
+                display: inline-flex;
+                align-items: center;
+                gap: 7px;
+                background: rgba(255, 255, 255, 0.1);
+                border: 1px solid rgba(255, 255, 255, 0.15);
+                border-radius: 20px;
+                padding: 4px 12px;
+                font-size: 10.5px;
+                font-weight: 800;
+                letter-spacing: 0.8px;
+                color: #E2E8F0;
+                text-transform: uppercase;
+                margin-bottom: 14px;
+                position: relative;
+                z-index: 2;
+            }
+
+            .hero-pulse-dot {
+                width: 6px;
+                height: 6px;
+                border-radius: 50%;
+                background: #10B981;
+                box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.35);
+            }
+
+            .hero-title-row {
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                margin-bottom: 8px;
+                position: relative;
+                z-index: 2;
+            }
+
+            .hero-sparkle-icon {
+                flex-shrink: 0;
+            }
+
+            .home-hero-title {
+                font-size: 24px;
+                font-weight: 900;
+                color: #FFFFFF;
+                letter-spacing: 0.5px;
+                margin: 0;
+                line-height: 1.1;
+            }
+
+            .home-hero-desc {
+                font-size: 13px;
+                color: #CBD5E1;
+                line-height: 1.45;
+                margin: 0;
+                max-width: 520px;
+                position: relative;
+                z-index: 2;
+            }
+
+            .home-hero-stats {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+                margin-top: 18px;
+                position: relative;
+                z-index: 2;
+            }
+
+            .hero-stat-card {
+                background: rgba(255, 255, 255, 0.07);
+                border: 1px solid rgba(255, 255, 255, 0.12);
+                border-radius: 16px;
+                padding: 12px 6px 10px;
+                text-align: center;
+                backdrop-filter: blur(8px);
+                -webkit-backdrop-filter: blur(8px);
+            }
+
+            .hero-stat-num {
+                display: block;
+                font-size: 24px;
+                font-weight: 800;
+                color: #FFFFFF;
+                line-height: 1;
+                font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            }
+
+            .hero-stat-lbl {
+                display: block;
+                font-size: 10px;
+                font-weight: 700;
+                color: #94A3B8;
+                text-transform: uppercase;
+                letter-spacing: 0.6px;
+                margin-top: 5px;
+            }
+
+            .home-filter-chips {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin: 14px 0 16px;
+                overflow-x: auto;
+                scrollbar-width: none;
+                -webkit-overflow-scrolling: touch;
+            }
+
+            .home-filter-chips::-webkit-scrollbar {
+                display: none;
+            }
+
+            .home-filter-chip {
+                background: #FFFFFF;
+                border: 1.5px solid #E2E8F0;
+                border-radius: 20px;
+                padding: 7px 16px;
+                font-size: 12.5px;
+                font-weight: 700;
+                color: #475569;
+                cursor: pointer;
+                transition: all 0.15s ease;
+                white-space: nowrap;
+                -webkit-tap-highlight-color: transparent;
+            }
+
+            .home-filter-chip:hover {
+                background: #F8FAFC;
+                border-color: #CBD5E1;
+            }
+
+            .home-filter-chip.active {
+                background: #1E293B;
+                border-color: #1E293B;
+                color: #FFFFFF;
+                box-shadow: 0 2px 8px rgba(15, 23, 42, 0.15);
+            }
+
             /* =========================================================
                HUMAN-CRAFTED SEARCH SECTION (EXACT SKELETON WITH OUR CSS)
                ========================================================= */
@@ -2688,6 +2847,44 @@
             <!-- EXAMINATIONS SECTION -->
 
             <section id="examSection">
+
+                <!-- Mobile & Executive Home Hero Card (Matching Reference Model) -->
+                <div class="home-hero-banner">
+                    <span class="hero-live-pill">
+                        <span class="hero-pulse-dot"></span>LIVE STATUS &bull; ASSESSMENT CENTRE
+                    </span>
+                    <div class="hero-title-row">
+                        <svg class="hero-sparkle-icon" viewBox="0 0 24 24" width="28" height="28" fill="none">
+                            <polygon points="12,2 14.5,8.5 21,6 17.5,12 22,16 15.5,17 16,23 11,19 7,23 8,16.5 2,15 7,11 3,6 9.5,8" fill="#818CF8" stroke="#A5B4FC" stroke-width="1.2"/>
+                        </svg>
+                        <h1 class="home-hero-title">EXAMINATIONS</h1>
+                    </div>
+                    <p class="home-hero-desc">
+                        Browse active mock tests, check upcoming question sets, and launch your exam session.
+                    </p>
+
+                    <div class="home-hero-stats">
+                        <div class="hero-stat-card">
+                            <span class="hero-stat-num" id="heroActiveCount">0</span>
+                            <span class="hero-stat-lbl">ACTIVE</span>
+                        </div>
+                        <div class="hero-stat-card">
+                            <span class="hero-stat-num" id="heroUpcomingCount">0</span>
+                            <span class="hero-stat-lbl">UPCOMING</span>
+                        </div>
+                        <div class="hero-stat-card">
+                            <span class="hero-stat-num" id="heroTotalCount">0</span>
+                            <span class="hero-stat-lbl">TOTAL SETS</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Filter Chips Row (Matching Reference Model) -->
+                <div class="home-filter-chips" id="homeFilterChips">
+                    <button type="button" class="home-filter-chip active" data-home-filter="all">All (<span id="chipAllCount">0</span>)</button>
+                    <button type="button" class="home-filter-chip" data-home-filter="available">Available (<span id="chipAvailCount">0</span>)</button>
+                    <button type="button" class="home-filter-chip" data-home-filter="coming">Upcoming (<span id="chipUpCount">0</span>)</button>
+                </div>
 
                 <div class="toolbar">
 
