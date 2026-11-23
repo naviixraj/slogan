@@ -1387,6 +1387,15 @@
                 padding-bottom: calc(82px + env(safe-area-inset-bottom, 0px)) !important;
             }
 
+            /* Hide topbar when viewing mobile profile tab so native profile header is shown */
+            body.in-profile-tab .topbar {
+                display: none !important;
+            }
+
+            body.in-profile-tab .content {
+                padding-top: calc(env(safe-area-inset-top, 0px) + 16px) !important;
+            }
+
             .tab-btn {
                 flex: 1;
                 display: flex;
@@ -1560,12 +1569,47 @@
                 width: 100%;
             }
 
-            .ios-profile-page-title {
-                text-align: center;
-                font-size: 17px;
-                font-weight: 700;
+            .ios-profile-nav-bar {
+                display: flex;
+                align-items: center;
+                gap: 14px;
+                padding: 4px 2px 2px;
+            }
+
+            .ios-nav-back-btn {
+                width: 38px;
+                height: 38px;
+                border-radius: 12px;
+                background: #FFFFFF;
+                border: 1px solid #E2E8F0;
                 color: #0F172A;
-                margin: 4px 0 2px 0;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                cursor: pointer;
+                box-shadow: 0 1px 4px rgba(15, 23, 42, 0.04);
+                transition: all 0.15s ease;
+                -webkit-tap-highlight-color: transparent;
+                flex-shrink: 0;
+            }
+
+            .ios-nav-back-btn:hover {
+                background: #F8FAFC;
+                border-color: #CBD5E1;
+            }
+
+            .ios-nav-back-btn:active {
+                transform: scale(0.92);
+                background: #F1F5F9;
+            }
+
+            .ios-profile-nav-title {
+                font-size: 20px;
+                font-weight: 800;
+                color: #0F172A;
+                margin: 0;
+                letter-spacing: -0.3px;
+                line-height: 1.2;
             }
 
             .ios-user-card {
@@ -2312,7 +2356,7 @@
 
         <div class="brand">
             <img src="Logoicon.png" alt="SLOGON Logo" class="brand-logo">
-            <span class="brand-name">ExamHub</span>
+            <span class="brand-name">SLOGON ACADEMY</span>
             <button class="sidebar-close-btn" id="sidebarCloseBtn" type="button" aria-label="Close menu">
                 <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round">
                     <line x1="18" y1="6" x2="6" y2="18"/>
@@ -2374,7 +2418,7 @@
                 </button>
                 <div class="topbar-brand-mobile">
                     <img src="Logoicon.png" alt="SLOGON Logo" class="topbar-logo-mobile">
-                    <span class="topbar-title-mobile">ExamHub</span>
+                    <span class="topbar-title-mobile">SLOGON ACADEMY</span>
                 </div>
             </div>
 
@@ -2547,7 +2591,16 @@
             <!-- STUDENT PROFILE SECTION (MOBILE) -->
             <section id="profileSection" class="mobile-view-section" style="display: none;">
                 <div class="mobile-profile-wrap">
-                    <h1 class="ios-profile-page-title">Profile</h1>
+                    <!-- iOS Style Navigation Header (Back Arrow + Title matching reference) -->
+                    <div class="ios-profile-nav-bar">
+                        <button type="button" class="ios-nav-back-btn" id="profileNavBackBtn" aria-label="Back to Home" title="Back to Home">
+                            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                                <line x1="19" y1="12" x2="5" y2="12"></line>
+                                <polyline points="12 19 5 12 12 5"></polyline>
+                            </svg>
+                        </button>
+                        <h1 class="ios-profile-nav-title">Profile</h1>
+                    </div>
 
                     <!-- Top User Card (Matching Reference Layout) -->
                     <div class="ios-user-card">

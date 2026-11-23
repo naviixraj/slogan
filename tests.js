@@ -726,6 +726,12 @@ function switchStudentTab(tabName) {
         pageSubtitle.textContent = "Candidate performance standings ordered by scores.";
     }
 
+    if (tabName === "profile") {
+        document.body.classList.add("in-profile-tab");
+    } else {
+        document.body.classList.remove("in-profile-tab");
+    }
+
     window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
@@ -750,6 +756,13 @@ const profileHelpBtn = document.getElementById("profileHelpBtn");
 if (profileHelpBtn) {
     profileHelpBtn.addEventListener("click", () => {
         showHelp();
+    });
+}
+
+const profileNavBackBtn = document.getElementById("profileNavBackBtn");
+if (profileNavBackBtn) {
+    profileNavBackBtn.addEventListener("click", () => {
+        switchStudentTab("home");
     });
 }
 
