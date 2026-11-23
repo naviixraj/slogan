@@ -1679,38 +1679,76 @@
                 height: 16px;
             }
 
-            /* Leaderboard Section Styling (Matching reference image) */
+            /* Leaderboard Section Styling (3D Isometric Podium + Animated Rotating Aura) */
             .mobile-leaderboard-banner {
-                background: linear-gradient(180deg, #EDE9FE 0%, #DDD6FE 60%, #C4B5FD 100%);
-                border-radius: 20px;
-                padding: 22px 12px 0;
+                background: linear-gradient(180deg, #FFF9EB 0%, #F5F7FD 50%, #E8F0FC 100%);
+                border-radius: 24px;
+                padding: 30px 10px 0;
                 position: relative;
                 overflow: hidden;
-                box-shadow: 0 8px 30px rgba(124, 58, 237, 0.15);
+                box-shadow: 0 8px 24px rgba(59, 86, 120, 0.08);
                 margin-bottom: 18px;
                 text-align: center;
+                border: 1px solid #E2E8F0;
             }
 
-            .podium-sparkles {
+            /* Animated Rotating Ambient Glow behind 1st Rank */
+            .rank1-aura-glow {
                 position: absolute;
                 top: 10px;
-                left: 14px;
-                font-size: 18px;
-                opacity: 0.8;
+                left: 50%;
+                width: 210px;
+                height: 210px;
+                border-radius: 50%;
+                background: conic-gradient(
+                    from 0deg,
+                    rgba(254, 240, 199, 0) 0deg,
+                    rgba(254, 215, 170, 0.5) 30deg,
+                    rgba(224, 231, 255, 0.15) 75deg,
+                    rgba(254, 240, 199, 0.6) 120deg,
+                    rgba(224, 231, 255, 0.2) 180deg,
+                    rgba(254, 215, 170, 0.55) 235deg,
+                    rgba(224, 231, 255, 0.15) 285deg,
+                    rgba(254, 240, 199, 0) 360deg
+                );
+                filter: blur(12px);
+                opacity: 0.88;
+                animation: rotateAura 20s linear infinite;
+                pointer-events: none;
+                z-index: 1;
             }
 
-            .leaderboard-crown-icon {
-                font-size: 26px;
-                margin-bottom: 6px;
-                filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+            @keyframes rotateAura {
+                0% {
+                    transform: translateX(-50%) rotate(0deg);
+                }
+                100% {
+                    transform: translateX(-50%) rotate(360deg);
+                }
+            }
+
+            .leaderboard-crown-wrap {
+                position: relative;
+                z-index: 3;
+                display: flex;
+                justify-content: center;
+                margin-bottom: 4px;
+            }
+
+            .crown-svg {
+                width: 40px;
+                height: 32px;
+                filter: drop-shadow(0 3px 6px rgba(180, 83, 9, 0.35));
             }
 
             .leaderboard-podium-stage {
+                position: relative;
+                z-index: 2;
                 display: flex;
                 align-items: flex-end;
                 justify-content: center;
-                gap: 8px;
-                padding-top: 10px;
+                gap: 0;
+                padding-top: 4px;
             }
 
             .podium-col {
@@ -1718,7 +1756,20 @@
                 display: flex;
                 flex-direction: column;
                 align-items: center;
-                max-width: 110px;
+                max-width: 114px;
+                position: relative;
+            }
+
+            .podium-col.rank-1 {
+                z-index: 4;
+                max-width: 124px;
+                margin: 0 -2px;
+            }
+            .podium-col.rank-2 {
+                z-index: 3;
+            }
+            .podium-col.rank-3 {
+                z-index: 2;
             }
 
             .podium-avatar-wrap {
@@ -1732,72 +1783,57 @@
                 display: grid;
                 place-items: center;
                 font-weight: 800;
-                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+                box-shadow: 0 4px 14px rgba(15, 23, 42, 0.2);
+                background: linear-gradient(135deg, #1E3A8A 0%, #172554 100%);
             }
 
             .podium-avatar-1 {
-                width: 48px;
-                height: 48px;
-                background: #3B0764;
-                font-size: 15px;
-                border: 2px solid #FACC15;
+                width: 54px;
+                height: 54px;
+                font-size: 16px;
+                border: 3px solid #60A5FA;
             }
 
-            .podium-avatar-2 {
-                width: 42px;
-                height: 42px;
-                background: #4C1D95;
-                font-size: 13.5px;
-                border: 2px solid #E2E8F0;
-            }
-
+            .podium-avatar-2,
             .podium-avatar-3 {
-                width: 42px;
-                height: 42px;
-                background: #581C87;
-                font-size: 13.5px;
-                border: 2px solid #F59E0B;
+                width: 44px;
+                height: 44px;
+                font-size: 13px;
+                border: 2.5px solid #93C5FD;
             }
 
             .podium-rank-badge {
                 position: absolute;
-                top: -4px;
-                right: -4px;
-                width: 17px;
-                height: 17px;
+                top: -3px;
+                right: -2px;
+                width: 19px;
+                height: 19px;
                 border-radius: 50%;
-                font-size: 10px;
-                font-weight: 800;
+                font-size: 10.5px;
+                font-weight: 900;
                 display: grid;
                 place-items: center;
                 color: #FFFFFF;
-                box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-            }
-
-            .badge-1 {
-                background: #F59E0B;
-            }
-            .badge-2 {
-                background: #94A3B8;
-            }
-            .badge-3 {
-                background: #D97706;
+                background: linear-gradient(135deg, #F59E0B, #D97706);
+                border: 1.5px solid #FFFFFF;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.25);
             }
 
             .podium-user-name {
-                font-size: 11.5px;
+                font-size: 12px;
                 font-weight: 800;
-                color: #1E1B4B;
+                color: #0F172A;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
                 max-width: 100%;
+                margin-top: 3px;
             }
 
             .podium-test-name {
                 font-size: 9px;
-                color: #6D28D9;
                 font-weight: 600;
+                color: #5B6E8A;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
@@ -1807,55 +1843,117 @@
 
             .podium-score-pill {
                 background: #FFFFFF;
-                border-radius: 12px;
-                padding: 2px 6px;
+                border: 1px solid rgba(203, 213, 225, 0.85);
+                border-radius: 14px;
+                padding: 3px 8px;
                 font-size: 9.5px;
                 font-weight: 800;
-                color: #1E1B4B;
-                margin-top: 4px;
-                margin-bottom: 6px;
-                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+                color: #0F172A;
+                margin-top: 5px;
+                margin-bottom: 7px;
+                box-shadow: 0 2px 6px rgba(15, 23, 42, 0.05);
                 white-space: nowrap;
             }
 
             .score-pct {
-                font-size: 8.5px;
-                color: #7C3AED;
+                font-size: 9px;
+                color: #4338CA;
+                font-weight: 700;
+                margin-left: 2px;
             }
 
-            .podium-pillar {
+            /* 3D Isometric Pedestal Step Blocks */
+            .pedestal-3d {
                 width: 100%;
-                border-radius: 10px 10px 0 0;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: rgba(255, 255, 255, 0.5);
-                font-weight: 900;
-                box-shadow: inset 0 3px 6px rgba(255, 255, 255, 0.2);
-            }
-
-            .pillar-1 {
-                height: 90px;
-                background: linear-gradient(180deg, #6D28D9 0%, #4C1D95 100%);
-                font-size: 32px;
-            }
-
-            .pillar-2 {
-                height: 65px;
-                background: linear-gradient(180deg, #7C3AED 0%, #5B21B6 100%);
-                font-size: 26px;
-            }
-
-            .pillar-3 {
-                height: 50px;
-                background: linear-gradient(180deg, #8B5CF6 0%, #6D28D9 100%);
-                font-size: 22px;
-            }
-
-            .leaderboard-list-wrap {
                 display: flex;
                 flex-direction: column;
-                gap: 10px;
+                position: relative;
+            }
+
+            .pedestal-top {
+                width: 100%;
+                height: 18px;
+                background: linear-gradient(180deg, #A2C0DF 0%, #7E9FC4 100%);
+                clip-path: polygon(14% 0%, 86% 0%, 100% 100%, 0% 100%);
+                box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.6);
+            }
+
+            .pedestal-front {
+                width: 100%;
+                background: linear-gradient(180deg, #4A6E96 0%, #355375 45%, #243B55 100%);
+                display: flex;
+                justify-content: center;
+                align-items: flex-start;
+                padding-top: 12px;
+                position: relative;
+                overflow: hidden;
+                box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.15), inset -1px 0 0 rgba(0, 0, 0, 0.2);
+            }
+
+            .pedestal-front::after {
+                content: "";
+                position: absolute;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: 36px;
+                background: linear-gradient(180deg, rgba(36, 59, 85, 0) 0%, rgba(232, 240, 252, 0.75) 100%);
+                pointer-events: none;
+            }
+
+            .pedestal-1 .pedestal-top {
+                height: 22px;
+                background: linear-gradient(180deg, #B5CFE9 0%, #8DB0D3 100%);
+            }
+            .pedestal-1 .pedestal-front {
+                height: 125px;
+            }
+            .pedestal-1 .pillar-num {
+                font-size: 52px;
+            }
+
+            .pedestal-2 .pedestal-top {
+                height: 18px;
+                background: linear-gradient(180deg, #9EBDDE 0%, #7697BD 100%);
+            }
+            .pedestal-2 .pedestal-front {
+                height: 90px;
+            }
+            .pedestal-2 .pillar-num {
+                font-size: 44px;
+            }
+
+            .pedestal-3 .pedestal-top {
+                height: 16px;
+                background: linear-gradient(180deg, #96B6D8 0%, #6E90B6 100%);
+            }
+            .pedestal-3 .pedestal-front {
+                height: 65px;
+            }
+            .pedestal-3 .pillar-num {
+                font-size: 38px;
+            }
+
+            .pillar-num {
+                font-size: 44px;
+                font-weight: 900;
+                line-height: 1;
+                color: rgba(255, 255, 255, 0.38);
+                text-shadow: 0 1px 2px rgba(0, 0, 0, 0.25);
+                position: relative;
+                z-index: 2;
+            }
+
+            /* Standings List Container (Solid opaque backdrop stops watermark overlap) */
+            .leaderboard-list-wrap {
+                background: #FFFFFF;
+                border-radius: 20px;
+                padding: 18px 14px;
+                border: 1px solid #E2E8F0;
+                box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
             }
 
             .leaderboard-list-header {
@@ -1866,63 +1964,62 @@
             }
 
             .list-title {
-                font-size: 13.5px;
+                font-size: 14px;
                 font-weight: 800;
-                color: var(--charcoal);
+                color: #0F172A;
             }
 
             .list-subtitle {
                 font-size: 11px;
-                color: var(--muted);
+                color: #64748B;
+            }
+
+            .leaderboard-items {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
             }
 
             .leader-card {
                 background: #FFFFFF;
                 border: 1px solid #E2E8F0;
-                border-radius: 14px;
+                border-radius: 16px;
                 padding: 12px 14px;
                 display: flex;
                 align-items: center;
-                gap: 11px;
-                box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+                gap: 12px;
+                box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
             }
 
             .leader-card.is-current-user {
                 border: 2px solid #8B5CF6;
-                background: #FAF5FF;
+                background: #FFFFFF;
+                box-shadow: 0 0 0 1px #8B5CF6, 0 4px 16px rgba(139, 92, 246, 0.12);
             }
 
             .leader-rank-num {
-                font-size: 13px;
+                font-size: 13.5px;
                 font-weight: 800;
                 color: #64748B;
-                min-width: 14px;
+                min-width: 16px;
                 text-align: center;
             }
 
             .leader-avatar {
-                width: 34px;
-                height: 34px;
+                width: 36px;
+                height: 36px;
                 border-radius: 50%;
                 color: #FFFFFF;
                 display: grid;
                 place-items: center;
-                font-size: 12px;
+                font-size: 12.5px;
                 font-weight: 800;
                 flex-shrink: 0;
+                background: linear-gradient(135deg, #1E3A8A 0%, #172554 100%);
             }
 
-            .avatar-top-1 {
-                background: #3B0764;
-            }
-            .avatar-top-2 {
-                background: #4C1D95;
-            }
-            .avatar-top-3 {
-                background: #581C87;
-            }
             .avatar-top-user {
-                background: #7C3AED;
+                background: linear-gradient(135deg, #312E81 0%, #1E1B4B 100%);
             }
 
             .leader-info {
@@ -1937,32 +2034,38 @@
             }
 
             .leader-name {
-                font-size: 13px;
+                font-size: 13.5px;
                 font-weight: 800;
-                color: var(--charcoal);
+                color: #0F172A;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
             }
 
             .badge-you-pill {
-                font-size: 9.5px;
+                font-size: 10px;
                 font-weight: 800;
-                background: #7C3AED;
-                color: #FFFFFF;
-                padding: 1px 6px;
-                border-radius: 8px;
+                background: #DCFCE7;
+                color: #15803D;
+                padding: 2px 7px;
+                border-radius: 6px;
+                letter-spacing: 0.3px;
+                text-transform: uppercase;
             }
 
             .leader-test-tag {
-                display: block;
+                display: inline-block;
                 font-size: 10.5px;
-                color: #6D28D9;
+                color: #475569;
+                background: #EFF6FF;
+                padding: 2px 8px;
+                border-radius: 6px;
                 font-weight: 600;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
-                margin-top: 2px;
+                max-width: 100%;
+                margin-top: 3px;
             }
 
             .leader-stats {
@@ -1971,19 +2074,23 @@
             }
 
             .leader-score {
-                display: block;
-                font-size: 12.5px;
+                display: flex;
+                align-items: center;
+                justify-content: flex-end;
+                gap: 4px;
+                font-size: 13px;
                 font-weight: 800;
-                color: #1E1B4B;
+                color: #0F172A;
             }
 
             .zap-icon {
-                color: #7C3AED;
+                color: #EAB308;
+                font-size: 12.5px;
             }
 
             .leader-meta-sub {
                 display: block;
-                font-size: 10px;
+                font-size: 10.5px;
                 color: #64748B;
                 font-weight: 600;
                 margin-top: 2px;
@@ -1994,8 +2101,8 @@
                 font-size: 11px;
                 color: var(--muted);
                 line-height: 1.5;
-                padding: 8px 10px;
-                margin-top: 4px;
+                padding: 6px 6px 0;
+                margin-top: 2px;
             }
         }
 /* CANDIDATE PROFILE MODAL */
@@ -2385,12 +2492,43 @@
             <!-- LEADERBOARD SECTION (MOBILE) -->
             <section id="leaderboardSection" class="mobile-view-section" style="display: none;">
                 <div class="mobile-leaderboard-banner">
-                    <div class="podium-sparkles">✨</div>
-                    <div class="leaderboard-crown-icon">👑</div>
-                    
-                    <!-- 3D PODIUM CONTAINER -->
+                    <!-- Rotating Ambient Glow Aura behind Rank 1 -->
+                    <div class="rank1-aura-glow" aria-hidden="true"></div>
+
+                    <!-- Realistic Golden Crown floating above Rank 1 -->
+                    <div class="leaderboard-crown-wrap">
+                        <svg class="crown-svg" viewBox="0 0 64 48" fill="none">
+                            <defs>
+                                <linearGradient id="goldCrownGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#FDE047"/>
+                                    <stop offset="50%" stop-color="#EAB308"/>
+                                    <stop offset="100%" stop-color="#CA8A04"/>
+                                </linearGradient>
+                                <linearGradient id="crownGemRed" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#EF4444"/>
+                                    <stop offset="100%" stop-color="#991B1B"/>
+                                </linearGradient>
+                                <linearGradient id="crownGemBlue" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" stop-color="#38BDF8"/>
+                                    <stop offset="100%" stop-color="#0284C7"/>
+                                </linearGradient>
+                            </defs>
+                            <path d="M6 38L12 14L24 26L32 8L40 26L52 14L58 38H6Z" fill="url(#goldCrownGrad)" stroke="#B45309" stroke-width="1.5" stroke-linejoin="round"/>
+                            <rect x="4" y="38" width="56" height="6" rx="2" fill="url(#goldCrownGrad)" stroke="#B45309" stroke-width="1.2"/>
+                            <!-- Crown Jewels -->
+                            <circle cx="12" cy="14" r="2.5" fill="url(#crownGemRed)"/>
+                            <circle cx="32" cy="8" r="3" fill="url(#crownGemBlue)"/>
+                            <circle cx="52" cy="14" r="2.5" fill="url(#crownGemRed)"/>
+                            <circle cx="20" cy="41" r="2" fill="url(#crownGemBlue)"/>
+                            <circle cx="32" cy="41" r="2.5" fill="url(#crownGemRed)"/>
+                            <circle cx="44" cy="41" r="2" fill="url(#crownGemBlue)"/>
+                        </svg>
+                    </div>
+
+                    <!-- 3D ISOMETRIC PODIUM STAGE -->
                     <div class="leaderboard-podium-stage">
-                        <!-- Rank 2: Left -->
+                        
+                        <!-- Rank 2: Left (Mid Height) -->
                         <div class="podium-col rank-2">
                             <div class="podium-avatar-wrap">
                                 <div class="podium-avatar podium-avatar-2" id="podiumAvatar2">KS</div>
@@ -2399,8 +2537,13 @@
                             <div class="podium-user-name" id="podiumName2">Karthik S.</div>
                             <div class="podium-test-name" id="podiumTest2">Full Length Mock TEST 02</div>
                             <div class="podium-score-pill" id="podiumScore2">144 / 150 <span class="score-pct">(96%)</span></div>
-                            <div class="podium-pillar pillar-2">
-                                <span class="pillar-num">2</span>
+                            
+                            <!-- 3D Pedestal Step 2 -->
+                            <div class="pedestal-3d pedestal-2">
+                                <div class="pedestal-top"></div>
+                                <div class="pedestal-front">
+                                    <span class="pillar-num">2</span>
+                                </div>
                             </div>
                         </div>
 
@@ -2413,12 +2556,17 @@
                             <div class="podium-user-name" id="podiumName1">Ananya R.</div>
                             <div class="podium-test-name" id="podiumTest1">Full Length Mock TEST 02</div>
                             <div class="podium-score-pill" id="podiumScore1">148 / 150 <span class="score-pct">(98%)</span></div>
-                            <div class="podium-pillar pillar-1">
-                                <span class="pillar-num">1</span>
+                            
+                            <!-- 3D Pedestal Step 1 -->
+                            <div class="pedestal-3d pedestal-1">
+                                <div class="pedestal-top"></div>
+                                <div class="pedestal-front">
+                                    <span class="pillar-num">1</span>
+                                </div>
                             </div>
                         </div>
 
-                        <!-- Rank 3: Right -->
+                        <!-- Rank 3: Right (Lowest) -->
                         <div class="podium-col rank-3">
                             <div class="podium-avatar-wrap">
                                 <div class="podium-avatar podium-avatar-3" id="podiumAvatar3">PM</div>
@@ -2427,10 +2575,16 @@
                             <div class="podium-user-name" id="podiumName3">Priya M.</div>
                             <div class="podium-test-name" id="podiumTest3">Question Set - 1</div>
                             <div class="podium-score-pill" id="podiumScore3">141 / 150 <span class="score-pct">(94%)</span></div>
-                            <div class="podium-pillar pillar-3">
-                                <span class="pillar-num">3</span>
+                            
+                            <!-- 3D Pedestal Step 3 -->
+                            <div class="pedestal-3d pedestal-3">
+                                <div class="pedestal-top"></div>
+                                <div class="pedestal-front">
+                                    <span class="pillar-num">3</span>
+                                </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
 
@@ -2498,6 +2652,20 @@
                             <div class="leader-stats">
                                 <span class="leader-score"><span class="zap-icon">⚡</span> 138 / 150</span>
                                 <span class="leader-meta-sub">92% • 162m</span>
+                            </div>
+                        </div>
+
+                        <!-- Rank 5 Card -->
+                        <div class="leader-card">
+                            <span class="leader-rank-num">5</span>
+                            <div class="leader-avatar avatar-top-5">VN</div>
+                            <div class="leader-info">
+                                <strong class="leader-name">Vikram N.</strong>
+                                <span class="leader-test-tag">Paper 1 Practice Set 02</span>
+                            </div>
+                            <div class="leader-stats">
+                                <span class="leader-score"><span class="zap-icon">⚡</span> 134 / 151</span>
+                                <span class="leader-meta-sub">89% • 108m</span>
                             </div>
                         </div>
                     </div>
