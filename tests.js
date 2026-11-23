@@ -283,6 +283,16 @@ function showExaminations() {
 function showHelp() {
 
     examSection.style.display = "none";
+    const mobProf = document.getElementById("profileSection");
+    const mobSearch = document.getElementById("searchSection");
+    const mobLeader = document.getElementById("leaderboardSection");
+    if (mobProf) mobProf.style.display = "none";
+    if (mobSearch) mobSearch.style.display = "none";
+    if (mobLeader) mobLeader.style.display = "none";
+
+    const tabBtns = document.querySelectorAll(".mobile-tab-bar .tab-btn");
+    tabBtns.forEach(btn => btn.classList.remove("active"));
+
     helpSection.style.display = "block";
 
     helpNav.classList.add("active");
@@ -291,6 +301,7 @@ function showHelp() {
     pageTitle.textContent = "Help";
     pageSubtitle.textContent =
         "Find information about your candidate account and mock examinations.";
+    window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 /* -----------------------------------------------------
@@ -726,6 +737,20 @@ if (tabLeaderboardBtn) tabLeaderboardBtn.addEventListener("click", () => switchS
 const mobileProfileLogoutBtn = document.getElementById("mobileProfileLogoutBtn");
 if (mobileProfileLogoutBtn) {
     mobileProfileLogoutBtn.addEventListener("click", openLogoutModal);
+}
+
+const profileContactUsBtn = document.getElementById("profileContactUsBtn");
+if (profileContactUsBtn) {
+    profileContactUsBtn.addEventListener("click", () => {
+        window.location.href = "mailto:contact@slogonacademy.com?subject=SLOGON%20Academy%20Candidate%20Support";
+    });
+}
+
+const profileHelpBtn = document.getElementById("profileHelpBtn");
+if (profileHelpBtn) {
+    profileHelpBtn.addEventListener("click", () => {
+        showHelp();
+    });
 }
 
 /* =====================================================
