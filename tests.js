@@ -629,6 +629,16 @@ function switchStudentTab(tabName) {
         else examinationsNav.classList.remove("active");
     }
 
+    // Automatically clear search input and results when switching to other tabs
+    if (tabName !== "search") {
+        const searchInput = document.getElementById("mobileQuestionSearchInput");
+        const clearBtn = document.getElementById("clearQuestionSearchBtn");
+        const results = document.getElementById("paperSearchResults");
+        if (searchInput) searchInput.value = "";
+        if (clearBtn) clearBtn.style.display = "none";
+        if (results) results.innerHTML = "";
+    }
+
     if (tabName === "home") {
         pageTitle.textContent = "Examinations";
         pageSubtitle.textContent = "Browse your available examinations and choose a test to begin.";
@@ -710,8 +720,7 @@ function performQuestionPaperSearch() {
     if (matches.length === 0) {
         paperSearchResults.innerHTML = `
             <div class="paper-search-empty">
-                <strong>No Question Papers Found</strong>
-                <span>No question papers matched "${escapeHtml(rawQuery)}". Please try searching for another examination name.</span>
+                <strong>No result found</strong>
             </div>
         `;
         return;
