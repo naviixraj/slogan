@@ -1365,7 +1365,25 @@
                 justify-content: space-around;
             }
 
+            /* Hide top-right avatar dropdown on mobile (replaced by bottom Profile tab) */
+            .profile-dropdown-wrapper {
+                display: none !important;
+            }
+
+            /* Hide top page-heading on mobile to avoid duplicate headers and save vertical space */
+            .page-heading {
+                display: none !important;
+            }
+
+            /* Hide redundant search bar, filters, and count in Examinations tab on mobile (search is in dedicated Search tab) */
+            #examSection .toolbar,
+            #examSection .count {
+                display: none !important;
+            }
+
             .content {
+                padding-top: 14px !important;
+                padding-inline: 14px !important;
                 padding-bottom: calc(82px + env(safe-area-inset-bottom, 0px)) !important;
             }
 
