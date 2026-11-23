@@ -84,23 +84,12 @@ const uploadExamTitle = document.getElementById("uploadExamTitle");
 const uploadSubject = document.getElementById("uploadSubject");
 const uploadDuration = document.getElementById("uploadDuration");
 
-// Upload Modal Tabs & Paste Pane
-const tabUploadFileBtn = document.getElementById("tabUploadFileBtn");
-const tabPasteTextBtn = document.getElementById("tabPasteTextBtn");
-const uploadFilePane = document.getElementById("uploadFilePane");
-const pasteTextPane = document.getElementById("pasteTextPane");
-const pasteQuestionsText = document.getElementById("pasteQuestionsText");
-const loadSamplePasteBtn = document.getElementById("loadSamplePasteBtn");
-const pasteDetectSummary = document.getElementById("pasteDetectSummary");
-
 // Rich Selected File Card
 const selectedFileCard = document.getElementById("selectedFileCard");
 const fileTypeBadge = document.getElementById("fileTypeBadge");
 const fileCardName = document.getElementById("fileCardName");
 const fileCardSize = document.getElementById("fileCardSize");
 const changeFileBtn = document.getElementById("changeFileBtn");
-
-let currentUploadMode = "file"; // "file" or "paste"
 
 
 // Edit Question Set Modal
@@ -881,18 +870,6 @@ function stopAutoScroll() {
     }
 }
 
-// -----------------------------------------------------
-// MODAL TABS & BULK PASTE LOGIC
-// -----------------------------------------------------
-
-function switchUploadTab(mode) {
-    currentUploadMode = mode;
-    if (tabUploadFileBtn) tabUploadFileBtn.classList.toggle("active", mode === "file");
-    if (tabPasteTextBtn) tabPasteTextBtn.classList.toggle("active", mode === "paste");
-
-    if (uploadFilePane) uploadFilePane.style.display = mode === "file" ? "block" : "none";
-    if (pasteTextPane) pasteTextPane.style.display = mode === "paste" ? "block" : "none";
-}
 
 function handleFileSelected() {
     if (!setFileInput || !setFileInput.files || setFileInput.files.length === 0) {
@@ -963,141 +940,9 @@ function resetFileInputUI() {
     if (dropBoxArea) dropBoxArea.style.display = "block";
 }
 
-function updatePasteDetection() {
-    if (!pasteQuestionsText || !pasteDetectSummary) return;
-    const text = pasteQuestionsText.value.trim();
-    if (!text) {
-        pasteDetectSummary.className = "paste-detect-summary";
-        pasteDetectSummary.innerHTML = "⚡ Live Question Detector: Paste question set text above to preview";
-        return;
-    }
-
-    const regex = /(?:^|\n)(?=(?:(?:Question|Q|வினா(?:\s*எண்)?)\s*[:\.-]?\s*\d+[\.:\)\s\-\]]+|\d+[\.\)]\s+|\d+\s*[:\.\-]?\s*(?:\[|\(|பொருத்துக|காலவரிசை|நிரல்படுத்துக|உறுதிக்கூற்று)))/gi;
-    let blocks = text.split(regex).map(b => b.trim()).filter(b => b.length > 5);
-
-    // If split produced 0 blocks, check if the pasted text is a standalone single question
-    if (blocks.length === 0 && /(?:^|\n|\s{2,})(?:\(?([A-Da-d1-4அஆஇஈ])[\.\)\:\-\]]|\(([A-Da-d1-4அஆஇஈ])\))/g.test(text)) {
-        blocks = [text];
-    }
-
-    if (blocks.length === 0) {
-        pasteDetectSummary.className = "paste-detect-summary has-error";
-        pasteDetectSummary.innerHTML = "⚠️ No questions detected yet. Please ensure questions start with numbers like '1.' or 'Q1.' or 'வினா 1:'";
-        return;
-    }
-
-    let validCount = 0;
-    blocks.forEach(block => {
-        const hasOptions = /(?:^|\n|\s{2,})(?:\(?([A-Da-d1-4])[\.\)\:\-\]]|\(([A-Da-d1-4])\))/g.test(block);
-        if (hasOptions) validCount++;
-    });
-
-    pasteDetectSummary.className = "paste-detect-summary has-questions";
-    pasteDetectSummary.innerHTML = `✅ <strong>${blocks.length} question(s) detected</strong> (${validCount} with verified A-D options)`;
-}
-
-function loadSampleQuestionTemplate() {
-    if (!pasteQuestionsText) return;
-    const sample = `1. Which layer of the OSI model does a network router operate on?
-(A) Physical Layer
-(B) Data Link Layer
-(C) Network Layer
-(D) Transport Layer
-Answer: C
-Explanation: Routers operate at Layer 3 (Network Layer) to direct IP packet traffic.
-
-2. Match the Computer Protocols in List I with their Default Ports in List II:
-List I (Protocols)
-(A) HTTP
-(B) HTTPS
-(C) SSH
-(D) DNS
-List II (Port Numbers)
-(I) 22
-(II) 53
-(III) 80
-(IV) 443
-
-Choose the correct answer from the options given below:
-(A) (A)-(III), (B)-(IV), (C)-(I), (D)-(II)
-(B) (A)-(I), (B)-(II), (C)-(III), (D)-(IV)
-(C) (A)-(IV), (B)-(III), (C)-(II), (D)-(I)
-(D) (A)-(II), (B)-(I), (C)-(IV), (D)-(III)
-Answer: A
-Explanation: HTTP = 80, HTTPS = 443, SSH = 22, DNS = 53.
-
-3. Assertion and Reason:
-Assertion (A): Light travels faster in vacuum than in glass.
-Reason (R): The refractive index of vacuum is 1, which is less than the refractive index of glass.
-
-In the light of the above statements, choose the most appropriate answer:
-(A) Both (A) and (R) are correct, and (R) is the correct explanation of (A).
-(B) Both (A) and (R) are correct, but (R) is NOT the correct explanation of (A).
-(C) (A) is correct, but (R) is incorrect.
-(D) (A) is incorrect, but (R) is correct.
-Answer: A
-Explanation: Light velocity is maximum in vacuum where refractive index is 1.
-
-வினா 4 [உறுதிக்கூற்று - காரணம்].
-உறுதிக்கூற்று (உ): வீரமாமுனிவர் இயற்றிய தேம்பாவணி காப்பியத்தின் முதன்மைப் பாட்டுடைத் தலைவன் இயேசு பெருமான் ஆவார். 
-காரணம் (கா): தேம்பாவணி 3 காண்டங்களையும் 36 படலங்களையும் 3,615 விருத்தப் பாடல்களையும் கொண்டக் கிறித்துவச் சமயக் காப்பியமாகும்.
-
-கீழே தரப்பெற்றுள்ள விருப்பங்களிலிருந்து சரியான பதிலத்தைத் தேர்ந்தெடுக்க: 
-(1) (உ) சரி, (கா) சரி; (கா) என்பது (உ)-விற்குச் சரியான விளக்கமாகும் 
-(2) (உ) சரி, (கா) தவறு 
-(3) (உ) தவறு, (கா) சரி 
-(4) (உ) தவறு, (கா) தவறு
-சரியான விடை: (3) (உ) தவறு, (கா) சரி
-விளக்கம்: தேம்பாவணியின் முதன்மைப் பாட்டுடைத் தலைவன் வளன் (சூசையப்பர்) ஆவார் (இயேசு பெருமான் அல்ல). எனவே உறுதிக்கூற்று தவறு, காரணம் சரி.
-
-5. Consider the following statements regarding the Indian Constitution:
-(i) The original Constitution contained 395 Articles and 8 Schedules.
-(ii) Dr. B.R. Ambedkar was the Chairman of the Drafting Committee.
-(iii) The Constitution was adopted on January 26, 1950.
-(iv) The Preamble is an integral part of the Constitution.
-
-Which of the statements given above are correct?
-(A) (i), (ii) and (iv) only
-(B) (i) and (iii) only
-(C) (ii), (iii) and (iv) only
-(D) (i), (ii), (iii) and (iv)
-Answer: A
-Explanation: The Constitution was adopted on November 26, 1949 and enacted on January 26, 1950.
-
-6. Arrange the following computer innovations in chronological order:
-(i) Invention of the Transistor
-(ii) Release of the World Wide Web
-(iii) Development of the C Programming Language
-(iv) Invention of the Microprocessor
-
-Choose the correct chronological sequence:
-(A) (i) -> (iv) -> (iii) -> (ii)
-(B) (i) -> (iii) -> (iv) -> (ii)
-(C) (iv) -> (i) -> (iii) -> (ii)
-(D) (ii) -> (i) -> (iii) -> (iv)
-Answer: A
-Explanation: Transistor (1947) -> Microprocessor (1971) -> C Language (1972) -> World Wide Web (1989).
-
-7. The following table shows the number of students enrolled in three courses from 2021 to 2023:
-Course | 2021 | 2022 | 2023
-Physics | 120 | 150 | 180
-Chemistry | 80 | 100 | 140
-Mathematics | 100 | 120 | 160
-
-What is the percentage increase in total student enrollment from 2021 to 2023?
-(A) 40%
-(B) 50%
-(C) 60%
-(D) 70%
-Answer: C
-Explanation: Total in 2021 = 300. Total in 2023 = 480. Increase = 180. Percentage = (180/300)*100 = 60%.`;
-
-    pasteQuestionsText.value = sample;
-    updatePasteDetection();
-}
 
 // -----------------------------------------------------
-// SAVE QUESTION SET (FILE UPLOAD OR BULK PASTE)
+// SAVE QUESTION SET (FILE UPLOAD)
 // -----------------------------------------------------
 
 async function handleUploadSetSubmit() {
@@ -1112,70 +957,6 @@ async function handleUploadSetSubmit() {
 
     const prevText = submitUploadButton ? submitUploadButton.textContent : "";
 
-    // 1. BULK PASTE MODE
-    if (currentUploadMode === "paste") {
-        const textContent = pasteQuestionsText ? pasteQuestionsText.value.trim() : "";
-        if (!textContent) {
-            alert("Please paste your complete question set text before saving.");
-            return;
-        }
-
-        if (submitUploadButton) {
-            submitUploadButton.disabled = true;
-            submitUploadButton.textContent = "Parsing & Saving Set...";
-        }
-
-        try {
-            const res = await fetch("/api/admin/sets/paste", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                    title: title,
-                    subject: subject || "All",
-                    duration: duration || "180",
-                    textContent: textContent
-                }),
-                credentials: "same-origin"
-            });
-
-            const rawText = await res.text();
-            let data;
-            try {
-                data = JSON.parse(rawText);
-            } catch (e) {
-                if (res.status === 413) {
-                    throw new Error("The pasted question set exceeds the allowed payload size.");
-                }
-                if (res.status === 401 || res.status === 403) {
-                    throw new Error("Your session has expired. Please refresh the page and log in again.");
-                }
-                throw new Error(`Server returned unexpected response (${res.status}). Please make sure you are logged in.`);
-            }
-
-            if (!res.ok || !data.success) {
-                throw new Error(data.message || "Failed to parse and save question set.");
-            }
-
-            closeModal(uploadModal);
-            alert(`🎉 ${data.message}\nThis set is now active and ready for students!`);
-            if (pasteQuestionsText) pasteQuestionsText.value = "";
-            if (pasteDetectSummary) {
-                pasteDetectSummary.className = "paste-detect-summary";
-                pasteDetectSummary.innerHTML = "⚡ Live Question Detector: Paste question set text above to preview";
-            }
-            await fetchSets();
-        } catch (err) {
-            alert("Error saving pasted question set: " + err.message);
-        } finally {
-            if (submitUploadButton) {
-                submitUploadButton.disabled = false;
-                submitUploadButton.textContent = prevText;
-            }
-        }
-        return;
-    }
-
-    // 2. FILE UPLOAD MODE
     if (!setFileInput || !setFileInput.files || setFileInput.files.length === 0) {
         alert("Please select a question file (Word, PDF, Excel, CSV, TXT, or JSON) to upload.");
         return;
@@ -1918,15 +1699,6 @@ function bindEventListeners() {
         resetFileInputUI();
     });
     if (submitUploadButton) submitUploadButton.addEventListener("click", handleUploadSetSubmit);
-
-    // Upload Modal Tabs & Bulk Paste
-    if (tabUploadFileBtn) tabUploadFileBtn.addEventListener("click", () => switchUploadTab("file"));
-    if (tabPasteTextBtn) tabPasteTextBtn.addEventListener("click", () => switchUploadTab("paste"));
-    if (pasteQuestionsText) {
-        pasteQuestionsText.addEventListener("input", updatePasteDetection);
-        pasteQuestionsText.addEventListener("paste", () => setTimeout(updatePasteDetection, 50));
-    }
-    if (loadSamplePasteBtn) loadSamplePasteBtn.addEventListener("click", loadSampleQuestionTemplate);
 
     // File Selector, Drop Box & Rich Selected Card
     if (dropBoxArea && setFileInput) {

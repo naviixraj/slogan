@@ -59,7 +59,7 @@ app.use((err, req, res, next) => {
     if (err && err.type === "entity.too.large") {
         return res.status(413).json({
             success: false,
-            message: "The pasted text or question file exceeds the size limit. Please reduce the batch size."
+            message: "The question file or payload exceeds the size limit. Please reduce the file size."
         });
     }
     if (err instanceof SyntaxError && err.status === 400 && "body" in err) {
@@ -1649,63 +1649,6 @@ app.post("/api/admin/sets/upload", requireAdmin, upload.single("file"), async (r
     } catch (error) {
         console.error("Upload question set error:", error);
         return res.status(500).json({ success: false, message: "Failed to process and save question set: " + error.message });
-    }
-});
-
-// Bulk Paste & parse raw text into a Question Set
-app.post("/api/admin/sets/paste", requireAdmin, async (req, res) => {
-    try {
-        const { title, subject, duration, textContent } = req.body;
-
-        if (!title || !title.trim()) {
-            return res.status(400).json({ success: false, message: "Please provide an Examination Display Title." });
-        }
-
-        if (!textContent || !textContent.trim()) {
-            return res.status(400).json({ success: false, message: "Please paste your question set text." });
-        }
-
-        const questions = parseMcqText(textContent);
-
-        if (!questions || questions.length === 0) {
-            return res.status(400).json({
-                success: false,
-                message: "No questions could be extracted from the pasted text. Please make sure questions have numbers (e.g. 1. or Q1.), options A, B, C, D, and answer keys (e.g. Answer: C)."
-            });
-        }
-
-        questions.forEach((q, idx) => {
-            q.id = idx + 1;
-            q.number = idx + 1;
-        });
-
-        // Generate collision-free next ID
-        const setId = await getNextUniqueSetId();
-
-        const setDuration = parseInt(duration, 10) || 180;
-        const setSubject = subject && subject.trim() ? subject.trim() : "General Paper";
-
-        await unifiedDb.createQuestionSet({
-            id: setId,
-            title: title.trim(),
-            subject: setSubject,
-            fileName: "Pasted Question Set.txt",
-            fileType: "text",
-            questionsCount: questions.length,
-            duration: setDuration,
-            status: "available",
-            questionsJson: questions
-        });
-
-        return res.json({
-            success: true,
-            message: `Question Set "${title.trim()}" created successfully with ${questions.length} questions from pasted text!`,
-            setId: setId,
-            questionsCount: questions.length
-        });
-    } catch (error) {
-        console.error("Paste question set error:", error);
-        return res.status(500).json({ success: false, message: "Failed to process pasted question set: " + error.message });
     }
 });
 
