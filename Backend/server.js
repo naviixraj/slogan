@@ -2082,6 +2082,114 @@ app.get("/api/student/tests", async (req, res) => {
     }
 });
 
+// Search questions across student's accessible tests
+app.get("/api/student/questions/search", async (req, res) => {
+    try {
+        const query = String(req.query.q || "").trim().toLowerCase();
+        if (!query) {
+            return res.json({ success: true, count: 0, questions: [] });
+        }
+
+        const candidate = req.session ? req.session.candidate : null;
+        const studentCombo = candidate ? (candidate.examCombination || candidate.exam_combination || "Paper 1 - General Paper") : "All";
+
+        const allSets = await unifiedDb.listQuestionSets();
+        const eligibleSets = allSets.filter(set => {
+            if (!candidate || candidate.role === "Admin") return true;
+            return isCandidateEligibleForSubject(studentCombo, set.subject);
+        });
+
+        const matchingQuestions = [];
+
+        for (const set of eligibleSets) {
+            try {
+                const fullSet = await unifiedDb.getQuestionSetById(set.id);
+                if (fullSet && fullSet.questions_json) {
+                    const qList = typeof fullSet.questions_json === "string" ? JSON.parse(fullSet.questions_json) : fullSet.questions_json;
+                    if (Array.isArray(qList)) {
+                        for (let i = 0; i < qList.length; i++) {
+                            const q = qList[i];
+                            const qNum = String(q.number || q.id || (i + 1));
+                            const stmt = String(q.statement || q.question || "").toLowerCase();
+                            const expl = String(q.explanation || "").toLowerCase();
+                            const optsText = Array.isArray(q.options)
+                                ? q.options.map(o => (typeof o === "string" ? o : (o.text || ""))).join(" ").toLowerCase()
+                                : "";
+
+                            if (stmt.includes(query) || optsText.includes(query) || expl.includes(query) || `q${qNum}` === query || `q.${qNum}` === query || `question ${qNum}` === query) {
+                                matchingQuestions.push({
+                                    setId: set.id,
+                                    setTitle: set.title,
+                                    subject: set.subject || "General Paper",
+                                    duration: set.duration || 180,
+                                    number: q.number || (i + 1),
+                                    id: q.id || (i + 1),
+                                    statement: q.statement || q.question || "",
+                                    options: q.options || [],
+                                    explanation: q.explanation || ""
+                                });
+                                if (matchingQuestions.length >= 40) break;
+                            }
+                        }
+                    }
+                }
+            } catch (err) {
+                console.warn(`[SEARCH] Error parsing questions for set ${set.id}:`, err.message);
+            }
+            if (matchingQuestions.length >= 40) break;
+        }
+
+        // Also search static mock01 if room remains
+        if (matchingQuestions.length < 40) {
+            try {
+                const mock01Path = path.join(ROOT, "data", "mock01.json");
+                if (fs.existsSync(mock01Path)) {
+                    const mock01Content = await fs.promises.readFile(mock01Path, "utf8");
+                    const mock01Questions = JSON.parse(mock01Content);
+                    if (Array.isArray(mock01Questions)) {
+                        for (let i = 0; i < mock01Questions.length; i++) {
+                            const q = mock01Questions[i];
+                            const qNum = String(q.number || q.id || (i + 1));
+                            const stmt = String(q.statement || q.question || "").toLowerCase();
+                            const expl = String(q.explanation || "").toLowerCase();
+                            const optsText = Array.isArray(q.options)
+                                ? q.options.map(o => (typeof o === "string" ? o : (o.text || ""))).join(" ").toLowerCase()
+                                : "";
+
+                            if (stmt.includes(query) || optsText.includes(query) || expl.includes(query) || `q${qNum}` === query || `q.${qNum}` === query || `question ${qNum}` === query) {
+                                matchingQuestions.push({
+                                    setId: "MOCK01",
+                                    setTitle: "UGC NET Full-Length Mock Test 01",
+                                    subject: "Paper 1 - General Paper",
+                                    duration: 180,
+                                    number: q.number || (i + 1),
+                                    id: q.id || (i + 1),
+                                    statement: q.statement || q.question || "",
+                                    options: q.options || [],
+                                    explanation: q.explanation || ""
+                                });
+                                if (matchingQuestions.length >= 40) break;
+                            }
+                        }
+                    }
+                }
+            } catch (e) {
+                // Ignore static read errors
+            }
+        }
+
+        return res.json({
+            success: true,
+            query: req.query.q,
+            count: matchingQuestions.length,
+            questions: matchingQuestions
+        });
+    } catch (error) {
+        console.error("Student question search error:", error);
+        return res.status(500).json({ success: false, message: "Question search failed: " + error.message });
+    }
+});
+
 // Universal question loader for mock01 and any dynamic question sets
 app.get("/api/mock-tests/:testId/questions", async (req, res) => {
     if (!req.session.candidate) {

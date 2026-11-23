@@ -1333,6 +1333,770 @@
                 margin-top: 14px !important;
             }
         }
+
+        /* =========================================================
+           MOBILE BOTTOM TAB BAR & SECTIONS (MOBILE-ONLY VIEW <= 900px)
+           ========================================================= */
+        @media (min-width: 901px) {
+            .mobile-tab-bar {
+                display: none !important;
+            }
+            .mobile-view-section {
+                display: none !important;
+            }
+        }
+
+        @media (max-width: 900px) {
+            .mobile-tab-bar {
+                display: flex !important;
+                position: fixed;
+                bottom: 0;
+                left: 0;
+                right: 0;
+                height: 60px;
+                padding-bottom: env(safe-area-inset-bottom, 0px);
+                background: rgba(255, 255, 255, 0.96);
+                backdrop-filter: blur(16px);
+                -webkit-backdrop-filter: blur(16px);
+                border-top: 1px solid #E2E8F0;
+                box-shadow: 0 -4px 20px rgba(15, 23, 42, 0.06);
+                z-index: 950;
+                align-items: center;
+                justify-content: space-around;
+            }
+
+            .content {
+                padding-bottom: calc(82px + env(safe-area-inset-bottom, 0px)) !important;
+            }
+
+            .tab-btn {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 3px;
+                background: transparent;
+                border: none;
+                padding: 6px 0;
+                color: #788078;
+                cursor: pointer;
+                transition: color 0.18s ease, transform 0.12s ease;
+                -webkit-tap-highlight-color: transparent;
+            }
+
+            .tab-btn:active {
+                transform: scale(0.92);
+            }
+
+            .tab-icon-wrap {
+                position: relative;
+                width: 24px;
+                height: 24px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .tab-icon {
+                width: 22px;
+                height: 22px;
+                transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            }
+
+            /* Inactive: outline visible, fill hidden */
+            .tab-btn .icon-outline {
+                display: block;
+            }
+            .tab-btn .icon-fill {
+                display: none;
+            }
+
+            /* Active: fill visible, outline hidden, emerald accent */
+            .tab-btn.active {
+                color: var(--emerald);
+            }
+
+            .tab-btn.active .icon-outline {
+                display: none;
+            }
+
+            .tab-btn.active .icon-fill {
+                display: block;
+                transform: scale(1.08);
+            }
+
+            .tab-label {
+                font-size: 11px;
+                font-weight: 500;
+                letter-spacing: -0.2px;
+                transition: font-weight 0.18s ease;
+            }
+
+            .tab-btn.active .tab-label {
+                font-weight: 700;
+            }
+
+            /* Search Section Styling */
+            .mobile-section-header {
+                margin-bottom: 16px;
+            }
+
+            .mobile-section-header h2 {
+                font-size: 20px;
+                font-weight: 800;
+                color: var(--charcoal);
+            }
+
+            .mobile-section-header p {
+                font-size: 12.5px;
+                color: var(--muted);
+                margin-top: 3px;
+            }
+
+            .mobile-search-box {
+                position: relative;
+                display: flex;
+                align-items: center;
+                background: #FFFFFF;
+                border: 1.5px solid #E2E8F0;
+                border-radius: 12px;
+                padding: 0 14px;
+                box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+                transition: border-color 0.2s ease, box-shadow 0.2s ease;
+            }
+
+            .mobile-search-box:focus-within {
+                border-color: var(--emerald);
+                box-shadow: 0 0 0 3px rgba(15, 139, 109, 0.12);
+            }
+
+            .search-box-icon {
+                width: 18px;
+                height: 18px;
+                color: #94A3B8;
+                flex-shrink: 0;
+            }
+
+            .mobile-search-box input {
+                flex: 1;
+                border: none;
+                outline: none;
+                padding: 12px 10px;
+                font-size: 14px;
+                background: transparent;
+                color: var(--charcoal);
+            }
+
+            .clear-search-btn {
+                background: #F1F5F9;
+                border: none;
+                border-radius: 50%;
+                width: 22px;
+                height: 22px;
+                display: none;
+                align-items: center;
+                justify-content: center;
+                font-size: 11px;
+                color: #64748B;
+                cursor: pointer;
+            }
+
+            .search-filter-pills {
+                display: flex;
+                gap: 8px;
+                margin: 14px 0 16px;
+                overflow-x: auto;
+                padding-bottom: 2px;
+            }
+
+            .search-pill {
+                padding: 6px 14px;
+                border-radius: 20px;
+                border: 1px solid #E2E8F0;
+                background: #FFFFFF;
+                font-size: 12px;
+                font-weight: 600;
+                color: #64748B;
+                white-space: nowrap;
+                cursor: pointer;
+                transition: all 0.18s ease;
+            }
+
+            .search-pill.active {
+                background: var(--emerald-soft);
+                border-color: var(--emerald);
+                color: var(--emerald-dark);
+            }
+
+            .search-results-meta {
+                font-size: 12px;
+                color: var(--muted);
+                margin-bottom: 12px;
+                font-weight: 600;
+            }
+
+            .search-empty-prompt {
+                text-align: center;
+                padding: 40px 20px;
+                background: #FFFFFF;
+                border-radius: 14px;
+                border: 1px dashed #CBD5E1;
+            }
+
+            .prompt-icon {
+                font-size: 36px;
+                margin-bottom: 10px;
+            }
+
+            .search-empty-prompt h3 {
+                font-size: 16px;
+                font-weight: 700;
+                color: var(--charcoal);
+                margin-bottom: 6px;
+            }
+
+            .search-empty-prompt p {
+                font-size: 12.5px;
+                color: var(--muted);
+                line-height: 1.5;
+                max-width: 320px;
+                margin: 0 auto;
+            }
+
+            .question-search-card {
+                background: #FFFFFF;
+                border-radius: 12px;
+                border: 1px solid #E2E8F0;
+                box-shadow: 0 3px 12px rgba(15, 23, 42, 0.04);
+                padding: 16px;
+                margin-bottom: 14px;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .q-card-header {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 8px;
+            }
+
+            .q-num-tag {
+                font-size: 11px;
+                font-weight: 700;
+                color: var(--emerald-dark);
+                background: var(--emerald-soft);
+                padding: 3px 8px;
+                border-radius: 6px;
+            }
+
+            .q-set-badge {
+                font-size: 11px;
+                color: #64748B;
+                font-weight: 600;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 60%;
+            }
+
+            .q-statement {
+                font-size: 13.5px;
+                font-weight: 600;
+                color: var(--charcoal);
+                line-height: 1.45;
+            }
+
+            .q-options-preview {
+                display: flex;
+                flex-direction: column;
+                gap: 5px;
+                background: #F8FAFC;
+                border-radius: 8px;
+                padding: 10px 12px;
+                font-size: 12px;
+                color: #475569;
+            }
+
+            .q-opt-item {
+                line-height: 1.35;
+            }
+
+            .btn-start-from-search {
+                margin-top: 4px;
+                background: var(--emerald);
+                color: #FFFFFF;
+                border: none;
+                border-radius: 8px;
+                padding: 9px 14px;
+                font-size: 12px;
+                font-weight: 700;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 6px;
+                transition: background 0.18s ease;
+            }
+
+            .btn-start-from-search:hover {
+                background: var(--emerald-dark);
+            }
+
+            /* Mobile Profile Section */
+            .mobile-profile-hero {
+                background: linear-gradient(135deg, #0F8B6D 0%, #087357 100%);
+                color: #FFFFFF;
+                border-radius: 16px;
+                padding: 24px 20px;
+                text-align: center;
+                margin-bottom: 16px;
+                box-shadow: 0 10px 25px rgba(15, 139, 109, 0.22);
+            }
+
+            .mobile-profile-avatar-wrap {
+                display: flex;
+                justify-content: center;
+                margin-bottom: 12px;
+            }
+
+            .mobile-profile-avatar {
+                width: 68px;
+                height: 68px;
+                border-radius: 50%;
+                background: #FFFFFF;
+                color: var(--emerald-dark);
+                display: grid;
+                place-items: center;
+                font-size: 24px;
+                font-weight: 800;
+                border: 3px solid rgba(255, 255, 255, 0.35);
+                box-shadow: 0 4px 14px rgba(0, 0, 0, 0.15);
+            }
+
+            .mobile-profile-name {
+                font-size: 18px;
+                font-weight: 800;
+                margin-bottom: 6px;
+            }
+
+            .mobile-profile-badge-row {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+
+            .mobile-profile-id-badge {
+                font-size: 11px;
+                font-weight: 700;
+                background: rgba(255, 255, 255, 0.2);
+                border-radius: 12px;
+                padding: 3px 10px;
+                letter-spacing: 0.5px;
+            }
+
+            .mobile-profile-role-badge {
+                font-size: 11px;
+                font-weight: 700;
+                background: rgba(255, 255, 255, 0.95);
+                color: var(--emerald-dark);
+                border-radius: 12px;
+                padding: 3px 10px;
+            }
+
+            .mobile-profile-card {
+                background: #FFFFFF;
+                border-radius: 14px;
+                border: 1px solid #E2E8F0;
+                padding: 18px;
+                margin-bottom: 16px;
+                box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
+            }
+
+            .profile-card-title {
+                font-size: 13.5px;
+                font-weight: 800;
+                color: var(--charcoal);
+                margin-bottom: 14px;
+                padding-bottom: 8px;
+                border-bottom: 1px solid #F1F5F9;
+            }
+
+            .profile-card-rows {
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+            }
+
+            .profile-row {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                font-size: 12.5px;
+                gap: 10px;
+            }
+
+            .profile-row-label {
+                color: var(--muted);
+                font-weight: 600;
+            }
+
+            .profile-row-val {
+                font-weight: 700;
+                color: var(--charcoal);
+                text-align: right;
+                overflow-wrap: anywhere;
+            }
+
+            .status-val-active {
+                color: var(--emerald-dark);
+            }
+
+            .mobile-logout-action-btn {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                background: #FEF2F2;
+                border: 1px solid #FEE2E2;
+                color: #DC2626;
+                border-radius: 10px;
+                padding: 12px;
+                font-size: 13px;
+                font-weight: 700;
+                cursor: pointer;
+                transition: background 0.18s ease;
+            }
+
+            .mobile-logout-action-btn svg {
+                width: 16px;
+                height: 16px;
+            }
+
+            /* Leaderboard Section Styling (Matching reference image) */
+            .mobile-leaderboard-banner {
+                background: linear-gradient(180deg, #EDE9FE 0%, #DDD6FE 60%, #C4B5FD 100%);
+                border-radius: 20px;
+                padding: 22px 12px 0;
+                position: relative;
+                overflow: hidden;
+                box-shadow: 0 8px 30px rgba(124, 58, 237, 0.15);
+                margin-bottom: 18px;
+                text-align: center;
+            }
+
+            .podium-sparkles {
+                position: absolute;
+                top: 10px;
+                left: 14px;
+                font-size: 18px;
+                opacity: 0.8;
+            }
+
+            .leaderboard-crown-icon {
+                font-size: 26px;
+                margin-bottom: 6px;
+                filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
+            }
+
+            .leaderboard-podium-stage {
+                display: flex;
+                align-items: flex-end;
+                justify-content: center;
+                gap: 8px;
+                padding-top: 10px;
+            }
+
+            .podium-col {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                max-width: 110px;
+            }
+
+            .podium-avatar-wrap {
+                position: relative;
+                margin-bottom: 6px;
+            }
+
+            .podium-avatar {
+                border-radius: 50%;
+                color: #FFFFFF;
+                display: grid;
+                place-items: center;
+                font-weight: 800;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.18);
+            }
+
+            .podium-avatar-1 {
+                width: 48px;
+                height: 48px;
+                background: #3B0764;
+                font-size: 15px;
+                border: 2px solid #FACC15;
+            }
+
+            .podium-avatar-2 {
+                width: 42px;
+                height: 42px;
+                background: #4C1D95;
+                font-size: 13.5px;
+                border: 2px solid #E2E8F0;
+            }
+
+            .podium-avatar-3 {
+                width: 42px;
+                height: 42px;
+                background: #581C87;
+                font-size: 13.5px;
+                border: 2px solid #F59E0B;
+            }
+
+            .podium-rank-badge {
+                position: absolute;
+                top: -4px;
+                right: -4px;
+                width: 17px;
+                height: 17px;
+                border-radius: 50%;
+                font-size: 10px;
+                font-weight: 800;
+                display: grid;
+                place-items: center;
+                color: #FFFFFF;
+                box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+            }
+
+            .badge-1 {
+                background: #F59E0B;
+            }
+            .badge-2 {
+                background: #94A3B8;
+            }
+            .badge-3 {
+                background: #D97706;
+            }
+
+            .podium-user-name {
+                font-size: 11.5px;
+                font-weight: 800;
+                color: #1E1B4B;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 100%;
+            }
+
+            .podium-test-name {
+                font-size: 9px;
+                color: #6D28D9;
+                font-weight: 600;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                max-width: 100%;
+                margin-top: 1px;
+            }
+
+            .podium-score-pill {
+                background: #FFFFFF;
+                border-radius: 12px;
+                padding: 2px 6px;
+                font-size: 9.5px;
+                font-weight: 800;
+                color: #1E1B4B;
+                margin-top: 4px;
+                margin-bottom: 6px;
+                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+                white-space: nowrap;
+            }
+
+            .score-pct {
+                font-size: 8.5px;
+                color: #7C3AED;
+            }
+
+            .podium-pillar {
+                width: 100%;
+                border-radius: 10px 10px 0 0;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                color: rgba(255, 255, 255, 0.5);
+                font-weight: 900;
+                box-shadow: inset 0 3px 6px rgba(255, 255, 255, 0.2);
+            }
+
+            .pillar-1 {
+                height: 90px;
+                background: linear-gradient(180deg, #6D28D9 0%, #4C1D95 100%);
+                font-size: 32px;
+            }
+
+            .pillar-2 {
+                height: 65px;
+                background: linear-gradient(180deg, #7C3AED 0%, #5B21B6 100%);
+                font-size: 26px;
+            }
+
+            .pillar-3 {
+                height: 50px;
+                background: linear-gradient(180deg, #8B5CF6 0%, #6D28D9 100%);
+                font-size: 22px;
+            }
+
+            .leaderboard-list-wrap {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .leaderboard-list-header {
+                display: flex;
+                align-items: baseline;
+                justify-content: space-between;
+                padding: 0 4px;
+            }
+
+            .list-title {
+                font-size: 13.5px;
+                font-weight: 800;
+                color: var(--charcoal);
+            }
+
+            .list-subtitle {
+                font-size: 11px;
+                color: var(--muted);
+            }
+
+            .leader-card {
+                background: #FFFFFF;
+                border: 1px solid #E2E8F0;
+                border-radius: 14px;
+                padding: 12px 14px;
+                display: flex;
+                align-items: center;
+                gap: 11px;
+                box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
+            }
+
+            .leader-card.is-current-user {
+                border: 2px solid #8B5CF6;
+                background: #FAF5FF;
+            }
+
+            .leader-rank-num {
+                font-size: 13px;
+                font-weight: 800;
+                color: #64748B;
+                min-width: 14px;
+                text-align: center;
+            }
+
+            .leader-avatar {
+                width: 34px;
+                height: 34px;
+                border-radius: 50%;
+                color: #FFFFFF;
+                display: grid;
+                place-items: center;
+                font-size: 12px;
+                font-weight: 800;
+                flex-shrink: 0;
+            }
+
+            .avatar-top-1 {
+                background: #3B0764;
+            }
+            .avatar-top-2 {
+                background: #4C1D95;
+            }
+            .avatar-top-3 {
+                background: #581C87;
+            }
+            .avatar-top-user {
+                background: #7C3AED;
+            }
+
+            .leader-info {
+                flex: 1;
+                min-width: 0;
+            }
+
+            .leader-name-wrap {
+                display: flex;
+                align-items: center;
+                gap: 6px;
+            }
+
+            .leader-name {
+                font-size: 13px;
+                font-weight: 800;
+                color: var(--charcoal);
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .badge-you-pill {
+                font-size: 9.5px;
+                font-weight: 800;
+                background: #7C3AED;
+                color: #FFFFFF;
+                padding: 1px 6px;
+                border-radius: 8px;
+            }
+
+            .leader-test-tag {
+                display: block;
+                font-size: 10.5px;
+                color: #6D28D9;
+                font-weight: 600;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                margin-top: 2px;
+            }
+
+            .leader-stats {
+                text-align: right;
+                flex-shrink: 0;
+            }
+
+            .leader-score {
+                display: block;
+                font-size: 12.5px;
+                font-weight: 800;
+                color: #1E1B4B;
+            }
+
+            .zap-icon {
+                color: #7C3AED;
+            }
+
+            .leader-meta-sub {
+                display: block;
+                font-size: 10px;
+                color: #64748B;
+                font-weight: 600;
+                margin-top: 2px;
+            }
+
+            .leaderboard-footer-note {
+                text-align: center;
+                font-size: 11px;
+                color: var(--muted);
+                line-height: 1.5;
+                padding: 8px 10px;
+                margin-top: 4px;
+            }
+        }
 /* CANDIDATE PROFILE MODAL */
         
         body.profile-open {
@@ -1649,6 +2413,215 @@
 
             </section>
 
+            <!-- SEARCH QUESTIONS SECTION (MOBILE) -->
+            <section id="searchSection" class="mobile-view-section" style="display: none;">
+                <div class="mobile-section-header">
+                    <h2>Question Search</h2>
+                    <p>Search questions across your assigned examination question sets.</p>
+                </div>
+
+                <div class="mobile-search-box">
+                    <svg class="search-box-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+                        <circle cx="11" cy="11" r="8"></circle>
+                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                    </svg>
+                    <input type="search" id="mobileQuestionSearchInput" placeholder="Search keywords, questions, topics..." aria-label="Search questions">
+                    <button type="button" id="clearQuestionSearchBtn" class="clear-search-btn" aria-label="Clear search">✕</button>
+                </div>
+
+                <div class="search-filter-pills" id="searchFilterPills">
+                    <button type="button" class="search-pill active" data-subject="all">All Papers</button>
+                    <button type="button" class="search-pill" data-subject="paper1">Paper 1</button>
+                    <button type="button" class="search-pill" data-subject="paper2">Paper 2</button>
+                </div>
+
+                <div class="search-results-meta" id="searchResultsMeta" style="display: none;">
+                    <span id="searchResultsCount">0 questions found</span>
+                </div>
+
+                <div class="search-results-container" id="searchResultsContainer">
+                    <div class="search-empty-prompt" id="searchInitialPrompt">
+                        <div class="prompt-icon">🔍</div>
+                        <h3>Find Any Exam Question</h3>
+                        <p>Search for specific keywords, concepts, or question statements across your accessible test question banks.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- STUDENT PROFILE SECTION (MOBILE) -->
+            <section id="profileSection" class="mobile-view-section" style="display: none;">
+                <div class="mobile-profile-hero">
+                    <div class="mobile-profile-avatar-wrap">
+                        <div class="mobile-profile-avatar" id="mobileProfileAvatar">ST</div>
+                    </div>
+                    <h2 class="mobile-profile-name" id="mobileProfileName">Student</h2>
+                    <div class="mobile-profile-badge-row">
+                        <span class="mobile-profile-id-badge" id="mobileProfileUserId">—</span>
+                        <span class="mobile-profile-role-badge">Student Candidate</span>
+                    </div>
+                </div>
+
+                <div class="mobile-profile-card">
+                    <h3 class="profile-card-title">Registration Details</h3>
+                    <div class="profile-card-rows">
+                        <div class="profile-row">
+                            <span class="profile-row-label">Registered Stream</span>
+                            <span class="profile-row-val" id="mobileProfileStream">Paper 1 - General Paper</span>
+                        </div>
+                        <div class="profile-row">
+                            <span class="profile-row-label">Registered Email</span>
+                            <span class="profile-row-val" id="mobileProfileEmail">—</span>
+                        </div>
+                        <div class="profile-row">
+                            <span class="profile-row-label">Account Status</span>
+                            <span class="profile-row-val status-val-active">● Active Verified</span>
+                        </div>
+                        <div class="profile-row">
+                            <span class="profile-row-label">Institute</span>
+                            <span class="profile-row-val">SLOGON ACADEMY</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mobile-profile-card">
+                    <h3 class="profile-card-title">Account Actions</h3>
+                    <button type="button" class="mobile-logout-action-btn" id="mobileProfileLogoutBtn">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                            <polyline points="16 17 21 12 16 7"></polyline>
+                            <line x1="21" y1="12" x2="9" y2="12"></line>
+                        </svg>
+                        <span>Log Out Candidate Session</span>
+                    </button>
+                </div>
+            </section>
+
+            <!-- LEADERBOARD SECTION (MOBILE) -->
+            <section id="leaderboardSection" class="mobile-view-section" style="display: none;">
+                <div class="mobile-leaderboard-banner">
+                    <div class="podium-sparkles">✨</div>
+                    <div class="leaderboard-crown-icon">👑</div>
+                    
+                    <!-- 3D PODIUM CONTAINER -->
+                    <div class="leaderboard-podium-stage">
+                        <!-- Rank 2: Left -->
+                        <div class="podium-col rank-2">
+                            <div class="podium-avatar-wrap">
+                                <div class="podium-avatar podium-avatar-2" id="podiumAvatar2">KS</div>
+                                <span class="podium-rank-badge badge-2">2</span>
+                            </div>
+                            <div class="podium-user-name" id="podiumName2">Karthik S.</div>
+                            <div class="podium-test-name" id="podiumTest2">Full Length Mock TEST 02</div>
+                            <div class="podium-score-pill" id="podiumScore2">144 / 150 <span class="score-pct">(96%)</span></div>
+                            <div class="podium-pillar pillar-2">
+                                <span class="pillar-num">2</span>
+                            </div>
+                        </div>
+
+                        <!-- Rank 1: Center (Tallest) -->
+                        <div class="podium-col rank-1">
+                            <div class="podium-avatar-wrap">
+                                <div class="podium-avatar podium-avatar-1" id="podiumAvatar1">AR</div>
+                                <span class="podium-rank-badge badge-1">1</span>
+                            </div>
+                            <div class="podium-user-name" id="podiumName1">Ananya R.</div>
+                            <div class="podium-test-name" id="podiumTest1">Full Length Mock TEST 02</div>
+                            <div class="podium-score-pill" id="podiumScore1">148 / 150 <span class="score-pct">(98%)</span></div>
+                            <div class="podium-pillar pillar-1">
+                                <span class="pillar-num">1</span>
+                            </div>
+                        </div>
+
+                        <!-- Rank 3: Right -->
+                        <div class="podium-col rank-3">
+                            <div class="podium-avatar-wrap">
+                                <div class="podium-avatar podium-avatar-3" id="podiumAvatar3">PM</div>
+                                <span class="podium-rank-badge badge-3">3</span>
+                            </div>
+                            <div class="podium-user-name" id="podiumName3">Priya M.</div>
+                            <div class="podium-test-name" id="podiumTest3">Question Set - 1</div>
+                            <div class="podium-score-pill" id="podiumScore3">141 / 150 <span class="score-pct">(94%)</span></div>
+                            <div class="podium-pillar pillar-3">
+                                <span class="pillar-num">3</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LEADERBOARD RANK LIST -->
+                <div class="leaderboard-list-wrap">
+                    <div class="leaderboard-list-header">
+                        <span class="list-title">All Candidate Standings</span>
+                        <span class="list-subtitle">Ranked by score & speed</span>
+                    </div>
+
+                    <div class="leaderboard-items" id="leaderboardItemsContainer">
+                        <!-- Rank 1 Card -->
+                        <div class="leader-card">
+                            <span class="leader-rank-num">1</span>
+                            <div class="leader-avatar avatar-top-1">AR</div>
+                            <div class="leader-info">
+                                <strong class="leader-name">Ananya R.</strong>
+                                <span class="leader-test-tag">Full Length Mock TEST 02</span>
+                            </div>
+                            <div class="leader-stats">
+                                <span class="leader-score"><span class="zap-icon">⚡</span> 148 / 150</span>
+                                <span class="leader-meta-sub">98% • 142m</span>
+                            </div>
+                        </div>
+
+                        <!-- Rank 2 Card -->
+                        <div class="leader-card">
+                            <span class="leader-rank-num">2</span>
+                            <div class="leader-avatar avatar-top-2">KS</div>
+                            <div class="leader-info">
+                                <strong class="leader-name">Karthik S.</strong>
+                                <span class="leader-test-tag">Full Length Mock TEST 02</span>
+                            </div>
+                            <div class="leader-stats">
+                                <span class="leader-score"><span class="zap-icon">⚡</span> 144 / 150</span>
+                                <span class="leader-meta-sub">96% • 151m</span>
+                            </div>
+                        </div>
+
+                        <!-- Rank 3 Card -->
+                        <div class="leader-card">
+                            <span class="leader-rank-num">3</span>
+                            <div class="leader-avatar avatar-top-3">PM</div>
+                            <div class="leader-info">
+                                <strong class="leader-name">Priya M.</strong>
+                                <span class="leader-test-tag">Question Set - 1</span>
+                            </div>
+                            <div class="leader-stats">
+                                <span class="leader-score"><span class="zap-icon">⚡</span> 141 / 150</span>
+                                <span class="leader-meta-sub">94% • 155m</span>
+                            </div>
+                        </div>
+
+                        <!-- Rank 4 Card (Current User Highlight) -->
+                        <div class="leader-card is-current-user" id="currentUserLeaderCard">
+                            <span class="leader-rank-num">4</span>
+                            <div class="leader-avatar avatar-top-user" id="leaderUserAvatar">ST</div>
+                            <div class="leader-info">
+                                <div class="leader-name-wrap">
+                                    <strong class="leader-name" id="leaderUserName">Student</strong>
+                                    <span class="badge-you-pill">YOU</span>
+                                </div>
+                                <span class="leader-test-tag">Full Length Mock TEST 02</span>
+                            </div>
+                            <div class="leader-stats">
+                                <span class="leader-score"><span class="zap-icon">⚡</span> 138 / 150</span>
+                                <span class="leader-meta-sub">92% • 162m</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p class="leaderboard-footer-note">
+                        ⚡ Official rankings update dynamically in real time as candidate test submissions are evaluated.
+                    </p>
+                </div>
+            </section>
+
             <p id="pageMessage" role="status" aria-live="polite"></p>
 
         </div>
@@ -1710,6 +2683,65 @@
             
         </div>
     </div>
+
+    <!-- MOBILE BOTTOM TAB BAR (VISIBLE ON MOBILE ONLY) -->
+    <nav class="mobile-tab-bar" id="mobileTabBar" aria-label="Student Navigation">
+        <button type="button" class="tab-btn active" id="tabHomeBtn" data-tab="home" aria-label="Home Examinations">
+            <span class="tab-icon-wrap">
+                <svg class="tab-icon icon-outline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+                <svg class="tab-icon icon-fill" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path>
+                </svg>
+            </span>
+            <span class="tab-label">Home</span>
+        </button>
+
+        <button type="button" class="tab-btn" id="tabSearchBtn" data-tab="search" aria-label="Search Questions">
+            <span class="tab-icon-wrap">
+                <svg class="tab-icon icon-outline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <circle cx="11" cy="11" r="8"></circle>
+                    <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                </svg>
+                <svg class="tab-icon icon-fill" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
+                </svg>
+            </span>
+            <span class="tab-label">Search</span>
+        </button>
+
+        <button type="button" class="tab-btn" id="tabProfileBtn" data-tab="profile" aria-label="My Profile">
+            <span class="tab-icon-wrap">
+                <svg class="tab-icon icon-outline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                    <circle cx="12" cy="7" r="4"></circle>
+                </svg>
+                <svg class="tab-icon icon-fill" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path>
+                </svg>
+            </span>
+            <span class="tab-label">Profile</span>
+        </button>
+
+        <button type="button" class="tab-btn" id="tabLeaderboardBtn" data-tab="leaderboard" aria-label="Leaderboard">
+            <span class="tab-icon-wrap">
+                <svg class="tab-icon icon-outline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+                    <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+                    <path d="M4 22h16"></path>
+                    <path d="M10 14.66V17c0 .55-.45 1-1 1H7"></path>
+                    <path d="M14 14.66V17c0 .55.45 1 1 1h2"></path>
+                    <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
+                </svg>
+                <svg class="tab-icon icon-fill" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0 0 11 15.9V19H7v2h10v-2h-4v-3.1c1.94-.37 3.5-1.92 3.61-3.96C19.08 11.63 21 9.55 21 7V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"></path>
+                </svg>
+            </span>
+            <span class="tab-label">Leaderboard</span>
+        </button>
+    </nav>
 
     <script src="tests.js"></script>
 

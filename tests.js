@@ -340,6 +340,23 @@ async function loadCandidate() {
         if (dropdownEmail) dropdownEmail.textContent = email;
 
         const candidateCombo = result.candidate.examCombination || result.candidate.exam_combination || "Paper 1 - General Paper";
+
+        // Populate Mobile Profile view & Leaderboard User card
+        const mobileProfileAvatar = document.getElementById("mobileProfileAvatar");
+        const mobileProfileName = document.getElementById("mobileProfileName");
+        const mobileProfileUserId = document.getElementById("mobileProfileUserId");
+        const mobileProfileStream = document.getElementById("mobileProfileStream");
+        const mobileProfileEmail = document.getElementById("mobileProfileEmail");
+        const leaderUserAvatar = document.getElementById("leaderUserAvatar");
+        const leaderUserName = document.getElementById("leaderUserName");
+
+        if (mobileProfileName) mobileProfileName.textContent = name;
+        if (mobileProfileUserId) mobileProfileUserId.textContent = userId;
+        if (mobileProfileStream) mobileProfileStream.textContent = candidateCombo;
+        if (mobileProfileEmail) mobileProfileEmail.textContent = email;
+        renderAvatar(mobileProfileAvatar, picture, tag);
+        renderAvatar(leaderUserAvatar, picture, tag);
+        if (leaderUserName) leaderUserName.textContent = name;
         // Save candidate info for instructions and exam pages
         localStorage.setItem("candidateInfo", JSON.stringify({
             name: name,
@@ -566,6 +583,252 @@ window.addEventListener("resize", () => {
     if (window.innerWidth > 900 && mobileSidebarEl && mobileSidebarEl.classList.contains("open")) {
         closeMobileDrawer();
     }
+});
+
+/* =====================================================
+   MOBILE BOTTOM TAB BAR NAVIGATION (HOME, SEARCH, PROFILE, LEADERBOARD)
+   ===================================================== */
+
+const tabHomeBtn = document.getElementById("tabHomeBtn");
+const tabSearchBtn = document.getElementById("tabSearchBtn");
+const tabProfileBtn = document.getElementById("tabProfileBtn");
+const tabLeaderboardBtn = document.getElementById("tabLeaderboardBtn");
+
+const mobileSearchSection = document.getElementById("searchSection");
+const mobileProfileSection = document.getElementById("profileSection");
+const mobileLeaderboardSection = document.getElementById("leaderboardSection");
+
+function switchStudentTab(tabName) {
+    const tabMap = {
+        home: { btn: tabHomeBtn, section: examSection },
+        search: { btn: tabSearchBtn, section: mobileSearchSection },
+        profile: { btn: tabProfileBtn, section: mobileProfileSection },
+        leaderboard: { btn: tabLeaderboardBtn, section: mobileLeaderboardSection }
+    };
+
+    Object.keys(tabMap).forEach(key => {
+        const item = tabMap[key];
+        if (item.btn) {
+            if (key === tabName) {
+                item.btn.classList.add("active");
+            } else {
+                item.btn.classList.remove("active");
+            }
+        }
+        if (item.section) {
+            item.section.style.display = (key === tabName) ? "block" : "none";
+        }
+    });
+
+    if (helpSection) helpSection.style.display = "none";
+    if (examinationsNav) {
+        if (tabName === "home") examinationsNav.classList.add("active");
+        else examinationsNav.classList.remove("active");
+    }
+
+    if (tabName === "home") {
+        pageTitle.textContent = "Examinations";
+        pageSubtitle.textContent = "Browse your available examinations and choose a test to begin.";
+    } else if (tabName === "search") {
+        pageTitle.textContent = "Question Search";
+        pageSubtitle.textContent = "Search questions across your assigned examination question sets.";
+        const input = document.getElementById("mobileQuestionSearchInput");
+        if (input) setTimeout(() => input.focus(), 80);
+    } else if (tabName === "profile") {
+        pageTitle.textContent = "Candidate Profile";
+        pageSubtitle.textContent = "View your registered credentials and examination details.";
+    } else if (tabName === "leaderboard") {
+        pageTitle.textContent = "Exam Leaderboard";
+        pageSubtitle.textContent = "Candidate performance standings ordered by scores.";
+    }
+
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+if (tabHomeBtn) tabHomeBtn.addEventListener("click", () => switchStudentTab("home"));
+if (tabSearchBtn) tabSearchBtn.addEventListener("click", () => switchStudentTab("search"));
+if (tabProfileBtn) tabProfileBtn.addEventListener("click", () => switchStudentTab("profile"));
+if (tabLeaderboardBtn) tabLeaderboardBtn.addEventListener("click", () => switchStudentTab("leaderboard"));
+
+const mobileProfileLogoutBtn = document.getElementById("mobileProfileLogoutBtn");
+if (mobileProfileLogoutBtn) {
+    mobileProfileLogoutBtn.addEventListener("click", openLogoutModal);
+}
+
+/* =====================================================
+   MOBILE QUESTION SEARCH LOGIC
+   ===================================================== */
+
+const mobileQuestionSearchInput = document.getElementById("mobileQuestionSearchInput");
+const clearQuestionSearchBtn = document.getElementById("clearQuestionSearchBtn");
+const searchResultsContainer = document.getElementById("searchResultsContainer");
+const searchResultsMeta = document.getElementById("searchResultsMeta");
+const searchResultsCount = document.getElementById("searchResultsCount");
+let questionSearchTimeout = null;
+let currentFilterSubject = "all";
+
+function escapeHtml(str) {
+    return String(str || "")
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#039;");
+}
+
+async function performQuestionSearch() {
+    const query = mobileQuestionSearchInput ? mobileQuestionSearchInput.value.trim() : "";
+    if (!query) {
+        if (clearQuestionSearchBtn) clearQuestionSearchBtn.style.display = "none";
+        if (searchResultsMeta) searchResultsMeta.style.display = "none";
+        if (searchResultsContainer) {
+            searchResultsContainer.innerHTML = `
+                <div class="search-empty-prompt" id="searchInitialPrompt">
+                    <div class="prompt-icon">🔍</div>
+                    <h3>Find Any Exam Question</h3>
+                    <p>Search for specific keywords, concepts, or question statements across your accessible test question banks.</p>
+                </div>
+            `;
+        }
+        return;
+    }
+
+    if (clearQuestionSearchBtn) clearQuestionSearchBtn.style.display = "flex";
+
+    if (searchResultsContainer) {
+        searchResultsContainer.innerHTML = `
+            <div style="text-align: center; padding: 30px; color: var(--muted); font-size: 13px;">
+                Searching question banks...
+            </div>
+        `;
+    }
+
+    try {
+        const res = await fetch(`/api/student/questions/search?q=${encodeURIComponent(query)}`, {
+            credentials: "same-origin"
+        });
+        const data = await res.json();
+        if (!res.ok || !data.success) {
+            throw new Error(data.message || "Failed to search questions.");
+        }
+
+        let list = Array.isArray(data.questions) ? data.questions : [];
+        if (currentFilterSubject !== "all") {
+            const target = currentFilterSubject.toLowerCase();
+            list = list.filter(q => {
+                const s = String(q.subject || "").toLowerCase();
+                if (target === "paper1") return s.includes("paper 1") || s.includes("general");
+                if (target === "paper2") return s.includes("paper 2");
+                return true;
+            });
+        }
+
+        if (searchResultsMeta) {
+            searchResultsMeta.style.display = "block";
+            searchResultsCount.textContent = `Found ${list.length} matching question${list.length === 1 ? "" : "s"}`;
+        }
+
+        if (list.length === 0) {
+            searchResultsContainer.innerHTML = `
+                <div class="search-empty-prompt">
+                    <div class="prompt-icon">📄</div>
+                    <h3>No Questions Found</h3>
+                    <p>No questions matched "${escapeHtml(query)}". Try searching for other topics or keywords.</p>
+                </div>
+            `;
+            return;
+        }
+
+        searchResultsContainer.innerHTML = "";
+        list.forEach(q => {
+            const card = document.createElement("article");
+            card.className = "question-search-card";
+
+            const qNum = q.number || q.id || 1;
+            const rawStmt = q.statement || "";
+
+            let optsHtml = "";
+            if (Array.isArray(q.options) && q.options.length > 0) {
+                optsHtml = `<div class="q-options-preview">` +
+                    q.options.slice(0, 4).map((opt, oIdx) => {
+                        const letter = ["A", "B", "C", "D"][oIdx] || `(${oIdx + 1})`;
+                        const txt = typeof opt === "string" ? opt : (opt.text || "");
+                        return `<div class="q-opt-item"><strong>${letter}:</strong> ${escapeHtml(txt)}</div>`;
+                    }).join("") +
+                `</div>`;
+            }
+
+            card.innerHTML = `
+                <div class="q-card-header">
+                    <span class="q-num-tag">Question #${qNum}</span>
+                    <span class="q-set-badge" title="${escapeHtml(q.setTitle)}">${escapeHtml(q.setTitle)}</span>
+                </div>
+                <div class="q-statement">${escapeHtml(rawStmt)}</div>
+                ${optsHtml}
+                <button type="button" class="btn-start-from-search">
+                    <span>Open Examination</span>
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                        <path d="m9 18 6-6-6-6"/>
+                    </svg>
+                </button>
+            `;
+
+            const launchBtn = card.querySelector(".btn-start-from-search");
+            if (launchBtn) {
+                launchBtn.addEventListener("click", () => {
+                    const testIdClean = String(q.setId || "MOCK01").toLowerCase();
+                    localStorage.setItem("selectedMockTest", testIdClean);
+                    localStorage.setItem("selectedTestDetails", JSON.stringify({
+                        id: q.setId,
+                        title: q.setTitle,
+                        subject: q.subject || "General Paper",
+                        duration: q.duration || 180,
+                        questionsCount: 150
+                    }));
+                    localStorage.setItem("examDuration", String((q.duration || 180) * 60));
+                    localStorage.setItem("currentExamTitle", q.setTitle);
+                    localStorage.setItem("currentExamSubject", q.subject || "General Paper");
+                    window.location.href = "instructions";
+                });
+            }
+
+            searchResultsContainer.appendChild(card);
+        });
+
+    } catch (err) {
+        searchResultsContainer.innerHTML = `
+            <div style="text-align: center; padding: 25px; color: #DC2626; font-size: 13px;">
+                Search error: ${escapeHtml(err.message)}
+            </div>
+        `;
+    }
+}
+
+if (mobileQuestionSearchInput) {
+    mobileQuestionSearchInput.addEventListener("input", () => {
+        clearTimeout(questionSearchTimeout);
+        questionSearchTimeout = setTimeout(performQuestionSearch, 260);
+    });
+}
+
+if (clearQuestionSearchBtn) {
+    clearQuestionSearchBtn.addEventListener("click", () => {
+        if (mobileQuestionSearchInput) {
+            mobileQuestionSearchInput.value = "";
+            performQuestionSearch();
+            mobileQuestionSearchInput.focus();
+        }
+    });
+}
+
+const filterPills = document.querySelectorAll("#searchFilterPills .search-pill");
+filterPills.forEach(pill => {
+    pill.addEventListener("click", () => {
+        filterPills.forEach(p => p.classList.remove("active"));
+        pill.classList.add("active");
+        currentFilterSubject = pill.dataset.subject || "all";
+        performQuestionSearch();
+    });
 });
 
 /* -----------------------------------------------------
