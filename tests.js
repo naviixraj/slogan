@@ -357,9 +357,68 @@ async function loadCandidate() {
         if (mobileProfileUserId) mobileProfileUserId.textContent = userId;
         if (mobileProfileStream) mobileProfileStream.textContent = candidateCombo;
         if (mobileProfileEmail) mobileProfileEmail.textContent = email;
+        const mobileProfileRole = document.getElementById("mobileProfileRole");
+        if (mobileProfileRole) mobileProfileRole.textContent = role || "Student Candidate";
         renderAvatar(mobileProfileAvatar, picture, tag);
         renderAvatar(leaderUserAvatar, picture, tag);
         if (leaderUserName) leaderUserName.textContent = name;
+
+        // Dynamically adapt profile hero color according to profile picture / reference colors
+        function applyAdaptiveProfileTheme(picUrl) {
+            const hero = document.getElementById("mobileProfileHero");
+            if (!hero) return;
+            const defaultBg = "linear-gradient(135deg, #1E3A8A 0%, #172554 60%, #0F172A 100%)";
+            const defaultShadow = "0 12px 30px rgba(30, 58, 138, 0.25)";
+
+            if (!picUrl || typeof picUrl !== "string") {
+                hero.style.background = defaultBg;
+                hero.style.boxShadow = defaultShadow;
+                return;
+            }
+
+            const img = new Image();
+            img.crossOrigin = "anonymous";
+            img.onload = function() {
+                try {
+                    const canvas = document.createElement("canvas");
+                    const ctx = canvas.getContext("2d");
+                    canvas.width = 30;
+                    canvas.height = 30;
+                    ctx.drawImage(img, 0, 0, 30, 30);
+                    const p = ctx.getImageData(0, 0, 30, 30).data;
+                    let r = 0, g = 0, b = 0, count = 0;
+                    for (let i = 0; i < p.length; i += 16) {
+                        const cr = p[i], cg = p[i+1], cb = p[i+2], ca = p[i+3];
+                        if (ca < 100) continue;
+                        const br = (cr * 299 + cg * 587 + cb * 114) / 1000;
+                        if (br > 235 || br < 20) continue;
+                        r += cr; g += cg; b += cb; count++;
+                    }
+                    if (count > 0) {
+                        r = Math.round(r / count);
+                        g = Math.round(g / count);
+                        b = Math.round(b / count);
+                        const darkR = Math.max(10, r - 35);
+                        const darkG = Math.max(15, g - 35);
+                        const darkB = Math.max(30, b - 45);
+                        hero.style.background = `linear-gradient(135deg, rgb(${r}, ${g}, ${b}) 0%, rgb(${darkR}, ${darkG}, ${darkB}) 100%)`;
+                        hero.style.boxShadow = `0 12px 30px rgba(${r}, ${g}, ${b}, 0.28)`;
+                        return;
+                    }
+                } catch (e) {
+                    // Fallback to default reference palette
+                }
+                hero.style.background = defaultBg;
+                hero.style.boxShadow = defaultShadow;
+            };
+            img.onerror = function() {
+                hero.style.background = defaultBg;
+                hero.style.boxShadow = defaultShadow;
+            };
+            img.src = picUrl;
+        }
+
+        applyAdaptiveProfileTheme(picture);
         // Save candidate info for instructions and exam pages
         localStorage.setItem("candidateInfo", JSON.stringify({
             name: name,
