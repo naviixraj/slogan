@@ -1467,11 +1467,38 @@
             /* =========================================================
                HUMAN-CRAFTED SEARCH SECTION (DISCOVERY + STUDY CARDS)
                ========================================================= */
-            .search-top-controls {
-                margin-bottom: 16px;
+            /* =========================================================
+               HUMAN-CRAFTED SEARCH SECTION (EXACT SKELETON WITH OUR CSS)
+               ========================================================= */
+            .search-hero-card {
+                background: #FFFFFF;
+                border-radius: 24px;
+                padding: 22px 18px 18px;
+                box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
+                border: 1px solid #E2E8F0;
+                margin-bottom: 14px;
             }
 
-            .modern-search-bar {
+            .search-hero-tag {
+                display: block;
+                font-size: 11px;
+                font-weight: 800;
+                letter-spacing: 0.8px;
+                color: #64748B;
+                text-transform: uppercase;
+                margin-bottom: 4px;
+            }
+
+            .search-hero-title {
+                font-size: 20px;
+                font-weight: 800;
+                color: #0F172A;
+                margin: 0 0 16px 0;
+                letter-spacing: -0.3px;
+                line-height: 1.2;
+            }
+
+            .search-input-wrapper {
                 position: relative;
                 display: flex;
                 align-items: center;
@@ -1479,38 +1506,38 @@
                 border: 1.5px solid #CBD5E1;
                 border-radius: 14px;
                 padding: 0 14px;
-                box-shadow: 0 2px 10px rgba(15, 23, 42, 0.05);
+                box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
                 transition: border-color 0.2s ease, box-shadow 0.2s ease;
             }
 
-            .modern-search-bar:focus-within {
-                border-color: var(--emerald);
+            .search-input-wrapper:focus-within {
+                border-color: #0F8B6D;
                 box-shadow: 0 0 0 3px rgba(15, 139, 109, 0.15);
             }
 
             .search-icon-svg {
-                width: 19px;
-                height: 19px;
-                color: var(--emerald);
+                width: 18px;
+                height: 18px;
+                color: #64748B;
                 flex-shrink: 0;
             }
 
-            .modern-search-bar input {
+            .search-input-wrapper input {
                 flex: 1;
                 border: none;
                 outline: none;
-                padding: 13px 10px;
-                font-size: 14px;
+                padding: 12px 10px;
+                font-size: 13.5px;
                 background: transparent;
-                color: var(--charcoal);
+                color: #0F172A;
                 -webkit-appearance: none;
                 appearance: none;
             }
 
-            .modern-search-bar input::-webkit-search-cancel-button,
-            .modern-search-bar input::-webkit-search-decoration,
-            .modern-search-bar input::-webkit-search-results-button,
-            .modern-search-bar input::-webkit-search-results-decoration {
+            .search-input-wrapper input::-webkit-search-cancel-button,
+            .search-input-wrapper input::-webkit-search-decoration,
+            .search-input-wrapper input::-webkit-search-results-button,
+            .search-input-wrapper input::-webkit-search-results-decoration {
                 -webkit-appearance: none !important;
                 appearance: none !important;
                 display: none !important;
@@ -1531,11 +1558,189 @@
                 flex-shrink: 0;
             }
 
+            .search-filter-chips {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                margin-top: 14px;
+            }
+
+            .search-filter-chip {
+                background: #FFFFFF;
+                border: 1.5px solid #E2E8F0;
+                border-radius: 20px;
+                padding: 6px 16px;
+                font-size: 12.5px;
+                font-weight: 600;
+                color: #475569;
+                cursor: pointer;
+                transition: all 0.15s ease;
+                -webkit-tap-highlight-color: transparent;
+            }
+
+            .search-filter-chip:hover {
+                background: #F8FAFC;
+                border-color: #CBD5E1;
+            }
+
+            .search-filter-chip.active {
+                background: #1E293B;
+                border-color: #1E293B;
+                color: #FFFFFF;
+                box-shadow: 0 2px 6px rgba(15, 23, 42, 0.15);
+            }
+
+            .search-results-meta {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                margin-bottom: 12px;
+                padding: 0 4px;
+            }
+
+            .search-count-label {
+                font-size: 12px;
+                font-weight: 600;
+                color: #64748B;
+            }
+
             .paper-search-results {
                 display: flex;
                 flex-direction: column;
                 gap: 14px;
                 width: 100%;
+            }
+
+            /* Custom Assessment Cards matching the photo skeleton in our CSS */
+            .assessment-card {
+                background: #2D3748;
+                border-radius: 22px;
+                padding: 20px 18px 18px;
+                box-shadow: 0 6px 20px rgba(15, 23, 42, 0.1);
+                display: flex;
+                flex-direction: column;
+                gap: 12px;
+                position: relative;
+                border: 1px solid rgba(255, 255, 255, 0.08);
+                transition: transform 0.18s ease, box-shadow 0.18s ease;
+            }
+
+            .assessment-card-header {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                gap: 10px;
+            }
+
+            .assessment-test-code {
+                background: #FFFFFF;
+                color: #1E293B;
+                font-size: 11px;
+                font-weight: 800;
+                padding: 4px 10px;
+                border-radius: 12px;
+                letter-spacing: 0.5px;
+                text-transform: uppercase;
+                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            }
+
+            .assessment-status-badge {
+                font-size: 11px;
+                font-weight: 800;
+                padding: 4px 10px;
+                border-radius: 12px;
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                letter-spacing: 0.4px;
+            }
+
+            .assessment-status-badge.available {
+                background: rgba(16, 185, 129, 0.22);
+                border: 1px solid rgba(16, 185, 129, 0.45);
+                color: #34D399;
+            }
+
+            .assessment-status-badge.upcoming {
+                background: rgba(148, 163, 184, 0.15);
+                border: 1px solid rgba(148, 163, 184, 0.3);
+                color: #94A3B8;
+            }
+
+            .assessment-status-dot {
+                width: 6px;
+                height: 6px;
+                border-radius: 50%;
+                background: currentColor;
+            }
+
+            .assessment-title {
+                font-size: 17px;
+                font-weight: 800;
+                color: #FFFFFF;
+                line-height: 1.3;
+                margin: 0;
+            }
+
+            .assessment-desc {
+                font-size: 12.5px;
+                color: #CBD5E1;
+                line-height: 1.45;
+                margin: 0;
+            }
+
+            .assessment-metrics {
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+
+            .assessment-metric-pill {
+                background: rgba(255, 255, 255, 0.08);
+                color: #E2E8F0;
+                font-size: 11.5px;
+                font-weight: 700;
+                padding: 5px 12px;
+                border-radius: 12px;
+            }
+
+            .assessment-start-btn {
+                background: linear-gradient(135deg, #EA580C 0%, #C2410C 100%);
+                color: #FFFFFF;
+                border: none;
+                border-radius: 14px;
+                padding: 13px 18px;
+                font-size: 14px;
+                font-weight: 700;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                cursor: pointer;
+                transition: transform 0.15s ease, box-shadow 0.15s ease;
+                box-shadow: 0 4px 14px rgba(234, 88, 12, 0.35);
+                width: 100%;
+                text-decoration: none;
+                box-sizing: border-box;
+            }
+
+            .assessment-start-btn:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 6px 18px rgba(234, 88, 12, 0.45);
+            }
+
+            .assessment-start-btn:active {
+                transform: scale(0.98);
+            }
+
+            .assessment-start-btn:disabled,
+            .assessment-start-btn.is-disabled {
+                background: rgba(255, 255, 255, 0.06);
+                color: #64748B;
+                border: 1px solid rgba(255, 255, 255, 0.1);
+                box-shadow: none;
+                cursor: not-allowed;
             }
 
             .paper-search-empty {
@@ -1572,35 +1777,34 @@
             .ios-profile-nav-bar {
                 display: flex;
                 align-items: center;
-                gap: 14px;
-                padding: 4px 2px 2px;
+                gap: 10px;
+                padding: 4px 0 2px;
             }
 
             .ios-nav-back-btn {
-                width: 38px;
-                height: 38px;
-                border-radius: 12px;
-                background: #FFFFFF;
-                border: 1px solid #E2E8F0;
+                background: transparent;
+                border: none;
+                box-shadow: none;
+                padding: 4px;
+                margin-left: -4px;
                 color: #0F172A;
                 display: inline-flex;
                 align-items: center;
                 justify-content: center;
                 cursor: pointer;
-                box-shadow: 0 1px 4px rgba(15, 23, 42, 0.04);
-                transition: all 0.15s ease;
+                transition: transform 0.15s ease, opacity 0.15s ease;
                 -webkit-tap-highlight-color: transparent;
                 flex-shrink: 0;
             }
 
             .ios-nav-back-btn:hover {
-                background: #F8FAFC;
-                border-color: #CBD5E1;
+                background: transparent;
+                opacity: 0.7;
             }
 
             .ios-nav-back-btn:active {
-                transform: scale(0.92);
-                background: #F1F5F9;
+                transform: scale(0.9);
+                opacity: 0.5;
             }
 
             .ios-profile-nav-title {
@@ -2570,16 +2774,31 @@
 
             <!-- SEARCH QUESTION PAPERS SECTION (MOBILE) -->
             <section id="searchSection" class="mobile-view-section" style="display: none;">
-                <!-- Modern Minimalist Search Bar Header -->
-                <div class="search-top-controls">
-                    <div class="modern-search-bar">
+                <!-- Modern Discovery Search Card (Exact Skeleton) -->
+                <div class="search-hero-card">
+                    <span class="search-hero-tag">QUICK FIND</span>
+                    <h2 class="search-hero-title">Search Assessments</h2>
+
+                    <div class="search-input-wrapper">
                         <svg class="search-icon-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
                             <circle cx="11" cy="11" r="8"></circle>
                             <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
                         </svg>
-                        <input type="text" inputmode="search" enterkeyhint="search" id="mobileQuestionSearchInput" placeholder="Search question papers, mock tests..." aria-label="Search question papers" autocomplete="off" spellcheck="false">
+                        <input type="text" inputmode="search" enterkeyhint="search" id="mobileQuestionSearchInput" placeholder="Search mock test, code, topic..." aria-label="Search mock test, code, topic" autocomplete="off" spellcheck="false">
                         <button type="button" id="clearQuestionSearchBtn" class="clear-search-btn" aria-label="Clear search">✕</button>
                     </div>
+
+                    <!-- Filter Chips: All, Available, Upcoming -->
+                    <div class="search-filter-chips" id="searchFilterChips">
+                        <button type="button" class="search-filter-chip active" data-filter="all">All</button>
+                        <button type="button" class="search-filter-chip" data-filter="available">Available</button>
+                        <button type="button" class="search-filter-chip" data-filter="upcoming">Upcoming</button>
+                    </div>
+                </div>
+
+                <!-- Showing count header -->
+                <div class="search-results-meta">
+                    <span class="search-count-label" id="searchAssessmentCount">Showing 0 of 0 assessments</span>
                 </div>
 
                 <!-- MATCHING QUESTION PAPERS (EXAM SETS) -->

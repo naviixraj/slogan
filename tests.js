@@ -699,14 +699,18 @@ function switchStudentTab(tabName) {
         else examinationsNav.classList.remove("active");
     }
 
-    // Automatically clear search input and results when switching to other tabs
+    // Automatically clear search input and reset filter when switching to other tabs
     if (tabName !== "search") {
         const searchInput = document.getElementById("mobileQuestionSearchInput");
         const clearBtn = document.getElementById("clearQuestionSearchBtn");
-        const results = document.getElementById("paperSearchResults");
         if (searchInput) searchInput.value = "";
         if (clearBtn) clearBtn.style.display = "none";
-        if (results) results.innerHTML = "";
+        currentSearchFilter = "all";
+        const filterChips = document.querySelectorAll(".search-filter-chip");
+        filterChips.forEach(c => {
+            if (c.getAttribute("data-filter") === "all") c.classList.add("active");
+            else c.classList.remove("active");
+        });
     }
 
     if (tabName === "home") {
@@ -767,13 +771,14 @@ if (profileNavBackBtn) {
 }
 
 /* =====================================================
-   SEARCH QUESTION PAPERS & EXAM SETS (TOTAL SETS ONLY)
+   SEARCH QUESTION PAPERS & EXAM SETS (EXACT SKELETON)
    ===================================================== */
 
 const mobileQuestionSearchInput = document.getElementById("mobileQuestionSearchInput");
 const clearQuestionSearchBtn = document.getElementById("clearQuestionSearchBtn");
 const paperSearchResults = document.getElementById("paperSearchResults");
 let questionPaperSearchTimeout = null;
+let currentSearchFilter = "all";
 
 function escapeHtml(str) {
     return String(str || "")
@@ -791,17 +796,21 @@ function performQuestionPaperSearch() {
     }
     if (!paperSearchResults) return;
 
-    // Keep screen clean by default; only show results after entering details in search bar
-    if (!rawQuery) {
-        paperSearchResults.innerHTML = "";
-        return;
-    }
-
+    // Filter by query and active filter chip (All / Available / Upcoming)
     const matches = mockTests.filter(test => {
-        const title = String(test.title || "").toLowerCase();
-        const id = String(test.id || "").toLowerCase();
-        const subj = String(test.subject || "").toLowerCase();
-        return title.includes(rawQuery) || id.includes(rawQuery) || subj.includes(rawQuery);
+        // Status filter
+        const isAvailable = test.status === "available";
+        if (currentSearchFilter === "available" && !isAvailable) return false;
+        if (currentSearchFilter === "upcoming" && isAvailable) return false;
+
+        // Query filter
+        if (rawQuery) {
+            const title = String(test.title || "").toLowerCase();
+            const id = String(test.id || "").toLowerCase();
+            const subj = String(test.subject || "").toLowerCase();
+            return title.includes(rawQuery) || id.includes(rawQuery) || subj.includes(rawQuery);
+        }
+        return true;
     });
 
     matches.sort((a, b) => {
@@ -813,11 +822,18 @@ function performQuestionPaperSearch() {
         return idA.localeCompare(idB, undefined, { numeric: true, sensitivity: 'base' });
     });
 
+    // Update counter label
+    const countLabel = document.getElementById("searchAssessmentCount");
+    if (countLabel) {
+        countLabel.textContent = `Showing ${matches.length} of ${mockTests.length} assessments`;
+    }
+
     paperSearchResults.innerHTML = "";
     if (matches.length === 0) {
         paperSearchResults.innerHTML = `
             <div class="paper-search-empty">
                 <strong>No result found</strong>
+                <p style="margin: 6px 0 0; font-size: 12.5px; color: #64748B;">Try adjusting your search query or filter</p>
             </div>
         `;
         return;
@@ -825,51 +841,60 @@ function performQuestionPaperSearch() {
 
     matches.forEach(test => {
         const isAvailable = test.status === "available";
+        const testNum = String(test.id || "01").replace(/\D/g, "");
+        const testCode = `TEST ${testNum.padStart(2, "0")}`;
+        const qCount = test.questionsCount || test.questions_count || 150;
+        const dur = test.duration || 180;
+        const subj = test.subject || "General Paper";
+        const marks = test.totalMarks || (qCount * 2);
+
         const card = document.createElement("article");
-        card.className = "test-card";
+        card.className = "assessment-card";
 
-        const accent = document.createElement("div");
-        accent.className = "accent";
+        // Header (TEST 02 pill + AVAILABLE badge)
+        const header = document.createElement("div");
+        header.className = "assessment-card-header";
 
-        const body = document.createElement("div");
-        body.className = "card-body";
+        const codePill = document.createElement("span");
+        codePill.className = "assessment-test-code";
+        codePill.textContent = testCode;
 
-        const top = document.createElement("div");
-        top.className = "card-top";
+        const statusBadge = document.createElement("span");
+        statusBadge.className = isAvailable ? "assessment-status-badge available" : "assessment-status-badge upcoming";
+        statusBadge.innerHTML = `<span class="assessment-status-dot"></span>${isAvailable ? "AVAILABLE" : "UPCOMING"}`;
 
-        const code = document.createElement("span");
-        code.className = "test-code";
-        code.textContent = `EXAM ${test.id}`;
+        header.append(codePill, statusBadge);
 
-        const status = document.createElement("span");
-        status.className = isAvailable ? "status available" : "status coming";
-        status.textContent = isAvailable ? "AVAILABLE" : "COMING SOON";
-        top.append(code, status);
-
+        // Title
         const title = document.createElement("h2");
+        title.className = "assessment-title";
         title.textContent = test.title;
 
-        const description = document.createElement("p");
-        description.textContent = isAvailable
-            ? "Ready to begin. Complete the instructions before starting your examination."
-            : "This examination will be available once its question bank is ready.";
+        // Description
+        const desc = document.createElement("p");
+        desc.className = "assessment-desc";
+        desc.textContent = isAvailable
+            ? `Complete ${qCount}-question ${subj} simulation.`
+            : "This examination will be available once its question bank is configured.";
 
-        const meta = document.createElement("div");
-        meta.className = "meta";
-        const qCount = test.questionsCount || test.questions_count || 150;
-        const subj = test.subject || "General Paper";
-        const dur = test.duration || 180;
-        [`${qCount} Questions`, subj, `${dur} Minutes`].forEach(text => {
-            const item = document.createElement("span");
-            item.textContent = text;
-            meta.appendChild(item);
+        // Metrics row
+        const metrics = document.createElement("div");
+        metrics.className = "assessment-metrics";
+        [`${qCount} Qs`, `${dur} Mins`, `${marks} Marks`].forEach(txt => {
+            const pill = document.createElement("span");
+            pill.className = "assessment-metric-pill";
+            pill.textContent = txt;
+            metrics.appendChild(pill);
         });
 
-        const start = document.createElement("button");
-        start.className = "start";
-        start.type = "button";
-        start.disabled = !isAvailable;
-        start.textContent = isAvailable ? "START EXAMINATION" : "COMING SOON";
+        // Start button
+        const startBtn = document.createElement("button");
+        startBtn.type = "button";
+        startBtn.className = isAvailable ? "assessment-start-btn" : "assessment-start-btn is-disabled";
+        startBtn.disabled = !isAvailable;
+        startBtn.innerHTML = isAvailable
+            ? `<span>Start Examination</span> <span style="font-size: 16px;">&rarr;</span>`
+            : `<span>Coming Soon</span>`;
 
         if (isAvailable) {
             const launchExam = () => {
@@ -888,7 +913,6 @@ function performQuestionPaperSearch() {
                 window.location.href = "instructions";
             };
 
-            card.classList.add("is-clickable");
             card.style.cursor = "pointer";
             card.setAttribute("role", "button");
             card.setAttribute("tabindex", "0");
@@ -900,14 +924,13 @@ function performQuestionPaperSearch() {
                     launchExam();
                 }
             });
-            start.addEventListener("click", (e) => {
+            startBtn.addEventListener("click", (e) => {
                 e.stopPropagation();
                 launchExam();
             });
         }
 
-        body.append(top, title, description, meta, start);
-        card.append(accent, body);
+        card.append(header, title, desc, metrics, startBtn);
         paperSearchResults.appendChild(card);
     });
 }
@@ -928,6 +951,17 @@ if (clearQuestionSearchBtn) {
         }
     });
 }
+
+// Bind filter chips (All, Available, Upcoming)
+const filterChips = document.querySelectorAll(".search-filter-chip");
+filterChips.forEach(chip => {
+    chip.addEventListener("click", () => {
+        filterChips.forEach(c => c.classList.remove("active"));
+        chip.classList.add("active");
+        currentSearchFilter = chip.getAttribute("data-filter") || "all";
+        performQuestionPaperSearch();
+    });
+});
 
 /* -----------------------------------------------------
    INITIALIZE DASHBOARD
