@@ -1353,12 +1353,11 @@
                 bottom: 0;
                 left: 0;
                 right: 0;
-                height: 60px;
+                height: 64px;
                 padding-bottom: env(safe-area-inset-bottom, 0px);
-                background: rgba(255, 255, 255, 0.96);
-                backdrop-filter: blur(16px);
-                -webkit-backdrop-filter: blur(16px);
-                border-top: 1px solid #E2E8F0;
+                background: #FFFFFF;
+                border-top: 1px solid #F1F5F9;
+                border-radius: 24px 24px 0 0;
                 box-shadow: 0 -4px 20px rgba(15, 23, 42, 0.06);
                 z-index: 950;
                 align-items: center;
@@ -1384,7 +1383,7 @@
             .content {
                 padding-top: 14px !important;
                 padding-inline: 14px !important;
-                padding-bottom: calc(82px + env(safe-area-inset-bottom, 0px)) !important;
+                padding-bottom: calc(86px + env(safe-area-inset-bottom, 0px)) !important;
             }
 
             /* Hide topbar when viewing mobile profile tab so native profile header is shown */
@@ -1393,7 +1392,8 @@
             }
 
             body.in-profile-tab .content {
-                padding-top: calc(env(safe-area-inset-top, 0px) + 16px) !important;
+                padding-top: calc(env(safe-area-inset-top, 0px) + 8px) !important;
+                padding-inline: 10px !important;
             }
 
             .tab-btn {
@@ -1402,11 +1402,11 @@
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
-                gap: 3px;
+                gap: 4px;
                 background: transparent;
                 border: none;
-                padding: 6px 0;
-                color: #788078;
+                padding: 4px 0;
+                color: #64748B;
                 cursor: pointer;
                 transition: color 0.18s ease, transform 0.12s ease;
                 -webkit-tap-highlight-color: transparent;
@@ -1418,50 +1418,57 @@
 
             .tab-icon-wrap {
                 position: relative;
-                width: 24px;
-                height: 24px;
+                width: 44px;
+                height: 30px;
+                border-radius: 20px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
+                transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
             }
 
             .tab-icon {
-                width: 22px;
-                height: 22px;
+                width: 20px;
+                height: 20px;
                 transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                color: #64748B;
             }
 
-            /* Inactive: outline visible, fill hidden */
-            .tab-btn .icon-outline {
-                display: block;
-            }
-            .tab-btn .icon-fill {
-                display: none;
-            }
-
-            /* Active: fill visible, outline hidden, emerald accent */
             .tab-btn.active {
-                color: var(--emerald);
+                color: #0F172A;
             }
 
-            .tab-btn.active .icon-outline {
-                display: none;
+            .tab-btn.active .tab-icon-wrap {
+                background: #334155;
             }
 
-            .tab-btn.active .icon-fill {
-                display: block;
-                transform: scale(1.08);
+            .tab-btn.active .tab-icon {
+                color: #FFFFFF;
+                transform: scale(1.05);
+            }
+
+            .tab-badge-dot {
+                position: absolute;
+                top: 2px;
+                right: 7px;
+                width: 6px;
+                height: 6px;
+                border-radius: 50%;
+                background: #F97316;
             }
 
             .tab-label {
-                font-size: 11px;
-                font-weight: 500;
-                letter-spacing: -0.2px;
-                transition: font-weight 0.18s ease;
+                font-size: 10px;
+                font-weight: 700;
+                letter-spacing: 0.5px;
+                text-transform: uppercase;
+                transition: font-weight 0.18s ease, color 0.18s ease;
+                color: #64748B;
             }
 
             .tab-btn.active .tab-label {
-                font-weight: 700;
+                font-weight: 800;
+                color: #0F172A;
             }
 
             /* =========================================================
@@ -1920,273 +1927,339 @@
             }
 
             /* =========================================================
-               MOBILE PROFILE SECTION (CLEAN iOS-INSPIRED EXECUTIVE CARDS)
+               MOBILE PROFILE SECTION (EXACT REFERENCE UI WITH DOODLE BANNER)
                ========================================================= */
-            .mobile-profile-wrap {
-                display: flex;
-                flex-direction: column;
-                gap: 16px;
-                position: relative;
-                z-index: 2;
-                max-width: 480px;
+            .mobile-profile-container {
+                max-width: 440px;
                 margin: 0 auto;
-                width: 100%;
-            }
-
-            .ios-profile-nav-bar {
+                background: #F6F8FC;
+                border-radius: 32px;
+                border: 1px solid rgba(226, 232, 240, 0.9);
+                box-shadow: 0 16px 40px rgba(15, 23, 42, 0.08);
+                overflow: hidden;
+                padding-bottom: 24px;
                 display: flex;
+                flex-direction: column;
                 align-items: center;
-                gap: 10px;
-                padding: 4px 0 2px;
-            }
-
-            .ios-nav-back-btn {
-                background: transparent;
-                border: none;
-                box-shadow: none;
-                padding: 4px;
-                margin-left: -4px;
-                color: #0F172A;
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                cursor: pointer;
-                transition: transform 0.15s ease, opacity 0.15s ease;
-                -webkit-tap-highlight-color: transparent;
-                flex-shrink: 0;
-            }
-
-            .ios-nav-back-btn:hover {
-                background: transparent;
-                opacity: 0.7;
-            }
-
-            .ios-nav-back-btn:active {
-                transform: scale(0.9);
-                opacity: 0.5;
-            }
-
-            .ios-profile-nav-title {
-                font-size: 20px;
-                font-weight: 800;
-                color: #0F172A;
-                margin: 0;
-                letter-spacing: -0.3px;
-                line-height: 1.2;
-            }
-
-            .ios-user-card {
-                background: #FFFFFF;
-                border-radius: 20px;
-                padding: 14px 16px;
-                display: flex;
-                align-items: center;
-                gap: 14px;
-                box-shadow: 0 2px 8px rgba(15, 23, 42, 0.04);
-                border: 1px solid #E2E8F0;
-            }
-
-            .ios-avatar-wrapper {
                 position: relative;
-                display: inline-block;
-                flex-shrink: 0;
-            }
-
-            .ios-avatar-circle {
-                width: 54px;
-                height: 54px;
-                border-radius: 50%;
-                background: linear-gradient(135deg, #1E3A8A, #3B82F6);
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                color: #FFFFFF;
-                font-weight: 800;
-                font-size: 20px;
-                box-shadow: 0 4px 10px rgba(30, 58, 138, 0.25);
-                overflow: hidden;
-            }
-
-            .ios-avatar-circle img {
-                width: 100%;
-                height: 100%;
-                border-radius: 50%;
-                object-fit: cover;
-                display: block;
-            }
-
-            .ios-verified-dot {
-                position: absolute;
-                bottom: -1px;
-                right: -1px;
-                width: 17px;
-                height: 17px;
-                background: #10B981;
-                border: 2px solid #FFFFFF;
-                border-radius: 50%;
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                box-shadow: 0 1px 3px rgba(0,0,0,0.15);
-            }
-
-            .ios-verified-dot svg {
-                width: 9px;
-                height: 9px;
-                stroke: #FFFFFF;
-            }
-
-            .ios-user-meta {
-                display: flex;
-                flex-direction: column;
-                min-width: 0;
-            }
-
-            .ios-user-name {
-                font-size: 16px;
-                font-weight: 700;
-                color: #0F172A;
-                line-height: 1.25;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-
-            .ios-user-email {
-                font-size: 12.5px;
-                color: #64748B;
-                margin-top: 2px;
-                white-space: nowrap;
-                overflow: hidden;
-                text-overflow: ellipsis;
-            }
-
-            .ios-group-container {
-                display: flex;
-                flex-direction: column;
-                gap: 6px;
-            }
-
-            .ios-group-label {
-                font-size: 12.5px;
-                font-weight: 600;
-                color: #64748B;
-                padding-left: 6px;
-                letter-spacing: -0.1px;
-            }
-
-            .ios-group-card {
-                background: #FFFFFF;
-                border-radius: 20px;
-                border: 1px solid #E2E8F0;
-                overflow: hidden;
-                box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
-            }
-
-            .ios-list-row {
-                display: flex;
-                align-items: center;
-                justify-content: space-between;
-                padding: 13px 16px;
-                border-bottom: 1px solid #F1F5F9;
-                text-decoration: none;
-                transition: background 0.15s ease;
-                background: transparent;
                 width: 100%;
                 box-sizing: border-box;
             }
 
-            .ios-list-row:last-child {
-                border-bottom: none;
+            /* TOP EDUCATION DOODLE BANNER */
+            .profile-banner-header {
+                width: 100%;
+                height: 140px;
+                background: linear-gradient(180deg, #EDF2FE 0%, #F5F7FD 70%, #F6F8FC 100%);
+                position: relative;
+                overflow: hidden;
+                display: flex;
+                justify-content: center;
+                align-items: center;
             }
 
-            .ios-list-row.is-action {
-                cursor: pointer;
+            .profile-banner-svg {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                opacity: 0.95;
             }
 
-            .ios-list-row.is-action:hover {
-                background: #F8FAFC;
+            /* AVATAR WRAPPER (CENTERED & OVERLAPPING BANNER) */
+            .profile-avatar-wrapper {
+                position: relative;
+                margin-top: -46px;
+                display: inline-block;
+                z-index: 2;
             }
 
-            .ios-list-row.is-action:active {
-                background: #F1F5F9;
-            }
-
-            .ios-row-left {
+            .profile-avatar-circle {
+                width: 82px;
+                height: 82px;
+                border-radius: 50%;
+                background: linear-gradient(135deg, #1D5FE8 0%, #2563EB 100%);
                 display: flex;
                 align-items: center;
-                gap: 12px;
-                min-width: 0;
+                justify-content: center;
+                color: #FFFFFF;
+                font-size: 28px;
+                font-weight: 800;
+                letter-spacing: -0.5px;
+                border: 4px solid #FFFFFF;
+                box-shadow: 0 8px 20px rgba(37, 99, 235, 0.25);
+                overflow: hidden;
             }
 
-            .ios-row-icon-wrap {
+            .profile-avatar-circle img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+                border-radius: 50%;
+                display: block;
+            }
+
+            .profile-verified-badge {
+                position: absolute;
+                bottom: 2px;
+                right: 2px;
                 width: 22px;
                 height: 22px;
+                background: #10B981;
+                border: 2.5px solid #FFFFFF;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                box-shadow: 0 2px 6px rgba(16, 185, 129, 0.4);
+            }
+
+            .profile-verified-badge svg {
+                width: 11px;
+                height: 11px;
+                stroke: #FFFFFF;
+                stroke-width: 3.5;
+                fill: none;
+            }
+
+            /* USER IDENTITY TEXT */
+            .profile-user-name {
+                font-size: 21px;
+                font-weight: 800;
+                color: #1E293B;
+                margin-top: 10px;
+                text-align: center;
+                letter-spacing: -0.3px;
+                line-height: 1.25;
+            }
+
+            .profile-user-email {
+                font-size: 13px;
+                color: #64748B;
+                margin-top: 3px;
+                text-align: center;
+                font-weight: 500;
+            }
+
+            .profile-status-badge {
+                font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+                font-size: 10.5px;
+                font-weight: 800;
+                letter-spacing: 1.2px;
+                color: #4F46E5;
+                margin-top: 6px;
+                text-align: center;
+                text-transform: uppercase;
+            }
+
+            /* 4 QUICK ACTION BUTTONS ROW */
+            .profile-quick-actions {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 16px;
+                margin-top: 18px;
+                margin-bottom: 20px;
+                width: 100%;
+                padding: 0 16px;
+                box-sizing: border-box;
+            }
+
+            .quick-action-item {
+                position: relative;
+            }
+
+            .quick-action-btn {
+                width: 44px;
+                height: 44px;
+                border-radius: 50%;
+                background: #FFFFFF;
+                border: 1px solid #E2E8F0;
+                box-shadow: 0 2px 6px rgba(15, 23, 42, 0.05);
                 display: flex;
                 align-items: center;
                 justify-content: center;
                 color: #334155;
-                flex-shrink: 0;
+                cursor: pointer;
+                transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+                outline: none;
+                -webkit-tap-highlight-color: transparent;
             }
 
-            .ios-row-title {
-                font-size: 13.5px;
-                font-weight: 500;
-                color: #0F172A;
+            .quick-action-btn svg {
+                width: 20px;
+                height: 20px;
+                transition: transform 0.15s ease;
+            }
+
+            .quick-action-btn:hover,
+            .quick-action-btn:active {
+                transform: translateY(-2px);
+                background: #F8FAFC;
+                box-shadow: 0 6px 14px rgba(15, 23, 42, 0.08);
+                color: #1E293B;
+            }
+
+            /* QUICK ACTION TOOLTIP (MATCHING USER SCREENSHOTS 2, 3, 4, 5) */
+            .quick-tooltip {
+                position: absolute;
+                top: 100%;
+                left: 50%;
+                transform: translateX(-50%) translateY(8px);
+                background: #18181B;
+                color: #FFFFFF;
+                font-size: 11px;
+                font-weight: 600;
+                padding: 5px 9px;
+                border-radius: 4px;
                 white-space: nowrap;
+                box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+                opacity: 0;
+                visibility: hidden;
+                pointer-events: none;
+                transition: opacity 0.15s ease, transform 0.15s ease;
+                z-index: 25;
             }
 
-            .ios-row-right {
+            .quick-tooltip::before {
+                content: "";
+                position: absolute;
+                bottom: 100%;
+                left: 50%;
+                transform: translateX(-50%);
+                border-width: 4px;
+                border-style: solid;
+                border-color: transparent transparent #18181B transparent;
+            }
+
+            .quick-action-item:hover .quick-tooltip,
+            .quick-action-item:focus-within .quick-tooltip,
+            .quick-action-item.active-tooltip .quick-tooltip {
+                opacity: 1;
+                visibility: visible;
+                transform: translateX(-50%) translateY(6px);
+            }
+
+            /* PILL DETAILS LIST (STANDALONE ROUNDED CARDS) */
+            .profile-details-list {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                width: 100%;
+                padding: 0 16px;
+                box-sizing: border-box;
+            }
+
+            .profile-pill-card {
+                background: #FFFFFF;
+                border-radius: 20px;
+                border: 1px solid #E8EEF5;
+                box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+                padding: 13px 18px;
                 display: flex;
                 align-items: center;
-                gap: 8px;
+                justify-content: space-between;
+                width: 100%;
+                box-sizing: border-box;
+                transition: transform 0.15s ease, box-shadow 0.15s ease;
+            }
+
+            .pill-left {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                color: #1E293B;
+                font-size: 13.5px;
+                font-weight: 600;
+                min-width: 0;
+            }
+
+            .pill-icon {
+                width: 19px;
+                height: 19px;
+                color: #475569;
                 flex-shrink: 0;
             }
 
-            .ios-row-val {
+            .pill-val {
                 font-size: 13px;
-                color: #64748B;
+                color: #475569;
                 font-weight: 500;
-                max-width: 160px;
-                white-space: nowrap;
+                text-align: right;
+                max-width: 170px;
                 overflow: hidden;
                 text-overflow: ellipsis;
-                text-align: right;
-            }
-
-            .ios-row-val.active-status {
-                color: #059669;
-                font-weight: 600;
-                display: flex;
-                align-items: center;
-                gap: 5px;
-            }
-
-            .ios-active-dot {
-                width: 6px;
-                height: 6px;
-                border-radius: 50%;
-                background: #10B981;
-            }
-
-            .ios-chevron-icon {
-                color: #94A3B8;
-                width: 14px;
-                height: 14px;
+                white-space: nowrap;
                 flex-shrink: 0;
             }
 
-            .ios-logout-row {
-                cursor: pointer;
-            }
-
-            .ios-logout-row .ios-row-title {
-                color: #DC2626;
+            .pill-val.active-status {
+                color: #059669;
                 font-weight: 600;
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
             }
 
-            .ios-logout-row .ios-row-icon-wrap {
+            .status-dot {
+                width: 7px;
+                height: 7px;
+                border-radius: 50%;
+                background: #10B981;
+                display: inline-block;
+            }
+
+            /* FULL WIDTH ACTION BUTTON CARDS (CONTACT, HELP, LOGOUT) */
+            .profile-action-card {
+                background: #FFFFFF;
+                border-radius: 24px;
+                border: 1.5px solid #E2E8F0;
+                box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+                padding: 13px 18px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 10px;
+                width: 100%;
+                box-sizing: border-box;
+                color: #1E293B;
+                font-size: 13.5px;
+                font-weight: 600;
+                cursor: pointer;
+                transition: all 0.15s ease;
+                outline: none;
+                -webkit-tap-highlight-color: transparent;
+            }
+
+            .profile-action-card:hover {
+                background: #F8FAFC;
+                border-color: #CBD5E1;
+                transform: translateY(-1px);
+            }
+
+            .profile-action-card:active {
+                transform: scale(0.98);
+            }
+
+            .profile-action-card svg {
+                width: 17px;
+                height: 17px;
+                color: #475569;
+                flex-shrink: 0;
+            }
+
+            .profile-action-card.logout-card {
                 color: #DC2626;
+                border-color: #FEE2E2;
+                background: #FFFFFF;
+            }
+
+            .profile-action-card.logout-card svg {
+                color: #DC2626;
+            }
+
+            .profile-action-card.logout-card:hover {
+                background: #FEF2F2;
+                border-color: #FCA5A5;
             }
 
             /* Leaderboard Section Styling (3D Isometric Podium + Animated Rotating Aura) */
@@ -2997,170 +3070,274 @@
                 </div>
             </section>
 
-            <!-- STUDENT PROFILE SECTION (MOBILE) -->
+            <!-- STUDENT PROFILE SECTION (MOBILE VIEW MATCHING REFERENCE UI) -->
             <section id="profileSection" class="mobile-view-section" style="display: none;">
-                <div class="mobile-profile-wrap">
-                    <!-- iOS Style Navigation Header (Back Arrow + Title matching reference) -->
-                    <div class="ios-profile-nav-bar">
-                        <button type="button" class="ios-nav-back-btn" id="profileNavBackBtn" aria-label="Back to Home" title="Back to Home">
-                            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-                                <line x1="19" y1="12" x2="5" y2="12"></line>
-                                <polyline points="12 19 5 12 12 5"></polyline>
+                <div class="mobile-profile-container">
+
+                    <!-- TOP BANNER (EDUCATION DOODLES) -->
+                    <div class="profile-banner-header">
+                        <svg class="profile-banner-svg" viewBox="0 0 400 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="softSkyDoodle" x1="0" y1="0" x2="0" y2="140" gradientUnits="userSpaceOnUse">
+                                    <stop offset="0%" stop-color="#EBF3FF"/>
+                                    <stop offset="70%" stop-color="#F4F8FE"/>
+                                    <stop offset="100%" stop-color="#F6F8FC"/>
+                                </linearGradient>
+                            </defs>
+                            <rect width="400" height="140" fill="url(#softSkyDoodle)"/>
+
+                            <!-- Sparkles & Stars -->
+                            <path d="M40 30L42 22L44 30L52 32L44 34L42 42L40 34L32 32Z" fill="#F59E0B" opacity="0.8"/>
+                            <path d="M360 35L361.5 28L363 35L370 36.5L363 38L361.5 45L360 38L353 36.5Z" fill="#8B5CF6" opacity="0.7"/>
+                            <circle cx="210" cy="22" r="3" fill="#EC4899" opacity="0.7"/>
+                            <circle cx="160" cy="38" r="2.5" fill="#3B82F6" opacity="0.6"/>
+                            <circle cx="290" cy="40" r="3" fill="#10B981" opacity="0.6"/>
+
+                            <!-- Left: Graduation Cap 1 (Purple) -->
+                            <g transform="translate(48, 14) rotate(-8)">
+                                <polygon points="30,5 58,18 30,30 2,18" fill="#7C3AED" stroke="#4C1D95" stroke-width="2" stroke-linejoin="round"/>
+                                <path d="M14,24 V34 C14,40 46,40 46,34 V24" fill="#6D28D9" stroke="#4C1D95" stroke-width="2"/>
+                                <circle cx="30" cy="18" r="2.5" fill="#F59E0B"/>
+                                <path d="M30,18 Q45,20 48,32" stroke="#F59E0B" stroke-width="2" fill="none"/>
+                                <circle cx="48" cy="33" r="2.5" fill="#F59E0B"/>
+                            </g>
+
+                            <!-- Math Pi -->
+                            <text x="110" y="32" font-size="16" font-family="'Inter', sans-serif" font-weight="700" fill="#8B5CF6" opacity="0.9">π</text>
+
+                            <!-- Yellow Pencil -->
+                            <g transform="translate(112, 16) rotate(42)">
+                                <rect x="0" y="0" width="8" height="32" rx="2" fill="#FBBF24" stroke="#D97706" stroke-width="1.5"/>
+                                <polygon points="0,32 8,32 4,40" fill="#FDE68A" stroke="#D97706" stroke-width="1.5"/>
+                                <polygon points="2,36 6,36 4,40" fill="#1E293B"/>
+                                <rect x="0" y="-5" width="8" height="5" fill="#F43F5E"/>
+                            </g>
+
+                            <!-- Lightbulb Center -->
+                            <g transform="translate(180, 10)">
+                                <path d="M16 2 C8 2 4 8 4 14 C4 18 7 21 8 24 L14 24 L14 28 L18 28 L18 24 L24 24 C25 21 28 18 28 14 C28 8 24 2 16 2 Z" fill="#FDE047" stroke="#CA8A04" stroke-width="2"/>
+                                <line x1="16" y1="28" x2="16" y2="31" stroke="#CA8A04" stroke-width="2.5" stroke-linecap="round"/>
+                                <line x1="8" y1="8" x2="3" y2="4" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"/>
+                                <line x1="24" y1="8" x2="29" y2="4" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"/>
+                                <line x1="16" y1="0" x2="16" y2="-4" stroke="#F59E0B" stroke-width="2" stroke-linecap="round"/>
+                            </g>
+
+                            <!-- Certificate / Diploma -->
+                            <g transform="translate(216, 12)">
+                                <rect x="0" y="0" width="28" height="20" rx="3" fill="#FFFFFF" stroke="#F43F5E" stroke-width="1.5"/>
+                                <line x1="4" y1="5" x2="24" y2="5" stroke="#FDA4AF" stroke-width="2" stroke-linecap="round"/>
+                                <line x1="4" y1="9" x2="18" y2="9" stroke="#FDA4AF" stroke-width="2" stroke-linecap="round"/>
+                                <circle cx="21" cy="14" r="3" fill="#F43F5E"/>
+                            </g>
+
+                            <!-- Right Pen -->
+                            <g transform="translate(262, 12) rotate(25)">
+                                <rect x="0" y="0" width="5" height="30" rx="2" fill="#38BDF8" stroke="#0284C7" stroke-width="1.5"/>
+                                <polygon points="0,30 5,30 2.5,36" fill="#0284C7"/>
+                            </g>
+
+                            <!-- Right Graduation Cap (Blue) -->
+                            <g transform="translate(288, 16) rotate(6)">
+                                <polygon points="30,5 58,18 30,30 2,18" fill="#3B82F6" stroke="#1D4ED8" stroke-width="2" stroke-linejoin="round"/>
+                                <path d="M14,24 V34 C14,40 46,40 46,34 V24" fill="#2563EB" stroke="#1D4ED8" stroke-width="2"/>
+                                <circle cx="30" cy="18" r="2.5" fill="#EF4444"/>
+                                <path d="M30,18 Q45,20 48,32" stroke="#EF4444" stroke-width="2" fill="none"/>
+                                <circle cx="48" cy="33" r="2.5" fill="#EF4444"/>
+                            </g>
+
+                            <!-- Book Stack & E=mc2 -->
+                            <g transform="translate(32, 60)">
+                                <rect x="0" y="10" width="46" height="10" rx="2" fill="#EF4444" stroke="#B91C1C" stroke-width="1.5"/>
+                                <rect x="4" y="0" width="42" height="10" rx="2" fill="#10B981" stroke="#047857" stroke-width="1.5"/>
+                                <text x="38" y="28" font-size="9" font-family="'Inter', sans-serif" font-weight="700" fill="#475569">E=mc²</text>
+                            </g>
+
+                            <!-- Open Book Left -->
+                            <g transform="translate(100, 48)">
+                                <path d="M0,15 C8,10 24,10 30,14 L30,42 C24,38 8,38 0,42 Z" fill="#FFFFFF" stroke="#0EA5E9" stroke-width="2"/>
+                                <path d="M60,15 C52,10 36,10 30,14 L30,42 C36,38 52,38 60,42 Z" fill="#FFFFFF" stroke="#0EA5E9" stroke-width="2"/>
+                                <line x1="6" y1="20" x2="24" y2="18" stroke="#38BDF8" stroke-width="1.5"/>
+                                <line x1="6" y1="26" x2="24" y2="24" stroke="#38BDF8" stroke-width="1.5"/>
+                                <line x1="6" y1="32" x2="22" y2="30" stroke="#38BDF8" stroke-width="1.5"/>
+                                <line x1="36" y1="18" x2="54" y2="20" stroke="#38BDF8" stroke-width="1.5"/>
+                                <line x1="36" y1="24" x2="54" y2="26" stroke="#38BDF8" stroke-width="1.5"/>
+                                <line x1="38" y1="30" x2="54" y2="32" stroke="#38BDF8" stroke-width="1.5"/>
+                                <path d="M30,14 V26" stroke="#EF4444" stroke-width="2"/>
+                            </g>
+
+                            <!-- Gear Center -->
+                            <g transform="translate(172, 45)">
+                                <circle cx="12" cy="12" r="7" fill="#A855F7" stroke="#7E22CE" stroke-width="2"/>
+                                <circle cx="12" cy="12" r="3" fill="#FFFFFF"/>
+                            </g>
+
+                            <!-- Math symbols & Notebook -->
+                            <text x="215" y="55" font-size="11" font-weight="700" fill="#EF4444">√x</text>
+                            <g transform="translate(235, 46)">
+                                <rect x="0" y="0" width="54" height="34" rx="3" fill="#FEF3C7" stroke="#D97706" stroke-width="1.8"/>
+                                <line x1="27" y1="0" x2="27" y2="34" stroke="#D97706" stroke-width="1.5"/>
+                                <line x1="4" y1="8" x2="23" y2="8" stroke="#F59E0B" stroke-width="1.2"/>
+                                <line x1="4" y1="14" x2="23" y2="14" stroke="#F59E0B" stroke-width="1.2"/>
+                                <line x1="4" y1="20" x2="20" y2="20" stroke="#F59E0B" stroke-width="1.2"/>
+                                <line x1="31" y1="8" x2="50" y2="8" stroke="#F59E0B" stroke-width="1.2"/>
+                                <line x1="31" y1="14" x2="50" y2="14" stroke="#F59E0B" stroke-width="1.2"/>
+                                <line x1="31" y1="20" x2="48" y2="20" stroke="#F59E0B" stroke-width="1.2"/>
+                            </g>
+
+                            <!-- Laptop Code Screen -->
+                            <g transform="translate(315, 58)">
+                                <rect x="4" y="0" width="40" height="26" rx="3" fill="#3B82F6" stroke="#1D4ED8" stroke-width="1.5"/>
+                                <rect x="8" y="4" width="32" height="18" rx="1.5" fill="#FFFFFF"/>
+                                <text x="12" y="16" font-size="10" font-family="monospace" font-weight="800" fill="#1D4ED8">&gt;_</text>
+                                <path d="M0,26 L48,26 L44,29 L4,29 Z" fill="#93C5FD" stroke="#1D4ED8" stroke-width="1.5"/>
+                            </g>
+                        </svg>
+                    </div>
+
+                    <!-- AVATAR -->
+                    <div class="profile-avatar-wrapper">
+                        <div class="profile-avatar-circle" id="mobileProfileAvatar">NR</div>
+                        <div class="profile-verified-badge" title="Active Verified Candidate">
+                            <svg viewBox="0 0 24 24">
+                                <polyline points="20 6 9 17 4 12"></polyline>
                             </svg>
-                        </button>
-                        <h1 class="ios-profile-nav-title">Profile</h1>
+                        </div>
                     </div>
 
-                    <!-- Top User Card (Matching Reference Layout) -->
-                    <div class="ios-user-card">
-                        <div class="ios-avatar-wrapper">
-                            <div class="ios-avatar-circle" id="mobileProfileAvatar">ST</div>
-                            <span class="ios-verified-dot" title="Verified Candidate">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5">
-                                    <polyline points="20 6 9 17 4 12"></polyline>
+                    <!-- NAME & DETAILS -->
+                    <h2 class="profile-user-name" id="mobileProfileName">Student</h2>
+                    <div class="profile-user-email" id="mobileProfileEmail">—</div>
+                    <div class="profile-status-badge">SLOGON ACADEMY &bull; ACTIVE VERIFIED</div>
+
+                    <!-- 4 QUICK ACTION BUTTONS (EXACT SCREENSHOTS 2, 3, 4, 5) -->
+                    <div class="profile-quick-actions">
+                        <!-- 1. Examinations -->
+                        <div class="quick-action-item">
+                            <button class="quick-action-btn" id="profileQuickExamBtn" type="button" aria-label="Examinations" title="Examinations">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                                    <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
                                 </svg>
-                            </span>
+                            </button>
+                            <div class="quick-tooltip">Examinations</div>
                         </div>
-                        <div class="ios-user-meta">
-                            <span class="ios-user-name" id="mobileProfileName">Student</span>
-                            <span class="ios-user-email" id="mobileProfileEmail">—</span>
+
+                        <!-- 2. Cohort Leaderboard -->
+                        <div class="quick-action-item">
+                            <button class="quick-action-btn" id="profileQuickRanksBtn" type="button" aria-label="Cohort Leaderboard" title="Cohort Leaderboard">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+                                    <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+                                    <path d="M4 22h16"></path>
+                                    <path d="M10 14.66V17c0 .55-.45 1-1 1H7"></path>
+                                    <path d="M14 14.66V17c0 .55.45 1 1 1h2"></path>
+                                    <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
+                                </svg>
+                            </button>
+                            <div class="quick-tooltip">Cohort Leaderboard</div>
                         </div>
-                    </div>
 
-                    <!-- Group 1: Academic Registration Details (NO ARROWS) -->
-                    <div class="ios-group-container">
-                        <span class="ios-group-label">Academic Details</span>
-                        <div class="ios-group-card">
-                            <!-- Row 1: Registered Stream -->
-                            <div class="ios-list-row">
-                                <div class="ios-row-left">
-                                    <div class="ios-row-icon-wrap">
-                                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z"></path>
-                                        </svg>
-                                    </div>
-                                    <span class="ios-row-title">Registered Stream</span>
-                                </div>
-                                <div class="ios-row-right">
-                                    <span class="ios-row-val" id="mobileProfileStream">Paper 1 - General Paper</span>
-                                </div>
-                            </div>
+                        <!-- 3. Contact Us -->
+                        <div class="quick-action-item">
+                            <button class="quick-action-btn" id="profileQuickContactBtn" type="button" aria-label="Contact Us" title="Contact Us">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                                </svg>
+                            </button>
+                            <div class="quick-tooltip">Contact Us</div>
+                        </div>
 
-                            <!-- Row 2: Institution -->
-                            <div class="ios-list-row">
-                                <div class="ios-row-left">
-                                    <div class="ios-row-icon-wrap">
-                                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v4M12 14v4M16 14v4"></path>
-                                        </svg>
-                                    </div>
-                                    <span class="ios-row-title">Institution</span>
-                                </div>
-                                <div class="ios-row-right">
-                                    <span class="ios-row-val">SLOGON ACADEMY</span>
-                                </div>
-                            </div>
-
-                            <!-- Row 3: Candidate ID -->
-                            <div class="ios-list-row">
-                                <div class="ios-row-left">
-                                    <div class="ios-row-icon-wrap">
-                                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <rect width="18" height="14" x="3" y="5" rx="2"></rect>
-                                            <circle cx="9" cy="12" r="2"></circle>
-                                            <path d="M15 10h2M15 14h2"></path>
-                                        </svg>
-                                    </div>
-                                    <span class="ios-row-title">Candidate ID</span>
-                                </div>
-                                <div class="ios-row-right">
-                                    <span class="ios-row-val" id="mobileProfileUserId">—</span>
-                                </div>
-                            </div>
-
-                            <!-- Row 4: Account Status -->
-                            <div class="ios-list-row">
-                                <div class="ios-row-left">
-                                    <div class="ios-row-icon-wrap">
-                                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                                        </svg>
-                                    </div>
-                                    <span class="ios-row-title">Account Status</span>
-                                </div>
-                                <div class="ios-row-right">
-                                    <span class="ios-row-val active-status">
-                                        <span class="ios-active-dot"></span>Active Verified
-                                    </span>
-                                </div>
-                            </div>
+                        <!-- 4. Help & FAQs -->
+                        <div class="quick-action-item">
+                            <button class="quick-action-btn" id="profileQuickHelpBtn" type="button" aria-label="Help & FAQs" title="Help & FAQs">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="10"></circle>
+                                    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                                    <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                                </svg>
+                            </button>
+                            <div class="quick-tooltip">Help & FAQs</div>
                         </div>
                     </div>
 
-                    <!-- Group 2: Support (HAS CHEVRONS) -->
-                    <div class="ios-group-container">
-                        <span class="ios-group-label">Support</span>
-                        <div class="ios-group-card">
-                            <!-- Contact Us -->
-                            <div class="ios-list-row is-action" id="profileContactUsBtn" role="button" tabindex="0">
-                                <div class="ios-row-left">
-                                    <div class="ios-row-icon-wrap">
-                                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                                        </svg>
-                                    </div>
-                                    <span class="ios-row-title">Contact Us</span>
-                                </div>
-                                <div class="ios-row-right">
-                                    <span class="ios-row-val">Helpdesk</span>
-                                    <svg class="ios-chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                                        <polyline points="9 18 15 12 9 6"></polyline>
-                                    </svg>
-                                </div>
+                    <!-- PILL DETAILS LIST -->
+                    <div class="profile-details-list">
+                        <!-- Card 1: Registered Stream -->
+                        <div class="profile-pill-card">
+                            <div class="pill-left">
+                                <svg class="pill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect width="14" height="20" x="5" y="2" rx="2" ry="2"></rect>
+                                    <path d="M12 18h.01"></path>
+                                </svg>
+                                <span>Registered Stream</span>
                             </div>
+                            <div class="pill-val" id="mobileProfileStream">Paper 1 - General Paper</div>
+                        </div>
 
-                            <!-- Help & FAQs -->
-                            <div class="ios-list-row is-action" id="profileHelpBtn" role="button" tabindex="0">
-                                <div class="ios-row-left">
-                                    <div class="ios-row-icon-wrap">
-                                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                            <circle cx="12" cy="12" r="10"></circle>
-                                            <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
-                                            <line x1="12" y1="17" x2="12.01" y2="17"></line>
-                                        </svg>
-                                    </div>
-                                    <span class="ios-row-title">Help & FAQs</span>
-                                </div>
-                                <div class="ios-row-right">
-                                    <svg class="ios-chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                                        <polyline points="9 18 15 12 9 6"></polyline>
-                                    </svg>
-                                </div>
+                        <!-- Card 2: Institution -->
+                        <div class="profile-pill-card">
+                            <div class="pill-left">
+                                <svg class="pill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M3 21h18M3 10h18M5 6l7-3 7 3M4 10v11M20 10v11M8 14v4M12 14v4M16 14v4"></path>
+                                </svg>
+                                <span>Institution</span>
+                            </div>
+                            <div class="pill-val" style="font-weight: 600;">SLOGON ACADEMY</div>
+                        </div>
+
+                        <!-- Card 3: Candidate ID -->
+                        <div class="profile-pill-card">
+                            <div class="pill-left">
+                                <svg class="pill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect width="18" height="14" x="3" y="5" rx="2"></rect>
+                                    <circle cx="9" cy="12" r="2"></circle>
+                                    <path d="M15 10h2M15 14h2"></path>
+                                </svg>
+                                <span>Candidate ID</span>
+                            </div>
+                            <div class="pill-val" id="mobileProfileUserId">—</div>
+                        </div>
+
+                        <!-- Card 4: Account Status -->
+                        <div class="profile-pill-card">
+                            <div class="pill-left">
+                                <svg class="pill-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                </svg>
+                                <span>Account Status</span>
+                            </div>
+                            <div class="pill-val active-status">
+                                <span class="status-dot"></span> Active Verified
                             </div>
                         </div>
-                    </div>
 
-                    <!-- Group 3: Account & Session (HAS CHEVRONS) -->
-                    <div class="ios-group-container">
-                        <div class="ios-group-card">
-                            <div class="ios-list-row is-action ios-logout-row" id="mobileProfileLogoutBtn" role="button" tabindex="0">
-                                <div class="ios-row-left">
-                                    <div class="ios-row-icon-wrap">
-                                        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                                            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                                            <polyline points="16 17 21 12 16 7"></polyline>
-                                            <line x1="21" y1="12" x2="9" y2="12"></line>
-                                        </svg>
-                                    </div>
-                                    <span class="ios-row-title">Log Out Session</span>
-                                </div>
-                                <div class="ios-row-right">
-                                    <svg class="ios-chevron-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
-                                        <polyline points="9 18 15 12 9 6"></polyline>
-                                    </svg>
-                                </div>
-                            </div>
-                        </div>
+                        <!-- Card 5: Contact Us Helpdesk -->
+                        <button class="profile-action-card" id="profileContactUsBtn" type="button">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                            </svg>
+                            <span>Contact Us &mdash; Helpdesk</span>
+                        </button>
+
+                        <!-- Card 6: Help & FAQs -->
+                        <button class="profile-action-card" id="profileHelpBtn" type="button">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"></circle>
+                                <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                                <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                            </svg>
+                            <span>Help &amp; FAQs</span>
+                        </button>
+
+                        <!-- Card 7: Log Out Session -->
+                        <button class="profile-action-card logout-card" id="mobileProfileLogoutBtn" type="button">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+                                <polyline points="16 17 21 12 16 7"></polyline>
+                                <line x1="21" y1="12" x2="9" y2="12"></line>
+                            </svg>
+                            <span>Log Out Session</span>
+                        </button>
                     </div>
                 </div>
             </section>
@@ -3418,12 +3595,9 @@
     <nav class="mobile-tab-bar" id="mobileTabBar" aria-label="Student Navigation">
         <button type="button" class="tab-btn active" id="tabHomeBtn" data-tab="home" aria-label="Home Examinations">
             <span class="tab-icon-wrap">
-                <svg class="tab-icon icon-outline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
                     <polyline points="9 22 9 12 15 12 15 22"></polyline>
-                </svg>
-                <svg class="tab-icon icon-fill" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path>
                 </svg>
             </span>
             <span class="tab-label">Home</span>
@@ -3431,20 +3605,27 @@
 
         <button type="button" class="tab-btn" id="tabSearchBtn" data-tab="search" aria-label="Search Questions">
             <span class="tab-icon-wrap">
-                <svg class="tab-icon icon-outline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                     <circle cx="11" cy="11" r="8"></circle>
                     <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                </svg>
-                <svg class="tab-icon icon-fill" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"></path>
                 </svg>
             </span>
             <span class="tab-label">Search</span>
         </button>
 
-        <button type="button" class="tab-btn" id="tabLeaderboardBtn" data-tab="leaderboard" aria-label="Leaderboard">
+        <button type="button" class="tab-btn" id="tabProfileBtn" data-tab="profile" aria-label="Candidate Profile">
             <span class="tab-icon-wrap">
-                <svg class="tab-icon icon-outline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path>
+                </svg>
+                <span class="tab-badge-dot" aria-hidden="true"></span>
+            </span>
+            <span class="tab-label">Profile</span>
+        </button>
+
+        <button type="button" class="tab-btn" id="tabLeaderboardBtn" data-tab="leaderboard" aria-label="Cohort Ranks">
+            <span class="tab-icon-wrap">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
                     <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
                     <path d="M4 22h16"></path>
@@ -3452,24 +3633,8 @@
                     <path d="M14 14.66V17c0 .55.45 1 1 1h2"></path>
                     <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
                 </svg>
-                <svg class="tab-icon icon-fill" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M19 5h-2V3H7v2H5c-1.1 0-2 .9-2 2v1c0 2.55 1.92 4.63 4.39 4.94A5.01 5.01 0 0 0 11 15.9V19H7v2h10v-2h-4v-3.1c1.94-.37 3.5-1.92 3.61-3.96C19.08 11.63 21 9.55 21 7V7c0-1.1-.9-2-2-2zM5 8V7h2v3.82C5.84 10.4 5 9.3 5 8zm14 0c0 1.3-.84 2.4-2 2.82V7h2v1z"></path>
-                </svg>
             </span>
-            <span class="tab-label">Leaderboard</span>
-        </button>
-
-        <button type="button" class="tab-btn" id="tabProfileBtn" data-tab="profile" aria-label="My Profile">
-            <span class="tab-icon-wrap">
-                <svg class="tab-icon icon-outline" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                    <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
-                    <circle cx="12" cy="7" r="4"></circle>
-                </svg>
-                <svg class="tab-icon icon-fill" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path>
-                </svg>
-            </span>
-            <span class="tab-label">Profile</span>
+            <span class="tab-label">Ranks</span>
         </button>
     </nav>
 

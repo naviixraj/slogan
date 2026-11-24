@@ -788,6 +788,46 @@ if (profileHelpBtn) {
     });
 }
 
+// 4 Quick Action Buttons on Profile (matching reference screenshots 2, 3, 4, 5)
+const profileQuickExamBtn = document.getElementById("profileQuickExamBtn");
+if (profileQuickExamBtn) {
+    profileQuickExamBtn.addEventListener("click", () => {
+        switchStudentTab("home");
+    });
+}
+
+const profileQuickRanksBtn = document.getElementById("profileQuickRanksBtn");
+if (profileQuickRanksBtn) {
+    profileQuickRanksBtn.addEventListener("click", () => {
+        switchStudentTab("leaderboard");
+    });
+}
+
+const profileQuickContactBtn = document.getElementById("profileQuickContactBtn");
+if (profileQuickContactBtn) {
+    profileQuickContactBtn.addEventListener("click", () => {
+        if (profileContactUsBtn) profileContactUsBtn.click();
+    });
+}
+
+const profileQuickHelpBtn = document.getElementById("profileQuickHelpBtn");
+if (profileQuickHelpBtn) {
+    profileQuickHelpBtn.addEventListener("click", () => {
+        if (profileHelpBtn) profileHelpBtn.click();
+    });
+}
+
+// Mobile tooltip toggle on touch
+document.querySelectorAll(".quick-action-item").forEach(item => {
+    item.addEventListener("click", (e) => {
+        // Toggle active-tooltip for mobile visibility
+        document.querySelectorAll(".quick-action-item").forEach(other => {
+            if (other !== item) other.classList.remove("active-tooltip");
+        });
+        item.classList.toggle("active-tooltip");
+    });
+});
+
 const profileNavBackBtn = document.getElementById("profileNavBackBtn");
 if (profileNavBackBtn) {
     profileNavBackBtn.addEventListener("click", () => {
