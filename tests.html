@@ -2121,7 +2121,7 @@
                 opacity: 0;
                 visibility: hidden;
                 pointer-events: none;
-                transition: opacity 0.15s ease, transform 0.15s ease;
+                transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
                 z-index: 25;
             }
 
@@ -2136,12 +2136,20 @@
                 border-color: transparent transparent #18181B transparent;
             }
 
-            .quick-action-item:hover .quick-tooltip,
-            .quick-action-item:focus-within .quick-tooltip,
+            /* Hover on desktop pointer devices only (prevents sticky hover on touch) */
+            @media (hover: hover) and (pointer: fine) {
+                .quick-action-item:hover .quick-tooltip {
+                    opacity: 1;
+                    visibility: visible;
+                    transform: translateX(-50%) translateY(6px);
+                }
+            }
+
+            /* Active tooltip state (shows for exactly 2 seconds then auto-dismisses) */
             .quick-action-item.active-tooltip .quick-tooltip {
-                opacity: 1;
-                visibility: visible;
-                transform: translateX(-50%) translateY(6px);
+                opacity: 1 !important;
+                visibility: visible !important;
+                transform: translateX(-50%) translateY(6px) !important;
             }
 
             /* PILL DETAILS LIST (STANDALONE ROUNDED CARDS) */

@@ -817,15 +817,49 @@ if (profileQuickHelpBtn) {
     });
 }
 
-// Mobile tooltip toggle on touch
-document.querySelectorAll(".quick-action-item").forEach(item => {
-    item.addEventListener("click", (e) => {
-        // Toggle active-tooltip for mobile visibility
-        document.querySelectorAll(".quick-action-item").forEach(other => {
-            if (other !== item) other.classList.remove("active-tooltip");
-        });
-        item.classList.toggle("active-tooltip");
+// Quick action tooltips: show on tap/click and automatically disappear after exactly 2 seconds
+let quickTooltipTimeout = null;
+
+function triggerQuickTooltip(item) {
+    if (!item) return;
+
+    if (quickTooltipTimeout) {
+        clearTimeout(quickTooltipTimeout);
+        quickTooltipTimeout = null;
+    }
+
+    document.querySelectorAll(".quick-action-item").forEach(other => {
+        other.classList.remove("active-tooltip");
     });
+
+    item.classList.add("active-tooltip");
+
+    quickTooltipTimeout = setTimeout(() => {
+        item.classList.remove("active-tooltip");
+        const btn = item.querySelector("button");
+        if (btn) btn.blur();
+    }, 2000);
+}
+
+document.querySelectorAll(".quick-action-item").forEach(item => {
+    item.addEventListener("click", () => {
+        triggerQuickTooltip(item);
+    });
+});
+
+// Dismiss any active tooltip immediately when tapping anywhere else
+document.addEventListener("click", (e) => {
+    if (!e.target.closest(".quick-action-item")) {
+        if (quickTooltipTimeout) {
+            clearTimeout(quickTooltipTimeout);
+            quickTooltipTimeout = null;
+        }
+        document.querySelectorAll(".quick-action-item").forEach(el => {
+            el.classList.remove("active-tooltip");
+            const btn = el.querySelector("button");
+            if (btn) btn.blur();
+        });
+    }
 });
 
 const profileNavBackBtn = document.getElementById("profileNavBackBtn");
