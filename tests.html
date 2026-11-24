@@ -1962,7 +1962,9 @@
                 background: #F6F4FB;
             }
 
-            .profile-banner-img {
+            .profile-banner-img,
+            .profile-banner-header picture,
+            .profile-banner-header svg {
                 width: 100%;
                 height: auto;
                 display: block;
@@ -3087,9 +3089,12 @@
             <section id="profileSection" class="mobile-view-section" style="display: none;">
                 <div class="mobile-profile-container">
 
-                    <!-- TOP BANNER (EXACT HIGH-RES EDUCATION REFERENCE BANNER) -->
+                    <!-- TOP BANNER (EXACT VECTOR HIGH-RES EDUCATION REFERENCE BANNER) -->
                     <div class="profile-banner-header">
-                        <img src="profile-banner-exact.png" alt="Slogon Education Header" class="profile-banner-img">
+                        <picture>
+                            <source type="image/svg+xml" srcset="profile-banner-exact.svg">
+                            <img src="profile-banner-exact.svg" srcset="profile-banner-exact.svg 1x, profile-banner-exact@4x.png 4x, profile-banner-exact.png 1x" alt="Slogon Education Header" class="profile-banner-img">
+                        </picture>
                     </div>
 
                     <!-- AVATAR -->
