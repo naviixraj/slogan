@@ -2768,18 +2768,17 @@
             padding: 2px 18px 14px;
         }
 
-        .hero-brand-crest {
-            width: 38px;
-            height: 38px;
-            object-fit: contain;
-            filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.35));
+        .hero-brand-crest-svg {
+            width: 44px;
+            height: 40px;
             flex-shrink: 0;
+            filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.35));
         }
 
         .hero-brand-divider {
             width: 1px;
-            height: 28px;
-            background: rgba(251, 222, 199, 0.38);
+            height: 26px;
+            background: rgba(251, 222, 199, 0.42);
             flex-shrink: 0;
         }
 
@@ -2790,20 +2789,11 @@
 
         .hero-brand-name {
             display: block;
-            font-size: 13.5px;
+            font-size: 15px;
             font-weight: 800;
-            letter-spacing: 0.9px;
+            letter-spacing: 1px;
             color: #FDF4EE;
             text-transform: uppercase;
-        }
-
-        .hero-brand-tagline {
-            display: block;
-            font-size: 11px;
-            font-weight: 500;
-            color: #FBDEC7;
-            margin-top: 2px;
-            letter-spacing: 0.2px;
         }
 
         .hero-carousel-viewport {
@@ -3079,8 +3069,9 @@
         .home-filter-chips {
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 8px;
-            margin: 14px 0 18px;
+            margin: 12px 0 14px;
             overflow-x: auto;
             scrollbar-width: none;
             -webkit-overflow-scrolling: touch;
@@ -3247,357 +3238,161 @@
             scroll-snap-type: none;
         }
 
-        /* AVAILABLE EXAM CARD (PREMIUM BOTANICAL & ACADEMIC COMPOSITION) */
-        .avail-exam-card {
-            flex: 0 0 min(390px, calc(100% - 24px));
+        @media (max-width: 900px) {
+            #examSection .exam-section-header,
+            #examSection .carousel-controls-row {
+                display: none !important;
+            }
+            .exam-carousel-section {
+                margin-bottom: 12px;
+            }
+        }
+
+        /* AVAILABLE EXAM CARD (EXACT COMPACT HORIZONTAL WARM IVORY DESIGN) */
+        .avail-exam-card,
+        .upcoming-exam-card {
+            flex: 0 0 min(420px, calc(100% - 14px));
             scroll-snap-align: start;
-            position: relative;
-            overflow: hidden;
-            isolation: isolate;
-            background: linear-gradient(165deg, var(--off-white) 0%, var(--ivory-white) 72%, var(--warm-cream) 100%);
-            border: 1px solid var(--rose-gold);
-            border-radius: 30px;
-            padding: 0 18px 20px;
+            background: linear-gradient(180deg, #FDF4EE 0%, #FCECE0 100%);
+            border: 1px solid rgba(251, 222, 199, 0.85);
+            border-radius: 22px;
+            padding: 14px;
             box-shadow:
-                0 12px 30px rgba(45, 2, 10, 0.12),
-                0 3px 8px rgba(189, 139, 127, 0.12);
-            color: var(--dark-text);
+                0 12px 28px rgba(24, 0, 5, 0.28),
+                0 2px 6px rgba(189, 139, 127, 0.14),
+                inset 0 1px 0 #FFFFFF;
+            color: #2E1416;
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 12px;
             cursor: pointer;
-            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
+            transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s ease;
         }
 
-        /* Decorative lower curved burgundy + champagne edge */
-        .avail-exam-card::before {
-            content: "";
-            position: absolute;
-            left: -6%;
-            right: -6%;
-            bottom: -14px;
-            height: 28px;
-            background: linear-gradient(100deg, var(--primary) 0%, var(--wine-red) 55%, var(--dark-maroon) 100%);
-            border-radius: 55% 45% 0 0 / 100% 100% 0 0;
-            border-top: 2px solid var(--champagne);
-            box-shadow: 0 -2px 0 1px rgba(189, 139, 127, 0.35);
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .avail-exam-card::after {
-            content: "";
-            position: absolute;
-            right: -12px;
-            bottom: -6px;
-            width: 58%;
-            height: 20px;
-            background: radial-gradient(ellipse at 70% 100%, rgba(251, 222, 199, 0.45) 0%, transparent 72%);
-            pointer-events: none;
-            z-index: 0;
+        .upcoming-exam-card {
+            cursor: default;
         }
 
         .avail-exam-card:hover {
-            transform: translateY(-4px);
-            box-shadow:
-                0 18px 36px rgba(45, 2, 10, 0.16),
-                0 4px 12px rgba(189, 139, 127, 0.18);
+            transform: translateY(-2px);
+            box-shadow: 0 16px 34px rgba(24, 0, 5, 0.34), inset 0 1px 0 #FFFFFF;
         }
 
-        /* Right-side layered botanical feather + clipboard + clock illustration */
-        .avail-illustration-wrap {
-            position: absolute;
-            right: 4px;
-            top: 38px;
-            width: 144px;
-            height: 122px;
-            pointer-events: none;
-            z-index: 1;
+        .avail-card-row {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+            min-width: 0;
         }
 
-        .avail-feathers-svg {
-            position: absolute;
-            inset: 0;
-            width: 100%;
-            height: 100%;
-            overflow: visible;
-        }
-
-        .avail-clipboard-svg {
-            position: absolute;
-            right: 22px;
-            top: 24px;
-            width: 68px;
-            height: 80px;
-            filter: drop-shadow(0 6px 12px rgba(45, 2, 10, 0.12));
-        }
-
-        .avail-clock-badge {
-            position: absolute;
-            right: 10px;
-            bottom: 8px;
-            width: 34px;
-            height: 34px;
-            border-radius: 50%;
-            background: linear-gradient(145deg, var(--primary) 0%, var(--dark-maroon) 100%);
-            border: 1.5px solid var(--rose-gold);
-            box-shadow:
-                0 6px 14px rgba(45, 2, 10, 0.28),
-                0 0 0 2px var(--ivory-white);
+        .avail-thumb-tile {
+            width: 50px;
+            height: 50px;
+            border-radius: 13px;
+            background: #F1D6C7;
+            border: 1px solid rgba(189, 139, 127, 0.45);
             display: grid;
             place-items: center;
-            z-index: 3;
-        }
-
-        .avail-clock-badge svg {
-            width: 20px;
-            height: 20px;
-        }
-
-        .avail-card-top {
-            display: flex;
-            align-items: flex-start;
-            justify-content: space-between;
-            gap: 8px;
-            position: relative;
-            z-index: 2;
-            margin: 0 -18px;
-            padding-right: 16px;
-        }
-
-        .avail-code-pill {
-            position: relative;
-            background: linear-gradient(115deg, var(--primary) 0%, var(--wine-red) 78%, var(--dark-maroon) 100%);
-            border-right: 1.5px solid var(--champagne);
-            border-bottom: 1.5px solid var(--champagne);
-            color: var(--ivory-white);
-            font-size: 11px;
-            font-weight: 800;
-            padding: 9px 26px 9px 20px;
-            border-radius: 29px 0 28px 0;
-            letter-spacing: 0.7px;
-            text-transform: uppercase;
-            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-            box-shadow: 0 5px 12px rgba(45, 2, 10, 0.2);
-        }
-
-        .avail-status-pill {
-            background: #E6F7EC;
-            border: 1px solid #9EE2B8;
-            color: #146C38;
-            font-size: 10.5px;
-            font-weight: 800;
-            padding: 5px 12px;
-            border-radius: 999px;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-            letter-spacing: 0.45px;
-            text-transform: uppercase;
-            margin-top: 12px;
-            box-shadow: 0 2px 6px rgba(20, 108, 56, 0.08);
-        }
-
-        .avail-status-dot {
-            width: 7px;
-            height: 7px;
-            border-radius: 50%;
-            background: #16A34A;
-        }
-
-        .avail-card-body {
-            position: relative;
-            z-index: 2;
-            padding-right: 126px;
-            margin-top: 2px;
-            min-height: 82px;
-        }
-
-        .avail-card-title {
-            font-size: clamp(20px, 5.2vw, 25px);
-            font-weight: 800;
-            color: var(--primary);
-            margin: 0 0 6px;
-            line-height: 1.18;
-            letter-spacing: -0.35px;
-        }
-
-        .avail-card-desc {
-            font-size: 13.5px;
-            color: var(--dark-text);
-            margin: 0;
-            line-height: 1.45;
-            opacity: 0.88;
-        }
-
-        .avail-inner-panel {
-            background: transparent;
-            padding: 0;
-            color: var(--dark-text);
-            display: flex;
-            flex-direction: column;
-            gap: 14px;
-            position: relative;
-            z-index: 2;
-            margin-top: auto;
-        }
-
-        .avail-metrics-grid {
-            display: grid;
-            grid-template-columns: repeat(3, minmax(0, 1fr));
-            gap: 8px;
-            align-items: stretch;
-        }
-
-        .avail-metric-item {
-            background: linear-gradient(180deg, var(--warm-cream) 0%, var(--blush-beige) 100%);
-            border: 1px solid rgba(189, 139, 127, 0.55);
-            border-radius: 16px;
-            display: flex;
-            align-items: center;
-            gap: 7px;
-            padding: 10px 9px;
-            min-width: 0;
-        }
-
-        .avail-metric-icon {
-            width: 16px;
-            height: 16px;
-            color: var(--primary);
             flex-shrink: 0;
+            position: relative;
         }
 
-        .avail-metric-text {
+        .avail-thumb-tile::after {
+            content: "";
+            position: absolute;
+            right: -6px;
+            top: 8px;
+            bottom: 8px;
+            width: 1px;
+            background: rgba(189, 139, 127, 0.5);
+        }
+
+        .avail-thumb-tile svg {
+            width: 34px;
+            height: 34px;
+        }
+
+        .avail-info-col {
+            flex: 1;
             min-width: 0;
+            padding-left: 4px;
         }
 
-        .avail-metric-text strong {
-            display: block;
-            font-size: 13.5px;
+        .avail-card-title,
+        .upcoming-card-title {
+            font-size: 15.5px;
             font-weight: 800;
-            color: var(--primary);
-            line-height: 1.15;
+            color: #3A010D;
+            margin: 0 0 3px;
+            line-height: 1.22;
             white-space: nowrap;
             overflow: hidden;
             text-overflow: ellipsis;
         }
 
-        .avail-metric-text span {
-            display: block;
-            font-size: 10.5px;
-            font-weight: 600;
-            color: var(--rose-burgundy);
-            line-height: 1.2;
-            margin-top: 1px;
+        .avail-inline-meta {
+            font-size: 12px;
+            font-weight: 500;
+            color: #6E4A4E;
+            margin: 0;
+            line-height: 1.3;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        .avail-metric-text.is-subject strong {
-            font-size: 11.5px;
-            line-height: 1.2;
-            white-space: normal;
-            display: -webkit-box;
-            -webkit-line-clamp: 2;
-            -webkit-box-orient: vertical;
-            overflow: hidden;
+        .avail-status-pill {
+            background: #DCFCE7;
+            border: 1px solid #A7F3D0;
+            color: #15803D;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 5px 10px;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            flex-shrink: 0;
+        }
+
+        .avail-status-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #16A34A;
         }
 
         .avail-start-btn {
             width: 100%;
-            min-height: 52px;
-            border: 1px solid var(--rose-gold);
+            min-height: 46px;
+            border: 1px solid rgba(189, 139, 127, 0.45);
             border-radius: 999px;
-            padding: 12px 20px;
-            background: linear-gradient(
-                100deg,
-                var(--primary),
-                var(--wine-red),
-                var(--dark-maroon)
-            );
-            color: var(--ivory-white);
-            font-size: 13px;
-            font-weight: 700;
-            letter-spacing: 0.04em;
+            padding: 10px 18px;
+            background: linear-gradient(100deg, #3A010D 0%, #570215 55%, #2D020A 100%);
+            color: #FDF4EE;
+            font-size: 12.5px;
+            font-weight: 800;
+            letter-spacing: 0.05em;
             text-transform: uppercase;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
             cursor: pointer;
-            box-shadow:
-                0 5px 14px rgba(45, 2, 10, 0.2),
-                inset 0 1px 0 rgba(251, 222, 199, 0.28);
+            box-shadow: 0 6px 16px rgba(45, 2, 10, 0.26), inset 0 1px 0 rgba(251, 222, 199, 0.25);
             transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
         }
 
         .avail-start-btn:hover {
             filter: brightness(1.08);
-            transform: translateY(-2px);
-            box-shadow:
-                0 8px 20px rgba(45, 2, 10, 0.28),
-                inset 0 1px 0 rgba(251, 222, 199, 0.35);
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(45, 2, 10, 0.34), inset 0 1px 0 rgba(251, 222, 199, 0.35);
         }
 
         .avail-start-btn:active {
             transform: scale(0.985);
-        }
-
-        .avail-start-btn:focus-visible {
-            outline: 2px solid var(--rose-gold);
-            outline-offset: 2px;
-        }
-
-        @media (max-width: 375px) {
-            .avail-exam-card {
-                padding: 0 14px 18px;
-                border-radius: 26px;
-            }
-            .avail-card-top {
-                margin: 0 -14px;
-                padding-right: 12px;
-            }
-            .avail-illustration-wrap {
-                width: 120px;
-                height: 106px;
-                top: 40px;
-                right: 2px;
-            }
-            .avail-clipboard-svg {
-                width: 56px;
-                height: 66px;
-                right: 18px;
-                top: 22px;
-            }
-            .avail-clock-badge {
-                width: 29px;
-                height: 29px;
-                right: 8px;
-                bottom: 8px;
-            }
-            .avail-card-body {
-                padding-right: 104px;
-            }
-            .avail-metric-item {
-                padding: 8px 6px;
-                gap: 5px;
-            }
-            .avail-start-btn {
-                min-height: 48px;
-                font-size: 12px;
-            }
-        }
-
-        /* UPCOMING EXAM CARD (WARM IVORY + BLUSH BEIGE TILE BOXES + WINE RED ALERT) */
-        .upcoming-exam-card {
-            flex: 0 0 min(380px, calc(100% - 28px));
-            scroll-snap-align: start;
-            background: #FDF4EE;
-            border-radius: 22px;
-            padding: 18px;
-            border: 1.5px solid #BD8B7F;
-            box-shadow: 0 8px 22px rgba(58, 1, 13, 0.06);
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
         }
 
         .upcoming-card-top {
@@ -3976,11 +3771,24 @@
                 <div class="hero-carousel-stage" id="heroCarouselStage">
                     <!-- Brand Crest Header -->
                     <div class="hero-brand-header">
-                        <img src="Logoicon.png" alt="SLOGON ACADEMY Crest" class="hero-brand-crest">
+                        <svg class="hero-brand-crest-svg" viewBox="0 0 64 56" fill="none" aria-hidden="true">
+                            <!-- Laurel Wings -->
+                            <g stroke="#E8C794" stroke-width="1.6" stroke-linecap="round" fill="#FBDEC7" fill-opacity="0.8">
+                                <path d="M16 42C9 36 8 24 12 14"/>
+                                <path d="M48 42C55 36 56 24 52 14"/>
+                            </g>
+                            <!-- Open Book -->
+                            <path d="M10 40C18 37 26 39 32 45C38 39 46 37 54 40L50 48C43 45 37 47 32 51C27 47 21 45 14 48L10 40Z" fill="#FBDEC7" stroke="#FDF4EE" stroke-width="1.2"/>
+                            <!-- Shield / Crest -->
+                            <path d="M20 20L32 14L44 20V32C44 38 32 43 32 43C32 43 20 38 20 32V20Z" fill="#3A010D" stroke="#FDF4EE" stroke-width="1.6"/>
+                            <path d="M32 18V39M24 25h16" stroke="#FBDEC7" stroke-width="1.5" stroke-linecap="round"/>
+                            <!-- Cap Top -->
+                            <polygon points="32,3 48,10 32,17 16,10" fill="#FDF4EE" stroke="#E8C794" stroke-width="1.2"/>
+                            <path d="M45 11V19" stroke="#E8C794" stroke-width="1.6" stroke-linecap="round"/>
+                        </svg>
                         <span class="hero-brand-divider" aria-hidden="true"></span>
                         <div class="hero-brand-text">
                             <span class="hero-brand-name">SLOGON ACADEMY</span>
-                            <span class="hero-brand-tagline">Prepare. Perform. Succeed.</span>
                         </div>
                     </div>
 

@@ -207,12 +207,11 @@ function renderTests() {
         upcomingExamsSection.style.display = (upcomingList.length > 0 && filter !== "available") ? "block" : "none";
     }
 
-    // Helper: create Available Exam dark card
+    // Helper: create Available Exam compact card
     function buildAvailableCard(test) {
         const qCount = test.questionsCount || test.questions_count || 150;
         const dur = test.duration || 180;
-        const subj = test.subject || "General Paper";
-        const codeLabel = `EXAM ${String(test.id || "SET01").toUpperCase()}`;
+        const subj = test.subject || "All Subjects";
 
         const card = document.createElement("article");
         card.className = "avail-exam-card";
@@ -220,64 +219,37 @@ function renderTests() {
         card.setAttribute("tabindex", "0");
         card.setAttribute("title", `Click to start ${test.title}`);
 
-        card.innerHTML = `
-            <div class="avail-illustration-wrap" aria-hidden="true">
-                <!-- Layered Botanical Feather / Leaf Illustration (Champagne, Rose Gold, Blush Beige, Soft Burgundy) -->
-                <svg class="avail-feathers-svg" viewBox="0 0 160 140" fill="none">
-                    <!-- Background feather (opacity 0.28) -->
-                    <g opacity="0.28">
-                        <path d="M148 16C116 14 82 32 62 66C84 74 118 60 148 16Z" fill="#F1D6C7" stroke="#702229" stroke-width="1"/>
-                        <path d="M146 18C118 34 90 50 64 65" stroke="#702229" stroke-width="1" stroke-linecap="round"/>
-                        <path d="M126 29L114 25M110 38L97 35M94 48L82 46M116 36L110 49M98 46L93 58" stroke="#702229" stroke-width="0.7" stroke-linecap="round"/>
-                    </g>
-                    <!-- Secondary feather (opacity 0.56) -->
-                    <g opacity="0.56">
-                        <path d="M154 46C124 38 86 50 54 84C84 96 126 84 154 46Z" fill="#FBDEC7" stroke="#BD8B7F" stroke-width="1.1"/>
-                        <path d="M150 48C122 58 88 70 57 83" stroke="#BD8B7F" stroke-width="1.1" stroke-linecap="round"/>
-                        <path d="M130 55L118 49M112 62L98 56M94 69L80 65M120 60L114 75M101 67L96 81M82 74L79 86" stroke="#BD8B7F" stroke-width="0.75" stroke-linecap="round"/>
-                    </g>
-                    <!-- Main foreground feather (opacity 0.85) -->
-                    <g opacity="0.85">
-                        <path d="M156 84C132 72 96 76 68 104C94 118 134 112 156 84Z" fill="#FCECE0" stroke="#BD8B7F" stroke-width="1.2"/>
-                        <path d="M152 85C128 89 98 94 71 103" stroke="#702229" stroke-width="1.15" stroke-linecap="round"/>
-                        <path d="M136 88L124 81M118 91L105 84M100 95L88 90M126 91L120 105M108 94L103 107M90 98L87 109" stroke="#702229" stroke-width="0.8" stroke-linecap="round"/>
-                    </g>
-                </svg>
+        const row = document.createElement("div");
+        row.className = "avail-card-row";
 
-                <!-- Academic Clipboard Illustration with 3 Checkmarks -->
-                <svg class="avail-clipboard-svg" viewBox="0 0 76 90" fill="none">
-                    <rect x="8" y="12" width="60" height="72" rx="11" fill="#FDF4EE" stroke="#3A010D" stroke-width="2.4"/>
-                    <rect x="14" y="19" width="48" height="58" rx="6" fill="#FCECE0" stroke="rgba(189,139,127,0.5)" stroke-width="1"/>
-                    <!-- Top Clip -->
-                    <rect x="24" y="5" width="28" height="13" rx="6" fill="#570215" stroke="#3A010D" stroke-width="2"/>
-                    <circle cx="38" cy="11.5" r="2.2" fill="#FBDEC7"/>
-                    <!-- Checklist Row 1 -->
-                    <path d="M21 35l3.5 3.5 7-7" stroke="#3A010D" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M36 35h19" stroke="#702229" stroke-width="2.1" stroke-linecap="round"/>
-                    <!-- Checklist Row 2 -->
-                    <path d="M21 49l3.5 3.5 7-7" stroke="#3A010D" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M36 49h19" stroke="#702229" stroke-width="2.1" stroke-linecap="round"/>
-                    <!-- Checklist Row 3 -->
-                    <path d="M21 63l3.5 3.5 7-7" stroke="#3A010D" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
-                    <path d="M36 63h15" stroke="#702229" stroke-width="2.1" stroke-linecap="round"/>
-                </svg>
-
-                <!-- Overlapping Deep Burgundy Clock Badge -->
-                <div class="avail-clock-badge">
-                    <svg viewBox="0 0 24 24" fill="none">
-                        <circle cx="12" cy="12" r="9" stroke="#FBDEC7" stroke-width="1.4" stroke-opacity="0.5"/>
-                        <path d="M12 7v5l3.5 2" stroke="#FDF4EE" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                </div>
-            </div>
+        const thumb = document.createElement("div");
+        thumb.className = "avail-thumb-tile";
+        thumb.setAttribute("aria-hidden", "true");
+        thumb.innerHTML = `
+            <svg viewBox="0 0 48 48" fill="none">
+                <path d="M10 34L24 39L38 34V38L24 43L10 38V34Z" fill="#702229" stroke="#3A010D" stroke-width="1"/>
+                <path d="M12 35L24 39.5L36 35" stroke="#FDF4EE" stroke-width="1.6" stroke-linecap="round"/>
+                <path d="M10 29L24 34L38 29V33L24 38L10 33V29Z" fill="#570215" stroke="#3A010D" stroke-width="1"/>
+                <path d="M12 30L24 34.5L36 30" stroke="#FBDEC7" stroke-width="1.6" stroke-linecap="round"/>
+                <path d="M16 18V25C16 27.5 19.5 29 24 29C28.5 29 32 27.5 32 25V18H16Z" fill="#2D020A"/>
+                <polygon points="24,8 40,15 24,22 8,15" fill="#3A010D" stroke="#2D020A" stroke-width="1"/>
+                <path d="M24 15L13 19.5V29" stroke="#D4A973" stroke-width="1.6" stroke-linecap="round"/>
+                <circle cx="13" cy="30" r="1.5" fill="#D4A973"/>
+            </svg>
         `;
 
-        const top = document.createElement("div");
-        top.className = "avail-card-top";
+        const info = document.createElement("div");
+        info.className = "avail-info-col";
 
-        const codePill = document.createElement("span");
-        codePill.className = "avail-code-pill";
-        codePill.textContent = codeLabel;
+        const title = document.createElement("h3");
+        title.className = "avail-card-title";
+        title.textContent = test.title;
+
+        const meta = document.createElement("p");
+        meta.className = "avail-inline-meta";
+        meta.textContent = `${qCount} Q • ${dur} Min • ${subj}`;
+
+        info.append(title, meta);
 
         const statusPill = document.createElement("span");
         statusPill.className = "avail-status-pill";
@@ -285,69 +257,12 @@ function renderTests() {
         dot.className = "avail-status-dot";
         statusPill.append(dot, document.createTextNode("AVAILABLE"));
 
-        top.append(codePill, statusPill);
-
-        const body = document.createElement("div");
-        body.className = "avail-card-body";
-
-        const title = document.createElement("h3");
-        title.className = "avail-card-title";
-        title.textContent = test.title;
-
-        const desc = document.createElement("p");
-        desc.className = "avail-card-desc";
-        desc.textContent = "Ready to begin. Complete the instructions before starting your examination.";
-
-        body.append(title, desc);
-
-        const inner = document.createElement("div");
-        inner.className = "avail-inner-panel";
-
-        const metricsGrid = document.createElement("div");
-        metricsGrid.className = "avail-metrics-grid";
-
-        const m1 = document.createElement("div");
-        m1.className = "avail-metric-item";
-        m1.innerHTML = `<svg class="avail-metric-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 12h6M9 16h6"/></svg>`;
-        const m1Text = document.createElement("div");
-        m1Text.className = "avail-metric-text";
-        const m1Strong = document.createElement("strong");
-        m1Strong.textContent = String(qCount);
-        const m1Sub = document.createElement("span");
-        m1Sub.textContent = "Questions";
-        m1Text.append(m1Strong, m1Sub);
-        m1.appendChild(m1Text);
-
-        const m2 = document.createElement("div");
-        m2.className = "avail-metric-item";
-        m2.innerHTML = `<svg class="avail-metric-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>`;
-        const m2Text = document.createElement("div");
-        m2Text.className = "avail-metric-text";
-        const m2Strong = document.createElement("strong");
-        m2Strong.textContent = String(dur);
-        const m2Sub = document.createElement("span");
-        m2Sub.textContent = "Minutes";
-        m2Text.append(m2Strong, m2Sub);
-        m2.appendChild(m2Text);
-
-        const m3 = document.createElement("div");
-        m3.className = "avail-metric-item";
-        m3.innerHTML = `<svg class="avail-metric-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 12 12 17 22 12"/><polyline points="2 17 12 22 22 17"/></svg>`;
-        const m3Text = document.createElement("div");
-        m3Text.className = "avail-metric-text is-subject";
-        const m3Strong = document.createElement("strong");
-        m3Strong.textContent = subj;
-        const m3Sub = document.createElement("span");
-        m3Sub.textContent = "Subjects";
-        m3Text.append(m3Strong, m3Sub);
-        m3.appendChild(m3Text);
-
-        metricsGrid.append(m1, m2, m3);
+        row.append(thumb, info, statusPill);
 
         const startBtn = document.createElement("button");
         startBtn.type = "button";
         startBtn.className = "avail-start-btn";
-        startBtn.innerHTML = `<span>▶ START EXAMINATION &rarr;</span>`;
+        startBtn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="6 4 20 12 6 20 6 4"/></svg><span>START EXAMINATION</span>`;
 
         const launchExam = () => {
             const testIdClean = String(test.id || "MOCK01").toLowerCase();
@@ -377,8 +292,7 @@ function renderTests() {
             launchExam();
         });
 
-        inner.append(metricsGrid, startBtn);
-        card.append(top, body, inner);
+        card.append(row, startBtn);
         return card;
     }
 
@@ -395,90 +309,36 @@ function renderTests() {
         const qCount = test.questionsCount || test.questions_count || 150;
         const dur = test.duration || 180;
         const subj = test.subject || "General Paper";
-        const codeLabel = `EXAM ${String(test.id || "MOCK02").toUpperCase()}`;
-        const indexLabel = String(idx + 1).padStart(2, "0");
 
         const card = document.createElement("article");
         card.className = "upcoming-exam-card";
 
-        const top = document.createElement("div");
-        top.className = "upcoming-card-top";
+        const row = document.createElement("div");
+        row.className = "avail-card-row";
 
-        const badges = document.createElement("div");
-        badges.className = "upcoming-badges";
+        const thumb = document.createElement("div");
+        thumb.className = "avail-thumb-tile";
+        thumb.setAttribute("aria-hidden", "true");
+        thumb.innerHTML = `<svg class="hourglass-icon" style="width:26px;height:26px;color:#570215;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12M6 22h12"/><path d="M7 2v5.5a5 5 0 0 0 2.2 4.15L12 13.5l2.8-1.85A5 5 0 0 0 17 7.5V2"/><path d="M7 22v-5.5a5 5 0 0 1 2.2-4.15L12 10.5l2.8 1.85A5 5 0 0 1 17 16.5V22"/><path d="M9.2 6h5.6L12 9.5 9.2 6Z" fill="#BD8B7F" stroke="none"/><path d="M9.2 19h5.6L12 15.5 9.2 19Z" fill="#BD8B7F" stroke="none"/></svg>`;
 
-        const codePill = document.createElement("span");
-        codePill.className = "upcoming-code-pill";
-        codePill.textContent = codeLabel;
-
-        const soonPill = document.createElement("span");
-        soonPill.className = "upcoming-soon-pill";
-        soonPill.innerHTML = `<svg class="hourglass-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2h12M6 22h12"/><path d="M7 2v5.5a5 5 0 0 0 2.2 4.15L12 13.5l2.8-1.85A5 5 0 0 0 17 7.5V2"/><path d="M7 22v-5.5a5 5 0 0 1 2.2-4.15L12 10.5l2.8 1.85A5 5 0 0 1 17 16.5V22"/><path d="M9.2 6h5.6L12 9.5 9.2 6Z" fill="#D97706" stroke="none"/><path d="M9.2 19h5.6L12 15.5 9.2 19Z" fill="#D97706" stroke="none"/></svg><span>COMING SOON</span>`;
-
-        badges.append(codePill, soonPill);
-
-        const idxSpan = document.createElement("span");
-        idxSpan.className = "upcoming-index-num";
-        idxSpan.textContent = indexLabel;
-
-        top.append(badges, idxSpan);
+        const info = document.createElement("div");
+        info.className = "avail-info-col";
 
         const title = document.createElement("h3");
         title.className = "upcoming-card-title";
         title.textContent = test.title;
 
-        const desc = document.createElement("p");
-        desc.className = "upcoming-card-desc";
-        desc.textContent = "This examination will be available once its question bank is ready.";
+        const meta = document.createElement("p");
+        meta.className = "avail-inline-meta";
+        meta.textContent = `${qCount} Q • ${dur} Min • ${subj}`;
 
-        const statBoxes = document.createElement("div");
-        statBoxes.className = "upcoming-stat-boxes";
+        info.append(title, meta);
 
-        const specs = [
-            {
-                icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg>`,
-                label: "ITEMS",
-                val: String(qCount),
-                sub: "Questions"
-            },
-            {
-                icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>`,
-                label: "DURATION",
-                val: String(dur),
-                sub: "Minutes"
-            },
-            {
-                icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>`,
-                label: "STREAM",
-                val: subj,
-                sub: "Mandatory"
-            }
-        ];
+        const soonPill = document.createElement("span");
+        soonPill.className = "upcoming-soon-pill";
+        soonPill.textContent = "COMING SOON";
 
-        specs.forEach(sp => {
-            const box = document.createElement("div");
-            box.className = "upcoming-stat-box";
-            const head = document.createElement("div");
-            head.className = "upcoming-stat-head";
-            head.innerHTML = sp.icon;
-            const headLbl = document.createElement("span");
-            headLbl.textContent = sp.label;
-            head.appendChild(headLbl);
-
-            const val = document.createElement("strong");
-            val.className = "upcoming-stat-val";
-            val.textContent = sp.val;
-
-            const sub = document.createElement("span");
-            sub.className = "upcoming-stat-sub";
-            sub.textContent = sp.sub;
-
-            box.append(head, val, sub);
-            statBoxes.appendChild(box);
-        });
-
-        const footer = document.createElement("div");
-        footer.className = "upcoming-card-footer";
+        row.append(thumb, info, soonPill);
 
         const alerts = getStoredAlerts();
         let isAlerted = alerts.includes(String(test.id));
@@ -486,6 +346,8 @@ function renderTests() {
         const alertBtn = document.createElement("button");
         alertBtn.type = "button";
         alertBtn.className = isAlerted ? "upcoming-alert-btn is-alerted" : "upcoming-alert-btn";
+        alertBtn.style.width = "100%";
+        alertBtn.style.justifyContent = "center";
         const updateAlertLabel = () => {
             alertBtn.className = isAlerted ? "upcoming-alert-btn is-alerted" : "upcoming-alert-btn";
             alertBtn.textContent = isAlerted ? "✓ ALERT ENABLED" : "🔔 ALERT WHEN UNLOCKED";
@@ -506,8 +368,7 @@ function renderTests() {
             updateAlertLabel();
         });
 
-        footer.appendChild(alertBtn);
-        card.append(top, title, desc, statBoxes, footer);
+        card.append(row, alertBtn);
         return card;
     }
 
@@ -1572,6 +1433,7 @@ function initHeroCardCarousel() {
             e.stopPropagation();
             const prevIdx = activeIdx === 0 ? slides.length - 1 : activeIdx - 1;
             setActiveSlide(prevIdx, true);
+            restartAutoPlay();
         });
     }
 
@@ -1580,6 +1442,7 @@ function initHeroCardCarousel() {
             e.stopPropagation();
             const nextIdx = activeIdx === slides.length - 1 ? 0 : activeIdx + 1;
             setActiveSlide(nextIdx, true);
+            restartAutoPlay();
         });
     }
 
@@ -1587,6 +1450,7 @@ function initHeroCardCarousel() {
         slide.addEventListener("click", () => {
             if (idx !== activeIdx) {
                 setActiveSlide(idx, true);
+                restartAutoPlay();
             } else if (idx === 2) {
                 const ranksTab = document.getElementById("tabLeaderboardBtn");
                 if (ranksTab && window.innerWidth <= 900) {
@@ -1597,8 +1461,32 @@ function initHeroCardCarousel() {
     });
 
     dots.forEach((dot, idx) => {
-        dot.addEventListener("click", () => setActiveSlide(idx, true));
+        dot.addEventListener("click", () => {
+            setActiveSlide(idx, true);
+            restartAutoPlay();
+        });
     });
+
+    let autoTimer = null;
+    let isPaused = false;
+
+    function startAutoPlay() {
+        clearInterval(autoTimer);
+        autoTimer = setInterval(() => {
+            if (isPaused || document.hidden) return;
+            const nextIdx = activeIdx === slides.length - 1 ? 0 : activeIdx + 1;
+            setActiveSlide(nextIdx, true);
+        }, 4000);
+    }
+
+    function restartAutoPlay() {
+        startAutoPlay();
+    }
+
+    track.addEventListener("mouseenter", () => { isPaused = true; });
+    track.addEventListener("mouseleave", () => { isPaused = false; });
+    track.addEventListener("touchstart", () => { isPaused = true; }, { passive: true });
+    track.addEventListener("touchend", () => { isPaused = false; restartAutoPlay(); }, { passive: true });
 
     let scrollTimer = null;
     track.addEventListener("scroll", () => {
@@ -1619,8 +1507,9 @@ function initHeroCardCarousel() {
         }, 60);
     }, { passive: true });
 
-    // Start centered on Slide 1 (Examinations)
+    // Start centered on Slide 1 (Examinations) and auto-advance every 4s
     setActiveSlide(0, false);
+    startAutoPlay();
 }
 
 /* -----------------------------------------------------
