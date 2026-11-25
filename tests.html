@@ -2812,7 +2812,7 @@
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
-            padding: 6px 46px 8px;
+            padding: 6px 28px 8px;
         }
 
         .hero-carousel-track::-webkit-scrollbar {
@@ -2821,18 +2821,19 @@
 
         @media (min-width: 901px) {
             .hero-carousel-track {
-                padding: 8px 110px 10px;
+                padding: 8px 86px 10px;
                 gap: 20px;
             }
         }
 
         .hero-slide-card {
-            flex: 0 0 min(420px, calc(100% - 16px));
+            flex: 0 0 min(470px, calc(100% - 12px));
+            min-height: 288px;
             scroll-snap-align: center;
             background: linear-gradient(160deg, rgba(189, 139, 127, 0.46) 0%, rgba(87, 2, 21, 0.82) 100%);
             border: 1.2px solid rgba(251, 222, 199, 0.45);
             border-radius: 26px;
-            padding: 20px 18px 18px;
+            padding: 24px 20px 22px;
             text-align: center;
             color: #FDF4EE;
             position: relative;
@@ -2862,9 +2863,9 @@
         }
 
         .hero-laurel-emblem {
-            width: 146px;
-            height: 70px;
-            margin: -2px auto 6px;
+            width: 158px;
+            height: 76px;
+            margin: -2px auto 8px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -2906,10 +2907,10 @@
 
         .hero-slide-title {
             font-family: "Playfair Display", Georgia, "Times New Roman", serif;
-            font-size: 27px;
+            font-size: 29px;
             font-weight: 800;
             letter-spacing: -0.2px;
-            margin: 0 0 7px;
+            margin: 0 0 8px;
             line-height: 1.12;
             color: inherit;
         }
@@ -3238,30 +3239,18 @@
             scroll-snap-type: none;
         }
 
-        @media (max-width: 900px) {
-            #examSection .exam-section-header,
-            #examSection .carousel-controls-row {
-                display: none !important;
-            }
-            .exam-carousel-section {
-                margin-bottom: 12px;
-            }
-        }
-
-        /* AVAILABLE EXAM CARD (EXACT COMPACT HORIZONTAL WARM IVORY DESIGN) */
-        .avail-exam-card,
-        .upcoming-exam-card {
-            flex: 0 0 min(420px, calc(100% - 14px));
+        /* AVAILABLE EXAM CARD (STRUCTURED BURGUNDY & WARM IVORY DESIGN) */
+        .avail-exam-card {
+            flex: 0 0 min(380px, calc(100% - 26px));
             scroll-snap-align: start;
-            background: linear-gradient(180deg, #FDF4EE 0%, #FCECE0 100%);
-            border: 1px solid rgba(251, 222, 199, 0.85);
+            background: linear-gradient(150deg, #3A010D 0%, #570215 62%, #702229 100%);
             border-radius: 22px;
-            padding: 14px;
-            box-shadow:
-                0 12px 28px rgba(24, 0, 5, 0.28),
-                0 2px 6px rgba(189, 139, 127, 0.14),
-                inset 0 1px 0 #FFFFFF;
-            color: #2E1416;
+            padding: 18px;
+            border: 1.5px solid rgba(251, 222, 199, 0.55);
+            box-shadow: 0 12px 28px rgba(24, 0, 5, 0.3);
+            color: #FDF4EE;
+            position: relative;
+            overflow: hidden;
             display: flex;
             flex-direction: column;
             gap: 12px;
@@ -3269,130 +3258,194 @@
             transition: transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.22s ease;
         }
 
-        .upcoming-exam-card {
-            cursor: default;
-        }
-
         .avail-exam-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 16px 34px rgba(24, 0, 5, 0.34), inset 0 1px 0 #FFFFFF;
+            transform: translateY(-3px);
+            box-shadow: 0 16px 34px rgba(24, 0, 5, 0.38);
         }
 
-        .avail-card-row {
+        .avail-card-watermark {
+            position: absolute;
+            right: 16px;
+            top: 50px;
+            width: 82px;
+            height: 82px;
+            opacity: 0.92;
+            pointer-events: none;
+        }
+
+        .avail-card-top {
             display: flex;
             align-items: center;
-            gap: 11px;
-            min-width: 0;
-        }
-
-        .avail-thumb-tile {
-            width: 50px;
-            height: 50px;
-            border-radius: 13px;
-            background: #F1D6C7;
-            border: 1px solid rgba(189, 139, 127, 0.45);
-            display: grid;
-            place-items: center;
-            flex-shrink: 0;
+            justify-content: space-between;
+            gap: 8px;
             position: relative;
+            z-index: 2;
         }
 
-        .avail-thumb-tile::after {
-            content: "";
-            position: absolute;
-            right: -6px;
-            top: 8px;
-            bottom: 8px;
-            width: 1px;
-            background: rgba(189, 139, 127, 0.5);
-        }
-
-        .avail-thumb-tile svg {
-            width: 34px;
-            height: 34px;
-        }
-
-        .avail-info-col {
-            flex: 1;
-            min-width: 0;
-            padding-left: 4px;
-        }
-
-        .avail-card-title,
-        .upcoming-card-title {
-            font-size: 15.5px;
-            font-weight: 800;
-            color: #3A010D;
-            margin: 0 0 3px;
-            line-height: 1.22;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-
-        .avail-inline-meta {
-            font-size: 12px;
-            font-weight: 500;
-            color: #6E4A4E;
-            margin: 0;
-            line-height: 1.3;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+        .avail-code-pill {
+            background: rgba(253, 244, 238, 0.14);
+            border: 1px solid rgba(251, 222, 199, 0.28);
+            color: #FBDEC7;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 999px;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
         }
 
         .avail-status-pill {
             background: #DCFCE7;
-            border: 1px solid #A7F3D0;
             color: #15803D;
-            font-size: 10px;
+            font-size: 11px;
             font-weight: 800;
-            padding: 5px 10px;
+            padding: 4px 12px;
             border-radius: 999px;
             display: inline-flex;
             align-items: center;
-            gap: 5px;
+            gap: 6px;
             letter-spacing: 0.4px;
             text-transform: uppercase;
             flex-shrink: 0;
         }
 
         .avail-status-dot {
-            width: 6px;
-            height: 6px;
+            width: 7px;
+            height: 7px;
             border-radius: 50%;
             background: #16A34A;
         }
 
+        .avail-card-body {
+            position: relative;
+            z-index: 2;
+            padding-right: 76px;
+        }
+
+        .avail-card-title {
+            font-size: 17.5px;
+            font-weight: 800;
+            color: #FDF4EE;
+            margin: 0 0 6px;
+            line-height: 1.3;
+        }
+
+        .avail-card-desc {
+            font-size: 12.5px;
+            color: #F1D6C7;
+            margin: 0;
+            line-height: 1.45;
+        }
+
+        .avail-inner-panel {
+            background: #FDF4EE;
+            border-radius: 16px;
+            padding: 13px 14px;
+            color: #3A010D;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            position: relative;
+            z-index: 2;
+            margin-top: auto;
+        }
+
+        .avail-metrics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1.25fr;
+            align-items: center;
+        }
+
+        .avail-metric-item {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 0 8px;
+            min-width: 0;
+        }
+
+        .avail-metric-item:first-child {
+            padding-left: 0;
+        }
+
+        .avail-metric-item + .avail-metric-item {
+            border-left: 1px solid rgba(189, 139, 127, 0.45);
+        }
+
+        .avail-metric-icon {
+            width: 15px;
+            height: 15px;
+            color: #570215;
+            flex-shrink: 0;
+        }
+
+        .avail-metric-text strong {
+            display: block;
+            font-size: 13px;
+            font-weight: 800;
+            color: #3A010D;
+            line-height: 1.2;
+        }
+
+        .avail-metric-text span {
+            display: block;
+            font-size: 10.5px;
+            color: #6E4A4E;
+            line-height: 1.2;
+        }
+
+        .avail-metric-text.is-subject strong {
+            font-size: 11.5px;
+            line-height: 1.25;
+            word-break: break-word;
+        }
+
         .avail-start-btn {
             width: 100%;
-            min-height: 46px;
-            border: 1px solid rgba(189, 139, 127, 0.45);
+            border: none;
             border-radius: 999px;
-            padding: 10px 18px;
-            background: linear-gradient(100deg, #3A010D 0%, #570215 55%, #2D020A 100%);
-            color: #FDF4EE;
+            padding: 11px 16px;
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: #FFFFFF;
             font-size: 12.5px;
             font-weight: 800;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.5px;
             text-transform: uppercase;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
             cursor: pointer;
-            box-shadow: 0 6px 16px rgba(45, 2, 10, 0.26), inset 0 1px 0 rgba(251, 222, 199, 0.25);
-            transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
+            box-shadow: 0 4px 14px rgba(4, 120, 87, 0.3);
+            transition: transform 0.15s ease, filter 0.15s ease;
         }
 
         .avail-start-btn:hover {
-            filter: brightness(1.08);
+            filter: brightness(1.06);
             transform: translateY(-1px);
-            box-shadow: 0 8px 20px rgba(45, 2, 10, 0.34), inset 0 1px 0 rgba(251, 222, 199, 0.35);
         }
 
-        .avail-start-btn:active {
-            transform: scale(0.985);
+        /* UPCOMING EXAM CARD (WARM IVORY + 3 BLUSH BEIGE STAT BOXES + ALERT BUTTON) */
+        .upcoming-exam-card {
+            flex: 0 0 min(380px, calc(100% - 26px));
+            scroll-snap-align: start;
+            background: #FDF4EE;
+            border-radius: 22px;
+            padding: 18px;
+            border: 1.5px solid #BD8B7F;
+            box-shadow: 0 10px 26px rgba(24, 0, 5, 0.22);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .upcoming-card-title {
+            font-size: 17px;
+            font-weight: 800;
+            color: #3A010D;
+            margin: 0;
+            line-height: 1.3;
         }
 
         .upcoming-card-top {

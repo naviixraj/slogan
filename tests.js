@@ -207,11 +207,12 @@ function renderTests() {
         upcomingExamsSection.style.display = (upcomingList.length > 0 && filter !== "available") ? "block" : "none";
     }
 
-    // Helper: create Available Exam compact card
+    // Helper: create Available Exam structured card
     function buildAvailableCard(test) {
         const qCount = test.questionsCount || test.questions_count || 150;
         const dur = test.duration || 180;
-        const subj = test.subject || "All Subjects";
+        const subj = test.subject || "General Paper";
+        const codeLabel = `EXAM ${String(test.id || "SET01").toUpperCase()}`;
 
         const card = document.createElement("article");
         card.className = "avail-exam-card";
@@ -219,37 +220,22 @@ function renderTests() {
         card.setAttribute("tabindex", "0");
         card.setAttribute("title", `Click to start ${test.title}`);
 
-        const row = document.createElement("div");
-        row.className = "avail-card-row";
-
-        const thumb = document.createElement("div");
-        thumb.className = "avail-thumb-tile";
-        thumb.setAttribute("aria-hidden", "true");
-        thumb.innerHTML = `
-            <svg viewBox="0 0 48 48" fill="none">
-                <path d="M10 34L24 39L38 34V38L24 43L10 38V34Z" fill="#702229" stroke="#3A010D" stroke-width="1"/>
-                <path d="M12 35L24 39.5L36 35" stroke="#FDF4EE" stroke-width="1.6" stroke-linecap="round"/>
-                <path d="M10 29L24 34L38 29V33L24 38L10 33V29Z" fill="#570215" stroke="#3A010D" stroke-width="1"/>
-                <path d="M12 30L24 34.5L36 30" stroke="#FBDEC7" stroke-width="1.6" stroke-linecap="round"/>
-                <path d="M16 18V25C16 27.5 19.5 29 24 29C28.5 29 32 27.5 32 25V18H16Z" fill="#2D020A"/>
-                <polygon points="24,8 40,15 24,22 8,15" fill="#3A010D" stroke="#2D020A" stroke-width="1"/>
-                <path d="M24 15L13 19.5V29" stroke="#D4A973" stroke-width="1.6" stroke-linecap="round"/>
-                <circle cx="13" cy="30" r="1.5" fill="#D4A973"/>
+        card.innerHTML = `
+            <svg class="avail-card-watermark" viewBox="0 0 96 96" fill="none" aria-hidden="true">
+                <rect x="20" y="14" width="46" height="58" rx="8" fill="rgba(251,222,199,0.12)" stroke="rgba(251,222,199,0.35)" stroke-width="2"/>
+                <rect x="33" y="9" width="20" height="9" rx="4" fill="rgba(251,222,199,0.22)" stroke="rgba(251,222,199,0.42)" stroke-width="1.5"/>
+                <path d="M30 33l4 4 8-8M30 46l4 4 8-8M30 59h20" stroke="rgba(253,244,238,0.5)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="64" cy="64" r="16" fill="#BD8B7F" stroke="#FDF4EE" stroke-width="2"/>
+                <path d="M64 56v9l6 3" stroke="#3A010D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
         `;
 
-        const info = document.createElement("div");
-        info.className = "avail-info-col";
+        const top = document.createElement("div");
+        top.className = "avail-card-top";
 
-        const title = document.createElement("h3");
-        title.className = "avail-card-title";
-        title.textContent = test.title;
-
-        const meta = document.createElement("p");
-        meta.className = "avail-inline-meta";
-        meta.textContent = `${qCount} Q • ${dur} Min • ${subj}`;
-
-        info.append(title, meta);
+        const codePill = document.createElement("span");
+        codePill.className = "avail-code-pill";
+        codePill.textContent = codeLabel;
 
         const statusPill = document.createElement("span");
         statusPill.className = "avail-status-pill";
@@ -257,12 +243,67 @@ function renderTests() {
         dot.className = "avail-status-dot";
         statusPill.append(dot, document.createTextNode("AVAILABLE"));
 
-        row.append(thumb, info, statusPill);
+        top.append(codePill, statusPill);
+
+        const body = document.createElement("div");
+        body.className = "avail-card-body";
+
+        const title = document.createElement("h3");
+        title.className = "avail-card-title";
+        title.textContent = test.title;
+
+        const desc = document.createElement("p");
+        desc.className = "avail-card-desc";
+        desc.textContent = "Ready to begin. Complete the instructions before starting your examination.";
+
+        body.append(title, desc);
+
+        const inner = document.createElement("div");
+        inner.className = "avail-inner-panel";
+
+        const metricsGrid = document.createElement("div");
+        metricsGrid.className = "avail-metrics-grid";
+
+        const m1 = document.createElement("div");
+        m1.className = "avail-metric-item";
+        m1.innerHTML = `<svg class="avail-metric-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 12h6M9 16h6"/></svg>`;
+        const m1Text = document.createElement("div");
+        m1Text.className = "avail-metric-text";
+        const m1Strong = document.createElement("strong");
+        m1Strong.textContent = String(qCount);
+        const m1Sub = document.createElement("span");
+        m1Sub.textContent = "Questions";
+        m1Text.append(m1Strong, m1Sub);
+        m1.appendChild(m1Text);
+
+        const m2 = document.createElement("div");
+        m2.className = "avail-metric-item";
+        m2.innerHTML = `<svg class="avail-metric-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>`;
+        const m2Text = document.createElement("div");
+        m2Text.className = "avail-metric-text";
+        const m2Strong = document.createElement("strong");
+        m2Strong.textContent = String(dur);
+        const m2Sub = document.createElement("span");
+        m2Sub.textContent = "Minutes";
+        m2Text.append(m2Strong, m2Sub);
+        m2.appendChild(m2Text);
+
+        const m3 = document.createElement("div");
+        m3.className = "avail-metric-item";
+        m3.innerHTML = `<svg class="avail-metric-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 12 12 17 22 12"/><polyline points="2 17 12 22 22 17"/></svg>`;
+        const m3Text = document.createElement("div");
+        m3Text.className = "avail-metric-text is-subject";
+        const m3Strong = document.createElement("strong");
+        m3Strong.textContent = subj;
+        m3Text.appendChild(m3Strong);
+        m3.appendChild(m3Text);
+
+        metricsGrid.append(m1, m2, m3);
 
         const startBtn = document.createElement("button");
         startBtn.type = "button";
         startBtn.className = "avail-start-btn";
-        startBtn.innerHTML = `<svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><polygon points="6 4 20 12 6 20 6 4"/></svg><span>START EXAMINATION</span>`;
+        startBtn.innerHTML = `<span>▶ START EXAMINATION &rarr;</span>`;
 
         const launchExam = () => {
             const testIdClean = String(test.id || "MOCK01").toLowerCase();
@@ -292,7 +333,8 @@ function renderTests() {
             launchExam();
         });
 
-        card.append(row, startBtn);
+        inner.append(metricsGrid, startBtn);
+        card.append(top, body, inner);
         return card;
     }
 
@@ -309,36 +351,90 @@ function renderTests() {
         const qCount = test.questionsCount || test.questions_count || 150;
         const dur = test.duration || 180;
         const subj = test.subject || "General Paper";
+        const codeLabel = `EXAM ${String(test.id || "MOCK02").toUpperCase()}`;
+        const indexLabel = String(idx + 1).padStart(2, "0");
 
         const card = document.createElement("article");
         card.className = "upcoming-exam-card";
 
-        const row = document.createElement("div");
-        row.className = "avail-card-row";
+        const top = document.createElement("div");
+        top.className = "upcoming-card-top";
 
-        const thumb = document.createElement("div");
-        thumb.className = "avail-thumb-tile";
-        thumb.setAttribute("aria-hidden", "true");
-        thumb.innerHTML = `<svg class="hourglass-icon" style="width:26px;height:26px;color:#570215;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2h12M6 22h12"/><path d="M7 2v5.5a5 5 0 0 0 2.2 4.15L12 13.5l2.8-1.85A5 5 0 0 0 17 7.5V2"/><path d="M7 22v-5.5a5 5 0 0 1 2.2-4.15L12 10.5l2.8 1.85A5 5 0 0 1 17 16.5V22"/><path d="M9.2 6h5.6L12 9.5 9.2 6Z" fill="#BD8B7F" stroke="none"/><path d="M9.2 19h5.6L12 15.5 9.2 19Z" fill="#BD8B7F" stroke="none"/></svg>`;
+        const badges = document.createElement("div");
+        badges.className = "upcoming-badges";
 
-        const info = document.createElement("div");
-        info.className = "avail-info-col";
+        const codePill = document.createElement("span");
+        codePill.className = "upcoming-code-pill";
+        codePill.textContent = codeLabel;
+
+        const soonPill = document.createElement("span");
+        soonPill.className = "upcoming-soon-pill";
+        soonPill.innerHTML = `<svg class="hourglass-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2h12M6 22h12"/><path d="M7 2v5.5a5 5 0 0 0 2.2 4.15L12 13.5l2.8-1.85A5 5 0 0 0 17 7.5V2"/><path d="M7 22v-5.5a5 5 0 0 1 2.2-4.15L12 10.5l2.8 1.85A5 5 0 0 1 17 16.5V22"/><path d="M9.2 6h5.6L12 9.5 9.2 6Z" fill="#570215" stroke="none"/><path d="M9.2 19h5.6L12 15.5 9.2 19Z" fill="#570215" stroke="none"/></svg><span>COMING SOON</span>`;
+
+        badges.append(codePill, soonPill);
+
+        const idxSpan = document.createElement("span");
+        idxSpan.className = "upcoming-index-num";
+        idxSpan.textContent = indexLabel;
+
+        top.append(badges, idxSpan);
 
         const title = document.createElement("h3");
         title.className = "upcoming-card-title";
         title.textContent = test.title;
 
-        const meta = document.createElement("p");
-        meta.className = "avail-inline-meta";
-        meta.textContent = `${qCount} Q • ${dur} Min • ${subj}`;
+        const desc = document.createElement("p");
+        desc.className = "upcoming-card-desc";
+        desc.textContent = "This examination will be available once its question bank is ready.";
 
-        info.append(title, meta);
+        const statBoxes = document.createElement("div");
+        statBoxes.className = "upcoming-stat-boxes";
 
-        const soonPill = document.createElement("span");
-        soonPill.className = "upcoming-soon-pill";
-        soonPill.textContent = "COMING SOON";
+        const specs = [
+            {
+                icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg>`,
+                label: "ITEMS",
+                val: String(qCount),
+                sub: "Questions"
+            },
+            {
+                icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>`,
+                label: "DURATION",
+                val: String(dur),
+                sub: "Minutes"
+            },
+            {
+                icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>`,
+                label: "STREAM",
+                val: subj,
+                sub: "Mandatory"
+            }
+        ];
 
-        row.append(thumb, info, soonPill);
+        specs.forEach(sp => {
+            const box = document.createElement("div");
+            box.className = "upcoming-stat-box";
+            const head = document.createElement("div");
+            head.className = "upcoming-stat-head";
+            head.innerHTML = sp.icon;
+            const headLbl = document.createElement("span");
+            headLbl.textContent = sp.label;
+            head.appendChild(headLbl);
+
+            const val = document.createElement("strong");
+            val.className = "upcoming-stat-val";
+            val.textContent = sp.val;
+
+            const sub = document.createElement("span");
+            sub.className = "upcoming-stat-sub";
+            sub.textContent = sp.sub;
+
+            box.append(head, val, sub);
+            statBoxes.appendChild(box);
+        });
+
+        const footer = document.createElement("div");
+        footer.className = "upcoming-card-footer";
 
         const alerts = getStoredAlerts();
         let isAlerted = alerts.includes(String(test.id));
@@ -346,8 +442,6 @@ function renderTests() {
         const alertBtn = document.createElement("button");
         alertBtn.type = "button";
         alertBtn.className = isAlerted ? "upcoming-alert-btn is-alerted" : "upcoming-alert-btn";
-        alertBtn.style.width = "100%";
-        alertBtn.style.justifyContent = "center";
         const updateAlertLabel = () => {
             alertBtn.className = isAlerted ? "upcoming-alert-btn is-alerted" : "upcoming-alert-btn";
             alertBtn.textContent = isAlerted ? "✓ ALERT ENABLED" : "🔔 ALERT WHEN UNLOCKED";
@@ -368,7 +462,8 @@ function renderTests() {
             updateAlertLabel();
         });
 
-        card.append(row, alertBtn);
+        footer.appendChild(alertBtn);
+        card.append(top, title, desc, statBoxes, footer);
         return card;
     }
 
