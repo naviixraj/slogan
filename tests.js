@@ -109,7 +109,7 @@ let currentHomeFilter = "all";
 function renderTests() {
 
     const term = searchInput.value.trim().toLowerCase();
-    const filter = currentHomeFilter || (statusFilter ? statusFilter.value : "all");
+    const filter = currentHomeFilter || "all";
 
     // Dynamic stats for Hero Card & Chips
     const activeTotal = mockTests.filter(t => t.status === "available").length;
@@ -284,6 +284,9 @@ homeFilterChips.forEach(chip => {
         homeFilterChips.forEach(c => c.classList.remove("active"));
         chip.classList.add("active");
         currentHomeFilter = chip.getAttribute("data-home-filter") || "all";
+        if (statusFilter) {
+            statusFilter.value = currentHomeFilter;
+        }
         renderTests();
     });
 });
@@ -598,8 +601,22 @@ if (confirmLogoutButton) {
    SEARCH AND FILTER
    ----------------------------------------------------- */
 
-searchInput.addEventListener("input", renderTests);
-statusFilter.addEventListener("change", renderTests);
+if (searchInput) {
+    searchInput.addEventListener("input", renderTests);
+}
+if (statusFilter) {
+    statusFilter.addEventListener("change", () => {
+        currentHomeFilter = statusFilter.value || "all";
+        homeFilterChips.forEach(c => {
+            if (c.getAttribute("data-home-filter") === currentHomeFilter) {
+                c.classList.add("active");
+            } else {
+                c.classList.remove("active");
+            }
+        });
+        renderTests();
+    });
+}
 
 /* -----------------------------------------------------
    GRID / LIST VIEW TOGGLE (WITH ROTATION)
