@@ -2011,14 +2011,14 @@ function initHeroCardCarousel() {
    ----------------------------------------------------- */
 
 function initNotificationsBell() {
-    const bellBtn = document.getElementById("heroBellBtn");
-    const bellDot = document.getElementById("heroBellDot");
+    const bellBtns = Array.from(document.querySelectorAll(".hero-bell-btn"));
+    const bellDots = Array.from(document.querySelectorAll(".hero-bell-dot"));
     const modal = document.getElementById("notificationsModal");
     const listEl = document.getElementById("notificationsList");
     const metaEl = document.getElementById("notifModalMeta");
     const closeBtn = document.getElementById("closeNotificationsBtn");
 
-    if (!bellBtn || !modal || !listEl) return;
+    if (bellBtns.length === 0 || !modal || !listEl) return;
 
     function getAlertsSafe() {
         try {
@@ -2098,14 +2098,16 @@ function initNotificationsBell() {
         });
     }
 
-    function openNotifications() {
-        bellBtn.classList.remove("is-ringing");
-        void bellBtn.offsetWidth;
-        bellBtn.classList.add("is-ringing");
+    function openNotifications(triggerBtn) {
+        if (triggerBtn) {
+            triggerBtn.classList.remove("is-ringing");
+            void triggerBtn.offsetWidth;
+            triggerBtn.classList.add("is-ringing");
+        }
         renderNotifications();
         modal.classList.add("show");
         modal.setAttribute("aria-hidden", "false");
-        if (bellDot) bellDot.classList.add("is-hidden");
+        bellDots.forEach(dot => dot.classList.add("is-hidden"));
     }
 
     function closeNotifications() {
@@ -2113,7 +2115,9 @@ function initNotificationsBell() {
         modal.setAttribute("aria-hidden", "true");
     }
 
-    bellBtn.addEventListener("click", openNotifications);
+    bellBtns.forEach(btn => {
+        btn.addEventListener("click", () => openNotifications(btn));
+    });
     if (closeBtn) closeBtn.addEventListener("click", closeNotifications);
     modal.addEventListener("click", (e) => {
         if (e.target === modal) closeNotifications();
