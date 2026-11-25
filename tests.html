@@ -2808,35 +2808,35 @@
 
         .hero-bell-btn {
             position: relative;
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            border: 1.25px solid rgba(232, 192, 136, 0.85);
-            background: linear-gradient(145deg, rgba(87, 2, 21, 0.9), rgba(45, 1, 10, 0.92));
+            width: 36px;
+            height: 36px;
+            border-radius: 0;
+            border: none;
+            background: transparent;
             color: #FBDEC7;
             display: inline-flex;
             align-items: center;
             justify-content: center;
+            padding: 0;
             cursor: pointer;
             flex-shrink: 0;
-            box-shadow: 0 0 12px rgba(232, 192, 136, 0.28), 0 4px 12px rgba(24, 0, 5, 0.35);
-            transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+            filter: drop-shadow(0 2px 6px rgba(24, 0, 5, 0.4));
+            transition: transform 0.22s ease, filter 0.22s ease;
             -webkit-tap-highlight-color: transparent;
         }
 
         .hero-bell-btn:hover {
-            transform: translateY(-1px) scale(1.04);
-            border-color: #F4CE95;
-            box-shadow: 0 0 18px rgba(232, 192, 136, 0.48), 0 6px 16px rgba(24, 0, 5, 0.42);
+            transform: translateY(-1px) scale(1.06);
+            filter: drop-shadow(0 0 10px rgba(232, 192, 136, 0.55));
         }
 
         .hero-bell-btn:active {
-            transform: scale(0.95);
+            transform: scale(0.94);
         }
 
         .hero-bell-svg {
-            width: 21px;
-            height: 21px;
+            width: 24px;
+            height: 24px;
             transform-origin: 50% 18%;
             overflow: visible;
         }
@@ -2874,8 +2874,8 @@
 
         .hero-bell-dot {
             position: absolute;
-            top: 7px;
-            right: 8px;
+            top: 4px;
+            right: 5px;
             width: 8px;
             height: 8px;
             border-radius: 50%;
