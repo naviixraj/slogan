@@ -869,7 +869,7 @@ if (registerForm) {
                         method: "POST",
                         headers: { "Content-Type": "application/json" },
                         credentials: "same-origin",
-                        body: JSON.stringify({ userId, password })
+                        body: JSON.stringify({ userId: finalUserId, password: finalPassword })
                     });
                 } catch (loginErr) {
                     console.warn("Direct login fallback notice:", loginErr);
@@ -882,7 +882,7 @@ if (registerForm) {
             // Cache candidate info for immediate seamless load on tests.html
             localStorage.setItem("candidateInfo", JSON.stringify({
                 name: candidateName,
-                registerNumber: userId,
+                registerNumber: finalUserId,
                 email: email,
                 role: "Student",
                 examCombination: examCombination || "Paper 1"
