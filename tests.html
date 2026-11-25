@@ -1964,7 +1964,7 @@
 
             .profile-banner-img,
             .profile-banner-header picture,
-            .profile-banner-header svg {
+            .profile-banner-header svg:not(.profile-banner-curve) {
                 width: 100%;
                 height: auto;
                 display: block;
@@ -1972,10 +1972,23 @@
                 border-radius: 30px 30px 0 0;
             }
 
+            .profile-banner-curve {
+                position: absolute;
+                left: 0;
+                right: 0;
+                bottom: -1px;
+                width: 100%;
+                height: clamp(22px, 6.8vw, 30px);
+                display: block;
+                pointer-events: none;
+                z-index: 1;
+                border-radius: 0;
+            }
+
             /* AVATAR WRAPPER (CENTERED & OVERLAPPING BANNER EXACT POSITION) */
             .profile-avatar-wrapper {
                 position: relative;
-                margin-top: -46px;
+                margin-top: -48px;
                 display: inline-block;
                 z-index: 2;
             }
@@ -3095,6 +3108,9 @@
                             <source type="image/svg+xml" srcset="profile-banner-exact.svg">
                             <img src="profile-banner-exact.svg" srcset="profile-banner-exact.svg 1x, profile-banner-exact@4x.png 4x, profile-banner-exact.png 1x" alt="Slogon Education Header" class="profile-banner-img">
                         </picture>
+                        <svg class="profile-banner-curve" viewBox="0 0 422 28" preserveAspectRatio="none" aria-hidden="true">
+                            <path d="M0,28 L0,26 Q211,-8 422,26 L422,28 Z" fill="#F6F4FB"></path>
+                        </svg>
                     </div>
 
                     <!-- AVATAR -->
