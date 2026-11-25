@@ -2812,7 +2812,7 @@
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
-            padding: 6px 28px 8px;
+            padding: 6px 42px 8px;
         }
 
         .hero-carousel-track::-webkit-scrollbar {
@@ -2821,17 +2821,17 @@
 
         @media (min-width: 901px) {
             .hero-carousel-track {
-                padding: 8px 86px 10px;
+                padding: 8px 96px 10px;
                 gap: 20px;
             }
         }
 
         .hero-slide-card {
-            flex: 0 0 min(470px, calc(100% - 12px));
-            min-height: 288px;
+            flex: 0 0 min(450px, calc(100% - 14px));
+            min-height: 292px;
             scroll-snap-align: center;
-            background: linear-gradient(160deg, rgba(189, 139, 127, 0.46) 0%, rgba(87, 2, 21, 0.82) 100%);
-            border: 1.2px solid rgba(251, 222, 199, 0.45);
+            background: linear-gradient(160deg, rgba(189, 139, 127, 0.48) 0%, rgba(87, 2, 21, 0.84) 100%);
+            border: 1.2px solid rgba(251, 222, 199, 0.48);
             border-radius: 26px;
             padding: 24px 20px 22px;
             text-align: center;
@@ -2839,7 +2839,7 @@
             position: relative;
             cursor: pointer;
             transform: scale(0.92);
-            opacity: 0.86;
+            opacity: 0.88;
             transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
                         opacity 0.35s ease,
                         background 0.35s ease,
@@ -2855,11 +2855,11 @@
 
         .hero-slide-card.is-active {
             background: linear-gradient(180deg, #FDF4EE 0%, #FCECE0 58%, #FBDEC7 100%);
-            border: 1.5px solid rgba(251, 222, 199, 0.92);
+            border: 1.5px solid rgba(251, 222, 199, 0.95);
             color: #3A010D;
             transform: scale(1);
             opacity: 1;
-            box-shadow: 0 18px 42px rgba(24, 0, 5, 0.42), 0 0 28px rgba(251, 222, 199, 0.16), inset 0 1px 0 #FFFFFF;
+            box-shadow: 0 18px 44px rgba(24, 0, 5, 0.45), 0 0 26px rgba(251, 222, 199, 0.22), inset 0 1px 0 #FFFFFF;
         }
 
         .hero-laurel-emblem {
@@ -3687,7 +3687,7 @@
     </style>
 </head>
 
-<body>
+<body class="in-home-tab">
 
     <!-- MOBILE DRAWER BACKDROP (OPTION A) -->
     <div class="sidebar-backdrop" id="sidebarBackdrop"></div>

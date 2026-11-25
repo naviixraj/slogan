@@ -1604,6 +1604,13 @@ function initHeroCardCarousel() {
 
     // Start centered on Slide 1 (Examinations) and auto-advance every 4s
     setActiveSlide(0, false);
+    requestAnimationFrame(() => {
+        const target = slides[0];
+        if (target) {
+            const offset = target.offsetLeft - (track.clientWidth - target.offsetWidth) / 2;
+            track.scrollLeft = Math.max(0, offset);
+        }
+    });
     startAutoPlay();
 }
 
@@ -1611,6 +1618,7 @@ function initHeroCardCarousel() {
    INITIALIZE DASHBOARD
    ----------------------------------------------------- */
 
+document.body.classList.add("in-home-tab");
 initHeroCardCarousel();
 loadCandidate();
 loadStudentTests();
