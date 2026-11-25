@@ -1988,12 +1988,19 @@ function isCandidateEligibleForSubject(studentCombo, testSubject) {
 
 // Get dynamic test catalog for student tests.html (filtered by registered paper combination)
 app.get("/api/student/tests", async (req, res) => {
+    if (!req.session || !req.session.candidate) {
+        return res.status(401).json({
+            success: false,
+            message: "Please log in to view available examinations."
+        });
+    }
+
     try {
         const allTests = await unifiedDb.listQuestionSets();
-        const candidate = req.session ? req.session.candidate : null;
+        const candidate = req.session.candidate;
 
-        // Admins or guests preview see all tests
-        if (!candidate || candidate.role === "Admin") {
+        // Admins see all tests
+        if (candidate.role === "Admin") {
             return res.json({ success: true, tests: allTests });
         }
 
