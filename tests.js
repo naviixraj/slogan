@@ -2019,6 +2019,8 @@ function initNotificationsBell() {
     const listEl = document.getElementById("notificationsList");
     const metaEl = document.getElementById("notifModalMeta");
     const closeBtn = document.getElementById("closeNotificationsBtn");
+    const closeXBtn = document.getElementById("notifCloseXBtn");
+    const modalCard = modal ? modal.querySelector(".notif-modal-card") : null;
 
     if (bellBtns.length === 0 || !modal || !listEl) return;
 
@@ -2121,9 +2123,20 @@ function initNotificationsBell() {
         btn.addEventListener("click", () => openNotifications(btn));
     });
     if (closeBtn) closeBtn.addEventListener("click", closeNotifications);
+    if (closeXBtn) closeXBtn.addEventListener("click", closeNotifications);
     modal.addEventListener("click", (e) => {
-        if (e.target === modal) closeNotifications();
+        if (!modalCard || !modalCard.contains(e.target)) {
+            closeNotifications();
+        }
     });
+    document.addEventListener("pointerdown", (e) => {
+        if (!modal.classList.contains("show")) return;
+        const clickedInsideCard = modalCard && modalCard.contains(e.target);
+        const clickedBell = e.target.closest && e.target.closest(".hero-bell-btn");
+        if (!clickedInsideCard && !clickedBell) {
+            closeNotifications();
+        }
+    }, true);
     document.addEventListener("keydown", (e) => {
         if (e.key === "Escape" && modal.classList.contains("show")) {
             closeNotifications();
