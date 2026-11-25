@@ -1498,9 +1498,77 @@ async function loadLeaderboard() {
 }
 
 /* -----------------------------------------------------
+   4-SLIDE HERO CARD CAROUSEL
+   ----------------------------------------------------- */
+
+function initHeroCardCarousel() {
+    const track = document.getElementById("heroCarouselTrack");
+    const dotsWrap = document.getElementById("heroCarouselDots");
+    if (!track || !dotsWrap) return;
+
+    const slides = Array.from(track.querySelectorAll(".hero-slide-card"));
+    const dots = Array.from(dotsWrap.querySelectorAll(".hero-carousel-dot"));
+    if (!slides.length) return;
+
+    let activeIdx = 0;
+
+    function setActiveSlide(idx, shouldScroll = false) {
+        activeIdx = Math.max(0, Math.min(slides.length - 1, idx));
+        slides.forEach((s, i) => s.classList.toggle("is-active", i === activeIdx));
+        dots.forEach((d, i) => d.classList.toggle("active", i === activeIdx));
+
+        if (shouldScroll) {
+            const target = slides[activeIdx];
+            const offset = target.offsetLeft - (track.clientWidth - target.offsetWidth) / 2;
+            track.scrollTo({ left: Math.max(0, offset), behavior: "smooth" });
+        }
+    }
+
+    slides.forEach((slide, idx) => {
+        slide.addEventListener("click", () => {
+            if (idx !== activeIdx) {
+                setActiveSlide(idx, true);
+            } else if (idx === 2) {
+                const ranksTab = document.getElementById("tabLeaderboardBtn");
+                if (ranksTab && window.innerWidth <= 900) {
+                    ranksTab.click();
+                }
+            }
+        });
+    });
+
+    dots.forEach((dot, idx) => {
+        dot.addEventListener("click", () => setActiveSlide(idx, true));
+    });
+
+    let scrollTimer = null;
+    track.addEventListener("scroll", () => {
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(() => {
+            const center = track.scrollLeft + track.clientWidth / 2;
+            let closestIdx = 0;
+            let closestDist = Infinity;
+            slides.forEach((s, idx) => {
+                const sCenter = s.offsetLeft + s.offsetWidth / 2;
+                const dist = Math.abs(center - sCenter);
+                if (dist < closestDist) {
+                    closestDist = dist;
+                    closestIdx = idx;
+                }
+            });
+            setActiveSlide(closestIdx, false);
+        }, 60);
+    }, { passive: true });
+
+    // Start centered on Slide 1 (Examinations)
+    setActiveSlide(0, false);
+}
+
+/* -----------------------------------------------------
    INITIALIZE DASHBOARD
    ----------------------------------------------------- */
 
+initHeroCardCarousel();
 loadCandidate();
 loadStudentTests();
 loadLeaderboard();

@@ -16,19 +16,24 @@
 
     <style>
         :root {
-            --ivory: #F8F9FC;
+            --burgundy: #3A010D;
+            --wine: #570215;
+            --ivory: #FDF4EE;
+            --champagne: #FBDEC7;
+            --rose-gold: #BD8B7F;
+            --blush: #F1D6C7;
             --white: #FFFFFF;
-            --charcoal: #1A1D2E;
-            --muted: #64748B;
-            --emerald: #4F46E5;
-            --emerald-dark: #3730A3;
-            --emerald-soft: #EEF2FF;
-            --line: #E2E8F0;
-            --soft: #F1F5F9;
-            --accent-gradient: linear-gradient(135deg, #4F46E5 0%, #7C3AED 50%, #EC4899 100%);
-            --card-shadow: 0 1px 3px rgba(15, 23, 42, 0.04), 0 6px 16px rgba(15, 23, 42, 0.06);
-            --card-shadow-hover: 0 4px 12px rgba(79, 70, 229, 0.12), 0 16px 32px rgba(15, 23, 42, 0.1);
-            --glow-indigo: 0 0 20px rgba(79, 70, 229, 0.15);
+            --charcoal: #24080E;
+            --muted: #6E4A4E;
+            --emerald: #3A010D;
+            --emerald-dark: #570215;
+            --emerald-soft: #FBDEC7;
+            --line: #E6C7BA;
+            --soft: #F1D6C7;
+            --accent-gradient: linear-gradient(135deg, #3A010D 0%, #570215 65%, #BD8B7F 100%);
+            --card-shadow: 0 4px 14px rgba(58, 1, 13, 0.06), 0 10px 26px rgba(87, 2, 21, 0.05);
+            --card-shadow-hover: 0 8px 22px rgba(58, 1, 13, 0.14), 0 16px 34px rgba(87, 2, 21, 0.08);
+            --glow-indigo: 0 0 20px rgba(189, 139, 127, 0.25);
         }
 
         *,
@@ -46,10 +51,9 @@
         body {
             background-color: var(--ivory);
             background-image:
-                radial-gradient(ellipse at 20% 0%, rgba(79, 70, 229, 0.06) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 100%, rgba(236, 72, 153, 0.05) 0%, transparent 50%),
-                radial-gradient(ellipse at 50% 50%, rgba(124, 58, 237, 0.03) 0%, transparent 60%),
-                linear-gradient(rgba(248, 249, 252, 0.92), rgba(248, 249, 252, 0.92)),
+                radial-gradient(ellipse at 20% 0%, rgba(189, 139, 127, 0.12) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 100%, rgba(251, 222, 199, 0.22) 0%, transparent 55%),
+                linear-gradient(rgba(253, 244, 238, 0.92), rgba(253, 244, 238, 0.92)),
                 url('slogon-bg.png');
             background-repeat: no-repeat;
             background-position: calc(50% + 115px) center;
@@ -66,10 +70,10 @@
 
         @media (max-width: 900px) {
             body {
-                background-color: #F5F3FF;
+                background-color: #FDF4EE;
                 background-image:
-                    radial-gradient(ellipse at 30% 0%, rgba(79, 70, 229, 0.07) 0%, transparent 55%),
-                    radial-gradient(ellipse at 70% 100%, rgba(236, 72, 153, 0.05) 0%, transparent 55%);
+                    radial-gradient(ellipse at 30% 0%, rgba(251, 222, 199, 0.35) 0%, transparent 55%),
+                    radial-gradient(ellipse at 70% 100%, rgba(241, 214, 199, 0.3) 0%, transparent 55%);
             }
         }
 
@@ -178,8 +182,8 @@
             width: 38px;
             height: 38px;
             border-radius: 50%;
-            background: linear-gradient(135deg, #EEF2FF, #E0E7FF);
-            color: var(--emerald-dark);
+            background: linear-gradient(135deg, #FBDEC7, #F1D6C7);
+            color: #3A010D;
             display: grid;
             place-items: center;
             font-size: 13px;
@@ -334,8 +338,8 @@
         }
 
         .top-avatar-btn.active .avatar-tag {
-            background: linear-gradient(135deg, #4F46E5, #7C3AED);
-            color: #FFFFFF;
+            background: linear-gradient(135deg, #3A010D, #570215);
+            color: #FDF4EE;
         }
 
         .chevron-icon {
@@ -856,19 +860,19 @@
     white-space: nowrap;
 }
 
-/* AVAILABLE - VIBRANT GRADIENT */
+/* AVAILABLE - DEEP BURGUNDY & WINE RED GRADIENT */
 .status.available {
-    background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
-    color: #FFFFFF;
-    border: 1px solid #4F46E5;
-    box-shadow: 0 2px 8px rgba(79, 70, 229, 0.25);
+    background: linear-gradient(135deg, #3A010D 0%, #570215 100%);
+    color: #FDF4EE;
+    border: 1px solid #3A010D;
+    box-shadow: 0 2px 8px rgba(58, 1, 13, 0.25);
 }
 
-/* COMING SOON - OUTLINED */
+/* COMING SOON - WARM IVORY & ROSE GOLD */
 .status.coming {
-    background: #FFFFFF;
-    color: #7C3AED;
-    border: 1.5px solid #7C3AED;
+    background: #FDF4EE;
+    color: #570215;
+    border: 1.5px solid #BD8B7F;
 }
 
         .test-card h2 {
@@ -938,19 +942,19 @@
 
 /* UNLOCKED TESTS */
 .start:not(:disabled) {
-    background: linear-gradient(135deg, #4F46E5 0%, #6D28D9 100%);
-    color: #FFFFFF;
-    border-color: #4F46E5;
+    background: linear-gradient(135deg, #3A010D 0%, #570215 100%);
+    color: #FDF4EE;
+    border-color: #3A010D;
     cursor: pointer;
-    box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3);
+    box-shadow: 0 4px 14px rgba(58, 1, 13, 0.28);
 }
 
 /* HOVER EFFECT */
 .start:not(:disabled):hover {
-    background: linear-gradient(135deg, #4338CA 0%, #5B21B6 100%);
-    border-color: #4338CA;
+    background: linear-gradient(135deg, #570215 0%, #3A010D 100%);
+    border-color: #570215;
     transform: translateY(-2px);
-    box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+    box-shadow: 0 6px 20px rgba(58, 1, 13, 0.36);
 }
 
 /* LOCKED TESTS */
@@ -1079,7 +1083,7 @@
 
         .help-panel p strong {
             display: block;
-            color: #4F46E5;
+            color: #570215;
             margin-bottom: 4px;
             font-size: 14.5px;
         }
@@ -1476,17 +1480,17 @@
             }
 
             .tab-btn.active {
-                color: #0F172A;
+                color: #3A010D;
             }
 
             .tab-btn.active .tab-icon-wrap {
-                background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
-                box-shadow: 0 4px 12px rgba(79, 70, 229, 0.35);
+                background: linear-gradient(135deg, #3A010D 0%, #570215 100%);
+                box-shadow: 0 4px 12px rgba(58, 1, 13, 0.28);
             }
 
             .tab-btn.active .tab-icon {
-                color: #FFFFFF;
-                transform: scale(1.1);
+                color: #FDF4EE;
+                transform: scale(1.08);
                 filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15));
             }
 
@@ -1497,7 +1501,7 @@
                 width: 6px;
                 height: 6px;
                 border-radius: 50%;
-                background: #F97316;
+                background: #BD8B7F;
             }
 
             .tab-label {
@@ -1506,176 +1510,26 @@
                 letter-spacing: 0.5px;
                 text-transform: uppercase;
                 transition: font-weight 0.18s ease, color 0.18s ease;
-                color: #64748B;
+                color: #7D5A5E;
             }
 
             .tab-btn.active .tab-label {
                 font-weight: 800;
-                color: #0F172A;
+                color: #3A010D;
             }
 
             /* =========================================================
-               HOME HERO BANNER & FILTER CHIPS (MATCHING OUR CSS MODEL)
+               HOME HERO CAROUSEL & FILTER CHIPS (MOBILE REFINEMENTS)
                ========================================================= */
-            .home-hero-banner {
-                background: linear-gradient(135deg, #1E1B4B 0%, #312E81 40%, #3730A3 100%);
-                border-radius: 28px;
-                padding: 26px 22px 22px;
-                position: relative;
-                overflow: hidden;
-                box-shadow: 0 12px 36px rgba(49, 46, 129, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
-                border: 1px solid rgba(255, 255, 255, 0.08);
-                color: #FFFFFF;
-                margin-bottom: 8px;
+            .hero-carousel-stage {
+                margin: 0 -2px 10px;
+                padding: 18px 0 14px;
+                border-radius: 26px;
             }
 
-            .home-hero-banner::before {
-                content: '';
-                position: absolute;
-                inset: 0;
-                background-image: 
-                    radial-gradient(circle at 20% 30%, rgba(124, 58, 237, 0.2) 0%, transparent 50%),
-                    radial-gradient(circle at 80% 70%, rgba(236, 72, 153, 0.12) 0%, transparent 50%),
-                    linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                    linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-                background-size: 100% 100%, 100% 100%, 24px 24px, 24px 24px;
-                pointer-events: none;
-            }
-
-            .hero-live-pill {
-                display: inline-flex;
-                align-items: center;
-                gap: 7px;
-                background: rgba(255, 255, 255, 0.1);
-                border: 1px solid rgba(255, 255, 255, 0.15);
-                border-radius: 20px;
-                padding: 4px 12px;
-                font-size: 10.5px;
-                font-weight: 800;
-                letter-spacing: 0.8px;
-                color: #E2E8F0;
-                text-transform: uppercase;
-                margin-bottom: 14px;
-                position: relative;
-                z-index: 2;
-            }
-
-            .hero-pulse-dot {
-                width: 6px;
-                height: 6px;
-                border-radius: 50%;
-                background: #10B981;
-                box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.35);
-            }
-
-            .hero-title-row {
-                display: flex;
-                align-items: center;
-                gap: 10px;
-                margin-bottom: 8px;
-                position: relative;
-                z-index: 2;
-            }
-
-            .hero-sparkle-icon {
-                flex-shrink: 0;
-            }
-
-            .home-hero-title {
-                font-size: 24px;
-                font-weight: 900;
-                color: #FFFFFF;
-                letter-spacing: 0.5px;
-                margin: 0;
-                line-height: 1.1;
-            }
-
-            .home-hero-desc {
-                font-size: 13px;
-                color: #CBD5E1;
-                line-height: 1.45;
-                margin: 0;
-                max-width: 520px;
-                position: relative;
-                z-index: 2;
-            }
-
-            .home-hero-stats {
-                display: grid;
-                grid-template-columns: repeat(3, 1fr);
-                gap: 10px;
-                margin-top: 18px;
-                position: relative;
-                z-index: 2;
-            }
-
-            .hero-stat-card {
-                background: rgba(255, 255, 255, 0.07);
-                border: 1px solid rgba(255, 255, 255, 0.12);
-                border-radius: 16px;
-                padding: 12px 6px 10px;
-                text-align: center;
-                backdrop-filter: blur(8px);
-                -webkit-backdrop-filter: blur(8px);
-            }
-
-            .hero-stat-num {
-                display: block;
-                font-size: 24px;
-                font-weight: 800;
-                color: #FFFFFF;
-                line-height: 1;
-                font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-            }
-
-            .hero-stat-lbl {
-                display: block;
-                font-size: 10px;
-                font-weight: 700;
-                color: #94A3B8;
-                text-transform: uppercase;
-                letter-spacing: 0.6px;
-                margin-top: 5px;
-            }
-
-            .home-filter-chips {
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                margin: 14px 0 16px;
-                overflow-x: auto;
-                scrollbar-width: none;
-                -webkit-overflow-scrolling: touch;
-            }
-
-            .home-filter-chips::-webkit-scrollbar {
-                display: none;
-            }
-
-            .home-filter-chip {
-                background: #FFFFFF;
-                border: 1.5px solid #E2E8F0;
-                border-radius: 20px;
-                padding: 7px 16px;
-                font-size: 12.5px;
-                font-weight: 700;
-                color: #475569;
-                cursor: pointer;
-                transition: all 0.15s ease;
-                white-space: nowrap;
-                -webkit-tap-highlight-color: transparent;
-            }
-
-            .home-filter-chip:hover {
-                background: #F8FAFC;
-                border-color: #CBD5E1;
-            }
-
-            .home-filter-chip.active {
-                background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
-                border-color: #4F46E5;
-                color: #FFFFFF;
-                box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3);
+            .hero-slide-card {
+                flex: 0 0 calc(100% - 56px);
+                padding: 20px 16px 18px;
             }
 
             /* =========================================================
@@ -1795,10 +1649,10 @@
             }
 
             .search-filter-chip.active {
-                background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
-                border-color: #4F46E5;
-                color: #FFFFFF;
-                box-shadow: 0 2px 10px rgba(79, 70, 229, 0.3);
+                background: linear-gradient(135deg, #3A010D 0%, #570215 100%);
+                border-color: #3A010D;
+                color: #FDF4EE;
+                box-shadow: 0 2px 10px rgba(58, 1, 13, 0.28);
             }
 
             .search-results-meta {
@@ -1917,8 +1771,8 @@
             }
 
             .assessment-start-btn {
-                background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
-                color: #FFFFFF;
+                background: linear-gradient(135deg, #3A010D 0%, #570215 100%);
+                color: #FDF4EE;
                 border: none;
                 border-radius: 14px;
                 padding: 13px 18px;
@@ -1930,7 +1784,7 @@
                 gap: 8px;
                 cursor: pointer;
                 transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-                box-shadow: 0 6px 20px rgba(79, 70, 229, 0.35);
+                box-shadow: 0 6px 20px rgba(58, 1, 13, 0.3);
                 width: 100%;
                 text-decoration: none;
                 box-sizing: border-box;
@@ -1938,7 +1792,7 @@
 
             .assessment-start-btn:hover {
                 transform: translateY(-2px);
-                box-shadow: 0 8px 28px rgba(79, 70, 229, 0.45);
+                box-shadow: 0 8px 28px rgba(58, 1, 13, 0.4);
             }
 
             .assessment-start-btn:active {
@@ -2040,16 +1894,16 @@
                 width: 82px;
                 height: 82px;
                 border-radius: 50%;
-                background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
+                background: linear-gradient(135deg, #3A010D 0%, #570215 100%);
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                color: #FFFFFF;
+                color: #FDF4EE;
                 font-size: 28px;
                 font-weight: 800;
                 letter-spacing: -0.5px;
-                border: 4px solid #FFFFFF;
-                box-shadow: 0 8px 24px rgba(79, 70, 229, 0.3), 0 0 0 2px rgba(79, 70, 229, 0.1);
+                border: 4px solid #FDF4EE;
+                box-shadow: 0 8px 24px rgba(58, 1, 13, 0.28), 0 0 0 2px rgba(189, 139, 127, 0.25);
                 overflow: hidden;
                 transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1);
             }
@@ -2338,15 +2192,15 @@
 
             /* Leaderboard Section Styling (3D Isometric Podium + Animated Rotating Aura) */
             .mobile-leaderboard-banner {
-                background: linear-gradient(180deg, #EEF2FF 0%, #F5F3FF 40%, #FCE7F3 80%, #FFF1F2 100%);
+                background: linear-gradient(180deg, #FDF4EE 0%, #FBDEC7 45%, #F1D6C7 100%);
                 border-radius: 28px;
                 padding: 30px 10px 0;
                 position: relative;
                 overflow: hidden;
-                box-shadow: 0 10px 30px rgba(79, 70, 229, 0.08);
+                box-shadow: 0 10px 30px rgba(58, 1, 13, 0.08);
                 margin-bottom: 18px;
                 text-align: center;
-                border: 1px solid rgba(226, 232, 240, 0.6);
+                border: 1px solid rgba(189, 139, 127, 0.45);
             }
 
             /* Animated Rotating Ambient Glow behind 1st Rank */
@@ -2856,129 +2710,225 @@
         }
 
         /* =========================================================
-           HOME HERO BANNER, FILTER CHIPS & HORIZONTAL EXAM CAROUSELS
+           4-SLIDE HERO CARD CAROUSEL (DEEP BURGUNDY & WARM IVORY)
            ========================================================= */
-        .home-hero-banner {
-            background: linear-gradient(135deg, #1E1B4B 0%, #312E81 40%, #3730A3 100%);
+        .hero-carousel-stage {
+            background: linear-gradient(145deg, #3A010D 0%, #570215 60%, #3A010D 100%);
             border-radius: 28px;
-            padding: 26px 22px 22px;
+            padding: 22px 0 16px;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 12px 36px rgba(49, 46, 129, 0.25), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            color: #FFFFFF;
-            margin-bottom: 8px;
+            box-shadow: 0 16px 38px rgba(58, 1, 13, 0.26), inset 0 1px 0 rgba(251, 222, 199, 0.18);
+            border: 1px solid rgba(189, 139, 127, 0.35);
+            margin-bottom: 12px;
         }
 
-        .home-hero-banner::before {
+        .hero-carousel-stage::before {
             content: '';
             position: absolute;
             inset: 0;
-            background-image:
-                radial-gradient(circle at 20% 30%, rgba(124, 58, 237, 0.2) 0%, transparent 50%),
-                radial-gradient(circle at 80% 70%, rgba(236, 72, 153, 0.12) 0%, transparent 50%),
-                linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
-            background-size: 100% 100%, 100% 100%, 24px 24px, 24px 24px;
+            background:
+                radial-gradient(circle at 50% 25%, rgba(251, 222, 199, 0.16) 0%, transparent 60%),
+                radial-gradient(circle at 15% 85%, rgba(189, 139, 127, 0.14) 0%, transparent 45%);
             pointer-events: none;
         }
 
-        .hero-live-pill {
-            display: inline-flex;
-            align-items: center;
-            gap: 7px;
-            background: rgba(255, 255, 255, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 20px;
-            padding: 4px 12px;
-            font-size: 10.5px;
-            font-weight: 800;
-            letter-spacing: 0.8px;
-            color: #E2E8F0;
-            text-transform: uppercase;
-            margin-bottom: 14px;
+        .hero-carousel-viewport {
             position: relative;
             z-index: 2;
+            width: 100%;
+            overflow: hidden;
         }
 
-        .hero-pulse-dot {
-            width: 6px;
-            height: 6px;
-            border-radius: 50%;
-            background: #10B981;
-            box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.35);
+        .hero-carousel-track {
+            display: flex;
+            align-items: stretch;
+            gap: 14px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            padding: 4px 28px 6px;
         }
 
-        .hero-title-row {
+        .hero-carousel-track::-webkit-scrollbar {
+            display: none;
+        }
+
+        @media (min-width: 901px) {
+            .hero-carousel-track {
+                padding: 4px 64px 8px;
+                gap: 20px;
+            }
+        }
+
+        .hero-slide-card {
+            flex: 0 0 min(460px, calc(100% - 16px));
+            scroll-snap-align: center;
+            background: linear-gradient(180deg, rgba(189, 139, 127, 0.28) 0%, rgba(87, 2, 21, 0.55) 100%);
+            border: 1px solid rgba(251, 222, 199, 0.28);
+            border-radius: 22px;
+            padding: 22px 20px 20px;
+            text-align: center;
+            color: #FDF4EE;
+            position: relative;
+            cursor: pointer;
+            transform: scale(0.93);
+            opacity: 0.78;
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+                        opacity 0.35s ease,
+                        background 0.35s ease,
+                        box-shadow 0.35s ease,
+                        border-color 0.35s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .hero-slide-card.is-active {
+            background: linear-gradient(180deg, #FDF4EE 0%, #FBDEC7 100%);
+            border-color: rgba(189, 139, 127, 0.6);
+            color: #3A010D;
+            transform: scale(1);
+            opacity: 1;
+            box-shadow: 0 16px 36px rgba(24, 0, 5, 0.34), inset 0 1px 0 #FFFFFF;
+        }
+
+        .hero-slide-icon-wrap {
+            width: 50px;
+            height: 50px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, #3A010D 0%, #570215 100%);
+            color: #FBDEC7;
             display: flex;
             align-items: center;
-            gap: 10px;
-            margin-bottom: 8px;
-            position: relative;
-            z-index: 2;
+            justify-content: center;
+            margin: 0 auto 12px;
+            box-shadow: 0 6px 16px rgba(58, 1, 13, 0.24);
+            border: 1.5px solid rgba(189, 139, 127, 0.5);
+            transition: transform 0.3s ease;
         }
 
-        .hero-sparkle-icon {
-            flex-shrink: 0;
+        .hero-slide-card:not(.is-active) .hero-slide-icon-wrap {
+            background: rgba(253, 244, 238, 0.16);
+            color: #FBDEC7;
+            border-color: rgba(251, 222, 199, 0.35);
+            box-shadow: none;
         }
 
-        .home-hero-title {
-            font-size: 24px;
-            font-weight: 900;
-            color: #FFFFFF;
-            letter-spacing: 0.5px;
-            margin: 0;
-            line-height: 1.1;
+        .hero-slide-icon-wrap svg {
+            width: 25px;
+            height: 25px;
         }
 
-        .home-hero-desc {
-            font-size: 13px;
-            color: #CBD5E1;
-            line-height: 1.45;
-            margin: 0;
-            max-width: 520px;
-            position: relative;
-            z-index: 2;
+        .hero-slide-title {
+            font-size: 21px;
+            font-weight: 800;
+            letter-spacing: -0.3px;
+            margin: 0 0 7px;
+            line-height: 1.15;
+            color: inherit;
         }
 
-        .home-hero-stats {
+        .hero-slide-desc {
+            font-size: 12.5px;
+            line-height: 1.48;
+            margin: 0 auto;
+            max-width: 340px;
+            color: #570215;
+            opacity: 0.9;
+        }
+
+        .hero-slide-card:not(.is-active) .hero-slide-desc {
+            color: #F1D6C7;
+        }
+
+        .hero-slide-stats {
+            width: 100%;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-top: 18px;
+            align-items: center;
+            margin-top: 16px;
+            padding-top: 14px;
+            border-top: 1px solid rgba(189, 139, 127, 0.32);
+        }
+
+        .hero-slide-stat {
             position: relative;
-            z-index: 2;
-        }
-
-        .hero-stat-card {
-            background: rgba(255, 255, 255, 0.07);
-            border: 1px solid rgba(255, 255, 255, 0.12);
-            border-radius: 16px;
-            padding: 12px 6px 10px;
+            padding: 2px 6px;
             text-align: center;
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
         }
 
-        .hero-stat-num {
+        .hero-slide-stat + .hero-slide-stat::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 18%;
+            bottom: 18%;
+            width: 1px;
+            background: rgba(189, 139, 127, 0.45);
+        }
+
+        .hero-slide-stat-num {
             display: block;
-            font-size: 24px;
+            font-size: 21px;
             font-weight: 800;
-            color: #FFFFFF;
-            line-height: 1;
+            line-height: 1.1;
+            color: #3A010D;
             font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
         }
 
-        .hero-stat-lbl {
-            display: block;
-            font-size: 10px;
-            font-weight: 700;
-            color: #94A3B8;
-            text-transform: uppercase;
-            letter-spacing: 0.6px;
-            margin-top: 5px;
+        .hero-slide-card:not(.is-active) .hero-slide-stat-num {
+            color: #FDF4EE;
         }
 
+        .hero-slide-stat-lbl {
+            display: block;
+            font-size: 10.5px;
+            font-weight: 700;
+            color: #6E4A4E;
+            margin-top: 3px;
+            letter-spacing: 0.2px;
+        }
+
+        .hero-slide-card:not(.is-active) .hero-slide-stat-lbl {
+            color: #F1D6C7;
+        }
+
+        .hero-carousel-dots {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .hero-carousel-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 999px;
+            border: none;
+            padding: 0;
+            background: #BD8B7F;
+            opacity: 0.55;
+            cursor: pointer;
+            transition: width 0.25s ease, background 0.25s ease, opacity 0.25s ease;
+        }
+
+        .hero-carousel-dot.active {
+            width: 22px;
+            background: #FDF4EE;
+            opacity: 1;
+            box-shadow: 0 2px 8px rgba(251, 222, 199, 0.4);
+        }
+
+        /* =========================================================
+           FILTER CHIPS (MATCHING IMAGE 2 IN BURGUNDY & WARM IVORY)
+           ========================================================= */
         .home-filter-chips {
             display: flex;
             align-items: center;
@@ -2994,29 +2944,48 @@
         }
 
         .home-filter-chip {
-            background: #FFFFFF;
-            border: 1.5px solid #E2E8F0;
-            border-radius: 20px;
-            padding: 7px 16px;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: #FDF4EE;
+            border: 1.5px solid #BD8B7F;
+            border-radius: 999px;
+            padding: 8px 15px;
             font-size: 12.5px;
             font-weight: 700;
-            color: #475569;
+            color: #3A010D;
             cursor: pointer;
-            transition: all 0.15s ease;
+            transition: all 0.18s ease;
             white-space: nowrap;
             -webkit-tap-highlight-color: transparent;
+            box-shadow: 0 2px 6px rgba(58, 1, 13, 0.04);
         }
 
         .home-filter-chip:hover {
-            background: #F8FAFC;
-            border-color: #CBD5E1;
+            background: #FBDEC7;
+            border-color: #570215;
         }
 
         .home-filter-chip.active {
-            background: linear-gradient(135deg, #4F46E5 0%, #7C3AED 100%);
-            border-color: #4F46E5;
-            color: #FFFFFF;
-            box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3);
+            background: linear-gradient(135deg, #3A010D 0%, #570215 100%);
+            border-color: #3A010D;
+            color: #FDF4EE;
+            box-shadow: 0 6px 16px rgba(58, 1, 13, 0.25);
+        }
+
+        .chip-icon {
+            width: 14px;
+            height: 14px;
+            flex-shrink: 0;
+        }
+
+        .chip-status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #16A34A;
+            box-shadow: 0 0 0 2px rgba(22, 163, 74, 0.2);
+            flex-shrink: 0;
         }
 
         .exam-carousel-section {
@@ -3039,25 +3008,26 @@
         }
 
         .section-icon-badge {
-            width: 34px;
-            height: 34px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             flex-shrink: 0;
+            box-shadow: 0 3px 10px rgba(58, 1, 13, 0.08);
         }
 
         .section-icon-badge.available {
-            background: #EEF2FF;
-            border: 1px solid #C7D2FE;
-            color: #4F46E5;
+            background: linear-gradient(135deg, #FBDEC7 0%, #F1D6C7 100%);
+            border: 1.5px solid #BD8B7F;
+            color: #3A010D;
         }
 
         .section-icon-badge.upcoming {
-            background: #FEF3C7;
-            border: 1px solid #FDE68A;
-            color: #B45309;
+            background: #F1D6C7;
+            border: 1.5px solid #BD8B7F;
+            color: #570215;
         }
 
         .section-icon-badge svg {
@@ -3068,7 +3038,7 @@
         .exam-section-heading {
             font-size: 16.5px;
             font-weight: 800;
-            color: #0F172A;
+            color: #3A010D;
             margin: 0;
             line-height: 1.2;
         }
@@ -3076,24 +3046,24 @@
         .exam-section-sub {
             font-size: 12px;
             font-weight: 500;
-            color: #475569;
+            color: #6E4A4E;
             margin: 2px 0 0;
             line-height: 1.35;
         }
 
         .carousel-count-pill {
-            background: #FFFFFF;
-            border: 1px solid #E2E8F0;
+            background: #FBDEC7;
+            border: 1px solid #BD8B7F;
             border-radius: 999px;
-            padding: 5px 12px;
+            padding: 5px 13px;
             font-size: 11px;
             font-weight: 800;
-            color: #334155;
+            color: #3A010D;
             letter-spacing: 0.4px;
             text-transform: uppercase;
             white-space: nowrap;
             flex-shrink: 0;
-            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+            box-shadow: 0 2px 6px rgba(58, 1, 13, 0.06);
         }
 
         .exam-carousel-track {
@@ -3118,38 +3088,56 @@
             scroll-snap-type: none;
         }
 
-        /* AVAILABLE EXAM CARD (DARK NAVY + INNER WHITE PANEL) */
+        /* AVAILABLE EXAM CARD (IMAGE 2 LAYOUT IN WARM IVORY & DEEP BURGUNDY) */
         .avail-exam-card {
             flex: 0 0 min(380px, calc(100% - 28px));
             scroll-snap-align: start;
-            background: linear-gradient(145deg, #312E81 0%, #4338CA 50%, #4F46E5 100%);
-            border-radius: 24px;
-            padding: 18px;
-            border: 2.5px solid rgba(255, 255, 255, 0.15);
-            box-shadow: 0 12px 32px rgba(49, 46, 129, 0.2), 0 0 0 1px rgba(255, 255, 255, 0.05) inset;
-            color: #FFFFFF;
+            background: linear-gradient(160deg, #FFFFFF 0%, #FDF4EE 60%, #FBDEC7 100%);
+            border-radius: 22px;
+            padding: 0 16px 16px;
+            border: 1.5px solid rgba(189, 139, 127, 0.55);
+            box-shadow: 0 10px 26px rgba(58, 1, 13, 0.09);
+            color: #3A010D;
             position: relative;
             overflow: hidden;
             display: flex;
             flex-direction: column;
             gap: 12px;
             cursor: pointer;
-            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
         }
 
         .avail-exam-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 16px 40px rgba(49, 46, 129, 0.3), var(--glow-indigo);
+            box-shadow: 0 16px 34px rgba(58, 1, 13, 0.16);
         }
 
         .avail-card-watermark {
             position: absolute;
-            right: 16px;
-            top: 52px;
-            width: 82px;
-            height: 82px;
-            opacity: 0.9;
+            right: 12px;
+            top: 44px;
+            width: 86px;
+            height: 86px;
+            opacity: 0.92;
             pointer-events: none;
+        }
+
+        .avail-card-watermark rect {
+            fill: rgba(241, 214, 199, 0.55);
+            stroke: #BD8B7F;
+        }
+
+        .avail-card-watermark path {
+            stroke: #570215;
+        }
+
+        .avail-card-watermark circle {
+            fill: #3A010D;
+            stroke: #FDF4EE;
+        }
+
+        .avail-card-watermark circle + path {
+            stroke: #FBDEC7;
         }
 
         .avail-card-top {
@@ -3159,68 +3147,75 @@
             gap: 8px;
             position: relative;
             z-index: 2;
+            margin: 0 -16px;
+            padding-right: 14px;
         }
 
         .avail-code-pill {
-            background: rgba(255, 255, 255, 0.12);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            color: #E2E8F0;
+            background: linear-gradient(135deg, #3A010D 0%, #570215 100%);
+            border-right: 2px solid #BD8B7F;
+            border-bottom: 2px solid #BD8B7F;
+            color: #FDF4EE;
             font-size: 11px;
-            font-weight: 700;
-            padding: 4px 12px;
-            border-radius: 999px;
+            font-weight: 800;
+            padding: 8px 22px 8px 18px;
+            border-radius: 20px 0 22px 0;
             letter-spacing: 0.6px;
             text-transform: uppercase;
             font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            box-shadow: 0 4px 10px rgba(58, 1, 13, 0.18);
         }
 
         .avail-status-pill {
-            background: #D1FAE5;
-            color: #047857;
+            background: #DCFCE7;
+            border: 1px solid #86EFAC;
+            color: #15803D;
             font-size: 11px;
             font-weight: 800;
-            padding: 4px 12px;
+            padding: 4px 11px;
             border-radius: 999px;
             display: inline-flex;
             align-items: center;
             gap: 6px;
             letter-spacing: 0.4px;
             text-transform: uppercase;
+            margin-top: 6px;
         }
 
         .avail-status-dot {
             width: 7px;
             height: 7px;
             border-radius: 50%;
-            background: #059669;
+            background: #16A34A;
         }
 
         .avail-card-body {
             position: relative;
             z-index: 2;
-            padding-right: 76px;
+            padding-right: 84px;
+            margin-top: 2px;
         }
 
         .avail-card-title {
-            font-size: 17.5px;
+            font-size: 18px;
             font-weight: 800;
-            color: #FFFFFF;
-            margin: 0 0 6px;
-            line-height: 1.3;
+            color: #3A010D;
+            margin: 0 0 5px;
+            line-height: 1.25;
         }
 
         .avail-card-desc {
             font-size: 12.5px;
-            color: #E2E8F0;
+            color: #6E4A4E;
             margin: 0;
             line-height: 1.45;
         }
 
         .avail-inner-panel {
-            background: #FFFFFF;
+            background: transparent;
             border-radius: 16px;
-            padding: 13px 14px;
-            color: #0F172A;
+            padding: 0;
+            color: #3A010D;
             display: flex;
             flex-direction: column;
             gap: 12px;
@@ -3231,30 +3226,26 @@
 
         .avail-metrics-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr 1.25fr;
-            align-items: center;
+            grid-template-columns: 1fr 1fr 1.15fr;
+            gap: 8px;
+            align-items: stretch;
         }
 
         .avail-metric-item {
+            background: rgba(241, 214, 199, 0.55);
+            border: 1px solid rgba(189, 139, 127, 0.45);
+            border-radius: 14px;
             display: flex;
             align-items: center;
             gap: 7px;
-            padding: 0 8px;
+            padding: 9px 10px;
             min-width: 0;
-        }
-
-        .avail-metric-item:first-child {
-            padding-left: 0;
-        }
-
-        .avail-metric-item + .avail-metric-item {
-            border-left: 1px solid #E2E8F0;
         }
 
         .avail-metric-icon {
             width: 15px;
             height: 15px;
-            color: #64748B;
+            color: #570215;
             flex-shrink: 0;
         }
 
@@ -3262,14 +3253,14 @@
             display: block;
             font-size: 13px;
             font-weight: 800;
-            color: #0F172A;
+            color: #3A010D;
             line-height: 1.2;
         }
 
         .avail-metric-text span {
             display: block;
             font-size: 10.5px;
-            color: #64748B;
+            color: #6E4A4E;
             line-height: 1.2;
         }
 
@@ -3281,39 +3272,39 @@
 
         .avail-start-btn {
             width: 100%;
-            border: none;
+            border: 1px solid rgba(189, 139, 127, 0.4);
             border-radius: 999px;
-            padding: 11px 16px;
-            background: linear-gradient(135deg, #059669 0%, #047857 100%);
-            color: #FFFFFF;
+            padding: 12px 18px;
+            background: linear-gradient(135deg, #3A010D 0%, #570215 100%);
+            color: #FDF4EE;
             font-size: 12.5px;
             font-weight: 800;
-            letter-spacing: 0.5px;
+            letter-spacing: 0.6px;
             text-transform: uppercase;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
             cursor: pointer;
-            box-shadow: 0 4px 14px rgba(4, 120, 87, 0.3);
+            box-shadow: 0 6px 18px rgba(58, 1, 13, 0.28);
             transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .avail-start-btn:hover {
             filter: brightness(1.08);
             transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(4, 120, 87, 0.4);
+            box-shadow: 0 8px 22px rgba(58, 1, 13, 0.38);
         }
 
-        /* UPCOMING EXAM CARD (CREAM/WHITE + 3 TILE BOXES + ALERT BUTTON) */
+        /* UPCOMING EXAM CARD (WARM IVORY + BLUSH BEIGE TILE BOXES + WINE RED ALERT) */
         .upcoming-exam-card {
             flex: 0 0 min(380px, calc(100% - 28px));
             scroll-snap-align: start;
-            background: #FCF9F7;
+            background: #FDF4EE;
             border-radius: 22px;
             padding: 18px;
-            border: 1.5px solid #334155;
-            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
+            border: 1.5px solid #BD8B7F;
+            box-shadow: 0 8px 22px rgba(58, 1, 13, 0.06);
             display: flex;
             flex-direction: column;
             gap: 12px;
@@ -3334,11 +3325,11 @@
         }
 
         .upcoming-code-pill {
-            background: #F3E5DE;
-            border: 1px solid #E5CFC3;
-            color: #5C4338;
+            background: #FBDEC7;
+            border: 1px solid #BD8B7F;
+            color: #3A010D;
             font-size: 11px;
-            font-weight: 700;
+            font-weight: 800;
             padding: 4px 11px;
             border-radius: 999px;
             letter-spacing: 0.5px;
@@ -3347,9 +3338,9 @@
         }
 
         .upcoming-soon-pill {
-            background: #FEF3C7;
-            border: 1px solid #FDE68A;
-            color: #92400E;
+            background: #F1D6C7;
+            border: 1px solid #BD8B7F;
+            color: #570215;
             font-size: 11px;
             font-weight: 800;
             padding: 4px 11px;
@@ -3382,7 +3373,7 @@
         .upcoming-index-num {
             font-size: 21px;
             font-weight: 800;
-            color: #716F94;
+            color: #BD8B7F;
             font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
             line-height: 1;
         }
@@ -3390,14 +3381,14 @@
         .upcoming-card-title {
             font-size: 17px;
             font-weight: 800;
-            color: #0F172A;
+            color: #3A010D;
             margin: 0;
             line-height: 1.3;
         }
 
         .upcoming-card-desc {
             font-size: 12.5px;
-            color: #334155;
+            color: #6E4A4E;
             margin: 0;
             line-height: 1.45;
         }
@@ -3409,8 +3400,8 @@
         }
 
         .upcoming-stat-box {
-            background: #FAF5F2;
-            border: 1px solid #E5D4CA;
+            background: #F1D6C7;
+            border: 1px solid rgba(189, 139, 127, 0.65);
             border-radius: 14px;
             padding: 10px 9px;
             min-width: 0;
@@ -3422,7 +3413,7 @@
             gap: 5px;
             font-size: 10px;
             font-weight: 800;
-            color: #64748B;
+            color: #570215;
             letter-spacing: 0.4px;
             text-transform: uppercase;
             margin-bottom: 5px;
@@ -3438,7 +3429,7 @@
             display: block;
             font-size: 14px;
             font-weight: 800;
-            color: #0F172A;
+            color: #3A010D;
             line-height: 1.25;
             word-break: break-word;
         }
@@ -3446,7 +3437,7 @@
         .upcoming-stat-sub {
             display: block;
             font-size: 11px;
-            color: #64748B;
+            color: #6E4A4E;
             margin-top: 2px;
         }
 
@@ -3460,8 +3451,8 @@
             border: none;
             border-radius: 999px;
             padding: 10px 18px;
-            background: linear-gradient(135deg, #4F46E5 0%, #6D28D9 100%);
-            color: #FFFFFF;
+            background: linear-gradient(135deg, #570215 0%, #3A010D 100%);
+            color: #FDF4EE;
             font-size: 11.5px;
             font-weight: 800;
             letter-spacing: 0.4px;
@@ -3470,18 +3461,18 @@
             align-items: center;
             gap: 7px;
             cursor: pointer;
-            box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3);
+            box-shadow: 0 4px 14px rgba(58, 1, 13, 0.24);
             transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .upcoming-alert-btn:hover {
-            background: linear-gradient(135deg, #4338CA 0%, #5B21B6 100%);
+            background: linear-gradient(135deg, #3A010D 0%, #570215 100%);
             transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+            box-shadow: 0 6px 20px rgba(58, 1, 13, 0.34);
         }
 
         .upcoming-alert-btn.is-alerted {
-            background: #047857;
+            background: #15803D;
         }
 
         /* CAROUSEL CONTROLS (ARROWS + PILL DOTS) */
@@ -3497,9 +3488,9 @@
             width: 34px;
             height: 34px;
             border-radius: 50%;
-            background: #FFFFFF;
-            border: 1.5px solid #1E293B;
-            color: #0F172A;
+            background: #FDF4EE;
+            border: 1.5px solid #3A010D;
+            color: #3A010D;
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -3508,9 +3499,9 @@
         }
 
         .carousel-arrow-btn:disabled {
-            border-color: #CBD5E1;
-            color: #94A3B8;
-            background: rgba(255, 255, 255, 0.65);
+            border-color: #BD8B7F;
+            color: #BD8B7F;
+            background: rgba(253, 244, 238, 0.65);
             cursor: default;
         }
 
@@ -3523,11 +3514,11 @@
         }
 
         .carousel-dots-pill.is-available {
-            background: #D1FAE5;
+            background: #FBDEC7;
         }
 
         .carousel-dots-pill.is-upcoming {
-            background: #E2E4F3;
+            background: #F1D6C7;
         }
 
         .carousel-dot {
@@ -3541,20 +3532,20 @@
         }
 
         .carousel-dots-pill.is-available .carousel-dot {
-            background: #86EFAC;
+            background: #BD8B7F;
         }
 
         .carousel-dots-pill.is-available .carousel-dot.active {
-            background: #047857;
+            background: #3A010D;
             transform: scale(1.18);
         }
 
         .carousel-dots-pill.is-upcoming .carousel-dot {
-            background: #A5B4FC;
+            background: #BD8B7F;
         }
 
         .carousel-dots-pill.is-upcoming .carousel-dot.active {
-            background: #312E81;
+            background: #570215;
             transform: scale(1.18);
         }
 
@@ -3700,42 +3691,160 @@
 
             <section id="examSection">
 
-                <!-- Mobile & Executive Home Hero Card (Matching Reference Model) -->
-                <div class="home-hero-banner">
-                    <span class="hero-live-pill">
-                        <span class="hero-pulse-dot"></span>LIVE STATUS &bull; ASSESSMENT CENTRE
-                    </span>
-                    <div class="hero-title-row">
-                        <svg class="hero-sparkle-icon" viewBox="0 0 24 24" width="28" height="28" fill="none">
-                            <polygon points="12,2 14.5,8.5 21,6 17.5,12 22,16 15.5,17 16,23 11,19 7,23 8,16.5 2,15 7,11 3,6 9.5,8" fill="#818CF8" stroke="#A5B4FC" stroke-width="1.2"/>
-                        </svg>
-                        <h1 class="home-hero-title">EXAMINATIONS</h1>
-                    </div>
-                    <p class="home-hero-desc">
-                        Browse active mock tests, check upcoming question sets, and launch your exam session.
-                    </p>
+                <!-- 4-Slide Card Carousel Hero (Deep Burgundy & Warm Ivory) -->
+                <div class="hero-carousel-stage" id="heroCarouselStage">
+                    <div class="hero-carousel-viewport">
+                        <div class="hero-carousel-track" id="heroCarouselTrack">
+                            <!-- Slide 1: Examinations Overview (Live Counts) -->
+                            <article class="hero-slide-card is-active" data-hero-slide="0" tabindex="0">
+                                <div class="hero-slide-icon-wrap" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
+                                        <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                                    </svg>
+                                </div>
+                                <h1 class="hero-slide-title">Examinations</h1>
+                                <p class="hero-slide-desc">
+                                    Browse active mock tests, check upcoming question sets, and launch your exam session.
+                                </p>
+                                <div class="hero-slide-stats">
+                                    <div class="hero-slide-stat">
+                                        <span class="hero-slide-stat-num" id="heroActiveCount">0</span>
+                                        <span class="hero-slide-stat-lbl">Active</span>
+                                    </div>
+                                    <div class="hero-slide-stat">
+                                        <span class="hero-slide-stat-num" id="heroUpcomingCount">0</span>
+                                        <span class="hero-slide-stat-lbl">Upcoming</span>
+                                    </div>
+                                    <div class="hero-slide-stat">
+                                        <span class="hero-slide-stat-num" id="heroTotalCount">0</span>
+                                        <span class="hero-slide-stat-lbl">Total Sets</span>
+                                    </div>
+                                </div>
+                            </article>
 
-                    <div class="home-hero-stats">
-                        <div class="hero-stat-card">
-                            <span class="hero-stat-num" id="heroActiveCount">0</span>
-                            <span class="hero-stat-lbl">ACTIVE</span>
+                            <!-- Slide 2: Exam Pattern -->
+                            <article class="hero-slide-card" data-hero-slide="1" tabindex="0">
+                                <div class="hero-slide-icon-wrap" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <rect x="8" y="2" width="8" height="4" rx="1"></rect>
+                                        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+                                        <path d="M9 12l2 2 4-4"></path>
+                                    </svg>
+                                </div>
+                                <h2 class="hero-slide-title">Exam Pattern</h2>
+                                <p class="hero-slide-desc">
+                                    Full-length bilingual assessment structured into Paper 1 General Paper and Paper 2 Subject.
+                                </p>
+                                <div class="hero-slide-stats">
+                                    <div class="hero-slide-stat">
+                                        <span class="hero-slide-stat-num">50</span>
+                                        <span class="hero-slide-stat-lbl">Paper 1 Qs</span>
+                                    </div>
+                                    <div class="hero-slide-stat">
+                                        <span class="hero-slide-stat-num">100</span>
+                                        <span class="hero-slide-stat-lbl">Paper 2 Qs</span>
+                                    </div>
+                                    <div class="hero-slide-stat">
+                                        <span class="hero-slide-stat-num">180m</span>
+                                        <span class="hero-slide-stat-lbl">Duration</span>
+                                    </div>
+                                </div>
+                            </article>
+
+                            <!-- Slide 3: Cohort Rankings -->
+                            <article class="hero-slide-card" data-hero-slide="2" tabindex="0">
+                                <div class="hero-slide-icon-wrap" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+                                        <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+                                        <path d="M4 22h16"></path>
+                                        <path d="M10 14.66V17c0 .55-.45 1-1 1H7"></path>
+                                        <path d="M14 14.66V17c0 .55.45 1 1 1h2"></path>
+                                        <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
+                                    </svg>
+                                </div>
+                                <h2 class="hero-slide-title">Cohort Ranks</h2>
+                                <p class="hero-slide-desc">
+                                    Compare your mock test accuracy and completion speed on the live SLOGON leaderboard.
+                                </p>
+                                <div class="hero-slide-stats">
+                                    <div class="hero-slide-stat">
+                                        <span class="hero-slide-stat-num">Top 3</span>
+                                        <span class="hero-slide-stat-lbl">Podium</span>
+                                    </div>
+                                    <div class="hero-slide-stat">
+                                        <span class="hero-slide-stat-num">Live</span>
+                                        <span class="hero-slide-stat-lbl">Standings</span>
+                                    </div>
+                                    <div class="hero-slide-stat">
+                                        <span class="hero-slide-stat-num">Speed</span>
+                                        <span class="hero-slide-stat-lbl">Tie-Break</span>
+                                    </div>
+                                </div>
+                            </article>
+
+                            <!-- Slide 4: Portal Readiness -->
+                            <article class="hero-slide-card" data-hero-slide="3" tabindex="0">
+                                <div class="hero-slide-icon-wrap" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                        <path d="m9 12 2 2 4-4"></path>
+                                    </svg>
+                                </div>
+                                <h2 class="hero-slide-title">Exam Ready</h2>
+                                <p class="hero-slide-desc">
+                                    Instant answer saving, review bookmarking, and automated timer submission built in.
+                                </p>
+                                <div class="hero-slide-stats">
+                                    <div class="hero-slide-stat">
+                                        <span class="hero-slide-stat-num">Auto</span>
+                                        <span class="hero-slide-stat-lbl">Save</span>
+                                    </div>
+                                    <div class="hero-slide-stat">
+                                        <span class="hero-slide-stat-num">Flag</span>
+                                        <span class="hero-slide-stat-lbl">Review</span>
+                                    </div>
+                                    <div class="hero-slide-stat">
+                                        <span class="hero-slide-stat-num">Sync</span>
+                                        <span class="hero-slide-stat-lbl">Timer</span>
+                                    </div>
+                                </div>
+                            </article>
                         </div>
-                        <div class="hero-stat-card">
-                            <span class="hero-stat-num" id="heroUpcomingCount">0</span>
-                            <span class="hero-stat-lbl">UPCOMING</span>
-                        </div>
-                        <div class="hero-stat-card">
-                            <span class="hero-stat-num" id="heroTotalCount">0</span>
-                            <span class="hero-stat-lbl">TOTAL SETS</span>
-                        </div>
+                    </div>
+
+                    <!-- 4 Carousel Pagination Dots -->
+                    <div class="hero-carousel-dots" id="heroCarouselDots" aria-label="Hero Carousel Slides">
+                        <button type="button" class="hero-carousel-dot active" data-hero-dot="0" aria-label="Slide 1: Examinations"></button>
+                        <button type="button" class="hero-carousel-dot" data-hero-dot="1" aria-label="Slide 2: Exam Pattern"></button>
+                        <button type="button" class="hero-carousel-dot" data-hero-dot="2" aria-label="Slide 3: Cohort Ranks"></button>
+                        <button type="button" class="hero-carousel-dot" data-hero-dot="3" aria-label="Slide 4: Exam Ready"></button>
                     </div>
                 </div>
 
-                <!-- Filter Chips Row (Matching Reference Model) -->
+                <!-- Filter Chips Row (Matching Image 2 Design in Burgundy & Warm Ivory) -->
                 <div class="home-filter-chips" id="homeFilterChips">
-                    <button type="button" class="home-filter-chip active" data-home-filter="all">All (<span id="chipAllCount">0</span>)</button>
-                    <button type="button" class="home-filter-chip" data-home-filter="available">Available (<span id="chipAvailCount">0</span>)</button>
-                    <button type="button" class="home-filter-chip" data-home-filter="coming">Upcoming (<span id="chipUpCount">0</span>)</button>
+                    <button type="button" class="home-filter-chip active" data-home-filter="all">
+                        <svg class="chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" aria-hidden="true">
+                            <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
+                            <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
+                            <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
+                            <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
+                        </svg>
+                        <span>All (<span id="chipAllCount">0</span>)</span>
+                    </button>
+                    <button type="button" class="home-filter-chip" data-home-filter="available">
+                        <span class="chip-status-dot" aria-hidden="true"></span>
+                        <span>Available (<span id="chipAvailCount">0</span>)</span>
+                    </button>
+                    <button type="button" class="home-filter-chip" data-home-filter="coming">
+                        <svg class="chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" aria-hidden="true">
+                            <circle cx="12" cy="12" r="9"></circle>
+                            <path d="M12 7v5l3 2"></path>
+                        </svg>
+                        <span>Upcoming (<span id="chipUpCount">0</span>)</span>
+                    </button>
                 </div>
 
                 <div class="toolbar">
