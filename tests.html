@@ -2584,6 +2584,104 @@
                 z-index: 2;
             }
 
+            /* Podium Entrance Sequence (Triggered on Ranks Tab Press) */
+            #leaderboardSection .pedestal-3d {
+                transform-origin: bottom center;
+                transform: scaleY(0);
+                opacity: 0;
+                will-change: transform, opacity;
+            }
+
+            #leaderboardSection .podium-avatar-wrap,
+            #leaderboardSection .podium-user-name,
+            #leaderboardSection .podium-test-name,
+            #leaderboardSection .podium-score-pill {
+                opacity: 0;
+                transform: translateY(14px) scale(0.92);
+                will-change: transform, opacity;
+            }
+
+            #leaderboardSection .leaderboard-crown-wrap {
+                opacity: 0;
+                transform: translateY(-16px) scale(0.65);
+                will-change: transform, opacity;
+            }
+
+            #leaderboardSection.is-podium-animating .pedestal-3d {
+                animation: podiumGrowUp 0.68s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            }
+            #leaderboardSection.is-podium-animating .pedestal-3 {
+                animation-delay: 0.04s;
+            }
+            #leaderboardSection.is-podium-animating .pedestal-2 {
+                animation-delay: 0.12s;
+            }
+            #leaderboardSection.is-podium-animating .pedestal-1 {
+                animation-delay: 0.2s;
+            }
+
+            #leaderboardSection.is-podium-animating .podium-avatar-wrap,
+            #leaderboardSection.is-podium-animating .podium-user-name,
+            #leaderboardSection.is-podium-animating .podium-test-name,
+            #leaderboardSection.is-podium-animating .podium-score-pill {
+                animation: podiumProfileReveal 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+            }
+            #leaderboardSection.is-podium-animating .rank-3 .podium-avatar-wrap,
+            #leaderboardSection.is-podium-animating .rank-3 .podium-user-name,
+            #leaderboardSection.is-podium-animating .rank-3 .podium-test-name,
+            #leaderboardSection.is-podium-animating .rank-3 .podium-score-pill {
+                animation-delay: 0.54s;
+            }
+            #leaderboardSection.is-podium-animating .rank-2 .podium-avatar-wrap,
+            #leaderboardSection.is-podium-animating .rank-2 .podium-user-name,
+            #leaderboardSection.is-podium-animating .rank-2 .podium-test-name,
+            #leaderboardSection.is-podium-animating .rank-2 .podium-score-pill {
+                animation-delay: 0.64s;
+            }
+            #leaderboardSection.is-podium-animating .rank-1 .podium-avatar-wrap,
+            #leaderboardSection.is-podium-animating .rank-1 .podium-user-name,
+            #leaderboardSection.is-podium-animating .rank-1 .podium-test-name,
+            #leaderboardSection.is-podium-animating .rank-1 .podium-score-pill {
+                animation-delay: 0.76s;
+            }
+
+            #leaderboardSection.is-podium-animating .leaderboard-crown-wrap {
+                animation: crownDropReveal 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 1.04s forwards;
+            }
+
+            @keyframes podiumGrowUp {
+                0% {
+                    transform: scaleY(0);
+                    opacity: 0.2;
+                }
+                100% {
+                    transform: scaleY(1);
+                    opacity: 1;
+                }
+            }
+
+            @keyframes podiumProfileReveal {
+                0% {
+                    opacity: 0;
+                    transform: translateY(14px) scale(0.92);
+                }
+                100% {
+                    opacity: 1;
+                    transform: translateY(0) scale(1);
+                }
+            }
+
+            @keyframes crownDropReveal {
+                0% {
+                    opacity: 0;
+                    transform: translateY(-16px) scale(0.65);
+                }
+                100% {
+                    opacity: 1;
+                    transform: translateY(0) scale(1);
+                }
+            }
+
             /* Standings List Container (Solid opaque backdrop stops watermark overlap) */
             .leaderboard-list-wrap {
                 background: #FFFFFF;

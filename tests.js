@@ -1299,6 +1299,11 @@ function switchStudentTab(tabName) {
         if (typeof loadLeaderboard === "function") {
             loadLeaderboard();
         }
+        if (leaderboardSection) {
+            leaderboardSection.classList.remove("is-podium-animating");
+            void leaderboardSection.offsetWidth;
+            leaderboardSection.classList.add("is-podium-animating");
+        }
     }
 
     document.body.classList.toggle("in-home-tab", tabName === "home");
