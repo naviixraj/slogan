@@ -61,15 +61,6 @@
         body {
             position: relative;
             background-color: #2D020A;
-            background-image:
-                radial-gradient(ellipse at 18% 12%, rgba(168, 36, 66, 0.5) 0%, transparent 55%),
-                radial-gradient(ellipse at 85% 38%, rgba(150, 27, 54, 0.44) 0%, transparent 56%),
-                radial-gradient(ellipse at 25% 78%, rgba(130, 18, 43, 0.48) 0%, transparent 58%),
-                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 900' preserveAspectRatio='none'%3E%3Cdefs%3E%3Cfilter id='wf' x='-10%25' y='-10%25' width='120%25' height='120%25'%3E%3CfeGaussianBlur stdDeviation='18'/%3E%3C/filter%3E%3ClinearGradient id='w1' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23A82442' stop-opacity='0.78'/%3E%3Cstop offset='100%25' stop-color='%234B0212' stop-opacity='0.06'/%3E%3C/linearGradient%3E%3ClinearGradient id='w2' x1='100%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23961B36' stop-opacity='0.72'/%3E%3Cstop offset='100%25' stop-color='%23570215' stop-opacity='0.08'/%3E%3C/linearGradient%3E%3ClinearGradient id='w3' x1='0%25' y1='100%25' x2='100%25' y2='0%25'%3E%3Cstop offset='0%25' stop-color='%2382122B' stop-opacity='0.74'/%3E%3Cstop offset='100%25' stop-color='%232D020A' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg filter='url(%23wf)'%3E%3Cpath d='M-60,210 C280,50 520,360 920,200 C1180,95 1340,225 1500,150 L1500,0 L-60,0 Z' fill='url(%23w1)'/%3E%3Cpath d='M-60,520 C240,360 580,650 940,460 C1190,330 1360,445 1500,380 L1500,720 C1240,615 960,825 620,690 C320,570 120,765 -60,680 Z' fill='url(%23w2)'/%3E%3Cpath d='M-60,870 C300,730 620,910 1020,770 C1240,695 1380,785 1500,730 L1500,920 L-60,920 Z' fill='url(%23w3)'/%3E%3C/g%3E%3C/svg%3E"),
-                linear-gradient(155deg, #3A010D 0%, #2D020A 55%, #3A010D 100%);
-            background-repeat: no-repeat;
-            background-size: cover, cover, cover, 100% 100%, cover;
-            background-attachment: fixed;
             color: #FDF4EE;
             font-family: Inter, Arial, sans-serif;
             min-height: 100vh;
@@ -79,17 +70,34 @@
             caret-color: transparent;
         }
 
+        /* GPU-composited fixed wave backdrop (no feGaussianBlur or background-attachment:fixed jank) */
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            transform: translateZ(0);
+            background-color: #2D020A;
+            background-image:
+                radial-gradient(ellipse at 18% 12%, rgba(168, 36, 66, 0.48) 0%, transparent 56%),
+                radial-gradient(ellipse at 85% 38%, rgba(150, 27, 54, 0.42) 0%, transparent 58%),
+                radial-gradient(ellipse at 25% 78%, rgba(130, 18, 43, 0.46) 0%, transparent 58%),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 900' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='w1' x1='0%25' y1='0%25' x2='20%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23A82442' stop-opacity='0.72'/%3E%3Cstop offset='65%25' stop-color='%237C142B' stop-opacity='0.34'/%3E%3Cstop offset='100%25' stop-color='%232D020A' stop-opacity='0'/%3E%3C/linearGradient%3E%3ClinearGradient id='w2' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%232D020A' stop-opacity='0'/%3E%3Cstop offset='35%25' stop-color='%23961B36' stop-opacity='0.62'/%3E%3Cstop offset='75%25' stop-color='%236E0B22' stop-opacity='0.28'/%3E%3Cstop offset='100%25' stop-color='%232D020A' stop-opacity='0'/%3E%3C/linearGradient%3E%3ClinearGradient id='w3' x1='0%25' y1='100%25' x2='20%25' y2='0%25'%3E%3Cstop offset='0%25' stop-color='%2382122B' stop-opacity='0.68'/%3E%3Cstop offset='65%25' stop-color='%234B0212' stop-opacity='0.22'/%3E%3Cstop offset='100%25' stop-color='%232D020A' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M-60,230 C280,70 520,380 920,220 C1180,115 1340,245 1500,170 L1500,0 L-60,0 Z' fill='url(%23w1)'/%3E%3Cpath d='M-60,480 C240,320 580,610 940,420 C1190,290 1360,405 1500,340 L1500,740 C1240,635 960,845 620,710 C320,590 120,785 -60,700 Z' fill='url(%23w2)'/%3E%3Cpath d='M-60,850 C300,710 620,890 1020,750 C1240,675 1380,765 1500,710 L1500,920 L-60,920 Z' fill='url(%23w3)'/%3E%3C/svg%3E"),
+                linear-gradient(155deg, #3A010D 0%, #2D020A 55%, #3A010D 100%);
+            background-repeat: no-repeat;
+            background-size: cover, cover, cover, 100% 100%, cover;
+        }
+
         @media (max-width: 900px) {
-            body {
-                background-color: #2D020A;
+            body::before {
                 background-image:
-                    radial-gradient(ellipse at 20% 10%, rgba(168, 36, 66, 0.54) 0%, transparent 55%),
-                    radial-gradient(ellipse at 85% 45%, rgba(150, 27, 54, 0.5) 0%, transparent 56%),
-                    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 1000' preserveAspectRatio='none'%3E%3Cdefs%3E%3Cfilter id='mwf' x='-10%25' y='-10%25' width='120%25' height='120%25'%3E%3CfeGaussianBlur stdDeviation='16'/%3E%3C/filter%3E%3ClinearGradient id='mw1' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23A82442' stop-opacity='0.78'/%3E%3Cstop offset='100%25' stop-color='%234B0212' stop-opacity='0.06'/%3E%3C/linearGradient%3E%3ClinearGradient id='mw2' x1='100%25' y1='20%25' x2='0%25' y2='90%25'%3E%3Cstop offset='0%25' stop-color='%23961B36' stop-opacity='0.72'/%3E%3Cstop offset='100%25' stop-color='%232D020A' stop-opacity='0.04'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cg filter='url(%23mwf)'%3E%3Cpath d='M-40,160 C140,50 280,270 480,160 C550,120 610,155 640,130 L640,0 L-40,0 Z' fill='url(%23mw1)'/%3E%3Cpath d='M-40,470 C150,340 340,600 640,415 L640,665 C410,555 190,745 -40,620 Z' fill='url(%23mw2)'/%3E%3Cpath d='M-40,850 C180,745 390,915 640,790 L640,1040 L-40,1040 Z' fill='url(%23mw1)'/%3E%3C/g%3E%3C/svg%3E"),
+                    radial-gradient(ellipse at 20% 10%, rgba(168, 36, 66, 0.5) 0%, transparent 56%),
+                    radial-gradient(ellipse at 85% 45%, rgba(150, 27, 54, 0.46) 0%, transparent 58%),
+                    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 1000' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='mw1' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23A82442' stop-opacity='0.72'/%3E%3Cstop offset='65%25' stop-color='%237C142B' stop-opacity='0.32'/%3E%3Cstop offset='100%25' stop-color='%232D020A' stop-opacity='0'/%3E%3C/linearGradient%3E%3ClinearGradient id='mw2' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%232D020A' stop-opacity='0'/%3E%3Cstop offset='35%25' stop-color='%23961B36' stop-opacity='0.64'/%3E%3Cstop offset='75%25' stop-color='%236E0B22' stop-opacity='0.28'/%3E%3Cstop offset='100%25' stop-color='%232D020A' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M-40,180 C140,70 280,290 480,180 C550,140 610,175 640,150 L640,0 L-40,0 Z' fill='url(%23mw1)'/%3E%3Cpath d='M-40,450 C150,320 340,580 640,395 L640,685 C410,575 190,765 -40,640 Z' fill='url(%23mw2)'/%3E%3Cpath d='M-40,830 C180,725 390,895 640,770 L640,1040 L-40,1040 Z' fill='url(%23mw1)'/%3E%3C/svg%3E"),
                     linear-gradient(155deg, #3A010D 0%, #2D020A 52%, #3A010D 100%);
                 background-repeat: no-repeat;
                 background-size: cover, cover, 100% 100%, cover;
-                background-attachment: fixed;
             }
         }
 
@@ -3770,21 +3778,25 @@
                 0 12px 28px rgba(24, 0, 5, 0.28);
         }
 
+        .hero-slide-card,
+        .avail-exam-card,
+        .upcoming-exam-card {
+            contain: layout style;
+        }
+
         .hero-slide-card {
             border: 1.25px solid rgba(232, 192, 136, 0.72) !important;
             box-shadow:
-                0 4px 16px rgba(232, 192, 136, 0.18),
-                0 12px 36px rgba(212, 169, 115, 0.1),
-                inset 0 0 8px rgba(251, 222, 199, 0.12) !important;
+                0 6px 20px rgba(232, 192, 136, 0.16),
+                inset 0 0 6px rgba(251, 222, 199, 0.1) !important;
         }
 
         .hero-slide-card.is-active {
             border: 1.5px solid #F3D39B !important;
             box-shadow:
-                inset 0 0 12px rgba(251, 222, 199, 0.45),
-                0 6px 18px rgba(232, 192, 136, 0.34),
-                0 12px 42px rgba(243, 211, 155, 0.24),
-                0 22px 76px rgba(212, 169, 115, 0.14) !important;
+                inset 0 0 10px rgba(251, 222, 199, 0.4),
+                0 8px 26px rgba(232, 192, 136, 0.3),
+                0 18px 46px rgba(212, 169, 115, 0.18) !important;
         }
 
         .avail-inner-panel,

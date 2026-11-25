@@ -1554,22 +1554,37 @@ function initHeroCardCarousel() {
         return ((tIdx - 1) % realCount + realCount) % realCount;
     }
 
-    function getCenterOffset(cardEl) {
-        return Math.max(0, cardEl.offsetLeft - (track.clientWidth - cardEl.offsetWidth) / 2);
+    let cachedHalfW = track.clientWidth / 2;
+    let cachedMaxDist = Math.max(260, track.clientWidth * 0.72);
+    let cachedCenters = [];
+
+    function measureTrackLayout() {
+        cachedHalfW = track.clientWidth / 2;
+        cachedMaxDist = Math.max(260, track.clientWidth * 0.72);
+        cachedCenters = allCards.map(c => c.offsetLeft + c.offsetWidth / 2);
+    }
+    measureTrackLayout();
+    window.addEventListener("resize", measureTrackLayout, { passive: true });
+
+    function getCenterOffset(idx) {
+        if (!cachedCenters.length) measureTrackLayout();
+        return Math.max(0, (cachedCenters[idx] || 0) - cachedHalfW);
     }
 
-    function applyDepthScales() {
-        const viewCenter = track.scrollLeft + track.clientWidth / 2;
-        const maxDist = Math.max(260, track.clientWidth * 0.72);
-        allCards.forEach(card => {
-            const cardCenter = card.offsetLeft + card.offsetWidth / 2;
-            const norm = Math.min(1, Math.abs(viewCenter - cardCenter) / maxDist);
+    function applyDepthScales(scrollLeftPos) {
+        const viewCenter = scrollLeftPos + cachedHalfW;
+        for (let i = 0; i < allCards.length; i++) {
+            const norm = Math.min(1, Math.abs(viewCenter - cachedCenters[i]) / cachedMaxDist);
             const scale = 1.03 - norm * 0.21;
             const opacity = 1 - norm * 0.28;
-            card.style.transform = `translateZ(0) scale(${scale.toFixed(3)})`;
+            const card = allCards[i];
+            card.style.transform = `translate3d(0,0,0) scale(${scale.toFixed(3)})`;
             card.style.opacity = opacity.toFixed(3);
-            card.classList.toggle("is-active", norm < 0.35);
-        });
+            const shouldBeActive = norm < 0.35;
+            if (card.classList.contains("is-active") !== shouldBeActive) {
+                card.classList.toggle("is-active", shouldBeActive);
+            }
+        }
     }
 
     function updateActiveClasses(tIdx) {
@@ -1580,10 +1595,12 @@ function initHeroCardCarousel() {
 
     function jumpInstantTo(tIdx) {
         trackIdx = tIdx;
+        measureTrackLayout();
+        const targetLeft = getCenterOffset(trackIdx);
         track.style.scrollBehavior = "auto";
-        track.scrollLeft = getCenterOffset(allCards[trackIdx]);
+        track.scrollLeft = targetLeft;
         updateActiveClasses(trackIdx);
-        applyDepthScales();
+        applyDepthScales(targetLeft);
         requestAnimationFrame(() => {
             track.style.scrollBehavior = "";
         });
@@ -1599,13 +1616,14 @@ function initHeroCardCarousel() {
         clearTimeout(snapTimeout);
         if (animRaf) cancelAnimationFrame(animRaf);
 
+        measureTrackLayout();
         trackIdx = Math.max(0, Math.min(allCards.length - 1, targetTrackIdx));
         const rIdx = getRealIdx(trackIdx);
         dots.forEach((d, i) => d.classList.toggle("active", i === rIdx));
         isProgrammatic = true;
 
         const startLeft = track.scrollLeft;
-        const targetLeft = getCenterOffset(allCards[trackIdx]);
+        const targetLeft = getCenterOffset(trackIdx);
         const distance = targetLeft - startLeft;
         const duration = 950;
         let startTime = null;
@@ -1613,14 +1631,15 @@ function initHeroCardCarousel() {
         // Disable snap, CSS smooth, and CSS transform transition during rAF glide
         track.style.scrollSnapType = "none";
         track.style.scrollBehavior = "auto";
-        allCards.forEach(c => { c.style.transition = "background 0.45s ease, border-color 0.45s ease"; });
+        allCards.forEach(c => { c.style.transition = "none"; });
 
         function step(now) {
             if (!startTime) startTime = now;
             const elapsed = now - startTime;
             const progress = Math.min(1, elapsed / duration);
-            track.scrollLeft = startLeft + distance * easeInOutQuart(progress);
-            applyDepthScales();
+            const currentLeft = startLeft + distance * easeInOutQuart(progress);
+            track.scrollLeft = currentLeft;
+            applyDepthScales(currentLeft);
 
             if (progress < 1) {
                 animRaf = requestAnimationFrame(step);
@@ -1636,7 +1655,7 @@ function initHeroCardCarousel() {
                     jumpInstantTo(trackIdx - realCount);
                 } else {
                     updateActiveClasses(trackIdx);
-                    applyDepthScales();
+                    applyDepthScales(track.scrollLeft);
                 }
             }
         }
@@ -1718,22 +1737,28 @@ function initHeroCardCarousel() {
     track.addEventListener("touchend", () => { isPaused = false; restartAutoPlay(); }, { passive: true });
 
     let scrollTimer = null;
+    let scrollRaf = null;
     track.addEventListener("scroll", () => {
         if (isProgrammatic) return;
-        applyDepthScales();
+        if (!scrollRaf) {
+            scrollRaf = requestAnimationFrame(() => {
+                scrollRaf = null;
+                applyDepthScales(track.scrollLeft);
+            });
+        }
         clearTimeout(scrollTimer);
         scrollTimer = setTimeout(() => {
-            const center = track.scrollLeft + track.clientWidth / 2;
+            measureTrackLayout();
+            const center = track.scrollLeft + cachedHalfW;
             let closestIdx = 1;
             let closestDist = Infinity;
-            allCards.forEach((c, idx) => {
-                const cCenter = c.offsetLeft + c.offsetWidth / 2;
-                const dist = Math.abs(center - cCenter);
+            for (let idx = 0; idx < cachedCenters.length; idx++) {
+                const dist = Math.abs(center - cachedCenters[idx]);
                 if (dist < closestDist) {
                     closestDist = dist;
                     closestIdx = idx;
                 }
-            });
+            }
             if (closestIdx === 0) {
                 jumpInstantTo(realCount);
             } else if (closestIdx >= realCount + 1) {
@@ -1741,9 +1766,9 @@ function initHeroCardCarousel() {
             } else {
                 trackIdx = closestIdx;
                 updateActiveClasses(trackIdx);
-                applyDepthScales();
+                applyDepthScales(track.scrollLeft);
             }
-        }, 80);
+        }, 160);
     }, { passive: true });
 
     // Start centered on real Slide 1 (index 1) so Slide 4 peeks on the left and Slide 2 on the right
