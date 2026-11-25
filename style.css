@@ -6325,6 +6325,10 @@ input:focus-visible,
   transform: scale(1.1);
 }
 
+.nta-action-toolbar .nta-btn.is-hidden-action {
+  display: none !important;
+}
+
 /* ================= Right Column: Question Palette (STABLE / LOCKED ON SCROLL) ================= */
 .nta-exam-sidebar {
   min-width: 0;
@@ -6966,9 +6970,9 @@ input:focus-visible,
      Each spans 3 columns (3 * 2 = 6 cols)
   ======================================================== */
 
-  /* 4. Save & Next Button (Row 2, Left) — Imperial Maroon Stadium Pill */
+  /* 4. Save & Next Button (Row 2, Full Span) — Imperial Maroon Stadium Pill */
   #saveNextButton.nta-btn-savenext {
-    grid-column: span 3 !important;
+    grid-column: 1 / -1 !important;
     grid-row: 2 !important;
     order: 4 !important;
     height: 52px !important;
@@ -7007,9 +7011,9 @@ input:focus-visible,
     filter: brightness(0.92);
   }
 
-  /* 5. Submit Button (Row 2, Right) — Emerald Green Stadium Pill */
+  /* 5. Submit Button (Row 2, Full Span on Last Question) — Emerald Green Stadium Pill */
   #submitButton.nta-btn-submit {
-    grid-column: span 3 !important;
+    grid-column: 1 / -1 !important;
     grid-row: 2 !important;
     order: 5 !important;
     height: 52px !important;

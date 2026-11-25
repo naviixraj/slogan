@@ -1232,12 +1232,29 @@ if (totalNumberEl) {
                 currentQuestionIndex === 0;
         }
 
+        const isLastQuestion =
+            questions.length > 0 &&
+            currentQuestionIndex === questions.length - 1;
 
         if (saveNextButtonEl) {
-
             const saveSpan = saveNextButtonEl.querySelector("span");
             if (saveSpan) {
                 saveSpan.textContent = "Save & Next";
+            }
+            saveNextButtonEl.classList.toggle("is-hidden-action", isLastQuestion);
+            if (isLastQuestion) {
+                saveNextButtonEl.setAttribute("aria-hidden", "true");
+            } else {
+                saveNextButtonEl.removeAttribute("aria-hidden");
+            }
+        }
+
+        if (submitButtonEl) {
+            submitButtonEl.classList.toggle("is-hidden-action", !isLastQuestion);
+            if (!isLastQuestion) {
+                submitButtonEl.setAttribute("aria-hidden", "true");
+            } else {
+                submitButtonEl.removeAttribute("aria-hidden");
             }
         }
     }
