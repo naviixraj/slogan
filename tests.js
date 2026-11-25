@@ -1505,29 +1505,100 @@ function initHeroCardCarousel() {
     const nextBtn = document.getElementById("heroNextBtn");
     if (!track || !dotsWrap) return;
 
-    const slides = Array.from(track.querySelectorAll(".hero-slide-card"));
+    const realSlides = Array.from(track.querySelectorAll(".hero-slide-card"));
     const dots = Array.from(dotsWrap.querySelectorAll(".hero-carousel-dot"));
-    if (!slides.length) return;
+    const realCount = realSlides.length;
+    if (realCount < 2) return;
 
-    let activeIdx = 0;
+    function makeClone(slideEl) {
+        const clone = slideEl.cloneNode(true);
+        clone.removeAttribute("id");
+        clone.setAttribute("aria-hidden", "true");
+        clone.setAttribute("tabindex", "-1");
+        clone.querySelectorAll("[id]").forEach(el => {
+            el.setAttribute("data-mirror-id", el.id);
+            el.removeAttribute("id");
+        });
+        return clone;
+    }
 
-    function setActiveSlide(idx, shouldScroll = false) {
-        activeIdx = Math.max(0, Math.min(slides.length - 1, idx));
-        slides.forEach((s, i) => s.classList.toggle("is-active", i === activeIdx));
-        dots.forEach((d, i) => d.classList.toggle("active", i === activeIdx));
+    // Prepend clone of last slide, append clones of first two slides for seamless circular loop
+    const headClone = makeClone(realSlides[realCount - 1]);
+    const tailClone0 = makeClone(realSlides[0]);
+    const tailClone1 = makeClone(realSlides[1]);
 
-        if (shouldScroll) {
-            const target = slides[activeIdx];
-            const offset = target.offsetLeft - (track.clientWidth - target.offsetWidth) / 2;
-            track.scrollTo({ left: Math.max(0, offset), behavior: "smooth" });
-        }
+    track.insertBefore(headClone, realSlides[0]);
+    track.appendChild(tailClone0);
+    track.appendChild(tailClone1);
+
+    // Sync live stat counts into cloned Slide 1 whenever updated
+    ["heroActiveCount", "heroUpcomingCount", "heroTotalCount"].forEach(statId => {
+        const src = document.getElementById(statId);
+        if (!src) return;
+        const syncMirror = () => {
+            track.querySelectorAll(`[data-mirror-id="${statId}"]`).forEach(m => {
+                m.textContent = src.textContent;
+            });
+        };
+        syncMirror();
+        new MutationObserver(syncMirror).observe(src, { childList: true, characterData: true, subtree: true });
+    });
+
+    const allCards = Array.from(track.querySelectorAll(".hero-slide-card"));
+    // Track layout: [clone(last), real(0), real(1), ..., real(N-1), clone(0), clone(1)]
+    let trackIdx = 1;
+    let isProgrammatic = false;
+    let snapTimeout = null;
+
+    function getRealIdx(tIdx) {
+        return ((tIdx - 1) % realCount + realCount) % realCount;
+    }
+
+    function getCenterOffset(cardEl) {
+        return Math.max(0, cardEl.offsetLeft - (track.clientWidth - cardEl.offsetWidth) / 2);
+    }
+
+    function updateActiveClasses(tIdx) {
+        const rIdx = getRealIdx(tIdx);
+        allCards.forEach((c, i) => c.classList.toggle("is-active", i === tIdx));
+        dots.forEach((d, i) => d.classList.toggle("active", i === rIdx));
+    }
+
+    function jumpInstantTo(tIdx) {
+        trackIdx = tIdx;
+        track.style.scrollBehavior = "auto";
+        track.scrollLeft = getCenterOffset(allCards[trackIdx]);
+        updateActiveClasses(trackIdx);
+        requestAnimationFrame(() => {
+            track.style.scrollBehavior = "";
+        });
+    }
+
+    function goToTrackIndex(targetTrackIdx) {
+        clearTimeout(snapTimeout);
+        trackIdx = Math.max(0, Math.min(allCards.length - 1, targetTrackIdx));
+        updateActiveClasses(trackIdx);
+        isProgrammatic = true;
+
+        track.scrollTo({
+            left: getCenterOffset(allCards[trackIdx]),
+            behavior: "smooth"
+        });
+
+        snapTimeout = setTimeout(() => {
+            isProgrammatic = false;
+            if (trackIdx === 0) {
+                jumpInstantTo(realCount);
+            } else if (trackIdx >= realCount + 1) {
+                jumpInstantTo(trackIdx - realCount);
+            }
+        }, 430);
     }
 
     if (prevBtn) {
         prevBtn.addEventListener("click", (e) => {
             e.stopPropagation();
-            const prevIdx = activeIdx === 0 ? slides.length - 1 : activeIdx - 1;
-            setActiveSlide(prevIdx, true);
+            goToTrackIndex(trackIdx - 1);
             restartAutoPlay();
         });
     }
@@ -1535,18 +1606,17 @@ function initHeroCardCarousel() {
     if (nextBtn) {
         nextBtn.addEventListener("click", (e) => {
             e.stopPropagation();
-            const nextIdx = activeIdx === slides.length - 1 ? 0 : activeIdx + 1;
-            setActiveSlide(nextIdx, true);
+            goToTrackIndex(trackIdx + 1);
             restartAutoPlay();
         });
     }
 
-    slides.forEach((slide, idx) => {
-        slide.addEventListener("click", () => {
-            if (idx !== activeIdx) {
-                setActiveSlide(idx, true);
+    allCards.forEach((card, idx) => {
+        card.addEventListener("click", () => {
+            if (idx !== trackIdx) {
+                goToTrackIndex(idx);
                 restartAutoPlay();
-            } else if (idx === 2) {
+            } else if (getRealIdx(idx) === 2) {
                 const ranksTab = document.getElementById("tabLeaderboardBtn");
                 if (ranksTab && window.innerWidth <= 900) {
                     ranksTab.click();
@@ -1555,9 +1625,14 @@ function initHeroCardCarousel() {
         });
     });
 
-    dots.forEach((dot, idx) => {
+    dots.forEach((dot, rIdx) => {
         dot.addEventListener("click", () => {
-            setActiveSlide(idx, true);
+            // If currently on last slide and clicking dot 0, move forward rightward!
+            if (getRealIdx(trackIdx) === realCount - 1 && rIdx === 0) {
+                goToTrackIndex(realCount + 1);
+            } else {
+                goToTrackIndex(rIdx + 1);
+            }
             restartAutoPlay();
         });
     });
@@ -1569,8 +1644,8 @@ function initHeroCardCarousel() {
         clearInterval(autoTimer);
         autoTimer = setInterval(() => {
             if (isPaused || document.hidden) return;
-            const nextIdx = activeIdx === slides.length - 1 ? 0 : activeIdx + 1;
-            setActiveSlide(nextIdx, true);
+            // Always advance forward to the right (circular)
+            goToTrackIndex(trackIdx + 1);
         }, 4000);
     }
 
@@ -1585,32 +1660,33 @@ function initHeroCardCarousel() {
 
     let scrollTimer = null;
     track.addEventListener("scroll", () => {
+        if (isProgrammatic) return;
         clearTimeout(scrollTimer);
         scrollTimer = setTimeout(() => {
             const center = track.scrollLeft + track.clientWidth / 2;
-            let closestIdx = 0;
+            let closestIdx = 1;
             let closestDist = Infinity;
-            slides.forEach((s, idx) => {
-                const sCenter = s.offsetLeft + s.offsetWidth / 2;
-                const dist = Math.abs(center - sCenter);
+            allCards.forEach((c, idx) => {
+                const cCenter = c.offsetLeft + c.offsetWidth / 2;
+                const dist = Math.abs(center - cCenter);
                 if (dist < closestDist) {
                     closestDist = dist;
                     closestIdx = idx;
                 }
             });
-            setActiveSlide(closestIdx, false);
-        }, 60);
+            if (closestIdx === 0) {
+                jumpInstantTo(realCount);
+            } else if (closestIdx >= realCount + 1) {
+                jumpInstantTo(closestIdx - realCount);
+            } else {
+                trackIdx = closestIdx;
+                updateActiveClasses(trackIdx);
+            }
+        }, 80);
     }, { passive: true });
 
-    // Start centered on Slide 1 (Examinations) and auto-advance every 4s
-    setActiveSlide(0, false);
-    requestAnimationFrame(() => {
-        const target = slides[0];
-        if (target) {
-            const offset = target.offsetLeft - (track.clientWidth - target.offsetWidth) / 2;
-            track.scrollLeft = Math.max(0, offset);
-        }
-    });
+    // Start centered on real Slide 1 (index 1) so Slide 4 peeks on the left and Slide 2 on the right
+    requestAnimationFrame(() => jumpInstantTo(1));
     startAutoPlay();
 }
 
