@@ -1558,6 +1558,20 @@ function initHeroCardCarousel() {
         return Math.max(0, cardEl.offsetLeft - (track.clientWidth - cardEl.offsetWidth) / 2);
     }
 
+    function applyDepthScales() {
+        const viewCenter = track.scrollLeft + track.clientWidth / 2;
+        const maxDist = Math.max(260, track.clientWidth * 0.72);
+        allCards.forEach(card => {
+            const cardCenter = card.offsetLeft + card.offsetWidth / 2;
+            const norm = Math.min(1, Math.abs(viewCenter - cardCenter) / maxDist);
+            const scale = 1.03 - norm * 0.21;
+            const opacity = 1 - norm * 0.28;
+            card.style.transform = `translateZ(0) scale(${scale.toFixed(3)})`;
+            card.style.opacity = opacity.toFixed(3);
+            card.classList.toggle("is-active", norm < 0.35);
+        });
+    }
+
     function updateActiveClasses(tIdx) {
         const rIdx = getRealIdx(tIdx);
         allCards.forEach((c, i) => c.classList.toggle("is-active", i === tIdx));
@@ -1569,6 +1583,7 @@ function initHeroCardCarousel() {
         track.style.scrollBehavior = "auto";
         track.scrollLeft = getCenterOffset(allCards[trackIdx]);
         updateActiveClasses(trackIdx);
+        applyDepthScales();
         requestAnimationFrame(() => {
             track.style.scrollBehavior = "";
         });
@@ -1585,7 +1600,8 @@ function initHeroCardCarousel() {
         if (animRaf) cancelAnimationFrame(animRaf);
 
         trackIdx = Math.max(0, Math.min(allCards.length - 1, targetTrackIdx));
-        updateActiveClasses(trackIdx);
+        const rIdx = getRealIdx(trackIdx);
+        dots.forEach((d, i) => d.classList.toggle("active", i === rIdx));
         isProgrammatic = true;
 
         const startLeft = track.scrollLeft;
@@ -1594,15 +1610,17 @@ function initHeroCardCarousel() {
         const duration = 950;
         let startTime = null;
 
-        // Disable snap and CSS smooth during custom rAF glide so motion is 100% silky
+        // Disable snap, CSS smooth, and CSS transform transition during rAF glide
         track.style.scrollSnapType = "none";
         track.style.scrollBehavior = "auto";
+        allCards.forEach(c => { c.style.transition = "background 0.45s ease, border-color 0.45s ease"; });
 
         function step(now) {
             if (!startTime) startTime = now;
             const elapsed = now - startTime;
             const progress = Math.min(1, elapsed / duration);
             track.scrollLeft = startLeft + distance * easeInOutQuart(progress);
+            applyDepthScales();
 
             if (progress < 1) {
                 animRaf = requestAnimationFrame(step);
@@ -1610,11 +1628,15 @@ function initHeroCardCarousel() {
                 animRaf = null;
                 track.style.scrollSnapType = "";
                 track.style.scrollBehavior = "";
+                allCards.forEach(c => { c.style.transition = ""; });
                 isProgrammatic = false;
                 if (trackIdx === 0) {
                     jumpInstantTo(realCount);
                 } else if (trackIdx >= realCount + 1) {
                     jumpInstantTo(trackIdx - realCount);
+                } else {
+                    updateActiveClasses(trackIdx);
+                    applyDepthScales();
                 }
             }
         }
@@ -1689,6 +1711,7 @@ function initHeroCardCarousel() {
             animRaf = null;
             track.style.scrollSnapType = "";
             track.style.scrollBehavior = "";
+            allCards.forEach(c => { c.style.transition = ""; });
             isProgrammatic = false;
         }
     }, { passive: true });
@@ -1697,6 +1720,7 @@ function initHeroCardCarousel() {
     let scrollTimer = null;
     track.addEventListener("scroll", () => {
         if (isProgrammatic) return;
+        applyDepthScales();
         clearTimeout(scrollTimer);
         scrollTimer = setTimeout(() => {
             const center = track.scrollLeft + track.clientWidth / 2;
@@ -1717,6 +1741,7 @@ function initHeroCardCarousel() {
             } else {
                 trackIdx = closestIdx;
                 updateActiveClasses(trackIdx);
+                applyDepthScales();
             }
         }, 80);
     }, { passive: true });
