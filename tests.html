@@ -1430,10 +1430,12 @@
                 right: 0;
                 height: 68px;
                 padding-bottom: env(safe-area-inset-bottom, 0px);
-                background: #FDF4EE;
-                border-top: 1px solid rgba(189, 139, 127, 0.45);
-                border-radius: 26px 26px 0 0;
-                box-shadow: 0 -10px 30px rgba(24, 0, 5, 0.35), inset 0 1px 0 #FFFFFF;
+                background: linear-gradient(180deg, rgba(68, 2, 16, 0.96) 0%, rgba(36, 0, 8, 0.99) 100%);
+                border-top: 1.25px solid rgba(232, 192, 136, 0.65);
+                border-radius: 24px 24px 0 0;
+                box-shadow: 0 -4px 22px rgba(232, 192, 136, 0.16), 0 -10px 30px rgba(15, 0, 3, 0.52), inset 0 1px 0 rgba(251, 222, 199, 0.18);
+                backdrop-filter: blur(16px);
+                -webkit-backdrop-filter: blur(16px);
                 z-index: 950;
                 align-items: center;
                 justify-content: space-around;
@@ -1491,7 +1493,7 @@
                 background: transparent;
                 border: none;
                 padding: 4px 0;
-                color: #6E4A4E;
+                color: rgba(251, 222, 199, 0.65);
                 cursor: pointer;
                 transition: color 0.18s ease, transform 0.12s ease;
                 -webkit-tap-highlight-color: transparent;
@@ -1501,10 +1503,10 @@
                 content: "";
                 position: absolute;
                 right: 0;
-                top: 22%;
-                bottom: 22%;
+                top: 24%;
+                bottom: 24%;
                 width: 1px;
-                background: rgba(189, 139, 127, 0.35);
+                background: rgba(232, 192, 136, 0.14);
             }
 
             .tab-btn:active {
@@ -1519,40 +1521,41 @@
                 display: flex;
                 align-items: center;
                 justify-content: center;
-                transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+                transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
             }
 
             .tab-icon {
                 width: 20px;
                 height: 20px;
-                transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-                color: #570215;
+                transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.2s ease;
+                color: rgba(251, 222, 199, 0.72);
             }
 
             .tab-btn.active {
-                color: #3A010D;
+                color: #FDF4EE;
             }
 
             .tab-btn.active .tab-icon-wrap {
-                background: transparent;
-                box-shadow: none;
+                background: linear-gradient(135deg, rgba(251, 222, 199, 0.2) 0%, rgba(232, 192, 136, 0.14) 100%);
+                border: 1px solid rgba(232, 192, 136, 0.45);
+                box-shadow: 0 0 12px rgba(232, 192, 136, 0.22);
             }
 
             .tab-btn.active .tab-icon {
-                color: #3A010D;
-                transform: scale(1.1);
-                filter: none;
+                color: #E8C088;
+                transform: scale(1.08);
+                filter: drop-shadow(0 0 6px rgba(232, 192, 136, 0.4));
             }
 
             .tab-btn.active::before {
                 content: "";
                 position: absolute;
                 bottom: -2px;
-                left: 28%;
-                right: 28%;
+                left: 26%;
+                right: 26%;
                 height: 2.5px;
                 border-radius: 2px;
-                background: #3A010D;
+                background: linear-gradient(90deg, transparent, #E8C088, transparent);
             }
 
             .tab-badge-dot {
@@ -1562,21 +1565,22 @@
                 width: 6px;
                 height: 6px;
                 border-radius: 50%;
-                background: #BD8B7F;
+                background: #E8C088;
+                box-shadow: 0 0 6px rgba(232, 192, 136, 0.85);
             }
 
             .tab-label {
                 font-size: 10px;
                 font-weight: 700;
-                letter-spacing: 0.5px;
+                letter-spacing: 0.6px;
                 text-transform: uppercase;
                 transition: font-weight 0.18s ease, color 0.18s ease;
-                color: #7D5A5E;
+                color: rgba(251, 222, 199, 0.65);
             }
 
             .tab-btn.active .tab-label {
                 font-weight: 800;
-                color: #3A010D;
+                color: #FDF4EE;
             }
 
             /* =========================================================
