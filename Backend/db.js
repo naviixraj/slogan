@@ -148,40 +148,6 @@ async function findCandidateByUserId(userId) {
     }
 }
 
-async function findCandidateById(id) {
-    if (isSupabase) {
-        const { data, error } = await supabase
-            .from("candidates")
-            .select("*")
-            .eq("id", id)
-            .maybeSingle();
-        if (error) console.error("Supabase findCandidateById error:", error.message);
-        return normalizeCandidate(data);
-    } else {
-        const row = sqliteDb.prepare("SELECT * FROM candidates WHERE id = ?").get(id);
-        return normalizeCandidate(row);
-    }
-}
-
-async function listCandidates() {
-    if (isSupabase) {
-        const cols = (await checkSupabaseHasPhone()) ? "id, user_id, candidate_name, email, phone, role, active, created_at" : "id, user_id, candidate_name, email, role, active, created_at";
-        const { data, error } = await supabase
-            .from("candidates")
-            .select(cols)
-            .order("created_at", { ascending: false });
-        if (error) console.error("Supabase listCandidates error:", error.message);
-        return (data || []).map(normalizeCandidate);
-    } else {
-        const rows = sqliteDb.prepare(`
-            SELECT id, user_id, candidate_name, email, phone, exam_combination, role, active, created_at
-            FROM candidates
-            ORDER BY datetime(created_at) DESC
-        `).all() || [];
-        return rows.map(normalizeCandidate);
-    }
-}
-
 async function createCandidate({ userId, passwordHash, candidateName, email, phone, examCombination, role = "Student" }) {
     const cleanUserId = String(userId || "").trim();
     const cleanName = candidateName ? String(candidateName).trim() : cleanUserId;
@@ -237,17 +203,6 @@ async function createCandidate({ userId, passwordHash, candidateName, email, pho
     }
 }
 
-async function deleteCandidate(id) {
-    if (isSupabase) {
-        const { error } = await supabase.from("candidates").delete().eq("id", id);
-        if (error) throw new Error(error.message);
-        return true;
-    } else {
-        const result = sqliteDb.prepare("DELETE FROM candidates WHERE id = ?").run(id);
-        return result.changes > 0;
-    }
-}
-
 // -------------------------------------------------------------
 // QUESTION SETS & EXAMS
 // -------------------------------------------------------------
@@ -281,19 +236,6 @@ async function getQuestionSetById(id) {
         return data || null;
     } else {
         return sqliteDb.prepare("SELECT * FROM question_sets WHERE UPPER(id) = ?").get(cleanId.toUpperCase()) || null;
-    }
-}
-
-async function countQuestionSets() {
-    if (isSupabase) {
-        const { count, error } = await supabase
-            .from("question_sets")
-            .select("*", { count: "exact", head: true });
-        if (error) console.error("Supabase countQuestionSets error:", error.message);
-        return count || 0;
-    } else {
-        const row = sqliteDb.prepare("SELECT COUNT(*) as count FROM question_sets").get();
-        return row ? row.count : 0;
     }
 }
 
@@ -471,13 +413,9 @@ module.exports = {
     isSupabase,
     supabase,
     findCandidateByUserId,
-    findCandidateById,
-    listCandidates,
     createCandidate,
-    deleteCandidate,
     listQuestionSets,
     getQuestionSetById,
-    countQuestionSets,
     createQuestionSet,
     deleteQuestionSet,
     updateQuestionSetQuestions,

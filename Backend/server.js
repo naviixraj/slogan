@@ -428,19 +428,6 @@ async function sendWhatsAppWelcomeMessage({ phone, candidateName, userId }) {
     return { success: false, reason: "credentials_not_configured" };
 }
 
-// WhatsApp Config API Status
-app.get("/api/whatsapp/config", (req, res) => {
-    const hasMeta = Boolean(process.env.WHATSAPP_ACCESS_TOKEN && process.env.WHATSAPP_PHONE_NUMBER_ID);
-    const hasTwilio = Boolean(process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN && process.env.TWILIO_WHATSAPP_FROM);
-
-    res.json({
-        success: true,
-        configured: hasMeta || hasTwilio,
-        provider: hasMeta ? "meta" : (hasTwilio ? "twilio" : "none"),
-        metaPhoneId: process.env.WHATSAPP_PHONE_NUMBER_ID ? `***${process.env.WHATSAPP_PHONE_NUMBER_ID.slice(-4)}` : null
-    });
-});
-
 // Candidate Self-Registration API
 app.post("/api/register", async (req, res) => {
     try {
@@ -1924,92 +1911,6 @@ app.put("/api/admin/sets/:id/questions/:qNum", requireAdmin, async (req, res) =>
 });
 
 // -----------------------------------------------------
-// MASTER ADMIN: CANDIDATE / STUDENT APIS
-// -----------------------------------------------------
-
-// Get all Candidates
-app.get("/api/admin/students", requireAdmin, async (req, res) => {
-    try {
-        res.setHeader("Cache-Control", "no-store, no-cache, must-revalidate, proxy-revalidate");
-        const candidates = await unifiedDb.listCandidates();
-        return res.json({ success: true, students: candidates });
-    } catch (error) {
-        return res.status(500).json({ success: false, message: "Failed to load candidate list." });
-    }
-});
-
-// Add new Student
-app.post("/api/admin/students", requireAdmin, async (req, res) => {
-    try {
-        const { userId, password, candidateName, email, phone, examCombination, role } = req.body;
-
-        if (!userId || !password || !candidateName) {
-            return res.status(400).json({ success: false, message: "User ID, Candidate Name, and Password are required." });
-        }
-
-        const cleanUserId = userId.trim();
-        const existing = await unifiedDb.findCandidateByUserId(cleanUserId);
-        if (existing) {
-            return res.status(400).json({ success: false, message: `Candidate User ID "${cleanUserId}" already exists. Choose a unique User ID.` });
-        }
-
-        const passwordHash = bcrypt.hashSync(password, 12);
-        const candidateEmail = email && email.trim() ? email.trim() : `${cleanUserId.toLowerCase()}@slogon.edu`;
-        const candidatePhone = phone && phone.trim() ? phone.trim() : "";
-        const candidateRole = role === "Admin" ? "Admin" : "Student";
-        const cleanCombo = examCombination && examCombination.trim() ? examCombination.trim() : "Paper 1 - General Paper";
-
-        const created = await unifiedDb.createCandidate({
-            userId: cleanUserId,
-            passwordHash,
-            candidateName: candidateName.trim(),
-            email: candidateEmail,
-            phone: candidatePhone,
-            examCombination: cleanCombo,
-            role: candidateRole
-        });
-
-        if (candidatePhone) {
-            sendWhatsAppWelcomeMessage({
-                phone: candidatePhone,
-                candidateName: candidateName.trim(),
-                userId: cleanUserId
-            }).catch((err) => console.warn("[WHATSAPP] Admin student dispatch notice:", err.message));
-        }
-
-        return res.json({
-            success: true,
-            id: created.id,
-            student: created,
-            message: `Candidate account for "${candidateName.trim()}" (${cleanUserId}) created successfully!`
-        });
-    } catch (error) {
-        return res.status(500).json({ success: false, message: "Failed to create student account: " + error.message });
-    }
-});
-
-// Delete a Candidate
-app.delete("/api/admin/students/:id", requireAdmin, async (req, res) => {
-    try {
-        const id = Number(req.params.id);
-        const candidate = await unifiedDb.findCandidateById(id);
-
-        if (!candidate) {
-            return res.status(404).json({ success: false, message: "Candidate not found." });
-        }
-
-        if (candidate.user_id === req.session.candidate.userId) {
-            return res.status(400).json({ success: false, message: "Cannot delete the currently logged in administrator." });
-        }
-
-        await unifiedDb.deleteCandidate(id);
-        return res.json({ success: true, message: `Candidate ${candidate.user_id} deleted.` });
-    } catch (error) {
-        return res.status(500).json({ success: false, message: "Failed to delete candidate." });
-    }
-});
-
-// -----------------------------------------------------
 // STUDENT APIS: DYNAMIC TESTS CATALOG & EXAM LOADER
 // -----------------------------------------------------
 
@@ -2079,116 +1980,6 @@ app.get("/api/student/tests", async (req, res) => {
     } catch (error) {
         console.error("Error loading student tests catalog:", error);
         return res.status(500).json({ success: false, message: "Failed to load examination catalog." });
-    }
-});
-
-// Search questions across student's accessible tests
-app.get("/api/student/questions/search", async (req, res) => {
-    try {
-        const query = String(req.query.q || "").trim().toLowerCase();
-        if (!query) {
-            return res.json({ success: true, count: 0, questions: [] });
-        }
-
-        const candidate = req.session ? req.session.candidate : null;
-        const studentCombo = candidate ? (candidate.examCombination || candidate.exam_combination || "Paper 1 - General Paper") : "All";
-
-        const allSets = await unifiedDb.listQuestionSets();
-        const eligibleSets = allSets.filter(set => {
-            if (!candidate || candidate.role === "Admin") return true;
-            return isCandidateEligibleForSubject(studentCombo, set.subject);
-        });
-
-        const matchingQuestions = [];
-
-        for (const set of eligibleSets) {
-            try {
-                const fullSet = await unifiedDb.getQuestionSetById(set.id);
-                if (fullSet && fullSet.questions_json) {
-                    const qList = typeof fullSet.questions_json === "string" ? JSON.parse(fullSet.questions_json) : fullSet.questions_json;
-                    if (Array.isArray(qList)) {
-                        for (let i = 0; i < qList.length; i++) {
-                            const q = qList[i];
-                            const qNum = String(q.number || q.id || (i + 1));
-                            const stmt = String(q.statement || q.question || "").toLowerCase();
-                            const expl = String(q.explanation || "").toLowerCase();
-                            const optsText = Array.isArray(q.options)
-                                ? q.options.map(o => (typeof o === "string" ? o : (o.text || ""))).join(" ").toLowerCase()
-                                : "";
-
-                            if (stmt.includes(query) || optsText.includes(query) || expl.includes(query) || qNum === query || `q${qNum}` === query || `q.${qNum}` === query || `question ${qNum}` === query) {
-                                matchingQuestions.push({
-                                    setId: set.id,
-                                    setTitle: set.title,
-                                    subject: set.subject || "General Paper",
-                                    duration: set.duration || 180,
-                                    number: q.number || (i + 1),
-                                    id: q.id || (i + 1),
-                                    statement: q.statement || q.question || "",
-                                    options: q.options || [],
-                                    answer: q.answer || q.key || q.correct_option || "",
-                                    explanation: q.explanation || ""
-                                });
-                                if (matchingQuestions.length >= 40) break;
-                            }
-                        }
-                    }
-                }
-            } catch (err) {
-                console.warn(`[SEARCH] Error parsing questions for set ${set.id}:`, err.message);
-            }
-            if (matchingQuestions.length >= 40) break;
-        }
-
-        // Also search static mock01 if room remains
-        if (matchingQuestions.length < 40) {
-            try {
-                const mock01Path = path.join(ROOT, "data", "mock01.json");
-                if (fs.existsSync(mock01Path)) {
-                    const mock01Content = await fs.promises.readFile(mock01Path, "utf8");
-                    const mock01Questions = JSON.parse(mock01Content);
-                    if (Array.isArray(mock01Questions)) {
-                        for (let i = 0; i < mock01Questions.length; i++) {
-                            const q = mock01Questions[i];
-                            const qNum = String(q.number || q.id || (i + 1));
-                            const stmt = String(q.statement || q.question || "").toLowerCase();
-                            const expl = String(q.explanation || "").toLowerCase();
-                            const optsText = Array.isArray(q.options)
-                                ? q.options.map(o => (typeof o === "string" ? o : (o.text || ""))).join(" ").toLowerCase()
-                                : "";
-
-                            if (stmt.includes(query) || optsText.includes(query) || expl.includes(query) || qNum === query || `q${qNum}` === query || `q.${qNum}` === query || `question ${qNum}` === query) {
-                                matchingQuestions.push({
-                                    setId: "MOCK01",
-                                    setTitle: "UGC NET Full-Length Mock Test 01",
-                                    subject: "Paper 1 - General Paper",
-                                    duration: 180,
-                                    number: q.number || (i + 1),
-                                    id: q.id || (i + 1),
-                                    statement: q.statement || q.question || "",
-                                    options: q.options || [],
-                                    answer: q.answer || q.key || q.correct_option || "",
-                                    explanation: q.explanation || ""
-                                });
-                                if (matchingQuestions.length >= 40) break;
-                            }
-                        }
-                    }
-                }
-            } catch (e) {
-                // Ignore static read errors
-            }
-        }
-
-        return res.json({
-            success: true,
-            query: req.query.q,
-            count: matchingQuestions.length,
-            questions: matchingQuestions
-        });
-    } catch (error) {
-        console.error("Student question search error:", error);
-        return res.status(500).json({ success: false, message: "Question search failed: " + error.message });
     }
 });
 
@@ -2278,11 +2069,6 @@ app.post("/api/logout", (req, res) => {
             message: "Logged out successfully."
         });
     });
-});
-
-// Authoring Guide PDF redirect
-app.get(["/authoring-guide.html", "/authoring-guide"], (req, res) => {
-    res.redirect("/QUESTION_AUTHORING_BLUEPRINT.pdf");
 });
 
 // Serve existing website files
