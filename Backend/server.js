@@ -626,8 +626,8 @@ app.get("/api/auth/google/start", (req, res) => {
     res.redirect(googleAuthUrl);
 });
 
-// Helper: Decode and extract payload from Google JWT
-function decodeGoogleCredential(token) {
+// Helper: decode JWT payload from direct Google server-to-server token exchange
+function decodeGoogleJwtPayload(token) {
     if (!token || typeof token !== "string") return null;
     const parts = token.split(".");
     if (parts.length !== 3) return null;
@@ -636,6 +636,42 @@ function decodeGoogleCredential(token) {
         const jsonStr = Buffer.from(payloadBase64, "base64").toString("utf8");
         return JSON.parse(jsonStr);
     } catch (e) {
+        return null;
+    }
+}
+
+function validateGoogleClaims(payload, expectedClientId) {
+    if (!payload || !payload.email) return false;
+    const emailVerified = payload.email_verified === true || payload.email_verified === "true";
+    if (!emailVerified) return false;
+    if (expectedClientId && payload.aud !== expectedClientId) return false;
+    if (payload.iss && payload.iss !== "accounts.google.com" && payload.iss !== "https://accounts.google.com") {
+        return false;
+    }
+    if (payload.exp && Number(payload.exp) * 1000 <= Date.now()) {
+        return false;
+    }
+    return true;
+}
+
+// Helper: cryptographically verify Google ID token via Google's tokeninfo endpoint
+async function verifyGoogleIdToken(token) {
+    if (!token || typeof token !== "string") return null;
+    const expectedClientId = process.env.GOOGLE_CLIENT_ID;
+    if (!expectedClientId) return null;
+
+    try {
+        const verifyRes = await fetch(
+            `https://oauth2.googleapis.com/tokeninfo?id_token=${encodeURIComponent(token)}`
+        );
+        if (!verifyRes.ok) return null;
+        const payload = await verifyRes.json();
+        if (!validateGoogleClaims(payload, expectedClientId)) {
+            return null;
+        }
+        return payload;
+    } catch (err) {
+        console.error("[GOOGLE AUTH] Token verification error:", err.message);
         return null;
     }
 }
@@ -675,8 +711,8 @@ app.get("/api/auth/google/callback", async (req, res) => {
             return res.redirect("/login.html?error=google_token_failed");
         }
 
-        const payload = decodeGoogleCredential(tokenData.id_token);
-        if (!payload || !payload.email) {
+        const payload = decodeGoogleJwtPayload(tokenData.id_token);
+        if (!validateGoogleClaims(payload, clientId)) {
             return res.redirect("/login.html?error=invalid_google_profile");
         }
 
@@ -703,6 +739,9 @@ app.get("/api/auth/google/callback", async (req, res) => {
         }
 
         if (candidate) {
+            if (candidate.active !== 1) {
+                return res.redirect("/login.html?error=account_deactivated");
+            }
             // Existing student -> Log in immediately!
             req.session.regenerate((err) => {
                 if (err) {
@@ -745,14 +784,18 @@ app.get("/api/auth/google/callback", async (req, res) => {
 // Google One-Tap / GIS verification endpoint (Supports instant check)
 app.post("/api/auth/google", async (req, res) => {
     try {
+        if (!process.env.GOOGLE_CLIENT_ID) {
+            return res.status(503).json({ success: false, message: "Google Sign-In is not configured on this server." });
+        }
+
         const { credential } = req.body;
         if (!credential) {
             return res.status(400).json({ success: false, message: "Missing Google credential token." });
         }
 
-        const payload = decodeGoogleCredential(credential);
+        const payload = await verifyGoogleIdToken(credential);
         if (!payload || !payload.email) {
-            return res.status(400).json({ success: false, message: "Invalid Google credential token." });
+            return res.status(401).json({ success: false, message: "Invalid or expired Google credential token." });
         }
 
         const googleEmail = String(payload.email).trim().toLowerCase();
@@ -793,6 +836,13 @@ app.post("/api/auth/google", async (req, res) => {
                 email: googleEmail,
                 name: googleName,
                 picture: googlePicture
+            });
+        }
+
+        if (candidate.active !== 1) {
+            return res.status(403).json({
+                success: false,
+                message: "This account has been deactivated."
             });
         }
 
