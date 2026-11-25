@@ -560,6 +560,236 @@ function renderTests() {
         upcomingNextBtn,
         upcomingCarouselControls
     );
+
+    // Study Material Carousel (same design as Available Exams, placed before Available Exams)
+    const studyMaterialTrack = document.getElementById("studyMaterialTrack");
+    const studyMaterialDots = document.getElementById("studyMaterialDots");
+    const studyMaterialPrevBtn = document.getElementById("studyMaterialPrevBtn");
+    const studyMaterialNextBtn = document.getElementById("studyMaterialNextBtn");
+    const studyMaterialControls = document.getElementById("studyMaterialControls");
+    const studyMaterialCountBadge = document.getElementById("studyMaterialCountBadge");
+
+    const studyMaterials = [
+        {
+            code: "MAT 01",
+            title: "Paper 1 — General Paper Mastery",
+            desc: "Structured notes covering Teaching & Research Aptitude, DI, Logical Reasoning, and ICT.",
+            units: "10",
+            unitsLabel: "Units",
+            paper: "Paper 1",
+            paperLabel: "Module",
+            format: "Notes",
+            topics: [
+                "Unit 1–2: Teaching & Research Aptitude Fundamentals",
+                "Unit 3–4: Comprehension & Effective Communication",
+                "Unit 5–7: Mathematical, Logical Reasoning & Data Interpretation",
+                "Unit 8–10: ICT, People & Environment, Higher Education System"
+            ]
+        },
+        {
+            code: "MAT 02",
+            title: "Paper 2 — Tamil Literature & Grammar",
+            desc: "Comprehensive unit-wise reference for Sangam texts, Ilakkanam, and Modern Tamil literature.",
+            units: "10",
+            unitsLabel: "Units",
+            paper: "Paper 2",
+            paperLabel: "Subject",
+            format: "Guide",
+            topics: [
+                "Classical Sangam & Ettuthogai / Pathuppattu Overview",
+                "Tolkappiyam & Nannool Grammar Key Rules",
+                "Bhakti Movement, Epics & Ethical Literature",
+                "Modern Tamil Prose, Poetry & Literary Criticism"
+            ]
+        },
+        {
+            code: "MAT 03",
+            title: "Quick Revision — DI & PYQ Briefs",
+            desc: "High-yield shortcuts, percentage tables, logical fallacies, and last-minute recall sheets.",
+            units: "50+",
+            unitsLabel: "Topics",
+            paper: "All",
+            paperLabel: "Papers",
+            format: "Briefs",
+            topics: [
+                "Data Interpretation Ratio & Percentage Speed Tables",
+                "Indian Logic (Pramanas & Hetvabhasa) Quick Chart",
+                "ICT Abbreviations, Protocols & Digital Initiatives",
+                "Research Designs, Sampling & Hypothesis Testing Summary"
+            ]
+        }
+    ];
+
+    if (studyMaterialCountBadge) {
+        studyMaterialCountBadge.textContent = `${studyMaterials.length} ${studyMaterials.length === 1 ? "SET" : "SETS"}`;
+    }
+
+    function openStudyMaterialModal(item) {
+        const modal = document.getElementById("studyMaterialModal");
+        const codeEl = document.getElementById("studyModalCode");
+        const titleEl = document.getElementById("studyModalTitle");
+        const metaEl = document.getElementById("studyModalMeta");
+        const bodyEl = document.getElementById("studyModalBody");
+        if (!modal || !titleEl || !bodyEl) return;
+
+        if (codeEl) codeEl.textContent = item.code;
+        titleEl.textContent = item.title;
+        if (metaEl) metaEl.textContent = `${item.units} ${item.unitsLabel} • ${item.paper} • ${item.format}`;
+
+        bodyEl.innerHTML = "";
+        const intro = document.createElement("p");
+        intro.style.marginBottom = "10px";
+        intro.textContent = item.desc;
+        bodyEl.appendChild(intro);
+
+        const list = document.createElement("ul");
+        list.style.paddingLeft = "18px";
+        list.style.display = "flex";
+        list.style.flexDirection = "column";
+        list.style.gap = "6px";
+        item.topics.forEach(t => {
+            const li = document.createElement("li");
+            li.textContent = t;
+            list.appendChild(li);
+        });
+        bodyEl.appendChild(list);
+
+        modal.classList.add("show");
+        modal.setAttribute("aria-hidden", "false");
+    }
+
+    function buildStudyMaterialCard(item) {
+        const card = document.createElement("article");
+        card.className = "avail-exam-card";
+        card.setAttribute("role", "button");
+        card.setAttribute("tabindex", "0");
+        card.setAttribute("title", `Open ${item.title}`);
+
+        card.innerHTML = `
+            <svg class="avail-card-watermark" viewBox="0 0 96 96" fill="none" aria-hidden="true">
+                <path d="M18 22C18 18 22 15 26 15H46V73H26C22 73 18 76 18 80V22Z" fill="rgba(251,222,199,0.12)" stroke="rgba(251,222,199,0.38)" stroke-width="2"/>
+                <path d="M78 22C78 18 74 15 70 15H50V73H70C74 73 78 76 78 80V22Z" fill="rgba(251,222,199,0.12)" stroke="rgba(251,222,199,0.38)" stroke-width="2"/>
+                <path d="M26 30h12M26 42h12M58 30h12M58 42h12" stroke="rgba(253,244,238,0.48)" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+        `;
+
+        const top = document.createElement("div");
+        top.className = "avail-card-top";
+
+        const codePill = document.createElement("span");
+        codePill.className = "avail-code-pill";
+        codePill.textContent = item.code;
+
+        const statusPill = document.createElement("span");
+        statusPill.className = "avail-status-pill";
+        const dot = document.createElement("span");
+        dot.className = "avail-status-dot";
+        statusPill.append(dot, document.createTextNode("READY"));
+
+        top.append(codePill, statusPill);
+
+        const body = document.createElement("div");
+        body.className = "avail-card-body";
+
+        const title = document.createElement("h3");
+        title.className = "avail-card-title";
+        title.textContent = item.title;
+
+        const desc = document.createElement("p");
+        desc.className = "avail-card-desc";
+        desc.textContent = item.desc;
+
+        body.append(title, desc);
+
+        const inner = document.createElement("div");
+        inner.className = "avail-inner-panel";
+
+        const metricsGrid = document.createElement("div");
+        metricsGrid.className = "avail-metrics-grid";
+
+        const specs = [
+            {
+                icon: `<svg class="avail-metric-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>`,
+                val: item.units,
+                lbl: item.unitsLabel
+            },
+            {
+                icon: `<svg class="avail-metric-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 12 12 17 22 12"/><polyline points="2 17 12 22 22 17"/></svg>`,
+                val: item.paper,
+                lbl: item.paperLabel
+            },
+            {
+                icon: `<svg class="avail-metric-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>`,
+                val: item.format,
+                lbl: "Material",
+                isSubject: true
+            }
+        ];
+
+        specs.forEach(sp => {
+            const m = document.createElement("div");
+            m.className = "avail-metric-item";
+            m.innerHTML = sp.icon;
+            const mText = document.createElement("div");
+            mText.className = sp.isSubject ? "avail-metric-text is-subject" : "avail-metric-text";
+            const mStrong = document.createElement("strong");
+            mStrong.textContent = sp.val;
+            const mSub = document.createElement("span");
+            mSub.textContent = sp.lbl;
+            mText.append(mStrong, mSub);
+            m.appendChild(mText);
+            metricsGrid.appendChild(m);
+        });
+
+        const openBtn = document.createElement("button");
+        openBtn.type = "button";
+        openBtn.className = "avail-start-btn";
+        openBtn.innerHTML = `<span>▶ OPEN STUDY MATERIAL &rarr;</span>`;
+
+        const handleOpen = () => openStudyMaterialModal(item);
+        card.addEventListener("click", handleOpen);
+        card.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                handleOpen();
+            }
+        });
+        openBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            handleOpen();
+        });
+
+        inner.append(metricsGrid, openBtn);
+        card.append(top, body, inner);
+        return card;
+    }
+
+    setupCarousel(
+        studyMaterialTrack,
+        studyMaterials,
+        buildStudyMaterialCard,
+        studyMaterialDots,
+        studyMaterialPrevBtn,
+        studyMaterialNextBtn,
+        studyMaterialControls
+    );
+
+    const studyModalEl = document.getElementById("studyMaterialModal");
+    const closeStudyModalBtn = document.getElementById("closeStudyModalBtn");
+    if (closeStudyModalBtn && studyModalEl) {
+        closeStudyModalBtn.addEventListener("click", () => {
+            studyModalEl.classList.remove("show");
+            studyModalEl.setAttribute("aria-hidden", "true");
+        });
+    }
+    if (studyModalEl) {
+        studyModalEl.addEventListener("click", (e) => {
+            if (e.target === studyModalEl) {
+                studyModalEl.classList.remove("show");
+                studyModalEl.setAttribute("aria-hidden", "true");
+            }
+        });
+    }
 }
 
 // Wire Home filter chips (All, Available, Upcoming)
