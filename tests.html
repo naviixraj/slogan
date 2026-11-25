@@ -143,14 +143,15 @@
             position: fixed;
             inset: 0 auto 0 0;
             width: 230px;
-            background: rgba(255, 255, 255, 0.82);
-            backdrop-filter: blur(20px) saturate(1.8);
-            -webkit-backdrop-filter: blur(20px) saturate(1.8);
-            border-right: 1px solid rgba(226, 232, 240, 0.6);
+            background: rgba(45, 2, 10, 0.92);
+            backdrop-filter: blur(18px) saturate(1.4);
+            -webkit-backdrop-filter: blur(18px) saturate(1.4);
+            border-right: 1px solid rgba(232, 192, 136, 0.35);
             padding: 22px 15px;
             display: flex;
             flex-direction: column;
             z-index: 2;
+            color: #FDF4EE;
         }
 
         .brand {
@@ -160,6 +161,7 @@
             padding: 0 9px 25px;
             font-size: 17px;
             font-weight: 800;
+            color: #FDF4EE;
         }
 
         .brand-logo {
@@ -173,7 +175,7 @@
             align-items: center;
             gap: 10px;
             padding: 14px 9px;
-            border-block: 1px solid var(--line);
+            border-block: 1px solid rgba(232, 192, 136, 0.25);
             margin-bottom: 24px;
         }
 
@@ -186,11 +188,11 @@
 }
 
 .profile:hover {
-    background: var(--emerald-soft);
+    background: rgba(251, 222, 199, 0.14);
 }
 
 .profile:focus-visible {
-    outline: 2px solid var(--emerald);
+    outline: 2px solid #E8C088;
     outline-offset: 2px;
 }
 
@@ -210,18 +212,19 @@
         .profile-name {
             font-size: 13.5px;
             font-weight: 700;
+            color: #FDF4EE;
             overflow-wrap: anywhere;
         }
 
         .profile-role {
             font-size: 11.5px;
-            color: var(--muted);
+            color: #FBDEC7;
             margin-top: 4px;
         }
 
         .nav-label {
             font-size: 10.5px;
-            color: #9AA19B;
+            color: #BD8B7F;
             font-weight: 700;
             letter-spacing: 1px;
             padding: 0 12px 10px;
@@ -233,16 +236,17 @@
             align-items: center;
             gap: 11px;
             width: 100%;
-            border: 0;
-            border-radius: 8px;
+            border: 1px solid transparent;
+            border-radius: 10px;
             background: transparent;
-            color: #68716B;
+            color: #F1D6C7;
             text-align: left;
             padding: 12px;
             margin-bottom: 5px;
             font-size: 13.5px;
             font-weight: 600;
             cursor: pointer;
+            transition: background 0.18s ease, color 0.18s ease, border-color 0.18s ease;
         }
 
         .nav-link svg {
@@ -252,9 +256,10 @@
 
         .nav-link.active,
         .nav-link:hover {
-            background: var(--emerald-soft);
-            color: var(--emerald-dark);
-            box-shadow: 0 2px 8px rgba(79, 70, 229, 0.08);
+            background: rgba(251, 222, 199, 0.16);
+            border-color: rgba(232, 192, 136, 0.45);
+            color: #FDF4EE;
+            box-shadow: 0 2px 10px rgba(232, 192, 136, 0.14);
         }
 
         .sidebar-bottom {
@@ -264,16 +269,17 @@
         .academy-note {
             margin: 12px 5px 0;
             padding: 13px 11px;
-            background: var(--soft);
-            border-radius: 9px;
-            color: var(--muted);
+            background: rgba(253, 244, 238, 0.08);
+            border: 1px solid rgba(232, 192, 136, 0.25);
+            border-radius: 10px;
+            color: #F1D6C7;
             font-size: 11.5px;
             line-height: 1.6;
         }
 
         .academy-note strong {
             display: block;
-            color: var(--charcoal);
+            color: #FBDEC7;
         }
 
         /* MAIN CONTENT */
@@ -776,7 +782,7 @@
 
         .count {
             font-size: 12px;
-            color: var(--muted);
+            color: #FBDEC7;
             margin-bottom: 14px;
         }
 
@@ -1721,15 +1727,15 @@
 
             /* Custom Assessment Cards matching the photo skeleton in our CSS */
             .assessment-card {
-                background: #2D3748;
+                background: linear-gradient(150deg, #3A010D 0%, #570215 65%, #702229 100%);
                 border-radius: 22px;
                 padding: 20px 18px 18px;
-                box-shadow: 0 6px 20px rgba(15, 23, 42, 0.1);
+                box-shadow: 0 10px 26px rgba(24, 0, 5, 0.25);
                 display: flex;
                 flex-direction: column;
                 gap: 12px;
                 position: relative;
-                border: 1px solid rgba(255, 255, 255, 0.08);
+                border: 1px solid rgba(232, 192, 136, 0.65);
                 transition: transform 0.18s ease, box-shadow 0.18s ease;
             }
 
@@ -1741,15 +1747,15 @@
             }
 
             .assessment-test-code {
-                background: #FFFFFF;
-                color: #1E293B;
+                background: #FDF4EE;
+                color: #3A010D;
                 font-size: 11px;
                 font-weight: 800;
                 padding: 4px 10px;
                 border-radius: 12px;
                 letter-spacing: 0.5px;
                 text-transform: uppercase;
-                box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+                box-shadow: 0 1px 3px rgba(0,0,0,0.12);
             }
 
             .assessment-status-badge {
@@ -2006,7 +2012,7 @@
                 font-size: 10.5px;
                 font-weight: 800;
                 letter-spacing: 1.2px;
-                color: #4F46E5;
+                color: #702229;
                 margin-top: 6px;
                 text-align: center;
                 text-transform: uppercase;
@@ -2427,21 +2433,21 @@
             .pedestal-top {
                 width: 100%;
                 height: 18px;
-                background: linear-gradient(180deg, #A2C0DF 0%, #7E9FC4 100%);
+                background: linear-gradient(180deg, #FBDEC7 0%, #BD8B7F 100%);
                 clip-path: polygon(14% 0%, 86% 0%, 100% 100%, 0% 100%);
-                box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.6);
+                box-shadow: inset 0 1px 2px rgba(255, 255, 255, 0.7);
             }
 
             .pedestal-front {
                 width: 100%;
-                background: linear-gradient(180deg, #4A6E96 0%, #355375 45%, #243B55 100%);
+                background: linear-gradient(180deg, #702229 0%, #570215 48%, #3A010D 100%);
                 display: flex;
                 justify-content: center;
                 align-items: flex-start;
                 padding-top: 12px;
                 position: relative;
                 overflow: hidden;
-                box-shadow: inset 1px 0 0 rgba(255, 255, 255, 0.15), inset -1px 0 0 rgba(0, 0, 0, 0.2);
+                box-shadow: inset 1px 0 0 rgba(251, 222, 199, 0.22), inset -1px 0 0 rgba(0, 0, 0, 0.25);
             }
 
             .pedestal-front::after {
@@ -2451,13 +2457,13 @@
                 left: 0;
                 right: 0;
                 height: 36px;
-                background: linear-gradient(180deg, rgba(36, 59, 85, 0) 0%, rgba(232, 240, 252, 0.75) 100%);
+                background: linear-gradient(180deg, rgba(58, 1, 13, 0) 0%, rgba(241, 214, 199, 0.65) 100%);
                 pointer-events: none;
             }
 
             .pedestal-1 .pedestal-top {
                 height: 22px;
-                background: linear-gradient(180deg, #B5CFE9 0%, #8DB0D3 100%);
+                background: linear-gradient(180deg, #FDE8C8 0%, #E8C088 100%);
             }
             .pedestal-1 .pedestal-front {
                 height: 125px;
@@ -2468,7 +2474,7 @@
 
             .pedestal-2 .pedestal-top {
                 height: 18px;
-                background: linear-gradient(180deg, #9EBDDE 0%, #7697BD 100%);
+                background: linear-gradient(180deg, #FBDEC7 0%, #BD8B7F 100%);
             }
             .pedestal-2 .pedestal-front {
                 height: 90px;
@@ -2479,7 +2485,7 @@
 
             .pedestal-3 .pedestal-top {
                 height: 16px;
-                background: linear-gradient(180deg, #96B6D8 0%, #6E90B6 100%);
+                background: linear-gradient(180deg, #F1D6C7 0%, #BD8B7F 100%);
             }
             .pedestal-3 .pedestal-front {
                 height: 65px;
@@ -2546,9 +2552,9 @@
             }
 
             .leader-card.is-current-user {
-                border: 2px solid #8B5CF6;
-                background: #FFFFFF;
-                box-shadow: 0 0 0 1px #8B5CF6, 0 4px 16px rgba(139, 92, 246, 0.12);
+                border: 2px solid #570215 !important;
+                background: #FDF4EE;
+                box-shadow: 0 0 12px rgba(232, 192, 136, 0.45), 0 4px 16px rgba(58, 1, 13, 0.12) !important;
             }
 
             .leader-rank-num {
@@ -3414,11 +3420,11 @@
 
         .avail-start-btn {
             width: 100%;
-            border: none;
+            border: 1px solid rgba(232, 192, 136, 0.72);
             border-radius: 999px;
             padding: 11px 16px;
-            background: linear-gradient(135deg, #059669 0%, #047857 100%);
-            color: #FFFFFF;
+            background: linear-gradient(105deg, #3A010D 0%, #570215 60%, #2D020A 100%);
+            color: #FDF4EE;
             font-size: 12.5px;
             font-weight: 800;
             letter-spacing: 0.5px;
@@ -3428,7 +3434,7 @@
             justify-content: center;
             gap: 8px;
             cursor: pointer;
-            box-shadow: 0 4px 14px rgba(4, 120, 87, 0.3);
+            box-shadow: 0 5px 14px rgba(45, 2, 10, 0.28), inset 0 1px 0 rgba(251, 222, 199, 0.24);
             transition: transform 0.15s ease, filter 0.15s ease;
         }
 
