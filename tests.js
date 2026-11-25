@@ -1548,6 +1548,8 @@ async function loadLeaderboard() {
 function initHeroCardCarousel() {
     const track = document.getElementById("heroCarouselTrack");
     const dotsWrap = document.getElementById("heroCarouselDots");
+    const prevBtn = document.getElementById("heroPrevBtn");
+    const nextBtn = document.getElementById("heroNextBtn");
     if (!track || !dotsWrap) return;
 
     const slides = Array.from(track.querySelectorAll(".hero-slide-card"));
@@ -1566,6 +1568,22 @@ function initHeroCardCarousel() {
             const offset = target.offsetLeft - (track.clientWidth - target.offsetWidth) / 2;
             track.scrollTo({ left: Math.max(0, offset), behavior: "smooth" });
         }
+    }
+
+    if (prevBtn) {
+        prevBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const prevIdx = activeIdx === 0 ? slides.length - 1 : activeIdx - 1;
+            setActiveSlide(prevIdx, true);
+        });
+    }
+
+    if (nextBtn) {
+        nextBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const nextIdx = activeIdx === slides.length - 1 ? 0 : activeIdx + 1;
+            setActiveSlide(nextIdx, true);
+        });
     }
 
     slides.forEach((slide, idx) => {

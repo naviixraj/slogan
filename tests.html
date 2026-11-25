@@ -12,7 +12,7 @@
     <title>Examinations | SLOGON ACADEMY</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
 
     <style>
         :root {
@@ -2720,27 +2720,76 @@
         }
 
         /* =========================================================
-           4-SLIDE HERO CARD CAROUSEL (DEEP BURGUNDY & WARM IVORY)
+           4-SLIDE HERO CARD CAROUSEL (EXACT REFERENCE COMPOSITION)
            ========================================================= */
         .hero-carousel-stage {
-            background: linear-gradient(145deg, #3A010D 0%, #570215 60%, #3A010D 100%);
+            background: linear-gradient(155deg, #4B0212 0%, #3A010D 48%, #2D020A 100%);
             border-radius: 28px;
-            padding: 22px 0 16px;
+            padding: 18px 0 18px;
             position: relative;
             overflow: hidden;
-            box-shadow: 0 16px 38px rgba(58, 1, 13, 0.26), inset 0 1px 0 rgba(251, 222, 199, 0.18);
-            border: 1px solid rgba(189, 139, 127, 0.35);
-            margin-bottom: 12px;
+            box-shadow: 0 18px 42px rgba(45, 2, 10, 0.34), inset 0 1px 0 rgba(251, 222, 199, 0.22);
+            border: 1px solid rgba(189, 139, 127, 0.45);
+            margin-bottom: 14px;
         }
 
         .hero-carousel-stage::before {
             content: '';
             position: absolute;
-            inset: 0;
+            inset: -20% -10%;
             background:
-                radial-gradient(circle at 50% 25%, rgba(251, 222, 199, 0.16) 0%, transparent 60%),
-                radial-gradient(circle at 15% 85%, rgba(189, 139, 127, 0.14) 0%, transparent 45%);
+                radial-gradient(ellipse at 50% 48%, rgba(251, 222, 199, 0.22) 0%, transparent 52%),
+                linear-gradient(125deg, transparent 28%, rgba(251, 222, 199, 0.06) 44%, transparent 60%),
+                linear-gradient(235deg, transparent 35%, rgba(189, 139, 127, 0.08) 52%, transparent 68%);
             pointer-events: none;
+        }
+
+        .hero-brand-header {
+            position: relative;
+            z-index: 3;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            padding: 2px 18px 14px;
+        }
+
+        .hero-brand-crest {
+            width: 38px;
+            height: 38px;
+            object-fit: contain;
+            filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.35));
+            flex-shrink: 0;
+        }
+
+        .hero-brand-divider {
+            width: 1px;
+            height: 28px;
+            background: rgba(251, 222, 199, 0.38);
+            flex-shrink: 0;
+        }
+
+        .hero-brand-text {
+            text-align: left;
+            line-height: 1.2;
+        }
+
+        .hero-brand-name {
+            display: block;
+            font-size: 13.5px;
+            font-weight: 800;
+            letter-spacing: 0.9px;
+            color: #FDF4EE;
+            text-transform: uppercase;
+        }
+
+        .hero-brand-tagline {
+            display: block;
+            font-size: 11px;
+            font-weight: 500;
+            color: #FBDEC7;
+            margin-top: 2px;
+            letter-spacing: 0.2px;
         }
 
         .hero-carousel-viewport {
@@ -2753,13 +2802,13 @@
         .hero-carousel-track {
             display: flex;
             align-items: stretch;
-            gap: 14px;
+            gap: 12px;
             overflow-x: auto;
             scroll-snap-type: x mandatory;
             scroll-behavior: smooth;
             -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
-            padding: 4px 28px 6px;
+            padding: 6px 46px 8px;
         }
 
         .hero-carousel-track::-webkit-scrollbar {
@@ -2768,24 +2817,24 @@
 
         @media (min-width: 901px) {
             .hero-carousel-track {
-                padding: 4px 64px 8px;
+                padding: 8px 110px 10px;
                 gap: 20px;
             }
         }
 
         .hero-slide-card {
-            flex: 0 0 min(460px, calc(100% - 16px));
+            flex: 0 0 min(420px, calc(100% - 16px));
             scroll-snap-align: center;
-            background: linear-gradient(180deg, rgba(189, 139, 127, 0.28) 0%, rgba(87, 2, 21, 0.55) 100%);
-            border: 1px solid rgba(251, 222, 199, 0.28);
-            border-radius: 22px;
-            padding: 22px 20px 20px;
+            background: linear-gradient(160deg, rgba(189, 139, 127, 0.46) 0%, rgba(87, 2, 21, 0.82) 100%);
+            border: 1.2px solid rgba(251, 222, 199, 0.45);
+            border-radius: 26px;
+            padding: 20px 18px 18px;
             text-align: center;
             color: #FDF4EE;
             position: relative;
             cursor: pointer;
-            transform: scale(0.93);
-            opacity: 0.78;
+            transform: scale(0.92);
+            opacity: 0.86;
             transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
                         opacity 0.35s ease,
                         background 0.35s ease,
@@ -2795,21 +2844,39 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
         }
 
         .hero-slide-card.is-active {
-            background: linear-gradient(180deg, #FDF4EE 0%, #FBDEC7 100%);
-            border-color: rgba(189, 139, 127, 0.6);
+            background: linear-gradient(180deg, #FDF4EE 0%, #FCECE0 58%, #FBDEC7 100%);
+            border: 1.5px solid rgba(251, 222, 199, 0.92);
             color: #3A010D;
             transform: scale(1);
             opacity: 1;
-            box-shadow: 0 16px 36px rgba(24, 0, 5, 0.34), inset 0 1px 0 #FFFFFF;
+            box-shadow: 0 18px 42px rgba(24, 0, 5, 0.42), 0 0 28px rgba(251, 222, 199, 0.16), inset 0 1px 0 #FFFFFF;
+        }
+
+        .hero-laurel-emblem {
+            width: 146px;
+            height: 70px;
+            margin: -2px auto 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .hero-laurel-emblem svg {
+            width: 100%;
+            height: 100%;
+            overflow: visible;
         }
 
         .hero-slide-icon-wrap {
-            width: 50px;
-            height: 50px;
-            border-radius: 16px;
+            width: 54px;
+            height: 54px;
+            border-radius: 18px;
             background: linear-gradient(135deg, #3A010D 0%, #570215 100%);
             color: #FBDEC7;
             display: flex;
@@ -2817,28 +2884,29 @@
             justify-content: center;
             margin: 0 auto 12px;
             box-shadow: 0 6px 16px rgba(58, 1, 13, 0.24);
-            border: 1.5px solid rgba(189, 139, 127, 0.5);
+            border: 1.5px solid rgba(189, 139, 127, 0.55);
             transition: transform 0.3s ease;
         }
 
         .hero-slide-card:not(.is-active) .hero-slide-icon-wrap {
-            background: rgba(253, 244, 238, 0.16);
+            background: rgba(253, 244, 238, 0.14);
             color: #FBDEC7;
-            border-color: rgba(251, 222, 199, 0.35);
+            border-color: rgba(251, 222, 199, 0.4);
             box-shadow: none;
         }
 
         .hero-slide-icon-wrap svg {
-            width: 25px;
-            height: 25px;
+            width: 26px;
+            height: 26px;
         }
 
         .hero-slide-title {
-            font-size: 21px;
+            font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+            font-size: 27px;
             font-weight: 800;
-            letter-spacing: -0.3px;
+            letter-spacing: -0.2px;
             margin: 0 0 7px;
-            line-height: 1.15;
+            line-height: 1.12;
             color: inherit;
         }
 
@@ -2846,9 +2914,9 @@
             font-size: 12.5px;
             line-height: 1.48;
             margin: 0 auto;
-            max-width: 340px;
-            color: #570215;
-            opacity: 0.9;
+            max-width: 300px;
+            color: #2E1416;
+            opacity: 0.92;
         }
 
         .hero-slide-card:not(.is-active) .hero-slide-desc {
@@ -2861,24 +2929,39 @@
             grid-template-columns: repeat(3, 1fr);
             align-items: center;
             margin-top: 16px;
-            padding-top: 14px;
-            border-top: 1px solid rgba(189, 139, 127, 0.32);
+            padding-top: 12px;
+            border-top: 1px solid rgba(189, 139, 127, 0.28);
         }
 
         .hero-slide-stat {
             position: relative;
             padding: 2px 6px;
             text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
         .hero-slide-stat + .hero-slide-stat::before {
             content: '';
             position: absolute;
             left: 0;
-            top: 18%;
-            bottom: 18%;
+            top: 12%;
+            bottom: 12%;
             width: 1px;
             background: rgba(189, 139, 127, 0.45);
+        }
+
+        .hero-stat-icon {
+            width: 18px;
+            height: 18px;
+            color: #570215;
+            margin-bottom: 4px;
+            flex-shrink: 0;
+        }
+
+        .hero-slide-card:not(.is-active) .hero-stat-icon {
+            color: #FBDEC7;
         }
 
         .hero-slide-stat-num {
@@ -2887,7 +2970,7 @@
             font-weight: 800;
             line-height: 1.1;
             color: #3A010D;
-            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-family: Inter, system-ui, sans-serif;
         }
 
         .hero-slide-card:not(.is-active) .hero-slide-stat-num {
@@ -2897,14 +2980,56 @@
         .hero-slide-stat-lbl {
             display: block;
             font-size: 10.5px;
-            font-weight: 700;
+            font-weight: 600;
             color: #6E4A4E;
-            margin-top: 3px;
-            letter-spacing: 0.2px;
+            margin-top: 2px;
+            letter-spacing: 0.15px;
         }
 
         .hero-slide-card:not(.is-active) .hero-slide-stat-lbl {
             color: #F1D6C7;
+        }
+
+        /* Floating Circular Left / Right Carousel Arrows */
+        .hero-nav-arrow {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 4;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: rgba(45, 2, 10, 0.86);
+            border: 1.2px solid rgba(251, 222, 199, 0.55);
+            color: #FDF4EE;
+            display: grid;
+            place-items: center;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+        }
+
+        .hero-nav-arrow.is-prev {
+            left: 10px;
+        }
+
+        .hero-nav-arrow.is-next {
+            right: 10px;
+        }
+
+        .hero-nav-arrow:hover {
+            background: #570215;
+            border-color: #FBDEC7;
+            transform: translateY(-50%) scale(1.06);
+        }
+
+        .hero-nav-arrow:active {
+            transform: translateY(-50%) scale(0.94);
+        }
+
+        .hero-nav-arrow svg {
+            width: 16px;
+            height: 16px;
         }
 
         .hero-carousel-dots {
@@ -2920,24 +3045,22 @@
         .hero-carousel-dot {
             width: 7px;
             height: 7px;
-            border-radius: 999px;
+            border-radius: 50%;
             border: none;
             padding: 0;
-            background: #BD8B7F;
-            opacity: 0.55;
+            background: rgba(189, 139, 127, 0.42);
             cursor: pointer;
-            transition: width 0.25s ease, background 0.25s ease, opacity 0.25s ease;
+            transition: transform 0.22s ease, background 0.22s ease, box-shadow 0.22s ease;
         }
 
         .hero-carousel-dot.active {
-            width: 22px;
-            background: #FDF4EE;
-            opacity: 1;
-            box-shadow: 0 2px 8px rgba(251, 222, 199, 0.4);
+            background: #E8C088;
+            transform: scale(1.22);
+            box-shadow: 0 0 8px rgba(251, 222, 199, 0.65);
         }
 
         /* =========================================================
-           FILTER CHIPS (MATCHING IMAGE 2 IN BURGUNDY & WARM IVORY)
+           FILTER CHIPS (EXACT REFERENCE IN BURGUNDY & WARM IVORY)
            ========================================================= */
         .home-filter-chips {
             display: flex;
@@ -2954,33 +3077,45 @@
         }
 
         .home-filter-chip {
+            position: relative;
             display: inline-flex;
             align-items: center;
-            gap: 7px;
-            background: #FDF4EE;
-            border: 1.5px solid #BD8B7F;
+            gap: 6px;
+            background: linear-gradient(135deg, #570215 0%, #3A010D 100%);
+            border: 1px solid rgba(189, 139, 127, 0.5);
             border-radius: 999px;
             padding: 8px 15px;
             font-size: 12.5px;
             font-weight: 700;
-            color: #3A010D;
+            color: #FDF4EE;
             cursor: pointer;
             transition: all 0.18s ease;
             white-space: nowrap;
             -webkit-tap-highlight-color: transparent;
-            box-shadow: 0 2px 6px rgba(58, 1, 13, 0.04);
+            box-shadow: 0 4px 10px rgba(45, 2, 10, 0.16);
         }
 
         .home-filter-chip:hover {
-            background: #FBDEC7;
-            border-color: #570215;
+            border-color: #FBDEC7;
+            filter: brightness(1.08);
         }
 
         .home-filter-chip.active {
-            background: linear-gradient(135deg, #3A010D 0%, #570215 100%);
-            border-color: #3A010D;
-            color: #FDF4EE;
-            box-shadow: 0 6px 16px rgba(58, 1, 13, 0.25);
+            background: linear-gradient(180deg, #FDF4EE 0%, #FBDEC7 100%);
+            border-color: #BD8B7F;
+            color: #3A010D;
+            box-shadow: 0 4px 12px rgba(58, 1, 13, 0.12);
+        }
+
+        .home-filter-chip.active::after {
+            content: '';
+            position: absolute;
+            left: 24%;
+            right: 24%;
+            bottom: 4px;
+            height: 2px;
+            border-radius: 2px;
+            background: #3A010D;
         }
 
         .chip-icon {
@@ -3834,14 +3969,51 @@
 
                 <!-- 4-Slide Card Carousel Hero (Deep Burgundy & Warm Ivory) -->
                 <div class="hero-carousel-stage" id="heroCarouselStage">
+                    <!-- Brand Crest Header -->
+                    <div class="hero-brand-header">
+                        <img src="Logoicon.png" alt="SLOGON ACADEMY Crest" class="hero-brand-crest">
+                        <span class="hero-brand-divider" aria-hidden="true"></span>
+                        <div class="hero-brand-text">
+                            <span class="hero-brand-name">SLOGON ACADEMY</span>
+                            <span class="hero-brand-tagline">Prepare. Perform. Succeed.</span>
+                        </div>
+                    </div>
+
                     <div class="hero-carousel-viewport">
+                        <button type="button" class="hero-nav-arrow is-prev" id="heroPrevBtn" aria-label="Previous hero slide">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg>
+                        </button>
+
                         <div class="hero-carousel-track" id="heroCarouselTrack">
-                            <!-- Slide 1: Examinations Overview (Live Counts) -->
+                            <!-- Slide 1: Examinations Overview (Laurel Wreath + Cap on Books + Live Counts) -->
                             <article class="hero-slide-card is-active" data-hero-slide="0" tabindex="0">
-                                <div class="hero-slide-icon-wrap" aria-hidden="true">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"></path>
-                                        <path d="M6 12v5c3 3 9 3 12 0v-5"></path>
+                                <div class="hero-laurel-emblem" aria-hidden="true">
+                                    <svg viewBox="0 0 180 84" fill="none">
+                                        <!-- Left & Right Champagne Laurel Wreaths -->
+                                        <g stroke="#D4A973" stroke-width="1.4" stroke-linecap="round" fill="#E8C794" fill-opacity="0.72">
+                                            <path d="M52 68C36 62 28 46 31 28"/>
+                                            <path d="M40 60c-6-2-9-7-6-11 5 1 9 6 6 11z"/>
+                                            <path d="M33 50c-6-2-9-7-5-11 5 1 8 6 5 11z"/>
+                                            <path d="M30 39c-5-3-7-8-3-11 5 2 6 7 3 11z"/>
+                                            <path d="M46 65c-5-4-6-9-1-12 4 3 5 8 1 12z"/>
+                                            <path d="M128 68C144 62 152 46 149 28"/>
+                                            <path d="M140 60c6-2 9-7 6-11-5 1-9 6-6 11z"/>
+                                            <path d="M147 50c6-2 9-7 5-11-5 1-8 6-5 11z"/>
+                                            <path d="M150 39c5-3 7-8 3-11-5 2-6 7-3 11z"/>
+                                            <path d="M134 65c5-4 6-9 1-12-4 3-5 8-1 12z"/>
+                                        </g>
+                                        <!-- Two Stacked Burgundy & Ivory Books -->
+                                        <path d="M62 64L90 73L118 64V70L90 79L62 70V64Z" fill="#702229" stroke="#3A010D" stroke-width="1.2"/>
+                                        <path d="M65 65L90 74L115 65" stroke="#FDF4EE" stroke-width="2.2" stroke-linecap="round"/>
+                                        <path d="M62 55L90 64L118 55V61L90 70L62 61V55Z" fill="#570215" stroke="#3A010D" stroke-width="1.2"/>
+                                        <path d="M65 56L90 65L115 56" stroke="#FBDEC7" stroke-width="2.2" stroke-linecap="round"/>
+                                        <!-- Graduation Cap -->
+                                        <path d="M72 34V47C72 51 80 54 90 54C100 54 108 51 108 47V34H72Z" fill="#2D020A" stroke="#3A010D" stroke-width="1.2"/>
+                                        <polygon points="90,14 126,28 90,41 54,28" fill="#3A010D" stroke="#2D020A" stroke-width="1.4" stroke-linejoin="round"/>
+                                        <circle cx="90" cy="27" r="2.2" fill="#E8C088"/>
+                                        <!-- Gold Tassel -->
+                                        <path d="M90 27L67 36V53" stroke="#D4A973" stroke-width="2" stroke-linecap="round"/>
+                                        <path d="M64 53h6l-1 8h-4l-1-8z" fill="#D4A973"/>
                                     </svg>
                                 </div>
                                 <h1 class="hero-slide-title">Examinations</h1>
@@ -3850,14 +4022,27 @@
                                 </p>
                                 <div class="hero-slide-stats">
                                     <div class="hero-slide-stat">
+                                        <svg class="hero-stat-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                            <circle cx="12" cy="12" r="10"/>
+                                            <polygon points="10,8 16,12 10,16" fill="#FDF4EE"/>
+                                        </svg>
                                         <span class="hero-slide-stat-num" id="heroActiveCount">0</span>
                                         <span class="hero-slide-stat-lbl">Active</span>
                                     </div>
                                     <div class="hero-slide-stat">
+                                        <svg class="hero-stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                            <rect x="3" y="4" width="18" height="18" rx="2"/>
+                                            <path d="M16 2v4M8 2v4M3 10h18M8 14h.01M12 14h.01M16 14h.01M8 18h.01M12 18h.01"/>
+                                        </svg>
                                         <span class="hero-slide-stat-num" id="heroUpcomingCount">0</span>
                                         <span class="hero-slide-stat-lbl">Upcoming</span>
                                     </div>
                                     <div class="hero-slide-stat">
+                                        <svg class="hero-stat-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+                                            <polygon points="12 2 2 7 12 12 22 7 12 2"/>
+                                            <path d="M2 12l10 5 10-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                            <path d="M2 17l10 5 10-5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                                        </svg>
                                         <span class="hero-slide-stat-num" id="heroTotalCount">0</span>
                                         <span class="hero-slide-stat-lbl">Total Sets</span>
                                     </div>
@@ -3879,14 +4064,17 @@
                                 </p>
                                 <div class="hero-slide-stats">
                                     <div class="hero-slide-stat">
+                                        <svg class="hero-stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
                                         <span class="hero-slide-stat-num">50</span>
                                         <span class="hero-slide-stat-lbl">Paper 1 Qs</span>
                                     </div>
                                     <div class="hero-slide-stat">
+                                        <svg class="hero-stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
                                         <span class="hero-slide-stat-num">100</span>
                                         <span class="hero-slide-stat-lbl">Paper 2 Qs</span>
                                     </div>
                                     <div class="hero-slide-stat">
+                                        <svg class="hero-stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
                                         <span class="hero-slide-stat-num">180m</span>
                                         <span class="hero-slide-stat-lbl">Duration</span>
                                     </div>
@@ -3911,14 +4099,17 @@
                                 </p>
                                 <div class="hero-slide-stats">
                                     <div class="hero-slide-stat">
+                                        <svg class="hero-stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2l3 7h7l-5.5 4.2 2 6.8L12 16l-6.5 4 2-6.8L2 9h7l3-7z"/></svg>
                                         <span class="hero-slide-stat-num">Top 3</span>
                                         <span class="hero-slide-stat-lbl">Podium</span>
                                     </div>
                                     <div class="hero-slide-stat">
+                                        <svg class="hero-stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-3"/></svg>
                                         <span class="hero-slide-stat-num">Live</span>
                                         <span class="hero-slide-stat-lbl">Standings</span>
                                     </div>
                                     <div class="hero-slide-stat">
+                                        <svg class="hero-stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>
                                         <span class="hero-slide-stat-num">Speed</span>
                                         <span class="hero-slide-stat-lbl">Tie-Break</span>
                                     </div>
@@ -3939,20 +4130,27 @@
                                 </p>
                                 <div class="hero-slide-stats">
                                     <div class="hero-slide-stat">
+                                        <svg class="hero-stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>
                                         <span class="hero-slide-stat-num">Auto</span>
                                         <span class="hero-slide-stat-lbl">Save</span>
                                     </div>
                                     <div class="hero-slide-stat">
+                                        <svg class="hero-stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
                                         <span class="hero-slide-stat-num">Flag</span>
                                         <span class="hero-slide-stat-lbl">Review</span>
                                     </div>
                                     <div class="hero-slide-stat">
+                                        <svg class="hero-stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
                                         <span class="hero-slide-stat-num">Sync</span>
                                         <span class="hero-slide-stat-lbl">Timer</span>
                                     </div>
                                 </div>
                             </article>
                         </div>
+
+                        <button type="button" class="hero-nav-arrow is-next" id="heroNextBtn" aria-label="Next hero slide">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg>
+                        </button>
                     </div>
 
                     <!-- 4 Carousel Pagination Dots -->
@@ -3964,19 +4162,16 @@
                     </div>
                 </div>
 
-                <!-- Filter Chips Row (Matching Image 2 Design in Burgundy & Warm Ivory) -->
+                <!-- Filter Chips Row (Matching Reference Design in Burgundy & Warm Ivory) -->
                 <div class="home-filter-chips" id="homeFilterChips">
                     <button type="button" class="home-filter-chip active" data-home-filter="all">
-                        <svg class="chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" aria-hidden="true">
-                            <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
-                            <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
-                            <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
-                            <rect x="14" y="14" width="7" height="7" rx="1.5"></rect>
-                        </svg>
                         <span>All (<span id="chipAllCount">0</span>)</span>
                     </button>
                     <button type="button" class="home-filter-chip" data-home-filter="available">
-                        <span class="chip-status-dot" aria-hidden="true"></span>
+                        <svg class="chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" aria-hidden="true">
+                            <rect x="3" y="4" width="18" height="18" rx="2"></rect>
+                            <path d="M16 2v4M8 2v4M3 10h18M8 14h.01M12 14h.01M16 14h.01"></path>
+                        </svg>
                         <span>Available (<span id="chipAvailCount">0</span>)</span>
                     </button>
                     <button type="button" class="home-filter-chip" data-home-filter="coming">
