@@ -18,511 +18,17 @@
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link rel="preconnect"
+        href="https://fonts.gstatic.com"
+        crossorigin>
+
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Tamil:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Tamil:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
         rel="stylesheet">
 
-    <!-- Main CSS (Start modal & shared utilities) -->
+    <!-- Main CSS -->
     <link rel="stylesheet" href="style.css?v=20261120-v8">
-
-    <style>
-        body.instructions-body {
-            background-color: #F5DFD7 !important;
-            background-image: none !important;
-            color: #1E243B;
-            font-family: "Inter", -apple-system, BlinkMacSystemFont, sans-serif;
-            min-height: 100vh;
-            margin: 0;
-            padding-bottom: calc(84px + env(safe-area-inset-bottom, 0px));
-        }
-
-        /* TOP NAVY BAR WITH BORDERLESS SVG BACK ARROW */
-        body.instructions-body .instructions-header {
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            height: 58px;
-            min-height: 58px;
-            background: #2E3355 !important;
-            border-bottom: none !important;
-            box-shadow: 0 2px 10px rgba(15, 23, 42, 0.14);
-            padding: 0 18px !important;
-            display: flex !important;
-            align-items: center !important;
-            justify-content: space-between !important;
-        }
-
-        body.instructions-body .instructions-header-left {
-            display: flex;
-            align-items: center;
-        }
-
-        body.instructions-body .nav-back-btn {
-            background: transparent !important;
-            border: none !important;
-            box-shadow: none !important;
-            padding: 6px 4px !important;
-            margin: 0 !important;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            color: #FFFFFF;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        body.instructions-body .nav-back-btn svg {
-            width: 24px;
-            height: 24px;
-            stroke: #FFFFFF;
-            display: block;
-            transition: transform 0.18s ease, opacity 0.18s ease;
-        }
-
-        body.instructions-body .nav-back-btn:hover svg {
-            transform: translateX(-3px);
-            stroke: #FFFFFF;
-            opacity: 0.85;
-        }
-
-        .header-test-pill {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            color: #E2E8F0;
-            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.9px;
-            text-transform: uppercase;
-            padding: 6px 14px;
-            border-radius: 999px;
-            white-space: nowrap;
-        }
-
-        .sr-preserved {
-            position: absolute;
-            width: 1px;
-            height: 1px;
-            overflow: hidden;
-            clip: rect(0, 0, 0, 0);
-            white-space: nowrap;
-        }
-
-        /* MAIN CONTAINER */
-        body.instructions-body .instructions-container {
-            max-width: 680px !important;
-            margin: 0 auto !important;
-            padding: 18px 16px 26px !important;
-        }
-
-        /* PAGE HEADING */
-        body.instructions-body .page-heading {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            margin-bottom: 18px;
-        }
-
-        body.instructions-body .heading-icon {
-            width: 42px;
-            height: 42px;
-            border-radius: 50%;
-            background: #383F66;
-            color: #FFFFFF;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-            box-shadow: 0 4px 12px rgba(46, 51, 85, 0.2);
-        }
-
-        body.instructions-body .page-heading h2 {
-            font-size: 16.5px;
-            font-weight: 800;
-            color: #1E243B;
-            margin: 0;
-            letter-spacing: 0.4px;
-            text-transform: uppercase;
-            line-height: 1.25;
-        }
-
-        body.instructions-body .page-heading p {
-            font-size: 12.5px;
-            color: #4B5563;
-            margin: 3px 0 0;
-            line-height: 1.4;
-        }
-
-        /* DARK NAVY EXAM SUMMARY HERO CARD */
-        .exam-summary-hero {
-            background: linear-gradient(145deg, #2A3050 0%, #373E66 100%);
-            border-radius: 22px;
-            padding: 20px;
-            color: #FFFFFF;
-            box-shadow: 0 10px 26px rgba(30, 36, 59, 0.16);
-            margin-bottom: 18px;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .exam-hero-stream-pill {
-            display: inline-block;
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid rgba(255, 255, 255, 0.18);
-            color: #E2E8F0;
-            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-            font-size: 11px;
-            font-weight: 700;
-            letter-spacing: 0.9px;
-            text-transform: uppercase;
-            padding: 5px 12px;
-            border-radius: 999px;
-        }
-
-        .exam-hero-title {
-            font-size: 20px;
-            font-weight: 800;
-            color: #FFFFFF;
-            margin: 12px 0 16px;
-            line-height: 1.25;
-        }
-
-        .exam-hero-metrics {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-        }
-
-        .exam-hero-stat {
-            background: rgba(255, 255, 255, 0.07);
-            border: 1px solid rgba(255, 255, 255, 0.14);
-            border-radius: 14px;
-            padding: 13px 8px;
-            text-align: center;
-        }
-
-        .exam-hero-stat strong {
-            display: block;
-            font-size: 19px;
-            font-weight: 800;
-            color: #FFFFFF;
-            line-height: 1.1;
-            margin-bottom: 4px;
-        }
-
-        .exam-hero-stat span {
-            display: block;
-            font-size: 10px;
-            font-weight: 700;
-            color: #CBD5E1;
-            letter-spacing: 0.6px;
-            text-transform: uppercase;
-        }
-
-        /* INSTRUCTION & STATUS CARDS */
-        body.instructions-body .instructions-card {
-            background: #FCF9F6 !important;
-            backdrop-filter: none !important;
-            -webkit-backdrop-filter: none !important;
-            border: 1px solid #E5D7D0 !important;
-            border-radius: 22px !important;
-            padding: 22px 20px !important;
-            margin-bottom: 18px !important;
-            box-shadow: 0 6px 20px rgba(15, 23, 42, 0.04);
-        }
-
-        body.instructions-body .section-header {
-            border-bottom: 1px solid #E8DFDA !important;
-            padding-bottom: 16px !important;
-            margin-bottom: 4px !important;
-        }
-
-        body.instructions-body .section-header h3 {
-            font-size: 18px !important;
-            font-weight: 800 !important;
-            color: #0F172A !important;
-            margin: 0 0 6px !important;
-            line-height: 1.25;
-        }
-
-        body.instructions-body .section-header p {
-            font-size: 13px !important;
-            color: #475569 !important;
-            margin: 0 !important;
-            line-height: 1.45;
-        }
-
-        body.instructions-body .instruction-item {
-            padding: 16px 2px !important;
-            border-bottom: 1px dashed #DFD6D0 !important;
-            display: block !important;
-        }
-
-        body.instructions-body .instruction-item:last-child {
-            border-bottom: none !important;
-            padding-bottom: 4px !important;
-        }
-
-        body.instructions-body .instruction-item h4 {
-            font-size: 14.5px !important;
-            font-weight: 700 !important;
-            color: #1E243B !important;
-            margin: 0 0 5px !important;
-        }
-
-        body.instructions-body .instruction-item p {
-            font-size: 13px !important;
-            color: #374151 !important;
-            line-height: 1.55 !important;
-            margin: 0 !important;
-        }
-
-        body.instructions-body .instruction-item strong {
-            color: #0F172A !important;
-            font-weight: 700 !important;
-        }
-
-        /* QUESTION STATUS LEGEND */
-        body.instructions-body .status-grid {
-            display: flex !important;
-            flex-direction: column !important;
-            gap: 10px !important;
-            padding-top: 16px !important;
-        }
-
-        body.instructions-body .status-item {
-            background: #FAF3EF !important;
-            border: 1px solid #E3D3CC !important;
-            border-radius: 16px !important;
-            padding: 13px 16px !important;
-            display: flex !important;
-            align-items: center !important;
-            gap: 14px !important;
-        }
-
-        body.instructions-body .status-dot {
-            width: 22px !important;
-            height: 22px !important;
-            border-radius: 50% !important;
-            margin-top: 0 !important;
-            flex-shrink: 0;
-        }
-
-        body.instructions-body .status-dot.not-visited {
-            background: #FFFFFF !important;
-            border: 1.5px solid #CBD5E1 !important;
-        }
-
-        body.instructions-body .status-dot.not-answered {
-            background: #E11D48 !important;
-            border: none !important;
-        }
-
-        body.instructions-body .status-dot.answered {
-            background: #059669 !important;
-            border: none !important;
-        }
-
-        body.instructions-body .status-dot.review {
-            background: #7C3AED !important;
-            border: none !important;
-        }
-
-        body.instructions-body .status-dot.answered-review {
-            background: #7C3AED !important;
-            border: none !important;
-        }
-
-        body.instructions-body .status-dot.answered-review::after {
-            width: 10px !important;
-            height: 10px !important;
-            background: #10B981 !important;
-            border: 2px solid #FFFFFF !important;
-            top: 50% !important;
-            left: 50% !important;
-            bottom: auto !important;
-            right: auto !important;
-            transform: translate(-50%, -50%) !important;
-        }
-
-        body.instructions-body .status-item strong {
-            font-size: 14px !important;
-            font-weight: 700 !important;
-            color: #1E243B !important;
-            font-family: "Inter", sans-serif !important;
-            margin-bottom: 2px !important;
-        }
-
-        body.instructions-body .status-item small {
-            font-size: 12.5px !important;
-            color: #475569 !important;
-            line-height: 1.35 !important;
-        }
-
-        /* CANDIDATE DECLARATION CARD */
-        body.instructions-body .declaration-card {
-            background: #FAF2EE !important;
-            border: 1.5px solid #DFCFC7 !important;
-            border-radius: 18px !important;
-            padding: 18px !important;
-            margin-bottom: 18px !important;
-            animation: none !important;
-            box-shadow: 0 4px 14px rgba(15, 23, 42, 0.04) !important;
-        }
-
-        body.instructions-body .declaration-card.confirmed {
-            background: linear-gradient(135deg, #ECFDF5 0%, #A7F3D0 100%) !important;
-            border-color: #059669 !important;
-            box-shadow: 0 6px 18px rgba(5, 150, 105, 0.16) !important;
-        }
-
-        body.instructions-body .declaration-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 14px;
-        }
-
-        body.instructions-body .declaration-badge {
-            width: 36px !important;
-            height: 36px !important;
-            border-radius: 50% !important;
-            background: #383F66 !important;
-            border: none !important;
-            color: #FFFFFF !important;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            flex-shrink: 0;
-        }
-
-        body.instructions-body .declaration-card.confirmed .declaration-badge {
-            background: #059669 !important;
-            color: #FFFFFF !important;
-        }
-
-        body.instructions-body .declaration-content h3 {
-            color: #383F66 !important;
-            font-size: 12px !important;
-            font-weight: 800 !important;
-            letter-spacing: 0.8px !important;
-            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace !important;
-            text-transform: uppercase;
-            margin: 0;
-        }
-
-        body.instructions-body .declaration-card.confirmed .declaration-content h3 {
-            color: #047857 !important;
-        }
-
-        body.instructions-body .checkbox-label {
-            display: flex;
-            align-items: center;
-            gap: 14px;
-            cursor: pointer;
-        }
-
-        body.instructions-body .custom-checkbox {
-            width: 24px !important;
-            height: 24px !important;
-            border-radius: 50% !important;
-            border: 1.5px solid #94A3B8 !important;
-            background: #FFFFFF !important;
-            margin-top: 0 !important;
-            flex-shrink: 0;
-            position: relative;
-        }
-
-        body.instructions-body .checkbox-label input:checked + .custom-checkbox {
-            background: #059669 !important;
-            border-color: #059669 !important;
-            box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px #059669 !important;
-        }
-
-        body.instructions-body .checkbox-label input:checked + .custom-checkbox::after {
-            content: "✓";
-            position: absolute;
-            color: #FFFFFF;
-            font-size: 13px;
-            font-weight: 800;
-            left: 50%;
-            top: 50%;
-            transform: translate(-50%, -52%);
-        }
-
-        body.instructions-body .checkbox-text {
-            font-size: 13px !important;
-            color: #1E293B !important;
-            line-height: 1.5 !important;
-            font-weight: 500 !important;
-        }
-
-        body.instructions-body .declaration-card.confirmed .checkbox-text {
-            color: #064E3B !important;
-        }
-
-        /* STICKY BOTTOM PROCEED BAR */
-        body.instructions-body .proceed-section {
-            position: fixed;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            z-index: 90;
-            background: rgba(255, 255, 255, 0.96);
-            backdrop-filter: blur(8px);
-            -webkit-backdrop-filter: blur(8px);
-            border-top: 1px solid #EADFD9;
-            padding: 12px 16px calc(12px + env(safe-area-inset-bottom, 0px)) !important;
-            display: flex !important;
-            justify-content: center !important;
-            align-items: center !important;
-        }
-
-        body.instructions-body .proceed-btn {
-            width: 100%;
-            max-width: 648px;
-            height: 48px;
-            border-radius: 14px !important;
-            font-family: "Inter", sans-serif !important;
-            font-size: 14.5px !important;
-            font-weight: 700 !important;
-            letter-spacing: 0.2px !important;
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            border: none;
-            background: linear-gradient(90deg, #9F1239 0%, #6B0F26 55%, #3B0714 100%) !important;
-            color: #FFFFFF !important;
-            box-shadow: 0 8px 22px rgba(107, 15, 38, 0.32);
-            cursor: pointer;
-            transition: transform 0.15s ease, box-shadow 0.2s ease, opacity 0.2s ease;
-        }
-
-        body.instructions-body .proceed-btn:disabled {
-            background: #EFE9E5 !important;
-            border: 1.5px solid #D6CCC5 !important;
-            color: #383F66 !important;
-            box-shadow: none !important;
-            cursor: not-allowed;
-        }
-
-        body.instructions-body .proceed-btn:not(:disabled):hover {
-            transform: translateY(-1px);
-            box-shadow: 0 10px 24px rgba(107, 15, 38, 0.4) !important;
-        }
-
-        body.instructions-body .proceed-arrow {
-            color: inherit !important;
-            display: inline-flex;
-            align-items: center;
-        }
-
-        body.instructions-body .instructions-footer {
-            display: none !important;
-        }
-    </style>
 
 </head>
 
@@ -531,27 +37,43 @@
 
 
     <!-- =====================================================
-         TOP NAVY HEADER (BORDERLESS SVG BACK ARROW + TEST BADGE)
+         PAGE HEADER
     ====================================================== -->
 
     <header class="instructions-header">
 
         <div class="instructions-header-left">
-            <a href="tests" class="nav-back-btn" title="Back to Examinations" aria-label="Back to Examinations">
-                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round">
+
+            <a href="tests" class="nav-back-btn" title="Back to Tests" aria-label="Back to Tests">
+                <svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round">
                     <line x1="19" y1="12" x2="5" y2="12"></line>
                     <polyline points="12 19 5 12 12 5"></polyline>
                 </svg>
             </a>
+
+            <div class="instructions-brand">
+
+                <img src="Logoicon.png" alt="SLOGON ACADEMY Logo" class="mini-logo">
+
+                <div class="instructions-brand-text">
+
+                    <h1>SLOGON ACADEMY</h1>
+                    <span class="instructions-exam-mobile" id="headerExamNameMobile">UGC NET Mock Test</span>
+
+                </div>
+
+            </div>
+
         </div>
 
-        <span class="header-test-pill" id="headerTestBadge">TEST 01</span>
 
-        <!-- Preserved compatibility elements -->
-        <span class="sr-preserved" id="headerExamName">UGC NET Mock Test</span>
-        <span class="sr-preserved" id="headerExamNameMobile">UGC NET Mock Test</span>
-        <span class="sr-preserved" id="candidateDisplay">—</span>
-        <span class="sr-preserved" id="registerDisplay">—</span>
+        <div class="header-exam-info">
+
+            <span id="headerExamName">
+                UGC NET Mock Test
+            </span>
+
+        </div>
 
     </header>
 
@@ -568,15 +90,20 @@
 
         <section class="page-heading">
 
-            <div class="heading-icon" aria-hidden="true">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round">
-                    <polyline points="20 6 9 17 4 12"></polyline>
-                </svg>
+            <div class="heading-icon">
+                ✓
             </div>
 
             <div>
-                <h2>GENERAL INSTRUCTIONS</h2>
-                <p>Please read all instructions carefully before starting the test.</p>
+
+                <h2>
+                    GENERAL INSTRUCTIONS
+                </h2>
+
+                <p>
+                    Please read all instructions carefully before starting the test.
+                </p>
+
             </div>
 
         </section>
@@ -584,28 +111,60 @@
 
 
         <!-- =================================================
-             DARK EXAM SUMMARY HERO CARD
+             CANDIDATE INFORMATION
         ================================================== -->
 
-        <section class="exam-summary-hero">
+        <section class="candidate-info-card">
 
-            <span class="exam-hero-stream-pill" id="subjectDisplay">GENERAL PAPER</span>
+            <div class="candidate-info-item">
 
-            <h1 class="exam-hero-title" id="examDisplay">Mock Test</h1>
+                <span class="info-label">
+                    Candidate
+                </span>
 
-            <div class="exam-hero-metrics">
-                <div class="exam-hero-stat">
-                    <strong id="instructionsTotalQuestions">150</strong>
-                    <span>QUESTIONS</span>
-                </div>
-                <div class="exam-hero-stat">
-                    <strong id="instructionsDuration">180m</strong>
-                    <span>DURATION</span>
-                </div>
-                <div class="exam-hero-stat">
-                    <strong id="instructionsMaxMarks">300</strong>
-                    <span>MAX MARKS</span>
-                </div>
+                <strong id="candidateDisplay">
+                    —
+                </strong>
+
+            </div>
+
+
+            <div class="candidate-info-item">
+
+                <span class="info-label">
+                    Register Number
+                </span>
+
+                <strong id="registerDisplay">
+                    —
+                </strong>
+
+            </div>
+
+
+            <div class="candidate-info-item">
+
+                <span class="info-label">
+                    Subject
+                </span>
+
+                <strong id="subjectDisplay">
+                    —
+                </strong>
+
+            </div>
+
+
+            <div class="candidate-info-item">
+
+                <span class="info-label">
+                    Examination
+                </span>
+
+                <strong id="examDisplay">
+                    —
+                </strong>
+
             </div>
 
         </section>
@@ -613,79 +172,252 @@
 
 
         <!-- =================================================
-             01. EXAMINATION INSTRUCTIONS
+             EXAM OVERVIEW
+        ================================================== -->
+
+        <section class="overview-grid">
+
+
+            <div class="overview-card">
+
+                 
+
+                <div>
+
+                    <span>
+                        Total Questions
+                    </span>
+
+                    <strong id="instructionsTotalQuestions">
+                        150
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="overview-card">
+
+               
+
+                <div>
+
+                    <span>
+                        Time Duration
+                    </span>
+
+                    <strong id="instructionsDuration">
+                        180 Minutes
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+
+            <div class="overview-card">
+
+                <div>
+
+                    <span>
+                        Negative Marking
+                    </span>
+
+                    <strong>
+                        No
+                    </strong>
+
+                </div>
+
+            </div>
+
+
+        </section>
+
+
+
+        <!-- =================================================
+             INSTRUCTIONS
         ================================================== -->
 
         <section class="instructions-card">
 
             <div class="section-header">
+
                 <div>
-                    <h3>01. Examination Instructions</h3>
-                    <p>1. Important information you should know before beginning.</p>
+
+                    <h3>
+                       01. Examination Instructions
+                    </h3>
+
+                    <p>
+                       1. Important information you should know before beginning.
+                    </p>
+
                 </div>
+
             </div>
+
+
 
             <div class="instruction-list">
 
-                <div class="instruction-item">
-                    <h4>Total Questions</h4>
-                    <p>
-                        2. The examination contains a total of
-                        <strong id="instructionDetailQuestions">150 questions</strong>.
-                    </p>
-                </div>
+
+                <!-- Instruction 1 -->
 
                 <div class="instruction-item">
-                    <h4>Examination Duration</h4>
-                    <p>
-                        3. You will have
-                        <strong id="instructionDetailDuration">180 minutes</strong>
-                        to complete the examination.
-                    </p>
+
+                   
+
+                    <div>
+
+                        <h4>
+                            Total Questions
+                        </h4>
+
+                        <p>
+                           2. The examination contains a total of
+                            <strong id="instructionDetailQuestions">150 questions</strong>.
+                        </p>
+
+                    </div>
+
                 </div>
 
-                <div class="instruction-item">
-                    <h4>No Negative Marking</h4>
-                    <p>
-                        4. There is
-                        <strong>no negative marking</strong>
-                        for incorrect answers.
-                    </p>
-                </div>
+
+
+                <!-- Instruction 2 -->
 
                 <div class="instruction-item">
-                    <h4>Save &amp; Next</h4>
-                    <p>
-                        5. Click
-                        <strong>Save &amp; Next</strong>
-                        after selecting your answer to save the response
-                        and move to the next question.
-                    </p>
+
+                    <div>
+
+                        <h4>
+                            Examination Duration
+                        </h4>
+
+                        <p>
+                           3. You will have
+                            <strong id="instructionDetailDuration">180 minutes</strong>
+                            to complete the examination.
+                        </p>
+
+                    </div>
+
                 </div>
 
-                <div class="instruction-item">
-                    <h4>Mark for Review</h4>
-                    <p>
-                        6. You can mark a question for review and return to it
-                        later before submitting the examination.
-                    </p>
-                </div>
+
+
+                <!-- Instruction 3 -->
 
                 <div class="instruction-item">
-                    <h4>Automatic Submission</h4>
-                    <p>
-                        7. The examination will be
-                        <strong>automatically submitted</strong>
-                        when the timer reaches zero.
-                    </p>
+
+                    <div>
+
+                        <h4>
+                            No Negative Marking
+                        </h4>
+
+                        <p>
+                            4. There is
+                            <strong>no negative marking</strong>
+                            for incorrect answers.
+                        </p>
+
+                    </div>
+
                 </div>
 
+
+
+                <!-- Instruction 4 -->
+
                 <div class="instruction-item">
-                    <h4>Do Not Refresh</h4>
-                    <p>
-                        Do not refresh or close the browser during the examination.
-                    </p>
+
+
+                    <div>
+
+                        <h4>
+                          Save & Next
+                        </h4>
+
+                        <p>
+                            5. Click
+                            <strong>Save & Next</strong>
+                            after selecting your answer to save the response
+                            and move to the next question.
+                        </p>
+
+                    </div>
+
                 </div>
+
+
+
+                <!-- Instruction 5 -->
+
+                <div class="instruction-item">
+
+                    <div>
+
+                        <h4>
+                            Mark for Review
+                        </h4>
+
+                        <p>
+                          6. You can mark a question for review and return to it
+                            later before submitting the examination.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Instruction 6 -->
+
+                <div class="instruction-item">
+
+                    <div>
+
+                        <h4>
+                            Automatic Submission
+                        </h4>
+
+                        <p>
+                         7. The examination will be
+                            <strong>automatically submitted</strong>
+                            when the timer reaches zero.
+                        </p>
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- Instruction 7 -->
+
+                <div class="instruction-item">
+
+                    <div>
+
+                        <h4>
+                            Do Not Refresh
+                        </h4>
+
+                        <p>
+                            Do not refresh or close the browser during the examination.
+                        </p>
+
+                    </div>
+
+                </div>
+
 
             </div>
 
@@ -694,59 +426,132 @@
 
 
         <!-- =================================================
-             02. QUESTION STATUS LEGEND
+             QUESTION STATUS LEGEND
         ================================================== -->
 
         <section class="instructions-card">
 
             <div class="section-header">
+
+               
+
                 <div>
-                    <h3>02. Question Status</h3>
-                    <p>Understand the meaning of each question status.</p>
+
+                    <h3>
+                       02. Question Status
+                    </h3>
+
+                    <p>
+                        Understand the meaning of each question status.
+                    </p>
+
                 </div>
+
             </div>
+
+
 
             <div class="status-grid">
 
+
                 <div class="status-item">
+
                     <span class="status-dot not-visited"></span>
+
                     <div>
-                        <strong>Not Visited</strong>
-                        <small>Question has not been opened.</small>
+
+                        <strong>
+                            Not Visited
+                        </strong>
+
+                        <small>
+                            Question has not been opened.
+                        </small>
+
                     </div>
+
                 </div>
 
+
+
                 <div class="status-item">
+
                     <span class="status-dot not-answered"></span>
+
                     <div>
-                        <strong>Not Answered</strong>
-                        <small>Question visited but no answer selected.</small>
+
+                        <strong>
+                            Not Answered
+                        </strong>
+
+                        <small>
+                            Question visited but no answer selected.
+                        </small>
+
                     </div>
+
                 </div>
 
+
+
                 <div class="status-item">
+
                     <span class="status-dot answered"></span>
+
                     <div>
-                        <strong>Answered</strong>
-                        <small>An answer has been selected.</small>
+
+                        <strong>
+                            Answered
+                        </strong>
+
+                        <small>
+                            An answer has been selected.
+                        </small>
+
                     </div>
+
                 </div>
 
+
+
                 <div class="status-item">
+
                     <span class="status-dot review"></span>
+
                     <div>
-                        <strong>Mark for Review</strong>
-                        <small>Question is marked for later review.</small>
+
+                        <strong>
+                            Mark for Review
+                        </strong>
+
+                        <small>
+                            Question is marked for later review.
+                        </small>
+
                     </div>
+
                 </div>
 
+
+
                 <div class="status-item">
+
                     <span class="status-dot answered-review"></span>
+
                     <div>
-                        <strong>Answered &amp; Marked for Review</strong>
-                        <small>Answer selected and marked for review.</small>
+
+                        <strong>
+                            Answered &amp; Marked for Review
+                        </strong>
+
+                        <small>
+                            Answer selected and marked for review.
+                        </small>
+
                     </div>
+
                 </div>
+
 
             </div>
 
@@ -755,29 +560,36 @@
 
 
         <!-- =================================================
-             CANDIDATE DECLARATION
+             DECLARATION
         ================================================== -->
 
-        <section class="declaration-card" id="declarationCard">
+        <section class="declaration-card breathing-box" id="declarationCard">
 
             <div class="declaration-content">
 
                 <div class="declaration-header">
                     <span class="declaration-badge" aria-hidden="true">
-                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
                             <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                            <polyline points="9 12 11 14 15 10"></polyline>
                         </svg>
                     </span>
-                    <h3>CANDIDATE DECLARATION</h3>
+                    <h3>
+                        Candidate Declaration
+                    </h3>
                 </div>
 
                 <label class="checkbox-label" for="instructionCheckbox">
-                    <input type="checkbox" id="instructionCheckbox">
+
+                    <input
+                        type="checkbox"
+                        id="instructionCheckbox">
+
                     <span class="custom-checkbox"></span>
+
                     <span class="checkbox-text">
-                        I have read and understood all examination instructions and agree to abide by the Slogon Academy assessment rules.
+                        I hereby declare that I am the registered candidate appearing for this examination. I have read and understood all the examination instructions and agree to follow the rules and regulations. I will not engage in any unfair practices or malpractice during the examination.
                     </span>
+
                 </label>
 
             </div>
@@ -787,23 +599,29 @@
 
 
         <!-- =================================================
-             STICKY BOTTOM PROCEED BUTTON
+             ACTION AREA
         ================================================== -->
 
         <section class="proceed-section">
+
+            <p>
+                Please confirm the declaration above to continue.
+            </p>
 
             <button
                 type="button"
                 id="proceedButton"
                 class="proceed-btn"
                 disabled>
-                <span>Proceed to Test</span>
-                <span class="proceed-arrow" aria-hidden="true">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round">
-                        <line x1="5" y1="12" x2="19" y2="12"></line>
-                        <polyline points="12 5 19 12 12 19"></polyline>
-                    </svg>
+
+                <span>
+                    PROCEED TO TEST
                 </span>
+
+                <span class="proceed-arrow">
+                    →
+                </span>
+
             </button>
 
         </section>
@@ -811,6 +629,23 @@
 
     </main>
 
+
+
+    <!-- =====================================================
+         FOOTER
+    ====================================================== -->
+
+    <footer class="instructions-footer">
+
+        <p>
+            © SLOGON ACADEMY
+        </p>
+
+        <p>
+            Professional Competitive Examination Platform
+        </p>
+
+    </footer>
 
 
     <!-- =====================================================
@@ -855,11 +690,15 @@
     </div>
 
 
-    <!-- =====================================================
-         PAGE JAVASCRIPT
-    ====================================================== -->
-    <script src="instructions.js?v=20261125-v3" defer></script>
+<!-- =====================================================
+                PAGE JAVASCRIPT
+====================================================== -->
+
+<script src="instructions.js?v=20261120-v2" defer></script>
+
 
 </body>
 
 </html>
+
+
