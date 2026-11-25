@@ -463,23 +463,32 @@ async function inspectSet(setId) {
                 inspectorQuestionsContainer.innerHTML = '<div style="padding: 30px; text-align: center; color: var(--muted);">No split questions found in this set.</div>';
             } else {
                 inspectorQuestionsContainer.innerHTML = qList.map((q, idx) => {
-                    const qNum = q.number || q.id || (idx + 1);
-                    const qText = q.question || q.text || "";
-                    const optA = q.options?.A || "";
-                    const optB = q.options?.B || "";
-                    const optC = q.options?.C || "";
-                    const optD = q.options?.D || "";
-                    const correct = String(q.correctAnswer || q.answer || "A").trim().toUpperCase();
-                    const exp = q.explanation || "No solution explanation provided.";
-                    const isSelected = selectedQuestionNumbers.has(Number(qNum));
+                    const esc = (v) => String(v ?? "")
+                        .replace(/&/g, "&amp;")
+                        .replace(/</g, "&lt;")
+                        .replace(/>/g, "&gt;")
+                        .replace(/"/g, "&quot;")
+                        .replace(/'/g, "&#039;");
 
-                    const labelA = q.optionLabels?.A || "A";
-                    const labelB = q.optionLabels?.B || "B";
-                    const labelC = q.optionLabels?.C || "C";
-                    const labelD = q.optionLabels?.D || "D";
+                    const qNum = esc(q.number || q.id || (idx + 1));
+                    const setIdSafe = esc(set.id);
+                    const qText = q.question || q.text || "";
+                    const optA = esc(q.options?.A || "");
+                    const optB = esc(q.options?.B || "");
+                    const optC = esc(q.options?.C || "");
+                    const optD = esc(q.options?.D || "");
+                    const correct = String(q.correctAnswer || q.answer || "A").trim().toUpperCase();
+                    const exp = esc(q.explanation || "No solution explanation provided.");
+                    const sectionSafe = esc(q.section || "Paper 1");
+                    const isSelected = selectedQuestionNumbers.has(Number(q.number || q.id || (idx + 1)));
+
+                    const labelA = esc(q.optionLabels?.A || "A");
+                    const labelB = esc(q.optionLabels?.B || "B");
+                    const labelC = esc(q.optionLabels?.C || "C");
+                    const labelD = esc(q.optionLabels?.D || "D");
 
                     return `
-                        <div class="question-card ${isSelected ? 'is-selected' : ''}" data-qnum="${qNum}" data-original-qnum="${qNum}" data-setid="${set.id}" draggable="true">
+                        <div class="question-card ${isSelected ? 'is-selected' : ''}" data-qnum="${qNum}" data-original-qnum="${qNum}" data-setid="${setIdSafe}" draggable="true">
                             <div class="q-header">
                                 <div class="q-header-left">
                                     <div class="q-drag-handle" title="Hold and drag to reorder questions" aria-label="Hold and drag to reorder">
@@ -501,9 +510,9 @@ async function inspectSet(setId) {
                                         <span class="q-badge-prefix">Question </span><span class="q-badge-num">${qNum}</span>
                                     </span>
                                 </div>
-                                <span class="q-section-tag"><span class="q-section-full">Single Split Question • </span>${q.section || "Paper 1"}</span>
+                                <span class="q-section-tag"><span class="q-section-full">Single Split Question • </span>${sectionSafe}</span>
                             </div>
-                            <div class="q-title">${typeof window.renderNeatQuestion === "function" ? window.renderNeatQuestion(qText, q.options || { A: optA, B: optB, C: optC, D: optD }) : qText}</div>
+                            <div class="q-title">${typeof window.renderNeatQuestion === "function" ? window.renderNeatQuestion(qText, q.options || { A: q.options?.A || "", B: q.options?.B || "", C: q.options?.C || "", D: q.options?.D || "" }) : esc(qText)}</div>
                             <div class="options-grid">
                                 <div class="option-box ${correct === 'A' ? 'is-correct' : ''}">
                                     <span class="opt-circle">${labelA}</span>
@@ -531,13 +540,13 @@ async function inspectSet(setId) {
                                 ${exp}
                             </div>
                             <div class="q-footer">
-                                <button type="button" class="btn-edit-single-q" data-setid="${set.id}" data-qnum="${qNum}" title="Edit Question ${qNum}" aria-label="Edit Question ${qNum}">
+                                <button type="button" class="btn-edit-single-q" data-setid="${setIdSafe}" data-qnum="${qNum}" title="Edit Question ${qNum}" aria-label="Edit Question ${qNum}">
                                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                                         <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                                     </svg>
                                 </button>
-                                <button type="button" class="bin-btn btn-delete-single-q" data-setid="${set.id}" data-qnum="${qNum}" title="Delete Question ${qNum}" aria-label="Delete Question ${qNum}">
+                                <button type="button" class="bin-btn btn-delete-single-q" data-setid="${setIdSafe}" data-qnum="${qNum}" title="Delete Question ${qNum}" aria-label="Delete Question ${qNum}">
                                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M3 6h18"></path>
                                         <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
@@ -1097,8 +1106,16 @@ async function loadAdminProfile() {
 
         function renderAvatar(elem, pic, text) {
             if (!elem) return;
-            if (pic && typeof pic === "string" && pic.startsWith("http")) {
-                elem.innerHTML = `<img src="${pic}" alt="Profile" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block;" onerror="this.onerror=null; this.parentElement.textContent='${text}';">`;
+            elem.textContent = "";
+            if (pic && typeof pic === "string" && /^https?:\/\//i.test(pic)) {
+                const img = document.createElement("img");
+                img.src = pic;
+                img.alt = "Profile";
+                img.style.cssText = "width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block;";
+                img.addEventListener("error", () => {
+                    elem.textContent = text;
+                }, { once: true });
+                elem.appendChild(img);
                 elem.style.padding = "0";
                 elem.style.overflow = "hidden";
             } else {

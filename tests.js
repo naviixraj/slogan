@@ -361,8 +361,16 @@ async function loadCandidate() {
 
         function renderAvatar(elem, pic, text) {
             if (!elem) return;
-            if (pic && typeof pic === "string" && pic.startsWith("http")) {
-                elem.innerHTML = `<img src="${pic}" alt="Profile" style="width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block;" onerror="this.onerror=null; this.parentElement.textContent='${text}';">`;
+            elem.textContent = "";
+            if (pic && typeof pic === "string" && /^https?:\/\//i.test(pic)) {
+                const img = document.createElement("img");
+                img.src = pic;
+                img.alt = "Profile";
+                img.style.cssText = "width: 100%; height: 100%; border-radius: 50%; object-fit: cover; display: block;";
+                img.addEventListener("error", () => {
+                    elem.textContent = text;
+                }, { once: true });
+                elem.appendChild(img);
                 elem.style.padding = "0";
                 elem.style.overflow = "hidden";
             } else {
