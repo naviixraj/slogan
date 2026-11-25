@@ -753,6 +753,9 @@ function switchStudentTab(tabName) {
     } else if (tabName === "leaderboard") {
         pageTitle.textContent = "Exam Leaderboard";
         pageSubtitle.textContent = "Candidate performance standings ordered by scores.";
+        if (typeof loadLeaderboard === "function") {
+            loadLeaderboard();
+        }
     }
 
     if (tabName === "profile") {
@@ -1063,9 +1066,138 @@ filterChips.forEach(chip => {
 });
 
 /* -----------------------------------------------------
+   LIVE LEADERBOARD RENDERING
+   ----------------------------------------------------- */
+
+function renderLeaderboard(entries) {
+    const container = document.getElementById("leaderboardItemsContainer");
+    const list = Array.isArray(entries) ? entries : [];
+
+    [1, 2, 3].forEach((pos, idx) => {
+        const entry = list[idx];
+        const avatarEl = document.getElementById(`podiumAvatar${pos}`);
+        const nameEl = document.getElementById(`podiumName${pos}`);
+        const testEl = document.getElementById(`podiumTest${pos}`);
+        const scoreEl = document.getElementById(`podiumScore${pos}`);
+
+        if (entry) {
+            if (avatarEl) avatarEl.textContent = entry.initials || "ST";
+            if (nameEl) nameEl.textContent = entry.name || "Candidate";
+            if (testEl) testEl.textContent = entry.testTitle || "Mock Test";
+            if (scoreEl) {
+                scoreEl.textContent = `${entry.obtainedMarks} / ${entry.totalMarks} `;
+                const pctSpan = document.createElement("span");
+                pctSpan.className = "score-pct";
+                pctSpan.textContent = `(${Math.round(entry.percentage)}%)`;
+                scoreEl.appendChild(pctSpan);
+            }
+        } else {
+            if (avatarEl) avatarEl.textContent = "—";
+            if (nameEl) nameEl.textContent = "—";
+            if (testEl) testEl.textContent = "No attempt yet";
+            if (scoreEl) scoreEl.textContent = "—";
+        }
+    });
+
+    if (!container) return;
+    container.innerHTML = "";
+
+    if (list.length === 0) {
+        const emptyCard = document.createElement("div");
+        emptyCard.className = "leader-card";
+        const info = document.createElement("div");
+        info.className = "leader-info";
+        const title = document.createElement("strong");
+        title.className = "leader-name";
+        title.textContent = "No examination results yet";
+        const sub = document.createElement("span");
+        sub.className = "leader-test-tag";
+        sub.textContent = "Complete an examination to appear on the leaderboard.";
+        info.append(title, sub);
+        emptyCard.appendChild(info);
+        container.appendChild(emptyCard);
+        return;
+    }
+
+    list.forEach((entry) => {
+        const card = document.createElement("div");
+        card.className = entry.isCurrentUser ? "leader-card is-current-user" : "leader-card";
+
+        const rankNum = document.createElement("span");
+        rankNum.className = "leader-rank-num";
+        rankNum.textContent = String(entry.rank);
+
+        const avatar = document.createElement("div");
+        const topClass = entry.isCurrentUser
+            ? "avatar-top-user"
+            : (entry.rank <= 3 ? `avatar-top-${entry.rank}` : "avatar-top-5");
+        avatar.className = `leader-avatar ${topClass}`;
+        avatar.textContent = entry.initials || "ST";
+
+        const info = document.createElement("div");
+        info.className = "leader-info";
+        if (entry.isCurrentUser) {
+            const nameWrap = document.createElement("div");
+            nameWrap.className = "leader-name-wrap";
+            const nameStrong = document.createElement("strong");
+            nameStrong.className = "leader-name";
+            nameStrong.textContent = entry.name || "Student";
+            const youPill = document.createElement("span");
+            youPill.className = "badge-you-pill";
+            youPill.textContent = "YOU";
+            nameWrap.append(nameStrong, youPill);
+            info.appendChild(nameWrap);
+        } else {
+            const nameStrong = document.createElement("strong");
+            nameStrong.className = "leader-name";
+            nameStrong.textContent = entry.name || "Candidate";
+            info.appendChild(nameStrong);
+        }
+        const testTag = document.createElement("span");
+        testTag.className = "leader-test-tag";
+        testTag.textContent = entry.testTitle || "Mock Test";
+        info.appendChild(testTag);
+
+        const stats = document.createElement("div");
+        stats.className = "leader-stats";
+        const scoreSpan = document.createElement("span");
+        scoreSpan.className = "leader-score";
+        const zap = document.createElement("span");
+        zap.className = "zap-icon";
+        zap.textContent = "⚡";
+        scoreSpan.append(zap, document.createTextNode(` ${entry.obtainedMarks} / ${entry.totalMarks}`));
+
+        const mins = Math.max(1, Math.round((entry.timeTakenSeconds || 0) / 60));
+        const metaSub = document.createElement("span");
+        metaSub.className = "leader-meta-sub";
+        metaSub.textContent = `${Math.round(entry.percentage)}% • ${mins}m`;
+
+        stats.append(scoreSpan, metaSub);
+        card.append(rankNum, avatar, info, stats);
+        container.appendChild(card);
+    });
+}
+
+async function loadLeaderboard() {
+    try {
+        const res = await fetch("/api/student/leaderboard", {
+            credentials: "same-origin"
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+        if (data.success) {
+            renderLeaderboard(data.entries || []);
+        }
+    } catch (err) {
+        console.warn("Could not load leaderboard:", err);
+    }
+}
+
+/* -----------------------------------------------------
    INITIALIZE DASHBOARD
    ----------------------------------------------------- */
 
 loadCandidate();
 loadStudentTests();
+loadLeaderboard();
 

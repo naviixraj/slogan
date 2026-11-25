@@ -2319,6 +2319,71 @@ app.get("/api/exams/:testId/review", async (req, res) => {
     }
 });
 
+// Live Exam Leaderboard Standings
+app.get("/api/student/leaderboard", async (req, res) => {
+    if (!req.session || !req.session.candidate) {
+        return res.status(401).json({ success: false, message: "Please log in." });
+    }
+    try {
+        const currentUserId = String(req.session.candidate.userId || "").toLowerCase();
+        const rows = await unifiedDb.getLeaderboardStandings(20);
+        const entries = (rows || []).map((row, idx) => {
+            const name = String(row.candidate_name || row.candidate_user_id || "Candidate");
+            const inits = name.trim().split(/\s+/).slice(0, 2).map(p => (p[0] || "").toUpperCase()).join("") || "ST";
+            return {
+                rank: idx + 1,
+                userId: row.candidate_user_id,
+                name: name,
+                initials: inits,
+                testId: row.test_id,
+                testTitle: row.test_title || row.test_id || "Mock Test",
+                obtainedMarks: Number(row.obtained_marks || 0),
+                totalMarks: Number(row.total_marks || 0),
+                percentage: Number(row.percentage || 0),
+                timeTakenSeconds: Number(row.time_taken_seconds || 0),
+                submittedAt: row.submitted_at,
+                isCurrentUser: String(row.candidate_user_id || "").toLowerCase() === currentUserId
+            };
+        });
+        return res.json({ success: true, entries });
+    } catch (error) {
+        console.error("Leaderboard error:", error);
+        return res.status(500).json({ success: false, message: "Unable to load leaderboard." });
+    }
+});
+
+// Live Exam Leaderboard Standings
+app.get("/api/student/leaderboard", async (req, res) => {
+    if (!req.session || !req.session.candidate) {
+        return res.status(401).json({ success: false, message: "Please log in to view the leaderboard." });
+    }
+    try {
+        const currentUserId = String(req.session.candidate.userId || "").toLowerCase();
+        const rows = await unifiedDb.getLeaderboardStandings(20);
+        const entries = rows.map((r, idx) => {
+            const name = r.candidate_name || r.candidate_user_id || "Candidate";
+            const inits = String(name).trim().split(/\s+/).slice(0, 2).map(p => (p[0] || "").toUpperCase()).join("") || "ST";
+            return {
+                rank: idx + 1,
+                userId: r.candidate_user_id,
+                name: name,
+                initials: inits,
+                testId: r.test_id,
+                testTitle: r.test_title || r.test_id || "Mock Test",
+                obtainedMarks: Number(r.obtained_marks || 0),
+                totalMarks: Number(r.total_marks || 0),
+                percentage: Number(r.percentage || 0),
+                timeTakenSeconds: Number(r.time_taken_seconds || 0),
+                isCurrentUser: String(r.candidate_user_id || "").toLowerCase() === currentUserId
+            };
+        });
+        return res.json({ success: true, currentUserId: req.session.candidate.userId, entries });
+    } catch (error) {
+        console.error("Leaderboard error:", error);
+        return res.status(500).json({ success: false, message: "Unable to load leaderboard standings." });
+    }
+});
+
 // Logout API
 app.post("/api/logout", (req, res) => {
     req.session.destroy((error) => {
