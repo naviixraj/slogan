@@ -2786,11 +2786,17 @@
             padding: 2px 18px 14px;
         }
 
-        .hero-brand-crest-svg {
+        .hero-brand-logo {
             width: 44px;
-            height: 40px;
+            height: 44px;
+            border-radius: 12px;
+            background: #FDF4EE;
+            padding: 4px;
+            object-fit: contain;
+            border: 1.25px solid rgba(232, 192, 136, 0.9);
+            box-shadow: 0 0 10px rgba(232, 192, 136, 0.36), 0 4px 12px rgba(24, 0, 5, 0.3);
             flex-shrink: 0;
-            filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.35));
+            display: block;
         }
 
         .hero-brand-divider {
@@ -3906,21 +3912,7 @@
                 <div class="hero-carousel-stage" id="heroCarouselStage">
                     <!-- Brand Crest Header -->
                     <div class="hero-brand-header">
-                        <svg class="hero-brand-crest-svg" viewBox="0 0 64 56" fill="none" aria-hidden="true">
-                            <!-- Laurel Wings -->
-                            <g stroke="#E8C794" stroke-width="1.6" stroke-linecap="round" fill="#FBDEC7" fill-opacity="0.8">
-                                <path d="M16 42C9 36 8 24 12 14"/>
-                                <path d="M48 42C55 36 56 24 52 14"/>
-                            </g>
-                            <!-- Open Book -->
-                            <path d="M10 40C18 37 26 39 32 45C38 39 46 37 54 40L50 48C43 45 37 47 32 51C27 47 21 45 14 48L10 40Z" fill="#FBDEC7" stroke="#FDF4EE" stroke-width="1.2"/>
-                            <!-- Shield / Crest -->
-                            <path d="M20 20L32 14L44 20V32C44 38 32 43 32 43C32 43 20 38 20 32V20Z" fill="#3A010D" stroke="#FDF4EE" stroke-width="1.6"/>
-                            <path d="M32 18V39M24 25h16" stroke="#FBDEC7" stroke-width="1.5" stroke-linecap="round"/>
-                            <!-- Cap Top -->
-                            <polygon points="32,3 48,10 32,17 16,10" fill="#FDF4EE" stroke="#E8C794" stroke-width="1.2"/>
-                            <path d="M45 11V19" stroke="#E8C794" stroke-width="1.6" stroke-linecap="round"/>
-                        </svg>
+                        <img src="Logoicon.png" alt="SLOGON ACADEMY Logo" class="hero-brand-logo">
                         <span class="hero-brand-divider" aria-hidden="true"></span>
                         <div class="hero-brand-text">
                             <span class="hero-brand-name">SLOGON ACADEMY</span>
