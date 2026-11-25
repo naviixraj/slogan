@@ -16,12 +16,22 @@
 
     <style>
         :root {
+            --primary: #3A010D;
+            --wine-red: #570215;
+            --dark-maroon: #2D020A;
+            --rose-burgundy: #702229;
             --burgundy: #3A010D;
             --wine: #570215;
             --ivory: #FDF4EE;
+            --ivory-white: #FDF4EE;
+            --off-white: #FDFAF7;
+            --warm-cream: #FCECE0;
             --champagne: #FBDEC7;
             --rose-gold: #BD8B7F;
             --blush: #F1D6C7;
+            --blush-beige: #F1D6C7;
+            --warm-grey: #D3C8C1;
+            --dark-text: #2E1416;
             --white: #FFFFFF;
             --charcoal: #24080E;
             --muted: #6E4A4E;
@@ -3088,98 +3098,155 @@
             scroll-snap-type: none;
         }
 
-        /* AVAILABLE EXAM CARD (IMAGE 2 LAYOUT IN WARM IVORY & DEEP BURGUNDY) */
+        /* AVAILABLE EXAM CARD (PREMIUM BOTANICAL & ACADEMIC COMPOSITION) */
         .avail-exam-card {
-            flex: 0 0 min(380px, calc(100% - 28px));
+            flex: 0 0 min(390px, calc(100% - 24px));
             scroll-snap-align: start;
-            background: linear-gradient(160deg, #FFFFFF 0%, #FDF4EE 60%, #FBDEC7 100%);
-            border-radius: 22px;
-            padding: 0 16px 16px;
-            border: 1.5px solid rgba(189, 139, 127, 0.55);
-            box-shadow: 0 10px 26px rgba(58, 1, 13, 0.09);
-            color: #3A010D;
             position: relative;
             overflow: hidden;
+            isolation: isolate;
+            background: linear-gradient(165deg, var(--off-white) 0%, var(--ivory-white) 72%, var(--warm-cream) 100%);
+            border: 1px solid var(--rose-gold);
+            border-radius: 30px;
+            padding: 0 18px 20px;
+            box-shadow:
+                0 12px 30px rgba(45, 2, 10, 0.12),
+                0 3px 8px rgba(189, 139, 127, 0.12);
+            color: var(--dark-text);
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 14px;
             cursor: pointer;
             transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.25s ease;
         }
 
+        /* Decorative lower curved burgundy + champagne edge */
+        .avail-exam-card::before {
+            content: "";
+            position: absolute;
+            left: -6%;
+            right: -6%;
+            bottom: -14px;
+            height: 28px;
+            background: linear-gradient(100deg, var(--primary) 0%, var(--wine-red) 55%, var(--dark-maroon) 100%);
+            border-radius: 55% 45% 0 0 / 100% 100% 0 0;
+            border-top: 2px solid var(--champagne);
+            box-shadow: 0 -2px 0 1px rgba(189, 139, 127, 0.35);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .avail-exam-card::after {
+            content: "";
+            position: absolute;
+            right: -12px;
+            bottom: -6px;
+            width: 58%;
+            height: 20px;
+            background: radial-gradient(ellipse at 70% 100%, rgba(251, 222, 199, 0.45) 0%, transparent 72%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
         .avail-exam-card:hover {
             transform: translateY(-4px);
-            box-shadow: 0 16px 34px rgba(58, 1, 13, 0.16);
+            box-shadow:
+                0 18px 36px rgba(45, 2, 10, 0.16),
+                0 4px 12px rgba(189, 139, 127, 0.18);
         }
 
-        .avail-card-watermark {
+        /* Right-side layered botanical feather + clipboard + clock illustration */
+        .avail-illustration-wrap {
             position: absolute;
-            right: 12px;
-            top: 44px;
-            width: 86px;
-            height: 86px;
-            opacity: 0.92;
+            right: 4px;
+            top: 38px;
+            width: 144px;
+            height: 122px;
             pointer-events: none;
+            z-index: 1;
         }
 
-        .avail-card-watermark rect {
-            fill: rgba(241, 214, 199, 0.55);
-            stroke: #BD8B7F;
+        .avail-feathers-svg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            overflow: visible;
         }
 
-        .avail-card-watermark path {
-            stroke: #570215;
+        .avail-clipboard-svg {
+            position: absolute;
+            right: 22px;
+            top: 24px;
+            width: 68px;
+            height: 80px;
+            filter: drop-shadow(0 6px 12px rgba(45, 2, 10, 0.12));
         }
 
-        .avail-card-watermark circle {
-            fill: #3A010D;
-            stroke: #FDF4EE;
+        .avail-clock-badge {
+            position: absolute;
+            right: 10px;
+            bottom: 8px;
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: linear-gradient(145deg, var(--primary) 0%, var(--dark-maroon) 100%);
+            border: 1.5px solid var(--rose-gold);
+            box-shadow:
+                0 6px 14px rgba(45, 2, 10, 0.28),
+                0 0 0 2px var(--ivory-white);
+            display: grid;
+            place-items: center;
+            z-index: 3;
         }
 
-        .avail-card-watermark circle + path {
-            stroke: #FBDEC7;
+        .avail-clock-badge svg {
+            width: 20px;
+            height: 20px;
         }
 
         .avail-card-top {
             display: flex;
-            align-items: center;
+            align-items: flex-start;
             justify-content: space-between;
             gap: 8px;
             position: relative;
             z-index: 2;
-            margin: 0 -16px;
-            padding-right: 14px;
+            margin: 0 -18px;
+            padding-right: 16px;
         }
 
         .avail-code-pill {
-            background: linear-gradient(135deg, #3A010D 0%, #570215 100%);
-            border-right: 2px solid #BD8B7F;
-            border-bottom: 2px solid #BD8B7F;
-            color: #FDF4EE;
+            position: relative;
+            background: linear-gradient(115deg, var(--primary) 0%, var(--wine-red) 78%, var(--dark-maroon) 100%);
+            border-right: 1.5px solid var(--champagne);
+            border-bottom: 1.5px solid var(--champagne);
+            color: var(--ivory-white);
             font-size: 11px;
             font-weight: 800;
-            padding: 8px 22px 8px 18px;
-            border-radius: 20px 0 22px 0;
-            letter-spacing: 0.6px;
+            padding: 9px 26px 9px 20px;
+            border-radius: 29px 0 28px 0;
+            letter-spacing: 0.7px;
             text-transform: uppercase;
             font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-            box-shadow: 0 4px 10px rgba(58, 1, 13, 0.18);
+            box-shadow: 0 5px 12px rgba(45, 2, 10, 0.2);
         }
 
         .avail-status-pill {
-            background: #DCFCE7;
-            border: 1px solid #86EFAC;
-            color: #15803D;
-            font-size: 11px;
+            background: #E6F7EC;
+            border: 1px solid #9EE2B8;
+            color: #146C38;
+            font-size: 10.5px;
             font-weight: 800;
-            padding: 4px 11px;
+            padding: 5px 12px;
             border-radius: 999px;
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            letter-spacing: 0.4px;
+            letter-spacing: 0.45px;
             text-transform: uppercase;
-            margin-top: 6px;
+            margin-top: 12px;
+            box-shadow: 0 2px 6px rgba(20, 108, 56, 0.08);
         }
 
         .avail-status-dot {
@@ -3192,33 +3259,35 @@
         .avail-card-body {
             position: relative;
             z-index: 2;
-            padding-right: 84px;
+            padding-right: 126px;
             margin-top: 2px;
+            min-height: 82px;
         }
 
         .avail-card-title {
-            font-size: 18px;
+            font-size: clamp(20px, 5.2vw, 25px);
             font-weight: 800;
-            color: #3A010D;
-            margin: 0 0 5px;
-            line-height: 1.25;
+            color: var(--primary);
+            margin: 0 0 6px;
+            line-height: 1.18;
+            letter-spacing: -0.35px;
         }
 
         .avail-card-desc {
-            font-size: 12.5px;
-            color: #6E4A4E;
+            font-size: 13.5px;
+            color: var(--dark-text);
             margin: 0;
             line-height: 1.45;
+            opacity: 0.88;
         }
 
         .avail-inner-panel {
             background: transparent;
-            border-radius: 16px;
             padding: 0;
-            color: #3A010D;
+            color: var(--dark-text);
             display: flex;
             flex-direction: column;
-            gap: 12px;
+            gap: 14px;
             position: relative;
             z-index: 2;
             margin-top: auto;
@@ -3226,74 +3295,146 @@
 
         .avail-metrics-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr 1.15fr;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 8px;
             align-items: stretch;
         }
 
         .avail-metric-item {
-            background: rgba(241, 214, 199, 0.55);
-            border: 1px solid rgba(189, 139, 127, 0.45);
-            border-radius: 14px;
+            background: linear-gradient(180deg, var(--warm-cream) 0%, var(--blush-beige) 100%);
+            border: 1px solid rgba(189, 139, 127, 0.55);
+            border-radius: 16px;
             display: flex;
             align-items: center;
             gap: 7px;
-            padding: 9px 10px;
+            padding: 10px 9px;
             min-width: 0;
         }
 
         .avail-metric-icon {
-            width: 15px;
-            height: 15px;
-            color: #570215;
+            width: 16px;
+            height: 16px;
+            color: var(--primary);
             flex-shrink: 0;
+        }
+
+        .avail-metric-text {
+            min-width: 0;
         }
 
         .avail-metric-text strong {
             display: block;
-            font-size: 13px;
+            font-size: 13.5px;
             font-weight: 800;
-            color: #3A010D;
-            line-height: 1.2;
+            color: var(--primary);
+            line-height: 1.15;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .avail-metric-text span {
             display: block;
             font-size: 10.5px;
-            color: #6E4A4E;
+            font-weight: 600;
+            color: var(--rose-burgundy);
             line-height: 1.2;
+            margin-top: 1px;
         }
 
         .avail-metric-text.is-subject strong {
             font-size: 11.5px;
-            line-height: 1.25;
-            word-break: break-word;
+            line-height: 1.2;
+            white-space: normal;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
         }
 
         .avail-start-btn {
             width: 100%;
-            border: 1px solid rgba(189, 139, 127, 0.4);
+            min-height: 52px;
+            border: 1px solid var(--rose-gold);
             border-radius: 999px;
-            padding: 12px 18px;
-            background: linear-gradient(135deg, #3A010D 0%, #570215 100%);
-            color: #FDF4EE;
-            font-size: 12.5px;
-            font-weight: 800;
-            letter-spacing: 0.6px;
+            padding: 12px 20px;
+            background: linear-gradient(
+                100deg,
+                var(--primary),
+                var(--wine-red),
+                var(--dark-maroon)
+            );
+            color: var(--ivory-white);
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 0.04em;
             text-transform: uppercase;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 8px;
             cursor: pointer;
-            box-shadow: 0 6px 18px rgba(58, 1, 13, 0.28);
-            transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+            box-shadow:
+                0 5px 14px rgba(45, 2, 10, 0.2),
+                inset 0 1px 0 rgba(251, 222, 199, 0.28);
+            transition: transform 180ms ease, box-shadow 180ms ease, filter 180ms ease;
         }
 
         .avail-start-btn:hover {
             filter: brightness(1.08);
             transform: translateY(-2px);
-            box-shadow: 0 8px 22px rgba(58, 1, 13, 0.38);
+            box-shadow:
+                0 8px 20px rgba(45, 2, 10, 0.28),
+                inset 0 1px 0 rgba(251, 222, 199, 0.35);
+        }
+
+        .avail-start-btn:active {
+            transform: scale(0.985);
+        }
+
+        .avail-start-btn:focus-visible {
+            outline: 2px solid var(--rose-gold);
+            outline-offset: 2px;
+        }
+
+        @media (max-width: 375px) {
+            .avail-exam-card {
+                padding: 0 14px 18px;
+                border-radius: 26px;
+            }
+            .avail-card-top {
+                margin: 0 -14px;
+                padding-right: 12px;
+            }
+            .avail-illustration-wrap {
+                width: 120px;
+                height: 106px;
+                top: 40px;
+                right: 2px;
+            }
+            .avail-clipboard-svg {
+                width: 56px;
+                height: 66px;
+                right: 18px;
+                top: 22px;
+            }
+            .avail-clock-badge {
+                width: 29px;
+                height: 29px;
+                right: 8px;
+                bottom: 8px;
+            }
+            .avail-card-body {
+                padding-right: 104px;
+            }
+            .avail-metric-item {
+                padding: 8px 6px;
+                gap: 5px;
+            }
+            .avail-start-btn {
+                min-height: 48px;
+                font-size: 12px;
+            }
         }
 
         /* UPCOMING EXAM CARD (WARM IVORY + BLUSH BEIGE TILE BOXES + WINE RED ALERT) */

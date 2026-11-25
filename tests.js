@@ -221,13 +221,55 @@ function renderTests() {
         card.setAttribute("title", `Click to start ${test.title}`);
 
         card.innerHTML = `
-            <svg class="avail-card-watermark" viewBox="0 0 96 96" fill="none" aria-hidden="true">
-                <rect x="20" y="14" width="46" height="58" rx="8" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.28)" stroke-width="2"/>
-                <rect x="33" y="9" width="20" height="9" rx="4" fill="rgba(255,255,255,0.18)" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
-                <path d="M30 33l4 4 8-8M30 46l4 4 8-8M30 59h20" stroke="rgba(255,255,255,0.45)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-                <circle cx="64" cy="64" r="16" fill="#6D4AFF" stroke="#FFFFFF" stroke-width="2"/>
-                <path d="M64 56v9l6 3" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-            </svg>
+            <div class="avail-illustration-wrap" aria-hidden="true">
+                <!-- Layered Botanical Feather / Leaf Illustration (Champagne, Rose Gold, Blush Beige, Soft Burgundy) -->
+                <svg class="avail-feathers-svg" viewBox="0 0 160 140" fill="none">
+                    <!-- Background feather (opacity 0.28) -->
+                    <g opacity="0.28">
+                        <path d="M148 16C116 14 82 32 62 66C84 74 118 60 148 16Z" fill="#F1D6C7" stroke="#702229" stroke-width="1"/>
+                        <path d="M146 18C118 34 90 50 64 65" stroke="#702229" stroke-width="1" stroke-linecap="round"/>
+                        <path d="M126 29L114 25M110 38L97 35M94 48L82 46M116 36L110 49M98 46L93 58" stroke="#702229" stroke-width="0.7" stroke-linecap="round"/>
+                    </g>
+                    <!-- Secondary feather (opacity 0.56) -->
+                    <g opacity="0.56">
+                        <path d="M154 46C124 38 86 50 54 84C84 96 126 84 154 46Z" fill="#FBDEC7" stroke="#BD8B7F" stroke-width="1.1"/>
+                        <path d="M150 48C122 58 88 70 57 83" stroke="#BD8B7F" stroke-width="1.1" stroke-linecap="round"/>
+                        <path d="M130 55L118 49M112 62L98 56M94 69L80 65M120 60L114 75M101 67L96 81M82 74L79 86" stroke="#BD8B7F" stroke-width="0.75" stroke-linecap="round"/>
+                    </g>
+                    <!-- Main foreground feather (opacity 0.85) -->
+                    <g opacity="0.85">
+                        <path d="M156 84C132 72 96 76 68 104C94 118 134 112 156 84Z" fill="#FCECE0" stroke="#BD8B7F" stroke-width="1.2"/>
+                        <path d="M152 85C128 89 98 94 71 103" stroke="#702229" stroke-width="1.15" stroke-linecap="round"/>
+                        <path d="M136 88L124 81M118 91L105 84M100 95L88 90M126 91L120 105M108 94L103 107M90 98L87 109" stroke="#702229" stroke-width="0.8" stroke-linecap="round"/>
+                    </g>
+                </svg>
+
+                <!-- Academic Clipboard Illustration with 3 Checkmarks -->
+                <svg class="avail-clipboard-svg" viewBox="0 0 76 90" fill="none">
+                    <rect x="8" y="12" width="60" height="72" rx="11" fill="#FDF4EE" stroke="#3A010D" stroke-width="2.4"/>
+                    <rect x="14" y="19" width="48" height="58" rx="6" fill="#FCECE0" stroke="rgba(189,139,127,0.5)" stroke-width="1"/>
+                    <!-- Top Clip -->
+                    <rect x="24" y="5" width="28" height="13" rx="6" fill="#570215" stroke="#3A010D" stroke-width="2"/>
+                    <circle cx="38" cy="11.5" r="2.2" fill="#FBDEC7"/>
+                    <!-- Checklist Row 1 -->
+                    <path d="M21 35l3.5 3.5 7-7" stroke="#3A010D" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M36 35h19" stroke="#702229" stroke-width="2.1" stroke-linecap="round"/>
+                    <!-- Checklist Row 2 -->
+                    <path d="M21 49l3.5 3.5 7-7" stroke="#3A010D" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M36 49h19" stroke="#702229" stroke-width="2.1" stroke-linecap="round"/>
+                    <!-- Checklist Row 3 -->
+                    <path d="M21 63l3.5 3.5 7-7" stroke="#3A010D" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
+                    <path d="M36 63h15" stroke="#702229" stroke-width="2.1" stroke-linecap="round"/>
+                </svg>
+
+                <!-- Overlapping Deep Burgundy Clock Badge -->
+                <div class="avail-clock-badge">
+                    <svg viewBox="0 0 24 24" fill="none">
+                        <circle cx="12" cy="12" r="9" stroke="#FBDEC7" stroke-width="1.4" stroke-opacity="0.5"/>
+                        <path d="M12 7v5l3.5 2" stroke="#FDF4EE" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                </div>
+            </div>
         `;
 
         const top = document.createElement("div");
@@ -295,7 +337,9 @@ function renderTests() {
         m3Text.className = "avail-metric-text is-subject";
         const m3Strong = document.createElement("strong");
         m3Strong.textContent = subj;
-        m3Text.appendChild(m3Strong);
+        const m3Sub = document.createElement("span");
+        m3Sub.textContent = "Subjects";
+        m3Text.append(m3Strong, m3Sub);
         m3.appendChild(m3Text);
 
         metricsGrid.append(m1, m2, m3);
