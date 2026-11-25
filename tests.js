@@ -1302,6 +1302,7 @@ function switchStudentTab(tabName) {
     }
 
     document.body.classList.toggle("in-home-tab", tabName === "home");
+    document.body.classList.toggle("in-search-tab", tabName === "search");
     document.body.classList.toggle("in-profile-tab", tabName === "profile");
 
     window.scrollTo({ top: 0, behavior: "smooth" });

@@ -1461,13 +1461,15 @@
                 padding-bottom: calc(86px + env(safe-area-inset-bottom, 0px)) !important;
             }
 
-            /* Hide topbar on mobile Home & Profile tabs (Home has brand crest header, Profile has banner) */
+            /* Hide topbar on mobile Home, Search & Profile tabs (Home & Search have brand crest header, Profile has banner) */
             body.in-home-tab .topbar,
+            body.in-search-tab .topbar,
             body.in-profile-tab .topbar {
                 display: none !important;
             }
 
             body.in-home-tab .content,
+            body.in-search-tab .content,
             body.in-profile-tab .content {
                 padding-top: calc(env(safe-area-inset-top, 0px) + 10px) !important;
             }
