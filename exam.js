@@ -1242,19 +1242,25 @@ if (totalNumberEl) {
                 saveSpan.textContent = "Save & Next";
             }
             saveNextButtonEl.classList.toggle("is-hidden-action", isLastQuestion);
+            saveNextButtonEl.hidden = isLastQuestion;
             if (isLastQuestion) {
                 saveNextButtonEl.setAttribute("aria-hidden", "true");
+                saveNextButtonEl.style.setProperty("display", "none", "important");
             } else {
                 saveNextButtonEl.removeAttribute("aria-hidden");
+                saveNextButtonEl.style.removeProperty("display");
             }
         }
 
         if (submitButtonEl) {
             submitButtonEl.classList.toggle("is-hidden-action", !isLastQuestion);
+            submitButtonEl.hidden = !isLastQuestion;
             if (!isLastQuestion) {
                 submitButtonEl.setAttribute("aria-hidden", "true");
+                submitButtonEl.style.setProperty("display", "none", "important");
             } else {
                 submitButtonEl.removeAttribute("aria-hidden");
+                submitButtonEl.style.removeProperty("display");
             }
         }
     }

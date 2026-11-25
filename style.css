@@ -6325,7 +6325,10 @@ input:focus-visible,
   transform: scale(1.1);
 }
 
-.nta-action-toolbar .nta-btn.is-hidden-action {
+#saveNextButton.nta-btn.is-hidden-action,
+#submitButton.nta-btn.is-hidden-action,
+.nta-action-toolbar .nta-btn.is-hidden-action,
+.nta-action-toolbar .nta-btn[hidden] {
   display: none !important;
 }
 
@@ -7051,6 +7054,11 @@ input:focus-visible,
   #submitButton.nta-btn-submit:active {
     transform: scale(0.97);
     filter: brightness(0.92);
+  }
+  #saveNextButton.nta-btn-savenext.is-hidden-action,
+  #submitButton.nta-btn-submit.is-hidden-action,
+  .nta-action-toolbar .nta-btn[hidden] {
+    display: none !important;
   }
 }
 
