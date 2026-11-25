@@ -47,6 +47,22 @@ async function checkSupabaseHasPhone() {
     return cachedHasPhone;
 }
 
+let cachedHasExamCombo = null;
+async function checkSupabaseHasExamCombo() {
+    if (cachedHasExamCombo !== null) return cachedHasExamCombo;
+    if (!isSupabase) {
+        cachedHasExamCombo = true;
+        return true;
+    }
+    try {
+        const { error } = await supabase.from("candidates").select("exam_combination").limit(1);
+        cachedHasExamCombo = !error;
+    } catch {
+        cachedHasExamCombo = false;
+    }
+    return cachedHasExamCombo;
+}
+
 function normalizeCandidate(candidate) {
     if (!candidate) return null;
     let phone = candidate.phone || null;
@@ -110,7 +126,7 @@ async function findCandidateByUserId(userId) {
             const res = await supabase
                 .from("candidates")
                 .select("*")
-                .ilike("email", `${cleanId}%`)
+                .or(`email.ilike.${cleanId},email.ilike.${cleanId}|%`)
                 .limit(1);
             if (res.data && res.data.length > 0) data = res.data[0];
         }
@@ -139,11 +155,31 @@ async function findCandidateByUserId(userId) {
     } else {
         let row = sqliteDb.prepare("SELECT * FROM candidates WHERE LOWER(TRIM(user_id)) = LOWER(TRIM(?))").get(cleanId);
         if (!row && cleanId.includes("@")) {
-            row = sqliteDb.prepare("SELECT * FROM candidates WHERE LOWER(TRIM(email)) = LOWER(TRIM(?))").get(cleanId);
+            row = sqliteDb.prepare("SELECT * FROM candidates WHERE LOWER(TRIM(email)) = LOWER(TRIM(?)) OR LOWER(TRIM(email)) LIKE LOWER(TRIM(?))").get(cleanId, `${cleanId}|%`);
         }
         if (!row && phoneDigits.length >= 10) {
             row = sqliteDb.prepare("SELECT * FROM candidates WHERE phone LIKE ?").get(`%${phoneDigits.slice(-10)}%`);
         }
+        return normalizeCandidate(row);
+    }
+}
+
+async function findCandidateByEmail(email) {
+    const cleanEmail = String(email || "").trim().toLowerCase();
+    if (!cleanEmail) return null;
+
+    if (isSupabase) {
+        const { data, error } = await supabase
+            .from("candidates")
+            .select("*")
+            .or(`email.ilike.${cleanEmail},email.ilike.${cleanEmail}|%`)
+            .limit(1);
+        if (error) console.error("Supabase findCandidateByEmail error:", error.message);
+        return normalizeCandidate(data && data.length > 0 ? data[0] : null);
+    } else {
+        const row = sqliteDb.prepare(
+            "SELECT * FROM candidates WHERE LOWER(TRIM(email)) = LOWER(TRIM(?)) OR LOWER(TRIM(email)) LIKE LOWER(TRIM(?))"
+        ).get(cleanEmail, `${cleanEmail}|%`);
         return normalizeCandidate(row);
     }
 }
@@ -157,6 +193,7 @@ async function createCandidate({ userId, passwordHash, candidateName, email, pho
 
     if (isSupabase) {
         const hasPhone = await checkSupabaseHasPhone();
+        const hasCombo = await checkSupabaseHasExamCombo();
         let insertObj = {
             user_id: cleanUserId,
             password_hash: passwordHash,
@@ -166,7 +203,9 @@ async function createCandidate({ userId, passwordHash, candidateName, email, pho
         };
 
         let encodedEmail = cleanEmail;
-        if (cleanCombo) {
+        if (hasCombo) {
+            insertObj.exam_combination = cleanCombo;
+        } else if (cleanCombo) {
             encodedEmail = `${encodedEmail}|combo:${cleanCombo}`;
         }
 
@@ -413,6 +452,7 @@ module.exports = {
     isSupabase,
     supabase,
     findCandidateByUserId,
+    findCandidateByEmail,
     createCandidate,
     listQuestionSets,
     getQuestionSetById,

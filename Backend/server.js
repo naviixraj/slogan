@@ -723,15 +723,7 @@ app.get("/api/auth/google/callback", async (req, res) => {
 
         console.log(`[GOOGLE OAUTH] Verified account: ${googleEmail} (${googleName})`);
 
-        let candidate = null;
-        if (unifiedDb.isSupabase) {
-            const { data } = await unifiedDb.supabase
-                .from("candidates")
-                .select("*")
-                .ilike("email", googleEmail)
-                .maybeSingle();
-            if (data) candidate = data;
-        }
+        let candidate = await unifiedDb.findCandidateByEmail(googleEmail);
 
         if (!candidate) {
             const baseUserId = googleEmail.split("@")[0].replace(/[^a-zA-Z0-9_]/g, "").slice(0, 20);
@@ -805,15 +797,7 @@ app.post("/api/auth/google", async (req, res) => {
 
         console.log(`[GOOGLE AUTH] Verified Google identity for "${googleEmail}" (${googleName})`);
 
-        let candidate = null;
-        if (unifiedDb.isSupabase) {
-            const { data } = await unifiedDb.supabase
-                .from("candidates")
-                .select("*")
-                .ilike("email", googleEmail)
-                .maybeSingle();
-            if (data) candidate = data;
-        }
+        let candidate = await unifiedDb.findCandidateByEmail(googleEmail);
 
         if (!candidate) {
             const baseUserId = googleEmail.split("@")[0].replace(/[^a-zA-Z0-9_]/g, "").slice(0, 20);
@@ -934,15 +918,9 @@ app.post("/api/auth/google/complete-registration", async (req, res) => {
         }
 
         // Check if email already registered
-        if (unifiedDb.isSupabase) {
-            const { data: emailExisting } = await unifiedDb.supabase
-                .from("candidates")
-                .select("id")
-                .ilike("email", cleanEmail)
-                .maybeSingle();
-            if (emailExisting) {
-                return res.status(400).json({ success: false, message: `An account with ${cleanEmail} already exists. Please sign in instead.` });
-            }
+        const emailExisting = await unifiedDb.findCandidateByEmail(cleanEmail);
+        if (emailExisting) {
+            return res.status(400).json({ success: false, message: `An account with ${cleanEmail} already exists. Please sign in instead.` });
         }
 
         const passwordHash = bcrypt.hashSync(password, 12);

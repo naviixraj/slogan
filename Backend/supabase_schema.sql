@@ -9,12 +9,14 @@ CREATE TABLE IF NOT EXISTS candidates (
     candidate_name TEXT NOT NULL,
     email TEXT,
     phone TEXT,
+    exam_combination TEXT DEFAULT 'Paper 1 - General Paper',
     role TEXT DEFAULT 'Student',
     active INTEGER NOT NULL DEFAULT 1,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
 );
 
 ALTER TABLE candidates ADD COLUMN IF NOT EXISTS phone TEXT;
+ALTER TABLE candidates ADD COLUMN IF NOT EXISTS exam_combination TEXT;
 
 -- 2. Question Sets Table
 CREATE TABLE IF NOT EXISTS question_sets (
