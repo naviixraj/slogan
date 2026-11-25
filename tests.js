@@ -29,7 +29,22 @@ const cancelLogoutButton = document.getElementById("cancelLogoutButton");
 const confirmLogoutButton = document.getElementById("confirmLogoutButton");
 const logoutCloseIconButton = document.getElementById("logoutCloseIconButton");
 
-const testGrid = document.getElementById("testGrid");
+const availableExamsSection = document.getElementById("availableExamsSection");
+const availableCarouselTrack = document.getElementById("availableCarouselTrack");
+const availableCountBadge = document.getElementById("availableCountBadge");
+const availableCarouselControls = document.getElementById("availableCarouselControls");
+const availablePrevBtn = document.getElementById("availablePrevBtn");
+const availableNextBtn = document.getElementById("availableNextBtn");
+const availableCarouselDots = document.getElementById("availableCarouselDots");
+
+const upcomingExamsSection = document.getElementById("upcomingExamsSection");
+const upcomingCarouselTrack = document.getElementById("upcomingCarouselTrack");
+const upcomingCountBadge = document.getElementById("upcomingCountBadge");
+const upcomingCarouselControls = document.getElementById("upcomingCarouselControls");
+const upcomingPrevBtn = document.getElementById("upcomingPrevBtn");
+const upcomingNextBtn = document.getElementById("upcomingNextBtn");
+const upcomingCarouselDots = document.getElementById("upcomingCarouselDots");
+const emptyTestsState = document.getElementById("emptyTestsState");
 const pageMessage = document.getElementById("pageMessage");
 const searchInput = document.getElementById("searchInput");
 const statusFilter = document.getElementById("statusFilter");
@@ -167,114 +182,384 @@ function renderTests() {
         return idA.localeCompare(idB, undefined, { numeric: true, sensitivity: 'base' });
     });
 
-    testGrid.innerHTML = "";
-
-    resultCount.textContent =
-        `Showing ${matches.length} of ${mockTests.length} examinations`;
-
-    if (!matches.length) {
-        testGrid.innerHTML =
-            '<div class="empty">No examinations match your search.</div>';
-        return;
+    if (resultCount) {
+        resultCount.textContent = `Showing ${matches.length} of ${mockTests.length} examinations`;
     }
 
-    matches.forEach(test => {
+    const availableList = matches.filter(t => t.status === "available");
+    const upcomingList = matches.filter(t => t.status !== "available");
 
-        const isAvailable = test.status === "available";
-        const testNum = String(test.id || "01").replace(/\D/g, "");
-        const testCode = `TEST ${testNum.padStart(2, "0")}`;
+    if (availableCountBadge) {
+        availableCountBadge.textContent = `${availableList.length} ${availableList.length === 1 ? "EXAM" : "EXAMS"}`;
+    }
+    if (upcomingCountBadge) {
+        upcomingCountBadge.textContent = `${upcomingList.length} ${upcomingList.length === 1 ? "EXAM" : "EXAMS"}`;
+    }
+
+    if (emptyTestsState) {
+        emptyTestsState.style.display = matches.length === 0 ? "block" : "none";
+    }
+
+    if (availableExamsSection) {
+        availableExamsSection.style.display = (availableList.length > 0 && filter !== "coming") ? "block" : "none";
+    }
+    if (upcomingExamsSection) {
+        upcomingExamsSection.style.display = (upcomingList.length > 0 && filter !== "available") ? "block" : "none";
+    }
+
+    // Helper: create Available Exam dark card
+    function buildAvailableCard(test) {
         const qCount = test.questionsCount || test.questions_count || 150;
         const dur = test.duration || 180;
         const subj = test.subject || "General Paper";
-        const marks = test.totalMarks || (qCount * 2);
+        const codeLabel = `EXAM ${String(test.id || "SET01").toUpperCase()}`;
 
         const card = document.createElement("article");
-        card.className = "assessment-card";
+        card.className = "avail-exam-card";
+        card.setAttribute("role", "button");
+        card.setAttribute("tabindex", "0");
+        card.setAttribute("title", `Click to start ${test.title}`);
 
-        // Header (TEST 02 pill + AVAILABLE badge)
-        const header = document.createElement("div");
-        header.className = "assessment-card-header";
+        card.innerHTML = `
+            <svg class="avail-card-watermark" viewBox="0 0 96 96" fill="none" aria-hidden="true">
+                <rect x="20" y="14" width="46" height="58" rx="8" fill="rgba(255,255,255,0.08)" stroke="rgba(255,255,255,0.28)" stroke-width="2"/>
+                <rect x="33" y="9" width="20" height="9" rx="4" fill="rgba(255,255,255,0.18)" stroke="rgba(255,255,255,0.35)" stroke-width="1.5"/>
+                <path d="M30 33l4 4 8-8M30 46l4 4 8-8M30 59h20" stroke="rgba(255,255,255,0.45)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                <circle cx="64" cy="64" r="16" fill="#6D4AFF" stroke="#FFFFFF" stroke-width="2"/>
+                <path d="M64 56v9l6 3" stroke="#FFFFFF" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        `;
+
+        const top = document.createElement("div");
+        top.className = "avail-card-top";
 
         const codePill = document.createElement("span");
-        codePill.className = "assessment-test-code";
-        codePill.textContent = testCode;
+        codePill.className = "avail-code-pill";
+        codePill.textContent = codeLabel;
 
-        const statusBadge = document.createElement("span");
-        statusBadge.className = isAvailable ? "assessment-status-badge available" : "assessment-status-badge upcoming";
-        statusBadge.innerHTML = `<span class="assessment-status-dot"></span>${isAvailable ? "AVAILABLE" : "UPCOMING"}`;
+        const statusPill = document.createElement("span");
+        statusPill.className = "avail-status-pill";
+        const dot = document.createElement("span");
+        dot.className = "avail-status-dot";
+        statusPill.append(dot, document.createTextNode("AVAILABLE"));
 
-        header.append(codePill, statusBadge);
+        top.append(codePill, statusPill);
 
-        // Title
-        const title = document.createElement("h2");
-        title.className = "assessment-title";
+        const body = document.createElement("div");
+        body.className = "avail-card-body";
+
+        const title = document.createElement("h3");
+        title.className = "avail-card-title";
         title.textContent = test.title;
 
-        // Description
         const desc = document.createElement("p");
-        desc.className = "assessment-desc";
-        desc.textContent = isAvailable
-            ? `Complete ${qCount}-question ${subj} simulation.`
-            : "This examination will be available once its question bank is configured.";
+        desc.className = "avail-card-desc";
+        desc.textContent = "Ready to begin. Complete the instructions before starting your examination.";
 
-        // Metrics row
-        const metrics = document.createElement("div");
-        metrics.className = "assessment-metrics";
-        [`${qCount} Qs`, `${dur} Mins`, `${marks} Marks`].forEach(txt => {
-            const pill = document.createElement("span");
-            pill.className = "assessment-metric-pill";
-            pill.textContent = txt;
-            metrics.appendChild(pill);
-        });
+        body.append(title, desc);
 
-        // Start button
+        const inner = document.createElement("div");
+        inner.className = "avail-inner-panel";
+
+        const metricsGrid = document.createElement("div");
+        metricsGrid.className = "avail-metrics-grid";
+
+        const m1 = document.createElement("div");
+        m1.className = "avail-metric-item";
+        m1.innerHTML = `<svg class="avail-metric-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 12h6M9 16h6"/></svg>`;
+        const m1Text = document.createElement("div");
+        m1Text.className = "avail-metric-text";
+        const m1Strong = document.createElement("strong");
+        m1Strong.textContent = String(qCount);
+        const m1Sub = document.createElement("span");
+        m1Sub.textContent = "Questions";
+        m1Text.append(m1Strong, m1Sub);
+        m1.appendChild(m1Text);
+
+        const m2 = document.createElement("div");
+        m2.className = "avail-metric-item";
+        m2.innerHTML = `<svg class="avail-metric-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>`;
+        const m2Text = document.createElement("div");
+        m2Text.className = "avail-metric-text";
+        const m2Strong = document.createElement("strong");
+        m2Strong.textContent = String(dur);
+        const m2Sub = document.createElement("span");
+        m2Sub.textContent = "Minutes";
+        m2Text.append(m2Strong, m2Sub);
+        m2.appendChild(m2Text);
+
+        const m3 = document.createElement("div");
+        m3.className = "avail-metric-item";
+        m3.innerHTML = `<svg class="avail-metric-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 12 12 17 22 12"/><polyline points="2 17 12 22 22 17"/></svg>`;
+        const m3Text = document.createElement("div");
+        m3Text.className = "avail-metric-text is-subject";
+        const m3Strong = document.createElement("strong");
+        m3Strong.textContent = subj;
+        m3Text.appendChild(m3Strong);
+        m3.appendChild(m3Text);
+
+        metricsGrid.append(m1, m2, m3);
+
         const startBtn = document.createElement("button");
         startBtn.type = "button";
-        startBtn.className = isAvailable ? "assessment-start-btn" : "assessment-start-btn is-disabled";
-        startBtn.disabled = !isAvailable;
-        startBtn.innerHTML = isAvailable
-            ? `<span>Start Examination</span> <span style="font-size: 16px;">&rarr;</span>`
-            : `<span>Coming Soon</span>`;
+        startBtn.className = "avail-start-btn";
+        startBtn.innerHTML = `<span>▶ START EXAMINATION &rarr;</span>`;
 
-        if (isAvailable) {
-            const launchExam = () => {
-                const testIdClean = String(test.id || "MOCK01").toLowerCase();
-                localStorage.setItem("selectedMockTest", testIdClean);
-                localStorage.setItem("selectedTestDetails", JSON.stringify({
-                    id: test.id,
-                    title: test.title,
-                    subject: subj,
-                    duration: dur,
-                    questionsCount: qCount
-                }));
-                localStorage.setItem("examDuration", String(dur * 60));
-                localStorage.setItem("currentExamTitle", test.title);
-                localStorage.setItem("currentExamSubject", subj);
-                window.location.href = "instructions";
-            };
+        const launchExam = () => {
+            const testIdClean = String(test.id || "MOCK01").toLowerCase();
+            localStorage.setItem("selectedMockTest", testIdClean);
+            localStorage.setItem("selectedTestDetails", JSON.stringify({
+                id: test.id,
+                title: test.title,
+                subject: subj,
+                duration: dur,
+                questionsCount: qCount
+            }));
+            localStorage.setItem("examDuration", String(dur * 60));
+            localStorage.setItem("currentExamTitle", test.title);
+            localStorage.setItem("currentExamSubject", subj);
+            window.location.href = "instructions";
+        };
 
-            card.style.cursor = "pointer";
-            card.setAttribute("role", "button");
-            card.setAttribute("tabindex", "0");
-            card.setAttribute("title", `Click to start ${test.title}`);
+        card.addEventListener("click", launchExam);
+        card.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                launchExam();
+            }
+        });
+        startBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            launchExam();
+        });
 
-            card.addEventListener("click", launchExam);
-            card.addEventListener("keydown", (e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                    e.preventDefault();
-                    launchExam();
+        inner.append(metricsGrid, startBtn);
+        card.append(top, body, inner);
+        return card;
+    }
+
+    // Helper: create Upcoming Exam card
+    function getStoredAlerts() {
+        try {
+            return JSON.parse(localStorage.getItem("slogonUpcomingAlerts") || "[]");
+        } catch {
+            return [];
+        }
+    }
+
+    function buildUpcomingCard(test, idx) {
+        const qCount = test.questionsCount || test.questions_count || 150;
+        const dur = test.duration || 180;
+        const subj = test.subject || "General Paper";
+        const codeLabel = `EXAM ${String(test.id || "MOCK02").toUpperCase()}`;
+        const indexLabel = String(idx + 1).padStart(2, "0");
+
+        const card = document.createElement("article");
+        card.className = "upcoming-exam-card";
+
+        const top = document.createElement("div");
+        top.className = "upcoming-card-top";
+
+        const badges = document.createElement("div");
+        badges.className = "upcoming-badges";
+
+        const codePill = document.createElement("span");
+        codePill.className = "upcoming-code-pill";
+        codePill.textContent = codeLabel;
+
+        const soonPill = document.createElement("span");
+        soonPill.className = "upcoming-soon-pill";
+        soonPill.textContent = "⏳ COMING SOON";
+
+        badges.append(codePill, soonPill);
+
+        const idxSpan = document.createElement("span");
+        idxSpan.className = "upcoming-index-num";
+        idxSpan.textContent = indexLabel;
+
+        top.append(badges, idxSpan);
+
+        const title = document.createElement("h3");
+        title.className = "upcoming-card-title";
+        title.textContent = test.title;
+
+        const desc = document.createElement("p");
+        desc.className = "upcoming-card-desc";
+        desc.textContent = "This examination will be available once its question bank is ready.";
+
+        const statBoxes = document.createElement("div");
+        statBoxes.className = "upcoming-stat-boxes";
+
+        const specs = [
+            {
+                icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg>`,
+                label: "ITEMS",
+                val: String(qCount),
+                sub: "Questions"
+            },
+            {
+                icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>`,
+                label: "DURATION",
+                val: String(dur),
+                sub: "Minutes"
+            },
+            {
+                icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>`,
+                label: "STREAM",
+                val: subj,
+                sub: "Mandatory"
+            }
+        ];
+
+        specs.forEach(sp => {
+            const box = document.createElement("div");
+            box.className = "upcoming-stat-box";
+            const head = document.createElement("div");
+            head.className = "upcoming-stat-head";
+            head.innerHTML = sp.icon;
+            const headLbl = document.createElement("span");
+            headLbl.textContent = sp.label;
+            head.appendChild(headLbl);
+
+            const val = document.createElement("strong");
+            val.className = "upcoming-stat-val";
+            val.textContent = sp.val;
+
+            const sub = document.createElement("span");
+            sub.className = "upcoming-stat-sub";
+            sub.textContent = sp.sub;
+
+            box.append(head, val, sub);
+            statBoxes.appendChild(box);
+        });
+
+        const footer = document.createElement("div");
+        footer.className = "upcoming-card-footer";
+
+        const alerts = getStoredAlerts();
+        let isAlerted = alerts.includes(String(test.id));
+
+        const alertBtn = document.createElement("button");
+        alertBtn.type = "button";
+        alertBtn.className = isAlerted ? "upcoming-alert-btn is-alerted" : "upcoming-alert-btn";
+        const updateAlertLabel = () => {
+            alertBtn.className = isAlerted ? "upcoming-alert-btn is-alerted" : "upcoming-alert-btn";
+            alertBtn.textContent = isAlerted ? "✓ ALERT ENABLED" : "🔔 ALERT WHEN UNLOCKED";
+        };
+        updateAlertLabel();
+
+        alertBtn.addEventListener("click", () => {
+            const current = getStoredAlerts();
+            const idStr = String(test.id);
+            if (current.includes(idStr)) {
+                localStorage.setItem("slogonUpcomingAlerts", JSON.stringify(current.filter(x => x !== idStr)));
+                isAlerted = false;
+            } else {
+                current.push(idStr);
+                localStorage.setItem("slogonUpcomingAlerts", JSON.stringify(current));
+                isAlerted = true;
+            }
+            updateAlertLabel();
+        });
+
+        footer.appendChild(alertBtn);
+        card.append(top, title, desc, statBoxes, footer);
+        return card;
+    }
+
+    // Render carousels and wire navigation controls
+    function setupCarousel(trackEl, items, builderFn, dotsEl, prevBtn, nextBtn, controlsEl) {
+        if (!trackEl) return;
+        trackEl.innerHTML = "";
+        items.forEach((item, i) => trackEl.appendChild(builderFn(item, i)));
+
+        if (dotsEl) dotsEl.innerHTML = "";
+        if (controlsEl) {
+            controlsEl.style.display = items.length > 1 ? "flex" : "none";
+        }
+        if (items.length <= 1 || !dotsEl) return;
+
+        const dots = items.map((_, i) => {
+            const dot = document.createElement("button");
+            dot.type = "button";
+            dot.className = i === 0 ? "carousel-dot active" : "carousel-dot";
+            dot.setAttribute("aria-label", `Go to slide ${i + 1}`);
+            dot.addEventListener("click", () => {
+                const targetCard = trackEl.children[i];
+                if (targetCard) {
+                    trackEl.scrollTo({ left: targetCard.offsetLeft - trackEl.offsetLeft, behavior: "smooth" });
                 }
             });
+            dotsEl.appendChild(dot);
+            return dot;
+        });
 
-            startBtn.addEventListener("click", (e) => {
-                e.stopPropagation();
-                launchExam();
+        const getCurrentIndex = () => {
+            let bestIdx = 0;
+            let bestDist = Infinity;
+            const left = trackEl.scrollLeft + trackEl.offsetLeft;
+            Array.from(trackEl.children).forEach((child, i) => {
+                const dist = Math.abs(child.offsetLeft - left);
+                if (dist < bestDist) {
+                    bestDist = dist;
+                    bestIdx = i;
+                }
             });
+            return bestIdx;
+        };
+
+        const syncControls = () => {
+            const idx = getCurrentIndex();
+            dots.forEach((d, i) => d.classList.toggle("active", i === idx));
+            if (prevBtn) prevBtn.disabled = idx <= 0;
+            if (nextBtn) nextBtn.disabled = idx >= items.length - 1;
+        };
+
+        trackEl.onscroll = () => {
+            syncControls();
+        };
+
+        if (prevBtn) {
+            prevBtn.onclick = () => {
+                const idx = Math.max(0, getCurrentIndex() - 1);
+                const targetCard = trackEl.children[idx];
+                if (targetCard) {
+                    trackEl.scrollTo({ left: targetCard.offsetLeft - trackEl.offsetLeft, behavior: "smooth" });
+                }
+            };
+        }
+        if (nextBtn) {
+            nextBtn.onclick = () => {
+                const idx = Math.min(items.length - 1, getCurrentIndex() + 1);
+                const targetCard = trackEl.children[idx];
+                if (targetCard) {
+                    trackEl.scrollTo({ left: targetCard.offsetLeft - trackEl.offsetLeft, behavior: "smooth" });
+                }
+            };
         }
 
-        card.append(header, title, desc, metrics, startBtn);
-        testGrid.appendChild(card);
-    });
+        syncControls();
+    }
+
+    setupCarousel(
+        availableCarouselTrack,
+        availableList,
+        buildAvailableCard,
+        availableCarouselDots,
+        availablePrevBtn,
+        availableNextBtn,
+        availableCarouselControls
+    );
+
+    setupCarousel(
+        upcomingCarouselTrack,
+        upcomingList,
+        buildUpcomingCard,
+        upcomingCarouselDots,
+        upcomingPrevBtn,
+        upcomingNextBtn,
+        upcomingCarouselControls
+    );
 }
 
 // Wire Home filter chips (All, Available, Upcoming)
@@ -630,23 +915,26 @@ if (statusFilter) {
    GRID / LIST VIEW TOGGLE (WITH ROTATION)
    ----------------------------------------------------- */
 
-function setDashboardView(isList) {
-    if (!testGrid || !viewToggleButton) return;
+function setDashboardView(isGrid) {
+    if (!viewToggleButton) return;
 
-    testGrid.classList.toggle("list-view", isList);
-    viewToggleButton.classList.toggle("is-list", isList);
+    if (availableCarouselTrack) availableCarouselTrack.classList.toggle("is-grid-mode", isGrid);
+    if (upcomingCarouselTrack) upcomingCarouselTrack.classList.toggle("is-grid-mode", isGrid);
+    viewToggleButton.classList.toggle("is-list", isGrid);
 
-    const label = isList ? "Switch to Grid view" : "Switch to List view";
+    const label = isGrid ? "Switch to Horizontal Carousel" : "Switch to Grid view";
     viewToggleButton.title = label;
     viewToggleButton.setAttribute("aria-label", label);
 
-    localStorage.setItem("slogonPreferredView", isList ? "list" : "grid");
+    localStorage.setItem("slogonPreferredView", isGrid ? "list" : "grid");
 }
 
 if (viewToggleButton) {
     viewToggleButton.addEventListener("click", () => {
-        const isCurrentlyList = testGrid.classList.contains("list-view");
-        setDashboardView(!isCurrentlyList);
+        const isCurrentlyGrid = availableCarouselTrack
+            ? availableCarouselTrack.classList.contains("is-grid-mode")
+            : false;
+        setDashboardView(!isCurrentlyGrid);
     });
 
     // Restore saved view preference

@@ -2806,6 +2806,691 @@
         .btn-primary:hover {
             background: var(--emerald-dark);
         }
+
+        /* =========================================================
+           HOME HERO BANNER, FILTER CHIPS & HORIZONTAL EXAM CAROUSELS
+           ========================================================= */
+        .home-hero-banner {
+            background: linear-gradient(135deg, #1E2538 0%, #151C2C 100%);
+            border-radius: 24px;
+            padding: 24px 20px 20px;
+            position: relative;
+            overflow: hidden;
+            box-shadow: 0 10px 28px rgba(15, 23, 42, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: #FFFFFF;
+            margin-bottom: 8px;
+        }
+
+        .home-hero-banner::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                linear-gradient(rgba(255, 255, 255, 0.04) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.04) 1px, transparent 1px);
+            background-size: 24px 24px;
+            pointer-events: none;
+        }
+
+        .hero-live-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 4px 12px;
+            font-size: 10.5px;
+            font-weight: 800;
+            letter-spacing: 0.8px;
+            color: #E2E8F0;
+            text-transform: uppercase;
+            margin-bottom: 14px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-pulse-dot {
+            width: 6px;
+            height: 6px;
+            border-radius: 50%;
+            background: #10B981;
+            box-shadow: 0 0 0 2px rgba(16, 185, 129, 0.35);
+        }
+
+        .hero-title-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-sparkle-icon {
+            flex-shrink: 0;
+        }
+
+        .home-hero-title {
+            font-size: 24px;
+            font-weight: 900;
+            color: #FFFFFF;
+            letter-spacing: 0.5px;
+            margin: 0;
+            line-height: 1.1;
+        }
+
+        .home-hero-desc {
+            font-size: 13px;
+            color: #CBD5E1;
+            line-height: 1.45;
+            margin: 0;
+            max-width: 520px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .home-hero-stats {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 18px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-stat-card {
+            background: rgba(255, 255, 255, 0.07);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            border-radius: 16px;
+            padding: 12px 6px 10px;
+            text-align: center;
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+
+        .hero-stat-num {
+            display: block;
+            font-size: 24px;
+            font-weight: 800;
+            color: #FFFFFF;
+            line-height: 1;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        }
+
+        .hero-stat-lbl {
+            display: block;
+            font-size: 10px;
+            font-weight: 700;
+            color: #94A3B8;
+            text-transform: uppercase;
+            letter-spacing: 0.6px;
+            margin-top: 5px;
+        }
+
+        .home-filter-chips {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 14px 0 18px;
+            overflow-x: auto;
+            scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        .home-filter-chips::-webkit-scrollbar {
+            display: none;
+        }
+
+        .home-filter-chip {
+            background: #FFFFFF;
+            border: 1.5px solid #E2E8F0;
+            border-radius: 20px;
+            padding: 7px 16px;
+            font-size: 12.5px;
+            font-weight: 700;
+            color: #475569;
+            cursor: pointer;
+            transition: all 0.15s ease;
+            white-space: nowrap;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .home-filter-chip:hover {
+            background: #F8FAFC;
+            border-color: #CBD5E1;
+        }
+
+        .home-filter-chip.active {
+            background: #1E293B;
+            border-color: #1E293B;
+            color: #FFFFFF;
+            box-shadow: 0 2px 8px rgba(15, 23, 42, 0.15);
+        }
+
+        .exam-carousel-section {
+            margin-bottom: 24px;
+        }
+
+        .exam-section-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin-bottom: 12px;
+        }
+
+        .exam-section-title-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            min-width: 0;
+        }
+
+        .section-icon-badge {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .section-icon-badge.available {
+            background: #D1FAE5;
+            border: 1px solid #A7F3D0;
+            color: #059669;
+        }
+
+        .section-icon-badge.upcoming {
+            background: #FEF3C7;
+            border: 1px solid #FDE68A;
+            color: #B45309;
+        }
+
+        .section-icon-badge svg {
+            width: 17px;
+            height: 17px;
+        }
+
+        .exam-section-heading {
+            font-size: 16px;
+            font-weight: 800;
+            color: #0F172A;
+            margin: 0;
+            line-height: 1.2;
+        }
+
+        .exam-section-sub {
+            font-size: 11.5px;
+            color: #64748B;
+            margin: 2px 0 0;
+            line-height: 1.3;
+        }
+
+        .carousel-count-pill {
+            background: #FFFFFF;
+            border: 1px solid #E2E8F0;
+            border-radius: 999px;
+            padding: 5px 12px;
+            font-size: 11px;
+            font-weight: 800;
+            color: #334155;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            white-space: nowrap;
+            flex-shrink: 0;
+            box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+        }
+
+        .exam-carousel-track {
+            display: flex;
+            gap: 14px;
+            overflow-x: auto;
+            scroll-snap-type: x mandatory;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            padding: 4px 2px 10px;
+        }
+
+        .exam-carousel-track::-webkit-scrollbar {
+            display: none;
+        }
+
+        .exam-carousel-track.is-grid-mode {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(330px, 1fr));
+            overflow-x: visible;
+            scroll-snap-type: none;
+        }
+
+        /* AVAILABLE EXAM CARD (DARK NAVY + INNER WHITE PANEL) */
+        .avail-exam-card {
+            flex: 0 0 min(380px, calc(100% - 28px));
+            scroll-snap-align: start;
+            background: linear-gradient(145deg, #2B3354 0%, #3C466F 100%);
+            border-radius: 22px;
+            padding: 18px;
+            border: 2.5px solid #FFFFFF;
+            box-shadow: 0 10px 26px rgba(30, 41, 59, 0.14);
+            color: #FFFFFF;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            cursor: pointer;
+            transition: transform 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .avail-exam-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 14px 30px rgba(30, 41, 59, 0.2);
+        }
+
+        .avail-card-watermark {
+            position: absolute;
+            right: 16px;
+            top: 52px;
+            width: 82px;
+            height: 82px;
+            opacity: 0.9;
+            pointer-events: none;
+        }
+
+        .avail-card-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .avail-code-pill {
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(255, 255, 255, 0.18);
+            color: #E2E8F0;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 12px;
+            border-radius: 999px;
+            letter-spacing: 0.6px;
+            text-transform: uppercase;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        }
+
+        .avail-status-pill {
+            background: #D1FAE5;
+            color: #047857;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 4px 12px;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+        }
+
+        .avail-status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: #059669;
+        }
+
+        .avail-card-body {
+            position: relative;
+            z-index: 2;
+            padding-right: 76px;
+        }
+
+        .avail-card-title {
+            font-size: 17.5px;
+            font-weight: 800;
+            color: #FFFFFF;
+            margin: 0 0 6px;
+            line-height: 1.3;
+        }
+
+        .avail-card-desc {
+            font-size: 12px;
+            color: #CBD5E1;
+            margin: 0;
+            line-height: 1.45;
+        }
+
+        .avail-inner-panel {
+            background: #FFFFFF;
+            border-radius: 16px;
+            padding: 13px 14px;
+            color: #0F172A;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            position: relative;
+            z-index: 2;
+            margin-top: auto;
+        }
+
+        .avail-metrics-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1.25fr;
+            align-items: center;
+        }
+
+        .avail-metric-item {
+            display: flex;
+            align-items: center;
+            gap: 7px;
+            padding: 0 8px;
+            min-width: 0;
+        }
+
+        .avail-metric-item:first-child {
+            padding-left: 0;
+        }
+
+        .avail-metric-item + .avail-metric-item {
+            border-left: 1px solid #E2E8F0;
+        }
+
+        .avail-metric-icon {
+            width: 15px;
+            height: 15px;
+            color: #64748B;
+            flex-shrink: 0;
+        }
+
+        .avail-metric-text strong {
+            display: block;
+            font-size: 13px;
+            font-weight: 800;
+            color: #0F172A;
+            line-height: 1.2;
+        }
+
+        .avail-metric-text span {
+            display: block;
+            font-size: 10.5px;
+            color: #64748B;
+            line-height: 1.2;
+        }
+
+        .avail-metric-text.is-subject strong {
+            font-size: 11.5px;
+            line-height: 1.25;
+            word-break: break-word;
+        }
+
+        .avail-start-btn {
+            width: 100%;
+            border: none;
+            border-radius: 999px;
+            padding: 11px 16px;
+            background: linear-gradient(135deg, #059669 0%, #047857 100%);
+            color: #FFFFFF;
+            font-size: 12.5px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(4, 120, 87, 0.28);
+            transition: transform 0.15s ease, filter 0.15s ease;
+        }
+
+        .avail-start-btn:hover {
+            filter: brightness(1.05);
+            transform: translateY(-1px);
+        }
+
+        /* UPCOMING EXAM CARD (CREAM/WHITE + 3 TILE BOXES + ALERT BUTTON) */
+        .upcoming-exam-card {
+            flex: 0 0 min(380px, calc(100% - 28px));
+            scroll-snap-align: start;
+            background: #FCF9F7;
+            border-radius: 22px;
+            padding: 18px;
+            border: 1.5px solid #334155;
+            box-shadow: 0 6px 18px rgba(15, 23, 42, 0.05);
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .upcoming-card-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+        }
+
+        .upcoming-badges {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .upcoming-code-pill {
+            background: #F3E5DE;
+            border: 1px solid #E5CFC3;
+            color: #5C4338;
+            font-size: 11px;
+            font-weight: 700;
+            padding: 4px 11px;
+            border-radius: 999px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+        }
+
+        .upcoming-soon-pill {
+            background: #FEF3C7;
+            border: 1px solid #FDE68A;
+            color: #92400E;
+            font-size: 11px;
+            font-weight: 800;
+            padding: 4px 11px;
+            border-radius: 999px;
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+        }
+
+        .upcoming-index-num {
+            font-size: 21px;
+            font-weight: 800;
+            color: #716F94;
+            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            line-height: 1;
+        }
+
+        .upcoming-card-title {
+            font-size: 17px;
+            font-weight: 800;
+            color: #0F172A;
+            margin: 0;
+            line-height: 1.3;
+        }
+
+        .upcoming-card-desc {
+            font-size: 12.5px;
+            color: #475569;
+            margin: 0;
+            line-height: 1.45;
+        }
+
+        .upcoming-stat-boxes {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+        }
+
+        .upcoming-stat-box {
+            background: #FAF5F2;
+            border: 1px solid #E5D4CA;
+            border-radius: 14px;
+            padding: 10px 9px;
+            min-width: 0;
+        }
+
+        .upcoming-stat-head {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 10px;
+            font-weight: 800;
+            color: #64748B;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+
+        .upcoming-stat-head svg {
+            width: 12px;
+            height: 12px;
+            flex-shrink: 0;
+        }
+
+        .upcoming-stat-val {
+            display: block;
+            font-size: 14px;
+            font-weight: 800;
+            color: #0F172A;
+            line-height: 1.25;
+            word-break: break-word;
+        }
+
+        .upcoming-stat-sub {
+            display: block;
+            font-size: 11px;
+            color: #64748B;
+            margin-top: 2px;
+        }
+
+        .upcoming-card-footer {
+            display: flex;
+            justify-content: flex-end;
+            margin-top: auto;
+        }
+
+        .upcoming-alert-btn {
+            border: none;
+            border-radius: 999px;
+            padding: 10px 18px;
+            background: #52547A;
+            color: #FFFFFF;
+            font-size: 11.5px;
+            font-weight: 800;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            gap: 7px;
+            cursor: pointer;
+            transition: background 0.18s ease, transform 0.12s ease;
+        }
+
+        .upcoming-alert-btn:hover {
+            background: #3F4164;
+        }
+
+        .upcoming-alert-btn.is-alerted {
+            background: #047857;
+        }
+
+        /* CAROUSEL CONTROLS (ARROWS + PILL DOTS) */
+        .carousel-controls-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .carousel-arrow-btn {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: #FFFFFF;
+            border: 1.5px solid #1E293B;
+            color: #0F172A;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.15s ease;
+        }
+
+        .carousel-arrow-btn:disabled {
+            border-color: #CBD5E1;
+            color: #94A3B8;
+            background: rgba(255, 255, 255, 0.65);
+            cursor: default;
+        }
+
+        .carousel-dots-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 7px 11px;
+            border-radius: 999px;
+        }
+
+        .carousel-dots-pill.is-available {
+            background: #D1FAE5;
+        }
+
+        .carousel-dots-pill.is-upcoming {
+            background: #E2E4F3;
+        }
+
+        .carousel-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            transition: transform 0.15s ease, background 0.15s ease;
+        }
+
+        .carousel-dots-pill.is-available .carousel-dot {
+            background: #86EFAC;
+        }
+
+        .carousel-dots-pill.is-available .carousel-dot.active {
+            background: #047857;
+            transform: scale(1.18);
+        }
+
+        .carousel-dots-pill.is-upcoming .carousel-dot {
+            background: #A5B4FC;
+        }
+
+        .carousel-dots-pill.is-upcoming .carousel-dot.active {
+            background: #312E81;
+            transform: scale(1.18);
+        }
+
+        @media (max-width: 900px) {
+            .avail-exam-card,
+            .upcoming-exam-card {
+                flex: 0 0 calc(100% - 26px);
+            }
+        }
     </style>
 </head>
 
@@ -3029,7 +3714,69 @@
                     Showing 10 examinations
                 </div>
 
-                <div class="test-grid" id="testGrid"></div>
+                <!-- AVAILABLE EXAMS HORIZONTAL CAROUSEL -->
+                <div class="exam-carousel-section" id="availableExamsSection">
+                    <div class="exam-section-header">
+                        <div class="exam-section-title-group">
+                            <span class="section-icon-badge available" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="12" cy="12" r="9"/>
+                                    <polygon points="10 8 16 12 10 16 10 8" fill="currentColor" stroke="none"/>
+                                </svg>
+                            </span>
+                            <div>
+                                <h2 class="exam-section-heading">Available Exams</h2>
+                                <p class="exam-section-sub">Ready to start now — swipe or use arrows to browse</p>
+                            </div>
+                        </div>
+                        <span class="carousel-count-pill" id="availableCountBadge">0 EXAMS</span>
+                    </div>
+
+                    <div class="exam-carousel-track" id="availableCarouselTrack"></div>
+
+                    <div class="carousel-controls-row" id="availableCarouselControls">
+                        <button type="button" class="carousel-arrow-btn" id="availablePrevBtn" aria-label="Previous available exam">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+                        </button>
+                        <div class="carousel-dots-pill is-available" id="availableCarouselDots"></div>
+                        <button type="button" class="carousel-arrow-btn" id="availableNextBtn" aria-label="Next available exam">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- UPCOMING EXAMS HORIZONTAL CAROUSEL -->
+                <div class="exam-carousel-section" id="upcomingExamsSection">
+                    <div class="exam-section-header">
+                        <div class="exam-section-title-group">
+                            <span class="section-icon-badge upcoming" aria-hidden="true">
+                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="4" y="11" width="16" height="9" rx="2"/>
+                                    <path d="M8 11V7a4 4 0 0 1 8 0v4"/>
+                                </svg>
+                            </span>
+                            <div>
+                                <h2 class="exam-section-heading">Upcoming Exams</h2>
+                                <p class="exam-section-sub">Scheduled question sets — set an alert for launch</p>
+                            </div>
+                        </div>
+                        <span class="carousel-count-pill" id="upcomingCountBadge">0 EXAMS</span>
+                    </div>
+
+                    <div class="exam-carousel-track" id="upcomingCarouselTrack"></div>
+
+                    <div class="carousel-controls-row" id="upcomingCarouselControls">
+                        <button type="button" class="carousel-arrow-btn" id="upcomingPrevBtn" aria-label="Previous upcoming exam">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
+                        </button>
+                        <div class="carousel-dots-pill is-upcoming" id="upcomingCarouselDots"></div>
+                        <button type="button" class="carousel-arrow-btn" id="upcomingNextBtn" aria-label="Next upcoming exam">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="empty" id="emptyTestsState" style="display: none;">No examinations match your search.</div>
 
             </section>
 
