@@ -59,17 +59,15 @@
         }
 
         body {
-            background-color: var(--ivory);
+            background-color: #3A010D;
             background-image:
-                radial-gradient(ellipse at 20% 0%, rgba(189, 139, 127, 0.12) 0%, transparent 50%),
-                radial-gradient(ellipse at 80% 100%, rgba(251, 222, 199, 0.22) 0%, transparent 55%),
-                linear-gradient(rgba(253, 244, 238, 0.92), rgba(253, 244, 238, 0.92)),
-                url('slogon-bg.png');
+                radial-gradient(ellipse at 50% 22%, rgba(251, 222, 199, 0.14) 0%, transparent 52%),
+                linear-gradient(125deg, transparent 26%, rgba(251, 222, 199, 0.05) 44%, transparent 62%),
+                linear-gradient(235deg, transparent 34%, rgba(189, 139, 127, 0.06) 52%, transparent 70%),
+                linear-gradient(155deg, #4B0212 0%, #3A010D 48%, #2D020A 100%);
             background-repeat: no-repeat;
-            background-position: calc(50% + 115px) center;
             background-attachment: fixed;
-            background-size: min(650px, 80vw);
-            color: var(--charcoal);
+            color: #FDF4EE;
             font-family: Inter, Arial, sans-serif;
             min-height: 100vh;
             -webkit-touch-callout: none;
@@ -80,10 +78,12 @@
 
         @media (max-width: 900px) {
             body {
-                background-color: #FDF4EE;
+                background-color: #3A010D;
                 background-image:
-                    radial-gradient(ellipse at 30% 0%, rgba(251, 222, 199, 0.35) 0%, transparent 55%),
-                    radial-gradient(ellipse at 70% 100%, rgba(241, 214, 199, 0.3) 0%, transparent 55%);
+                    radial-gradient(ellipse at 50% 20%, rgba(251, 222, 199, 0.16) 0%, transparent 52%),
+                    linear-gradient(125deg, transparent 26%, rgba(251, 222, 199, 0.06) 44%, transparent 62%),
+                    linear-gradient(155deg, #4B0212 0%, #3A010D 48%, #2D020A 100%);
+                background-attachment: fixed;
             }
         }
 
@@ -281,10 +281,10 @@
             position: relative;
             z-index: 50;
             height: 66px;
-            background: rgba(255, 255, 255, 0.72);
-            backdrop-filter: blur(16px) saturate(1.6);
-            -webkit-backdrop-filter: blur(16px) saturate(1.6);
-            border-bottom: 1px solid rgba(226, 232, 240, 0.5);
+            background: rgba(45, 2, 10, 0.88);
+            backdrop-filter: blur(16px) saturate(1.4);
+            -webkit-backdrop-filter: blur(16px) saturate(1.4);
+            border-bottom: 1px solid rgba(189, 139, 127, 0.28);
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -519,11 +519,12 @@
         .page-heading h1 {
             font-size: 27px;
             letter-spacing: -0.6px;
+            color: #FDF4EE;
         }
 
         .page-heading p {
             font-size: 13.5px;
-            color: var(--muted);
+            color: #FBDEC7;
             margin-top: 8px;
             line-height: 1.6;
         }
@@ -1107,7 +1108,7 @@
 
         .footer {
             text-align: center;
-            color: #9AA19B;
+            color: #BD8B7F;
             font-size: 12px;
             padding: 22px;
         }
@@ -1239,7 +1240,7 @@
                 gap: 8px;
                 font-size: 16px;
                 font-weight: 800;
-                color: #0F172A;
+                color: #FDF4EE;
             }
 
             .topbar-logo-mobile {
@@ -1403,12 +1404,10 @@
                 right: 0;
                 height: 68px;
                 padding-bottom: env(safe-area-inset-bottom, 0px);
-                background: rgba(255, 255, 255, 0.88);
-                backdrop-filter: blur(20px) saturate(1.8);
-                -webkit-backdrop-filter: blur(20px) saturate(1.8);
-                border-top: 1px solid rgba(226, 232, 240, 0.4);
-                border-radius: 24px 24px 0 0;
-                box-shadow: 0 -8px 32px rgba(15, 23, 42, 0.08), 0 -1px 0 rgba(255, 255, 255, 0.5) inset;
+                background: #FDF4EE;
+                border-top: 1px solid rgba(189, 139, 127, 0.45);
+                border-radius: 26px 26px 0 0;
+                box-shadow: 0 -10px 30px rgba(24, 0, 5, 0.35), inset 0 1px 0 #FFFFFF;
                 z-index: 950;
                 align-items: center;
                 justify-content: space-around;
@@ -1431,40 +1430,51 @@
             }
 
             .content {
-                padding-top: 14px !important;
+                padding-top: 10px !important;
                 padding-inline: 14px !important;
                 padding-bottom: calc(86px + env(safe-area-inset-bottom, 0px)) !important;
             }
 
-            /* Style body when viewing mobile profile tab so phone card pops on soft peach backdrop */
-            body.in-profile-tab {
-                background: linear-gradient(165deg, #F5F3FF 0%, #EDE9FE 40%, #FCE7F3 100%) !important;
-                background-image: none !important;
-            }
-
+            /* Hide topbar on mobile Home & Profile tabs (Home has brand crest header, Profile has banner) */
+            body.in-home-tab .topbar,
             body.in-profile-tab .topbar {
                 display: none !important;
             }
 
+            body.in-home-tab .content,
             body.in-profile-tab .content {
-                padding-top: calc(env(safe-area-inset-top, 0px) + 12px) !important;
+                padding-top: calc(env(safe-area-inset-top, 0px) + 10px) !important;
+            }
+
+            body.in-profile-tab .content {
                 padding-inline: 12px !important;
             }
 
             .tab-btn {
+                position: relative;
                 flex: 1;
                 display: flex;
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
-                gap: 4px;
+                gap: 3px;
                 background: transparent;
                 border: none;
                 padding: 4px 0;
-                color: #64748B;
+                color: #6E4A4E;
                 cursor: pointer;
                 transition: color 0.18s ease, transform 0.12s ease;
                 -webkit-tap-highlight-color: transparent;
+            }
+
+            .tab-btn:not(:last-child)::after {
+                content: "";
+                position: absolute;
+                right: 0;
+                top: 22%;
+                bottom: 22%;
+                width: 1px;
+                background: rgba(189, 139, 127, 0.35);
             }
 
             .tab-btn:active {
@@ -1474,8 +1484,8 @@
             .tab-icon-wrap {
                 position: relative;
                 width: 44px;
-                height: 30px;
-                border-radius: 20px;
+                height: 28px;
+                border-radius: 16px;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -1486,7 +1496,7 @@
                 width: 20px;
                 height: 20px;
                 transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-                color: #64748B;
+                color: #570215;
             }
 
             .tab-btn.active {
@@ -1494,14 +1504,25 @@
             }
 
             .tab-btn.active .tab-icon-wrap {
-                background: linear-gradient(135deg, #3A010D 0%, #570215 100%);
-                box-shadow: 0 4px 12px rgba(58, 1, 13, 0.28);
+                background: transparent;
+                box-shadow: none;
             }
 
             .tab-btn.active .tab-icon {
-                color: #FDF4EE;
-                transform: scale(1.08);
-                filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.15));
+                color: #3A010D;
+                transform: scale(1.1);
+                filter: none;
+            }
+
+            .tab-btn.active::before {
+                content: "";
+                position: absolute;
+                bottom: -2px;
+                left: 28%;
+                right: 28%;
+                height: 2.5px;
+                border-radius: 2px;
+                background: #3A010D;
             }
 
             .tab-badge-dot {
@@ -2723,25 +2744,18 @@
            4-SLIDE HERO CARD CAROUSEL (EXACT REFERENCE COMPOSITION)
            ========================================================= */
         .hero-carousel-stage {
-            background: linear-gradient(155deg, #4B0212 0%, #3A010D 48%, #2D020A 100%);
-            border-radius: 28px;
-            padding: 18px 0 18px;
+            background: transparent;
+            border-radius: 0;
+            padding: 8px 0 12px;
             position: relative;
-            overflow: hidden;
-            box-shadow: 0 18px 42px rgba(45, 2, 10, 0.34), inset 0 1px 0 rgba(251, 222, 199, 0.22);
-            border: 1px solid rgba(189, 139, 127, 0.45);
-            margin-bottom: 14px;
+            overflow: visible;
+            box-shadow: none;
+            border: none;
+            margin: 0 -14px 8px;
         }
 
         .hero-carousel-stage::before {
-            content: '';
-            position: absolute;
-            inset: -20% -10%;
-            background:
-                radial-gradient(ellipse at 50% 48%, rgba(251, 222, 199, 0.22) 0%, transparent 52%),
-                linear-gradient(125deg, transparent 28%, rgba(251, 222, 199, 0.06) 44%, transparent 60%),
-                linear-gradient(235deg, transparent 35%, rgba(189, 139, 127, 0.08) 52%, transparent 68%);
-            pointer-events: none;
+            display: none;
         }
 
         .hero-brand-header {
@@ -3164,15 +3178,15 @@
         }
 
         .section-icon-badge.available {
-            background: linear-gradient(135deg, #FBDEC7 0%, #F1D6C7 100%);
-            border: 1.5px solid #BD8B7F;
-            color: #3A010D;
+            background: rgba(251, 222, 199, 0.16);
+            border: 1.5px solid rgba(251, 222, 199, 0.45);
+            color: #FBDEC7;
         }
 
         .section-icon-badge.upcoming {
-            background: #F1D6C7;
-            border: 1.5px solid #BD8B7F;
-            color: #570215;
+            background: rgba(241, 214, 199, 0.14);
+            border: 1.5px solid rgba(189, 139, 127, 0.45);
+            color: #FBDEC7;
         }
 
         .section-icon-badge svg {
@@ -3183,7 +3197,7 @@
         .exam-section-heading {
             font-size: 16.5px;
             font-weight: 800;
-            color: #3A010D;
+            color: #FDF4EE;
             margin: 0;
             line-height: 1.2;
         }
@@ -3191,7 +3205,7 @@
         .exam-section-sub {
             font-size: 12px;
             font-weight: 500;
-            color: #6E4A4E;
+            color: #F1D6C7;
             margin: 2px 0 0;
             line-height: 1.35;
         }
@@ -3764,9 +3778,9 @@
             width: 34px;
             height: 34px;
             border-radius: 50%;
-            background: #FDF4EE;
-            border: 1.5px solid #3A010D;
-            color: #3A010D;
+            background: rgba(45, 2, 10, 0.86);
+            border: 1.5px solid rgba(251, 222, 199, 0.55);
+            color: #FDF4EE;
             display: inline-flex;
             align-items: center;
             justify-content: center;
@@ -3775,9 +3789,9 @@
         }
 
         .carousel-arrow-btn:disabled {
-            border-color: #BD8B7F;
-            color: #BD8B7F;
-            background: rgba(253, 244, 238, 0.65);
+            border-color: rgba(189, 139, 127, 0.35);
+            color: rgba(241, 214, 199, 0.45);
+            background: rgba(45, 2, 10, 0.45);
             cursor: default;
         }
 
@@ -3789,12 +3803,10 @@
             border-radius: 999px;
         }
 
-        .carousel-dots-pill.is-available {
-            background: #FBDEC7;
-        }
-
+        .carousel-dots-pill.is-available,
         .carousel-dots-pill.is-upcoming {
-            background: #F1D6C7;
+            background: rgba(253, 244, 238, 0.12);
+            border: 1px solid rgba(251, 222, 199, 0.22);
         }
 
         .carousel-dot {
@@ -3807,21 +3819,14 @@
             transition: transform 0.15s ease, background 0.15s ease;
         }
 
-        .carousel-dots-pill.is-available .carousel-dot {
-            background: #BD8B7F;
-        }
-
-        .carousel-dots-pill.is-available .carousel-dot.active {
-            background: #3A010D;
-            transform: scale(1.18);
-        }
-
+        .carousel-dots-pill.is-available .carousel-dot,
         .carousel-dots-pill.is-upcoming .carousel-dot {
-            background: #BD8B7F;
+            background: rgba(189, 139, 127, 0.48);
         }
 
+        .carousel-dots-pill.is-available .carousel-dot.active,
         .carousel-dots-pill.is-upcoming .carousel-dot.active {
-            background: #570215;
+            background: #FBDEC7;
             transform: scale(1.18);
         }
 

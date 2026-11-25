@@ -1115,11 +1115,8 @@ function switchStudentTab(tabName) {
         }
     }
 
-    if (tabName === "profile") {
-        document.body.classList.add("in-profile-tab");
-    } else {
-        document.body.classList.remove("in-profile-tab");
-    }
+    document.body.classList.toggle("in-home-tab", tabName === "home");
+    document.body.classList.toggle("in-profile-tab", tabName === "profile");
 
     window.scrollTo({ top: 0, behavior: "smooth" });
 }
