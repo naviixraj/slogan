@@ -2007,11 +2007,131 @@ function initHeroCardCarousel() {
 }
 
 /* -----------------------------------------------------
+   TOP BAR NOTIFICATIONS BELL & MODAL
+   ----------------------------------------------------- */
+
+function initNotificationsBell() {
+    const bellBtn = document.getElementById("heroBellBtn");
+    const bellDot = document.getElementById("heroBellDot");
+    const modal = document.getElementById("notificationsModal");
+    const listEl = document.getElementById("notificationsList");
+    const metaEl = document.getElementById("notifModalMeta");
+    const closeBtn = document.getElementById("closeNotificationsBtn");
+
+    if (!bellBtn || !modal || !listEl) return;
+
+    function getAlertsSafe() {
+        try {
+            return JSON.parse(localStorage.getItem("slogonUpcomingAlerts") || "[]");
+        } catch {
+            return [];
+        }
+    }
+
+    function buildNotificationItems() {
+        const items = [];
+        const availableTests = (typeof mockTests !== "undefined" ? mockTests : []).filter(t => t.status === "available");
+        const alertIds = getAlertsSafe();
+
+        availableTests.forEach(test => {
+            const qCount = test.questionsCount || test.questions_count || 150;
+            const dur = test.duration || 180;
+            items.push({
+                tag: "Live",
+                title: `${test.title || "Mock Exam"} is Available`,
+                desc: `${test.subject || "General Paper"} · ${qCount} Questions · ${dur} mins. Ready to attempt now.`,
+                targetId: "availableExamsSection",
+                icon: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>`
+            });
+        });
+
+        if (alertIds.length > 0) {
+            items.push({
+                tag: "Alert On",
+                title: `${alertIds.length} Upcoming Exam ${alertIds.length === 1 ? "Reminder" : "Reminders"} Active`,
+                desc: "You will be notified here as soon as your alerted upcoming mock sets unlock.",
+                targetId: "upcomingExamsSection",
+                icon: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>`
+            });
+        }
+
+        items.push({
+            tag: "Study",
+            title: "Study Material Modules Ready",
+            desc: "Browse Paper 1 & Paper 2 unit guides, grammar references, and quick revision notes.",
+            targetId: "studyMaterialSection",
+            icon: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>`
+        });
+
+        return items;
+    }
+
+    function renderNotifications() {
+        const items = buildNotificationItems();
+        if (metaEl) {
+            metaEl.textContent = `${items.length} active ${items.length === 1 ? "notification" : "notifications"}`;
+        }
+        listEl.innerHTML = items.map(item => `
+            <button type="button" class="notif-item" data-scroll-target="${item.targetId || ""}">
+                <span class="notif-item-icon" aria-hidden="true">${item.icon}</span>
+                <span class="notif-item-body">
+                    <span class="notif-item-top">
+                        <strong class="notif-item-title">${item.title}</strong>
+                        <span class="notif-item-tag">${item.tag}</span>
+                    </span>
+                    <p class="notif-item-desc">${item.desc}</p>
+                </span>
+            </button>
+        `).join("");
+
+        listEl.querySelectorAll(".notif-item").forEach(btn => {
+            btn.addEventListener("click", () => {
+                const targetId = btn.getAttribute("data-scroll-target");
+                closeNotifications();
+                if (targetId) {
+                    const targetEl = document.getElementById(targetId);
+                    if (targetEl) {
+                        targetEl.scrollIntoView({ behavior: "smooth", block: "start" });
+                    }
+                }
+            });
+        });
+    }
+
+    function openNotifications() {
+        bellBtn.classList.remove("is-ringing");
+        void bellBtn.offsetWidth;
+        bellBtn.classList.add("is-ringing");
+        renderNotifications();
+        modal.classList.add("show");
+        modal.setAttribute("aria-hidden", "false");
+        if (bellDot) bellDot.classList.add("is-hidden");
+    }
+
+    function closeNotifications() {
+        modal.classList.remove("show");
+        modal.setAttribute("aria-hidden", "true");
+    }
+
+    bellBtn.addEventListener("click", openNotifications);
+    if (closeBtn) closeBtn.addEventListener("click", closeNotifications);
+    modal.addEventListener("click", (e) => {
+        if (e.target === modal) closeNotifications();
+    });
+    document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape" && modal.classList.contains("show")) {
+            closeNotifications();
+        }
+    });
+}
+
+/* -----------------------------------------------------
    INITIALIZE DASHBOARD
    ----------------------------------------------------- */
 
 document.body.classList.add("in-home-tab");
 initHeroCardCarousel();
+initNotificationsBell();
 loadCandidate();
 loadStudentTests();
 loadLeaderboard();

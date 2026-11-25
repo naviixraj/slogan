@@ -2794,9 +2794,191 @@
             z-index: 3;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: space-between;
             gap: 12px;
             padding: 2px 18px 14px;
+        }
+
+        .hero-brand-left {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            min-width: 0;
+        }
+
+        .hero-bell-btn {
+            position: relative;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            border: 1.25px solid rgba(232, 192, 136, 0.85);
+            background: linear-gradient(145deg, rgba(87, 2, 21, 0.9), rgba(45, 1, 10, 0.92));
+            color: #FBDEC7;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            flex-shrink: 0;
+            box-shadow: 0 0 12px rgba(232, 192, 136, 0.28), 0 4px 12px rgba(24, 0, 5, 0.35);
+            transition: transform 0.22s ease, box-shadow 0.22s ease, border-color 0.22s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .hero-bell-btn:hover {
+            transform: translateY(-1px) scale(1.04);
+            border-color: #F4CE95;
+            box-shadow: 0 0 18px rgba(232, 192, 136, 0.48), 0 6px 16px rgba(24, 0, 5, 0.42);
+        }
+
+        .hero-bell-btn:active {
+            transform: scale(0.95);
+        }
+
+        .hero-bell-svg {
+            width: 21px;
+            height: 21px;
+            transform-origin: 50% 18%;
+            overflow: visible;
+        }
+
+        .hero-bell-wave {
+            opacity: 0;
+            transform-origin: center;
+        }
+
+        .hero-bell-btn:hover .hero-bell-svg,
+        .hero-bell-btn.is-ringing .hero-bell-svg {
+            animation: bellSwing 0.72s cubic-bezier(0.36, 0.07, 0.19, 0.97) both;
+        }
+
+        .hero-bell-btn:hover .hero-bell-wave,
+        .hero-bell-btn.is-ringing .hero-bell-wave {
+            animation: bellWavePulse 0.75s ease-out both;
+        }
+
+        @keyframes bellSwing {
+            0% { transform: rotate(0deg); }
+            15% { transform: rotate(15deg); }
+            32% { transform: rotate(-13deg); }
+            48% { transform: rotate(10deg); }
+            64% { transform: rotate(-7deg); }
+            80% { transform: rotate(4deg); }
+            100% { transform: rotate(0deg); }
+        }
+
+        @keyframes bellWavePulse {
+            0% { opacity: 0; transform: scale(0.82); }
+            35% { opacity: 0.95; transform: scale(1.02); }
+            100% { opacity: 0; transform: scale(1.18); }
+        }
+
+        .hero-bell-dot {
+            position: absolute;
+            top: 7px;
+            right: 8px;
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #E8C088;
+            border: 1.5px solid #3A010D;
+            box-shadow: 0 0 8px rgba(232, 192, 136, 0.9);
+            transition: opacity 0.2s ease, transform 0.2s ease;
+        }
+
+        .hero-bell-dot.is-hidden {
+            opacity: 0;
+            transform: scale(0);
+            pointer-events: none;
+        }
+
+        .notif-modal-card {
+            max-width: 440px;
+            background: #FDF4EE;
+            color: #3A010D;
+            border: 1.5px solid rgba(232, 192, 136, 0.85);
+            box-shadow: 0 0 24px rgba(232, 192, 136, 0.24), 0 18px 42px rgba(24, 0, 5, 0.45);
+        }
+
+        .notif-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 52vh;
+            overflow-y: auto;
+            padding-right: 2px;
+            margin-bottom: 16px;
+        }
+
+        .notif-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            padding: 12px 13px;
+            border-radius: 14px;
+            background: #FFFFFF;
+            border: 1px solid rgba(189, 139, 127, 0.35);
+            box-shadow: 0 4px 12px rgba(58, 1, 13, 0.05);
+            transition: transform 0.18s ease, border-color 0.18s ease;
+            cursor: pointer;
+            text-align: left;
+            width: 100%;
+        }
+
+        .notif-item:hover {
+            transform: translateY(-1px);
+            border-color: rgba(154, 102, 54, 0.55);
+        }
+
+        .notif-item-icon {
+            width: 34px;
+            height: 34px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #3A010D, #570215);
+            color: #FBDEC7;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            border: 1px solid rgba(232, 192, 136, 0.55);
+        }
+
+        .notif-item-body {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .notif-item-top {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 3px;
+        }
+
+        .notif-item-title {
+            font-size: 13.5px;
+            font-weight: 700;
+            color: #3A010D;
+            margin: 0;
+        }
+
+        .notif-item-tag {
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            padding: 2px 7px;
+            border-radius: 999px;
+            background: rgba(232, 192, 136, 0.28);
+            color: #570215;
+            flex-shrink: 0;
+        }
+
+        .notif-item-desc {
+            font-size: 12.2px;
+            line-height: 1.45;
+            color: #5C3A3E;
+            margin: 0;
         }
 
         .hero-brand-logo {
@@ -3958,11 +4140,22 @@
                 <div class="hero-carousel-stage" id="heroCarouselStage">
                     <!-- Brand Crest Header -->
                     <div class="hero-brand-header">
-                        <img src="Logoicon.png" alt="SLOGON ACADEMY Logo" class="hero-brand-logo">
-                        <span class="hero-brand-divider" aria-hidden="true"></span>
-                        <div class="hero-brand-text">
-                            <span class="hero-brand-name">SLOGON ACADEMY</span>
+                        <div class="hero-brand-left">
+                            <img src="Logoicon.png" alt="SLOGON ACADEMY Logo" class="hero-brand-logo">
+                            <span class="hero-brand-divider" aria-hidden="true"></span>
+                            <div class="hero-brand-text">
+                                <span class="hero-brand-name">SLOGON ACADEMY</span>
+                            </div>
                         </div>
+                        <button type="button" class="hero-bell-btn" id="heroBellBtn" aria-label="Open notifications" aria-haspopup="dialog" aria-controls="notificationsModal">
+                            <svg class="hero-bell-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                                <path class="hero-bell-wave" d="M3.8 8.5a9.5 9.5 0 0 1 2.2-3.4" stroke="#E8C088" stroke-width="1.6"/>
+                                <path class="hero-bell-wave" d="M20.2 8.5a9.5 9.5 0 0 0-2.2-3.4" stroke="#E8C088" stroke-width="1.6"/>
+                                <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                                <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="#E8C088"/>
+                            </svg>
+                            <span class="hero-bell-dot" id="heroBellDot" aria-hidden="true"></span>
+                        </button>
                     </div>
 
                     <div class="hero-carousel-viewport">
@@ -4681,6 +4874,28 @@
             <div class="modal-body" id="studyModalBody" style="font-size: 13.5px; line-height: 1.6; color: #2E1416; margin-bottom: 18px;"></div>
             <div class="modal-footer">
                 <button class="modal-btn btn-primary" id="closeStudyModalBtn" type="button">Close</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- NOTIFICATIONS MODAL -->
+    <div class="modal" id="notificationsModal" aria-hidden="true" role="dialog" aria-labelledby="notifModalTitle">
+        <div class="modal-content notif-modal-card">
+            <div class="modal-header" style="border-bottom-color: rgba(189, 139, 127, 0.45); margin-bottom: 14px; padding-bottom: 14px;">
+                <div class="large-avatar" style="background: linear-gradient(135deg, #3A010D, #570215); color: #E8C088; display: inline-flex; align-items: center; justify-content: center;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"/>
+                    </svg>
+                </div>
+                <div>
+                    <h2 id="notifModalTitle" style="font-size: 17px; color: #3A010D; margin: 0;">Notifications</h2>
+                    <p id="notifModalMeta" style="font-size: 12px; color: #6E4A4E; margin-top: 3px;">Latest exam alerts &amp; updates</p>
+                </div>
+            </div>
+            <div class="notif-list" id="notificationsList"></div>
+            <div class="modal-footer" style="display: flex; gap: 10px; justify-content: flex-end;">
+                <button class="modal-btn btn-primary" id="closeNotificationsBtn" type="button">Close</button>
             </div>
         </div>
     </div>
