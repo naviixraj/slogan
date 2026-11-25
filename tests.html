@@ -3690,6 +3690,73 @@
                 flex: 0 0 calc(100% - 26px);
             }
         }
+
+        /* =========================================================
+           LUMINOUS GLOWING GOLD BORDER LINE ON EVERY BOX
+           ========================================================= */
+        @keyframes goldBorderGlow {
+            0%, 100% {
+                box-shadow:
+                    0 0 8px rgba(232, 192, 136, 0.34),
+                    0 0 18px rgba(251, 222, 199, 0.14),
+                    inset 0 0 6px rgba(232, 192, 136, 0.12),
+                    0 12px 28px rgba(24, 0, 5, 0.28);
+            }
+            50% {
+                box-shadow:
+                    0 0 14px rgba(243, 211, 155, 0.56),
+                    0 0 28px rgba(251, 222, 199, 0.24),
+                    inset 0 0 9px rgba(243, 211, 155, 0.2),
+                    0 14px 32px rgba(24, 0, 5, 0.34);
+            }
+        }
+
+        .hero-slide-card,
+        .avail-exam-card,
+        .upcoming-exam-card,
+        .test-card,
+        .search-hero-card,
+        .assessment-card,
+        .mobile-profile-container,
+        .profile-pill-card,
+        .profile-action-card,
+        .mobile-leaderboard-banner,
+        .leaderboard-list-wrap,
+        .leader-card,
+        .help-panel,
+        .modal-content,
+        .logout-modal-box {
+            border: 1.25px solid rgba(232, 192, 136, 0.85) !important;
+            animation: goldBorderGlow 3.6s ease-in-out infinite;
+        }
+
+        .hero-slide-card.is-active {
+            border: 1.5px solid #F3D39B !important;
+            box-shadow:
+                0 0 16px rgba(243, 211, 155, 0.58),
+                0 0 34px rgba(251, 222, 199, 0.28),
+                inset 0 0 10px rgba(255, 255, 255, 0.45),
+                0 18px 42px rgba(24, 0, 5, 0.44) !important;
+        }
+
+        .avail-inner-panel,
+        .upcoming-stat-box,
+        .home-filter-chip,
+        .hero-nav-arrow,
+        .carousel-arrow-btn {
+            border: 1px solid rgba(232, 192, 136, 0.72) !important;
+            box-shadow:
+                0 0 7px rgba(232, 192, 136, 0.28),
+                inset 0 0 4px rgba(251, 222, 199, 0.12);
+        }
+
+        .mobile-tab-bar {
+            border-top: 1.5px solid rgba(232, 192, 136, 0.85) !important;
+            box-shadow:
+                0 -4px 18px rgba(232, 192, 136, 0.22),
+                0 -10px 30px rgba(24, 0, 5, 0.38),
+                inset 0 1px 0 #FFFFFF !important;
+        }
     </style>
 </head>
 
