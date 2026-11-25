@@ -794,6 +794,16 @@ function renderTests() {
 
 // Wire Home filter chips (All, Available, Upcoming)
 const homeFilterChips = document.querySelectorAll(".home-filter-chip");
+const studyMaterialSectionEl = document.getElementById("studyMaterialSection");
+
+function applyHomeSectionFilter(filter) {
+    // Show/hide study material section based on filter
+    if (studyMaterialSectionEl) {
+        studyMaterialSectionEl.style.display = (filter === "all") ? "block" : "none";
+    }
+    // Available & Upcoming sections are handled inside renderTests() via the filter param
+}
+
 homeFilterChips.forEach(chip => {
     chip.addEventListener("click", () => {
         homeFilterChips.forEach(c => c.classList.remove("active"));
@@ -802,6 +812,7 @@ homeFilterChips.forEach(chip => {
         if (statusFilter) {
             statusFilter.value = currentHomeFilter;
         }
+        applyHomeSectionFilter(currentHomeFilter);
         renderTests();
     });
 });
