@@ -2805,24 +2805,44 @@
         }
 
         .hero-brand-divider {
-            width: 1px;
-            height: 26px;
-            background: rgba(251, 222, 199, 0.42);
+            width: 1.5px;
+            height: 30px;
+            background: linear-gradient(180deg, transparent 0%, #E8C088 50%, transparent 100%);
             flex-shrink: 0;
         }
 
         .hero-brand-text {
             text-align: left;
-            line-height: 1.2;
+            line-height: 1.15;
+            position: relative;
         }
 
         .hero-brand-name {
-            display: block;
-            font-size: 15px;
+            display: inline-block;
+            font-family: "Playfair Display", Georgia, "Times New Roman", serif;
+            font-size: clamp(16px, 4.4vw, 19px);
             font-weight: 800;
-            letter-spacing: 1px;
-            color: #FDF4EE;
+            letter-spacing: 2.2px;
             text-transform: uppercase;
+            background: linear-gradient(135deg, #FDF4EE 0%, #FBDEC7 48%, #E8C088 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 6px rgba(24, 0, 5, 0.6)) drop-shadow(0 0 12px rgba(232, 192, 136, 0.24));
+            padding-bottom: 4px;
+            position: relative;
+        }
+
+        .hero-brand-name::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 18%;
+            bottom: 0;
+            height: 1.5px;
+            background: linear-gradient(90deg, #E8C088 0%, rgba(251, 222, 199, 0.45) 65%, transparent 100%);
+            border-radius: 2px;
         }
 
         .hero-carousel-viewport {
