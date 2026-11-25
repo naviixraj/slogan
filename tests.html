@@ -1461,15 +1461,17 @@
                 padding-bottom: calc(86px + env(safe-area-inset-bottom, 0px)) !important;
             }
 
-            /* Hide topbar on mobile Home, Search & Profile tabs (Home & Search have brand crest header, Profile has banner) */
+            /* Hide topbar on mobile Home, Search, Ranks & Profile tabs */
             body.in-home-tab .topbar,
             body.in-search-tab .topbar,
+            body.in-leaderboard-tab .topbar,
             body.in-profile-tab .topbar {
                 display: none !important;
             }
 
             body.in-home-tab .content,
             body.in-search-tab .content,
+            body.in-leaderboard-tab .content,
             body.in-profile-tab .content {
                 padding-top: calc(env(safe-area-inset-top, 0px) + 10px) !important;
             }
@@ -4771,6 +4773,26 @@
 
             <!-- LEADERBOARD SECTION (MOBILE) -->
             <section id="leaderboardSection" class="mobile-view-section" style="display: none;">
+                <!-- Brand Crest Header -->
+                <div class="hero-brand-header" style="padding: 2px 4px 14px;">
+                    <div class="hero-brand-left">
+                        <img src="Logoicon.png" alt="SLOGON ACADEMY Logo" class="hero-brand-logo">
+                        <span class="hero-brand-divider" aria-hidden="true"></span>
+                        <div class="hero-brand-text">
+                            <span class="hero-brand-name">SLOGON ACADEMY</span>
+                        </div>
+                    </div>
+                    <button type="button" class="hero-bell-btn" aria-label="Open notifications" aria-haspopup="dialog" aria-controls="notificationsModal">
+                        <svg class="hero-bell-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path class="hero-bell-wave" d="M3.8 8.5a9.5 9.5 0 0 1 2.2-3.4" stroke="#E8C088" stroke-width="1.6"/>
+                            <path class="hero-bell-wave" d="M20.2 8.5a9.5 9.5 0 0 0-2.2-3.4" stroke="#E8C088" stroke-width="1.6"/>
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="#E8C088"/>
+                        </svg>
+                        <span class="hero-bell-dot" aria-hidden="true"></span>
+                    </button>
+                </div>
+
                 <div class="mobile-leaderboard-banner">
                     <!-- Rotating Ambient Glow Aura behind Rank 1 -->
                     <div class="rank1-aura-glow" aria-hidden="true"></div>
