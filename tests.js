@@ -1574,25 +1574,52 @@ function initHeroCardCarousel() {
         });
     }
 
+    let animRaf = null;
+
+    function easeInOutQuart(t) {
+        return t < 0.5 ? 8 * t * t * t * t : 1 - Math.pow(-2 * t + 2, 4) / 2;
+    }
+
     function goToTrackIndex(targetTrackIdx) {
         clearTimeout(snapTimeout);
+        if (animRaf) cancelAnimationFrame(animRaf);
+
         trackIdx = Math.max(0, Math.min(allCards.length - 1, targetTrackIdx));
         updateActiveClasses(trackIdx);
         isProgrammatic = true;
 
-        track.scrollTo({
-            left: getCenterOffset(allCards[trackIdx]),
-            behavior: "smooth"
-        });
+        const startLeft = track.scrollLeft;
+        const targetLeft = getCenterOffset(allCards[trackIdx]);
+        const distance = targetLeft - startLeft;
+        const duration = 950;
+        let startTime = null;
 
-        snapTimeout = setTimeout(() => {
-            isProgrammatic = false;
-            if (trackIdx === 0) {
-                jumpInstantTo(realCount);
-            } else if (trackIdx >= realCount + 1) {
-                jumpInstantTo(trackIdx - realCount);
+        // Disable snap and CSS smooth during custom rAF glide so motion is 100% silky
+        track.style.scrollSnapType = "none";
+        track.style.scrollBehavior = "auto";
+
+        function step(now) {
+            if (!startTime) startTime = now;
+            const elapsed = now - startTime;
+            const progress = Math.min(1, elapsed / duration);
+            track.scrollLeft = startLeft + distance * easeInOutQuart(progress);
+
+            if (progress < 1) {
+                animRaf = requestAnimationFrame(step);
+            } else {
+                animRaf = null;
+                track.style.scrollSnapType = "";
+                track.style.scrollBehavior = "";
+                isProgrammatic = false;
+                if (trackIdx === 0) {
+                    jumpInstantTo(realCount);
+                } else if (trackIdx >= realCount + 1) {
+                    jumpInstantTo(trackIdx - realCount);
+                }
             }
-        }, 430);
+        }
+
+        animRaf = requestAnimationFrame(step);
     }
 
     if (prevBtn) {
@@ -1646,7 +1673,7 @@ function initHeroCardCarousel() {
             if (isPaused || document.hidden) return;
             // Always advance forward to the right (circular)
             goToTrackIndex(trackIdx + 1);
-        }, 4000);
+        }, 5200);
     }
 
     function restartAutoPlay() {
@@ -1655,7 +1682,16 @@ function initHeroCardCarousel() {
 
     track.addEventListener("mouseenter", () => { isPaused = true; });
     track.addEventListener("mouseleave", () => { isPaused = false; });
-    track.addEventListener("touchstart", () => { isPaused = true; }, { passive: true });
+    track.addEventListener("touchstart", () => {
+        isPaused = true;
+        if (animRaf) {
+            cancelAnimationFrame(animRaf);
+            animRaf = null;
+            track.style.scrollSnapType = "";
+            track.style.scrollBehavior = "";
+            isProgrammatic = false;
+        }
+    }, { passive: true });
     track.addEventListener("touchend", () => { isPaused = false; restartAutoPlay(); }, { passive: true });
 
     let scrollTimer = null;
