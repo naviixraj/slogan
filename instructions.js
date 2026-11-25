@@ -22,8 +22,15 @@ function updateInstructionsUI(details) {
     const examSubject = details.subject || "General Paper";
     const questionsCount = Number(details.questionsCount) || (details.questions ? details.questions.length : 150);
     const durationMinutes = Number(details.duration) || 180;
+    const maxMarks = Number(details.totalMarks) || (questionsCount * 2);
+    const rawCode = String(details.id || activeTestId || "01").toUpperCase();
+    const numMatch = rawCode.replace(/\D/g, "");
+    const badgeLabel = numMatch ? `TEST ${numMatch.padStart(2, "0")}` : rawCode;
 
     // Header and top candidate info
+    const headerTestBadge = document.getElementById("headerTestBadge");
+    if (headerTestBadge) headerTestBadge.textContent = badgeLabel;
+
     const examDisplay = document.getElementById("examDisplay");
     if (examDisplay) examDisplay.textContent = examTitle;
 
@@ -34,14 +41,17 @@ function updateInstructionsUI(details) {
     if (headerExamNameMobile) headerExamNameMobile.textContent = examTitle;
 
     const subjectDisplay = document.getElementById("subjectDisplay");
-    if (subjectDisplay) subjectDisplay.textContent = examSubject;
+    if (subjectDisplay) subjectDisplay.textContent = examSubject.toUpperCase();
 
     // Overview cards
     const qCountEl = document.getElementById("instructionsTotalQuestions");
     if (qCountEl) qCountEl.textContent = String(questionsCount);
 
     const durEl = document.getElementById("instructionsDuration");
-    if (durEl) durEl.textContent = `${durationMinutes} Minutes`;
+    if (durEl) durEl.textContent = `${durationMinutes}m`;
+
+    const maxMarksEl = document.getElementById("instructionsMaxMarks");
+    if (maxMarksEl) maxMarksEl.textContent = String(maxMarks);
 
     // Detailed instruction paragraphs (Instruction 1 & 2)
     const detailQCountEl = document.getElementById("instructionDetailQuestions");
