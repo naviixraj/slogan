@@ -1593,30 +1593,33 @@
                HUMAN-CRAFTED SEARCH SECTION (EXACT SKELETON WITH OUR CSS)
                ========================================================= */
             .search-hero-card {
-                background: #FFFFFF;
+                background: linear-gradient(155deg, rgba(87, 2, 21, 0.92) 0%, rgba(58, 1, 13, 0.96) 100%);
                 border-radius: 24px;
                 padding: 22px 18px 18px;
-                box-shadow: 0 4px 20px rgba(15, 23, 42, 0.04);
-                border: 1px solid #E2E8F0;
+                box-shadow: 0 0 20px rgba(232, 192, 136, 0.22), 0 14px 32px rgba(24, 0, 5, 0.45), inset 0 1px 0 rgba(251, 222, 199, 0.16);
+                border: 1.25px solid rgba(232, 192, 136, 0.72);
                 margin-bottom: 14px;
+                backdrop-filter: blur(10px);
+                -webkit-backdrop-filter: blur(10px);
             }
 
             .search-hero-tag {
                 display: block;
-                font-size: 11px;
+                font-size: 10.5px;
                 font-weight: 800;
-                letter-spacing: 0.8px;
-                color: #64748B;
+                letter-spacing: 1.8px;
+                color: #E8C088;
                 text-transform: uppercase;
-                margin-bottom: 4px;
+                margin-bottom: 5px;
             }
 
             .search-hero-title {
-                font-size: 20px;
-                font-weight: 800;
-                color: #0F172A;
+                font-family: 'Playfair Display', Georgia, serif;
+                font-size: 22px;
+                font-weight: 700;
+                color: #FDF4EE;
                 margin: 0 0 16px 0;
-                letter-spacing: -0.3px;
+                letter-spacing: 0.1px;
                 line-height: 1.2;
             }
 
@@ -1624,23 +1627,24 @@
                 position: relative;
                 display: flex;
                 align-items: center;
-                background: #FFFFFF;
-                border: 1.5px solid #CBD5E1;
+                background: rgba(28, 0, 6, 0.56);
+                border: 1.25px solid rgba(232, 192, 136, 0.36);
                 border-radius: 14px;
                 padding: 0 14px;
-                box-shadow: 0 2px 8px rgba(15, 23, 42, 0.03);
-                transition: border-color 0.2s ease, box-shadow 0.2s ease;
+                box-shadow: inset 0 2px 6px rgba(18, 0, 4, 0.35);
+                transition: border-color 0.22s ease, box-shadow 0.22s ease, background 0.22s ease;
             }
 
             .search-input-wrapper:focus-within {
-                border-color: #4F46E5;
-                box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
+                background: rgba(28, 0, 6, 0.74);
+                border-color: #E8C088;
+                box-shadow: 0 0 0 3px rgba(232, 192, 136, 0.2), inset 0 2px 6px rgba(18, 0, 4, 0.35);
             }
 
             .search-icon-svg {
                 width: 18px;
                 height: 18px;
-                color: #64748B;
+                color: #E8C088;
                 flex-shrink: 0;
             }
 
@@ -1651,9 +1655,13 @@
                 padding: 12px 10px;
                 font-size: 13.5px;
                 background: transparent;
-                color: #0F172A;
+                color: #FDF4EE;
                 -webkit-appearance: none;
                 appearance: none;
+            }
+
+            .search-input-wrapper input::placeholder {
+                color: rgba(251, 222, 199, 0.56);
             }
 
             .search-input-wrapper input::-webkit-search-cancel-button,
@@ -1666,8 +1674,8 @@
             }
 
             .clear-search-btn {
-                background: #F1F5F9;
-                border: none;
+                background: rgba(232, 192, 136, 0.2);
+                border: 1px solid rgba(232, 192, 136, 0.35);
                 border-radius: 50%;
                 width: 22px;
                 height: 22px;
@@ -1675,7 +1683,7 @@
                 align-items: center;
                 justify-content: center;
                 font-size: 11px;
-                color: #64748B;
+                color: #FBDEC7;
                 cursor: pointer;
                 flex-shrink: 0;
             }
@@ -1688,28 +1696,29 @@
             }
 
             .search-filter-chip {
-                background: #FFFFFF;
-                border: 1.5px solid #E2E8F0;
+                background: rgba(255, 255, 255, 0.06);
+                border: 1px solid rgba(232, 192, 136, 0.32);
                 border-radius: 20px;
                 padding: 6px 16px;
                 font-size: 12.5px;
                 font-weight: 600;
-                color: #475569;
+                color: #FBDEC7;
                 cursor: pointer;
-                transition: all 0.15s ease;
+                transition: all 0.2s ease;
                 -webkit-tap-highlight-color: transparent;
             }
 
             .search-filter-chip:hover {
-                background: #F8FAFC;
-                border-color: #CBD5E1;
+                background: rgba(232, 192, 136, 0.14);
+                border-color: rgba(232, 192, 136, 0.6);
             }
 
             .search-filter-chip.active {
-                background: linear-gradient(135deg, #3A010D 0%, #570215 100%);
-                border-color: #3A010D;
-                color: #FDF4EE;
-                box-shadow: 0 2px 10px rgba(58, 1, 13, 0.28);
+                background: linear-gradient(135deg, #FBDEC7 0%, #E8C088 55%, #C89B5B 100%);
+                border-color: rgba(255, 244, 232, 0.7);
+                color: #3A010D;
+                font-weight: 700;
+                box-shadow: 0 4px 14px rgba(232, 192, 136, 0.3);
             }
 
             .search-results-meta {
@@ -1723,7 +1732,7 @@
             .search-count-label {
                 font-size: 12px;
                 font-weight: 600;
-                color: #64748B;
+                color: rgba(251, 222, 199, 0.8);
             }
 
             .paper-search-results {
