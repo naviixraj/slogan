@@ -2065,10 +2065,13 @@ app.get("/api/mock-tests/:testId/questions", async (req, res) => {
             }
         }
 
-        // Guarantee unique sequential IDs and numbers for client examination engines
-        questions.forEach((q, idx) => {
-            q.id = idx + 1;
-            q.number = idx + 1;
+        // Guarantee unique sequential IDs and numbers, and strip answer keys during active exams
+        const sanitizedQuestions = questions.map((q, idx) => {
+            const safeQ = { ...q, id: idx + 1, number: idx + 1 };
+            delete safeQ.correctAnswer;
+            delete safeQ.answer;
+            delete safeQ.explanation;
+            return safeQ;
         });
 
         res.set("Cache-Control", "no-store");
@@ -2078,8 +2081,8 @@ app.get("/api/mock-tests/:testId/questions", async (req, res) => {
             testTitle: testTitle,
             subject: (row && row.subject) ? row.subject : "All",
             duration: (row && row.duration) ? row.duration : 180,
-            totalQuestions: questions.length,
-            questions: questions
+            totalQuestions: sanitizedQuestions.length,
+            questions: sanitizedQuestions
         });
     } catch (error) {
         console.error("Test loading error:", error);
@@ -2087,6 +2090,232 @@ app.get("/api/mock-tests/:testId/questions", async (req, res) => {
             success: false,
             message: "Unable to load examination questions."
         });
+    }
+});
+
+// Server-side Exam Grading & Persistence
+app.post("/api/exams/:testId/submit", async (req, res) => {
+    if (!req.session || !req.session.candidate) {
+        return res.status(401).json({
+            success: false,
+            message: "Please log in to submit this examination."
+        });
+    }
+
+    try {
+        const rawId = req.params.testId.toUpperCase();
+        let questions = null;
+        let testTitle = "Mock Test";
+
+        const row = await unifiedDb.getQuestionSetById(rawId);
+        if (row && row.questions_json) {
+            questions = typeof row.questions_json === "string" ? JSON.parse(row.questions_json) : row.questions_json;
+            testTitle = row.title || testTitle;
+        } else if (rawId === "MOCK01") {
+            const questionsPath = path.join(ROOT, "data", "mock01.json");
+            const fileContent = await fs.promises.readFile(questionsPath, "utf8");
+            questions = JSON.parse(fileContent);
+            testTitle = "UGC NET Full-Length Mock Test 01";
+        }
+
+        if (!questions || !Array.isArray(questions) || questions.length === 0) {
+            return res.status(404).json({
+                success: false,
+                message: `Examination set "${req.params.testId}" not found.`
+            });
+        }
+
+        const candidate = req.session.candidate;
+        if (candidate.role !== "Admin" && row && row.subject) {
+            const studentCombo = candidate.examCombination || candidate.exam_combination || "Paper 1 - General Paper";
+            if (!isCandidateEligibleForSubject(studentCombo, row.subject)) {
+                return res.status(403).json({
+                    success: false,
+                    message: "You are not eligible to submit this examination."
+                });
+            }
+        }
+
+        const submittedAnswers = (req.body && typeof req.body.answers === "object" && req.body.answers) ? req.body.answers : {};
+        const submittedStatus = (req.body && typeof req.body.questionStatus === "object" && req.body.questionStatus) ? req.body.questionStatus : {};
+        const startedAtMs = Number(req.body && req.body.startedAt);
+        const timeTakenSeconds = Number.isFinite(startedAtMs) && startedAtMs > 0
+            ? Math.max(0, Math.round((Date.now() - startedAtMs) / 1000))
+            : 0;
+
+        let correct = 0;
+        let attempted = 0;
+        const normalizedAnswers = {};
+
+        const gradedQuestions = questions.map((q, idx) => {
+            const qNum = idx + 1;
+            const qKey = String(qNum);
+            const rawChoice = submittedAnswers[qKey] ?? submittedAnswers[String(q.id)] ?? "";
+            const selectedAnswer = String(rawChoice || "").trim().toUpperCase();
+            const correctAnswer = String(q.correctAnswer || q.answer || "").trim().toUpperCase();
+
+            if (selectedAnswer) {
+                attempted++;
+                normalizedAnswers[qKey] = selectedAnswer;
+                if (selectedAnswer === correctAnswer) {
+                    correct++;
+                }
+            }
+
+            return {
+                ...q,
+                id: qNum,
+                number: qNum,
+                correctAnswer: correctAnswer,
+                answer: correctAnswer
+            };
+        });
+
+        const total = gradedQuestions.length;
+        const unanswered = total - attempted;
+        const wrong = attempted - correct;
+        const firstMarks = Number(gradedQuestions[0] && gradedQuestions[0].marks);
+        const marksPerQuestion = (Number.isFinite(firstMarks) && firstMarks > 0) ? firstMarks : 1;
+        const totalMarks = total * marksPerQuestion;
+        const obtainedMarks = correct * marksPerQuestion;
+        const percentage = totalMarks > 0 ? Number(((obtainedMarks / totalMarks) * 100).toFixed(2)) : 0;
+        const submittedAt = new Date().toISOString();
+
+        const examResult = {
+            testId: rawId.toLowerCase(),
+            testTitle: testTitle,
+            subject: (row && row.subject) ? row.subject : "All",
+            candidate: {
+                name: candidate.name || "",
+                registerNumber: candidate.userId || "",
+                userId: candidate.userId || "",
+                subject: (row && row.subject) ? row.subject : (candidate.examCombination || "General Paper"),
+                exam: testTitle
+            },
+            totalQuestions: total,
+            attempted: attempted,
+            correct: correct,
+            wrong: wrong,
+            unanswered: unanswered,
+            marksPerQuestion: marksPerQuestion,
+            totalMarks: totalMarks,
+            obtainedMarks: obtainedMarks,
+            percentage: percentage,
+            timeTakenSeconds: timeTakenSeconds,
+            answers: normalizedAnswers,
+            questionStatus: submittedStatus,
+            questions: gradedQuestions,
+            submittedAt: submittedAt
+        };
+
+        await unifiedDb.saveExamAttempt({
+            candidateUserId: candidate.userId,
+            candidateName: candidate.name || candidate.userId,
+            testId: rawId,
+            testTitle: testTitle,
+            subject: examResult.subject,
+            totalQuestions: total,
+            attempted: attempted,
+            correct: correct,
+            wrong: wrong,
+            unanswered: unanswered,
+            marksPerQuestion: marksPerQuestion,
+            totalMarks: totalMarks,
+            obtainedMarks: obtainedMarks,
+            percentage: percentage,
+            timeTakenSeconds: timeTakenSeconds,
+            answers: normalizedAnswers,
+            submittedAt: submittedAt
+        });
+
+        return res.json({ success: true, result: examResult });
+    } catch (error) {
+        console.error("Exam submission error:", error);
+        return res.status(500).json({
+            success: false,
+            message: "Unable to grade and save examination submission."
+        });
+    }
+});
+
+// Fetch latest graded attempt for the logged-in student
+app.get("/api/student/results/latest", async (req, res) => {
+    if (!req.session || !req.session.candidate) {
+        return res.status(401).json({ success: false, message: "Please log in." });
+    }
+    try {
+        const candidate = req.session.candidate;
+        const latest = await unifiedDb.getLatestExamAttemptByUser(candidate.userId);
+        if (!latest) {
+            return res.json({ success: true, result: null });
+        }
+        const answers = typeof latest.answers_json === "string" ? JSON.parse(latest.answers_json) : (latest.answers_json || {});
+        return res.json({
+            success: true,
+            result: {
+                testId: String(latest.test_id || "").toLowerCase(),
+                testTitle: latest.test_title || "Mock Test",
+                subject: latest.subject || "General Paper",
+                candidate: {
+                    name: latest.candidate_name || candidate.name,
+                    registerNumber: latest.candidate_user_id || candidate.userId,
+                    userId: latest.candidate_user_id || candidate.userId,
+                    subject: latest.subject || candidate.examCombination,
+                    exam: latest.test_title || "Mock Test"
+                },
+                totalQuestions: latest.total_questions,
+                attempted: latest.attempted,
+                correct: latest.correct,
+                wrong: latest.wrong,
+                unanswered: latest.unanswered,
+                marksPerQuestion: latest.marks_per_question || 1,
+                totalMarks: latest.total_marks,
+                obtainedMarks: latest.obtained_marks,
+                percentage: latest.percentage,
+                timeTakenSeconds: latest.time_taken_seconds || 0,
+                answers: answers,
+                submittedAt: latest.submitted_at
+            }
+        });
+    } catch (error) {
+        console.error("Error fetching latest exam attempt:", error);
+        return res.status(500).json({ success: false, message: "Unable to load latest result." });
+    }
+});
+
+// Fetch graded questions for answer review (only if candidate has submitted this test or is Admin)
+app.get("/api/exams/:testId/review", async (req, res) => {
+    if (!req.session || !req.session.candidate) {
+        return res.status(401).json({ success: false, message: "Please log in." });
+    }
+    try {
+        const rawId = req.params.testId.toUpperCase();
+        const candidate = req.session.candidate;
+        if (candidate.role !== "Admin") {
+            const hasAttempt = await unifiedDb.hasAttemptForTest(candidate.userId, rawId);
+            if (!hasAttempt) {
+                return res.status(403).json({ success: false, message: "Complete and submit this examination before viewing the answer key." });
+            }
+        }
+        const row = await unifiedDb.getQuestionSetById(rawId);
+        let questions = null;
+        if (row && row.questions_json) {
+            questions = typeof row.questions_json === "string" ? JSON.parse(row.questions_json) : row.questions_json;
+        } else if (rawId === "MOCK01") {
+            const fileContent = await fs.promises.readFile(path.join(ROOT, "data", "mock01.json"), "utf8");
+            questions = JSON.parse(fileContent);
+        }
+        if (!questions || !Array.isArray(questions)) {
+            return res.status(404).json({ success: false, message: "Question set not found." });
+        }
+        questions.forEach((q, idx) => {
+            q.id = idx + 1;
+            q.number = idx + 1;
+        });
+        return res.json({ success: true, testId: rawId, questions });
+    } catch (error) {
+        console.error("Error loading review questions:", error);
+        return res.status(500).json({ success: false, message: "Unable to load answer review." });
     }
 });
 

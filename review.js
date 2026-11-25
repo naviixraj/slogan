@@ -25,7 +25,7 @@ async function loadAnswerReview() {
 
         if (!questions) {
             const activeTestId = (result.testId || localStorage.getItem("selectedMockTest") || "mock01").toLowerCase();
-            const response = await fetch(`/api/mock-tests/${encodeURIComponent(activeTestId)}/questions`, {
+            const response = await fetch(`/api/exams/${encodeURIComponent(activeTestId)}/review`, {
                 cache: "no-store",
                 credentials: "same-origin"
             });

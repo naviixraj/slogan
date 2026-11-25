@@ -52,7 +52,24 @@ async function initializeResultPage() {
 
     let examResult = getExamResult();
 
-    // Fallback if no active submission is found in session
+    // Fallback to latest server-saved result if localStorage is empty
+    if (!examResult) {
+        try {
+            const res = await fetch("/api/student/results/latest", { credentials: "same-origin" });
+            if (res.ok) {
+                const data = await res.json();
+                if (data.success && data.result) {
+                    examResult = data.result;
+                    localStorage.setItem(RESULT_STORAGE_KEY, JSON.stringify(examResult));
+                    localStorage.setItem("slogon_last_exam_result", JSON.stringify(examResult));
+                }
+            }
+        } catch (e) {
+            console.warn("Could not fetch latest server result:", e);
+        }
+    }
+
+    // Fallback if no active submission is found in session or server
     if (!examResult) {
         console.info(
             "SLOGON ACADEMY: Loading candidate result report..."

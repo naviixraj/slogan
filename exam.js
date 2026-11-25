@@ -1449,146 +1449,65 @@ if (totalNumberEl) {
        SUBMIT EXAM
     ===================================================== */
 
-    function submitExam() {
-
+    async function submitExam() {
         saveExamState();
 
-
-        const candidateData =
-            getCandidateData();
-
-
-        let correct = 0;
-        let attempted = 0;
-
-
-        questions.forEach(
-            function (question) {
-
-                const questionId =
-                    String(question.id);
-
-                const selectedAnswer =
-                    answers[questionId];
-
-
-                if (selectedAnswer) {
-
-                    attempted++;
-                }
-
-
-                if (
-                    selectedAnswer &&
-                    selectedAnswer ===
-                    question.correctAnswer
-                ) {
-
-                    correct++;
-                }
-            }
-        );
-
-
-        const total =
-            questions.length;
-
-        const unanswered =
-            total - attempted;
-
-        const wrong =
-            attempted - correct;
-
-        const marksPerQuestion =
-            getMarksPerQuestion();
-
-        const totalMarks =
-            total * marksPerQuestion;
-
-        const obtainedMarks =
-            correct * marksPerQuestion;
-
-        const percentage =
-            totalMarks > 0
-                ? Number(
-                    (
-                        obtainedMarks /
-                        totalMarks *
-                        100
-                    ).toFixed(2)
-                )
-                : 0;
-
+        if (modalSubmitEl) {
+            modalSubmitEl.disabled = true;
+            modalSubmitEl.textContent = "Submitting...";
+        }
 
         const activeTestId = (localStorage.getItem("selectedMockTest") || "mock01").toLowerCase();
-        let storedDetails = null;
+        const startedAt = localStorage.getItem("examStartTime");
+
         try {
-            storedDetails = JSON.parse(localStorage.getItem("selectedTestDetails") || "null");
-        } catch (e) {}
+            const res = await fetch(`/api/exams/${encodeURIComponent(activeTestId)}/submit`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                credentials: "same-origin",
+                body: JSON.stringify({
+                    answers: answers,
+                    questionStatus: questionStatus,
+                    startedAt: startedAt
+                })
+            });
 
-        const examResult = {
-            testId: activeTestId,
-            testTitle: localStorage.getItem("currentExamTitle") || (storedDetails && storedDetails.title) || (candidateData && candidateData.exam) || "Mock Test",
-            subject: localStorage.getItem("currentExamSubject") || (storedDetails && storedDetails.subject) || (candidateData && candidateData.subject) || "General Paper",
-            candidate: candidateData,
-            totalQuestions: total,
-            attempted: attempted,
-            correct: correct,
-            wrong: wrong,
-            unanswered: unanswered,
-            marksPerQuestion: marksPerQuestion,
-            totalMarks: totalMarks,
-            obtainedMarks: obtainedMarks,
-            percentage: percentage,
-            answers: answers,
-            questionStatus: questionStatus,
-            questions: questions,
-            submittedAt: new Date().toISOString()
-        };
+            const data = await res.json();
+            if (!res.ok || !data.success || !data.result) {
+                throw new Error((data && data.message) || "Unable to submit examination.");
+            }
 
+            const examResult = data.result;
 
-        localStorage.setItem(
-            STORAGE_KEYS.result,
-            JSON.stringify(examResult)
-        );
+            localStorage.setItem(
+                STORAGE_KEYS.result,
+                JSON.stringify(examResult)
+            );
 
-        localStorage.setItem(
-            "slogon_last_exam_result",
-            JSON.stringify(examResult)
-        );
+            localStorage.setItem(
+                "slogon_last_exam_result",
+                JSON.stringify(examResult)
+            );
 
+            stopExamTimer();
 
-        /*
-        -----------------------------------------------------
-        Stop timer if timer.js provides a public stop method
-        -----------------------------------------------------
-        */
+            localStorage.removeItem(
+                STORAGE_KEYS.currentQuestion
+            );
 
-        stopExamTimer();
+            sessionStorage.removeItem("slogon_active_exam_session");
+            localStorage.setItem("examStarted", "false");
 
-
-        /*
-        -----------------------------------------------------
-        Clear temporary exam navigation data
-        -----------------------------------------------------
-        */
-
-        localStorage.removeItem(
-            STORAGE_KEYS.currentQuestion
-        );
-
-        sessionStorage.removeItem("slogon_active_exam_session");
-        localStorage.setItem("examStarted", "false");
-
-
-        /*
-        -----------------------------------------------------
-        Redirect to result page
-        -----------------------------------------------------
-        */
-
-        window.location.href =
-            RESULT_PAGE;
+            window.location.href =
+                RESULT_PAGE;
+        } catch (error) {
+            console.error("Exam submission error:", error);
+            if (modalSubmitEl) {
+                modalSubmitEl.disabled = false;
+                modalSubmitEl.textContent = "Confirm Submit";
+            }
+            showExamError(error.message || "Failed to submit examination. Please try again.");
+        }
     }
 
 

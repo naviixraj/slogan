@@ -102,6 +102,30 @@ try {
         );
     `);
 
+    // Create exam_attempts table for server-side graded results & leaderboard
+    db.exec(`
+        CREATE TABLE IF NOT EXISTS exam_attempts (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            candidate_user_id TEXT NOT NULL,
+            candidate_name TEXT NOT NULL,
+            test_id TEXT NOT NULL,
+            test_title TEXT,
+            subject TEXT,
+            total_questions INTEGER NOT NULL,
+            attempted INTEGER NOT NULL,
+            correct INTEGER NOT NULL,
+            wrong INTEGER NOT NULL,
+            unanswered INTEGER NOT NULL,
+            marks_per_question REAL DEFAULT 1,
+            total_marks REAL NOT NULL,
+            obtained_marks REAL NOT NULL,
+            percentage REAL NOT NULL,
+            time_taken_seconds INTEGER DEFAULT 0,
+            answers_json TEXT,
+            submitted_at TEXT DEFAULT CURRENT_TIMESTAMP
+        );
+    `);
+
     // Seed Mock Test 01 if question_sets is empty
     try {
         const countCheck = db.prepare("SELECT COUNT(*) as count FROM question_sets").get();

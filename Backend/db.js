@@ -448,6 +448,155 @@ async function touchSession(sid, expire) {
     }
 }
 
+// -------------------------------------------------------------
+// EXAM ATTEMPTS & LEADERBOARD
+// -------------------------------------------------------------
+
+async function saveExamAttempt(attempt) {
+    if (isSupabase) {
+        try {
+            const { data, error } = await supabase
+                .from("exam_attempts")
+                .insert([{
+                    candidate_user_id: attempt.candidateUserId,
+                    candidate_name: attempt.candidateName,
+                    test_id: attempt.testId,
+                    test_title: attempt.testTitle,
+                    subject: attempt.subject,
+                    total_questions: attempt.totalQuestions,
+                    attempted: attempt.attempted,
+                    correct: attempt.correct,
+                    wrong: attempt.wrong,
+                    unanswered: attempt.unanswered,
+                    marks_per_question: attempt.marksPerQuestion,
+                    total_marks: attempt.totalMarks,
+                    obtained_marks: attempt.obtainedMarks,
+                    percentage: attempt.percentage,
+                    time_taken_seconds: attempt.timeTakenSeconds || 0,
+                    answers_json: attempt.answers || {},
+                    submitted_at: attempt.submittedAt || new Date().toISOString()
+                }])
+                .select()
+                .single();
+            if (error) {
+                console.warn("Supabase saveExamAttempt notice:", error.message);
+                return null;
+            }
+            return data;
+        } catch (err) {
+            console.warn("Supabase saveExamAttempt error:", err.message);
+            return null;
+        }
+    } else {
+        const info = sqliteDb.prepare(`
+            INSERT INTO exam_attempts (
+                candidate_user_id, candidate_name, test_id, test_title, subject,
+                total_questions, attempted, correct, wrong, unanswered,
+                marks_per_question, total_marks, obtained_marks, percentage,
+                time_taken_seconds, answers_json, submitted_at
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+        `).run(
+            attempt.candidateUserId,
+            attempt.candidateName,
+            attempt.testId,
+            attempt.testTitle,
+            attempt.subject,
+            attempt.totalQuestions,
+            attempt.attempted,
+            attempt.correct,
+            attempt.wrong,
+            attempt.unanswered,
+            attempt.marksPerQuestion,
+            attempt.totalMarks,
+            attempt.obtainedMarks,
+            attempt.percentage,
+            attempt.timeTakenSeconds || 0,
+            JSON.stringify(attempt.answers || {}),
+            attempt.submittedAt || new Date().toISOString()
+        );
+        return { id: info.lastInsertRowid };
+    }
+}
+
+async function getLatestExamAttemptByUser(userId) {
+    const cleanId = String(userId || "").trim();
+    if (!cleanId) return null;
+    if (isSupabase) {
+        try {
+            const { data, error } = await supabase
+                .from("exam_attempts")
+                .select("*")
+                .ilike("candidate_user_id", cleanId)
+                .order("submitted_at", { ascending: false })
+                .limit(1);
+            if (error) {
+                console.warn("Supabase getLatestExamAttemptByUser notice:", error.message);
+                return null;
+            }
+            return data && data.length > 0 ? data[0] : null;
+        } catch {
+            return null;
+        }
+    } else {
+        return sqliteDb.prepare(
+            "SELECT * FROM exam_attempts WHERE LOWER(candidate_user_id) = LOWER(?) ORDER BY datetime(submitted_at) DESC, id DESC LIMIT 1"
+        ).get(cleanId) || null;
+    }
+}
+
+async function hasAttemptForTest(userId, testId) {
+    const cleanUser = String(userId || "").trim();
+    const cleanTest = String(testId || "").trim().toUpperCase();
+    if (!cleanUser || !cleanTest) return false;
+    if (isSupabase) {
+        try {
+            const { data } = await supabase
+                .from("exam_attempts")
+                .select("id")
+                .ilike("candidate_user_id", cleanUser)
+                .ilike("test_id", cleanTest)
+                .limit(1);
+            return Boolean(data && data.length > 0);
+        } catch {
+            return false;
+        }
+    } else {
+        const row = sqliteDb.prepare(
+            "SELECT id FROM exam_attempts WHERE LOWER(candidate_user_id) = LOWER(?) AND UPPER(test_id) = ? LIMIT 1"
+        ).get(cleanUser, cleanTest);
+        return Boolean(row);
+    }
+}
+
+async function getLeaderboardStandings(limit = 20) {
+    const safeLimit = Math.max(1, Math.min(50, Number(limit) || 20));
+    if (isSupabase) {
+        try {
+            const { data, error } = await supabase
+                .from("exam_attempts")
+                .select("candidate_user_id, candidate_name, test_id, test_title, obtained_marks, total_marks, percentage, time_taken_seconds, submitted_at")
+                .order("percentage", { ascending: false })
+                .order("obtained_marks", { ascending: false })
+                .order("time_taken_seconds", { ascending: true })
+                .limit(safeLimit);
+            if (error) {
+                console.warn("Supabase getLeaderboardStandings notice:", error.message);
+                return [];
+            }
+            return data || [];
+        } catch {
+            return [];
+        }
+    } else {
+        return sqliteDb.prepare(`
+            SELECT candidate_user_id, candidate_name, test_id, test_title, obtained_marks, total_marks, percentage, time_taken_seconds, submitted_at
+            FROM exam_attempts
+            ORDER BY percentage DESC, obtained_marks DESC, time_taken_seconds ASC, datetime(submitted_at) DESC
+            LIMIT ?
+        `).all(safeLimit) || [];
+    }
+}
+
 module.exports = {
     isSupabase,
     supabase,
@@ -463,5 +612,9 @@ module.exports = {
     getSession,
     setSession,
     destroySession,
-    touchSession
+    touchSession,
+    saveExamAttempt,
+    getLatestExamAttemptByUser,
+    hasAttemptForTest,
+    getLeaderboardStandings
 };

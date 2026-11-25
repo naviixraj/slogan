@@ -39,6 +39,30 @@ CREATE TABLE IF NOT EXISTS sessions (
     expire BIGINT NOT NULL
 );
 
+-- 4. Exam Attempts Table (server-graded results & leaderboard)
+CREATE TABLE IF NOT EXISTS exam_attempts (
+    id SERIAL PRIMARY KEY,
+    candidate_user_id TEXT NOT NULL,
+    candidate_name TEXT NOT NULL,
+    test_id TEXT NOT NULL,
+    test_title TEXT,
+    subject TEXT,
+    total_questions INTEGER NOT NULL,
+    attempted INTEGER NOT NULL,
+    correct INTEGER NOT NULL,
+    wrong INTEGER NOT NULL,
+    unanswered INTEGER NOT NULL,
+    marks_per_question DOUBLE PRECISION DEFAULT 1,
+    total_marks DOUBLE PRECISION NOT NULL,
+    obtained_marks DOUBLE PRECISION NOT NULL,
+    percentage DOUBLE PRECISION NOT NULL,
+    time_taken_seconds INTEGER DEFAULT 0,
+    answers_json JSONB,
+    submitted_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP
+);
+
 -- Indexes for lightning fast lookups
 CREATE INDEX IF NOT EXISTS idx_candidates_user_id ON candidates(user_id);
 CREATE INDEX IF NOT EXISTS idx_sessions_expire ON sessions(expire);
+CREATE INDEX IF NOT EXISTS idx_exam_attempts_user ON exam_attempts(candidate_user_id);
+CREATE INDEX IF NOT EXISTS idx_exam_attempts_score ON exam_attempts(percentage DESC, obtained_marks DESC);

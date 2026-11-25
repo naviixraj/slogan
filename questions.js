@@ -171,8 +171,7 @@
         const requiredFields = [
             "id",
             "question",
-            "options",
-            "correctAnswer"
+            "options"
         ];
 
 
@@ -291,23 +290,22 @@
 
 
             /* -----------------------------------------
-               CHECK CORRECT ANSWER
+               CHECK CORRECT ANSWER (if provided)
                ----------------------------------------- */
 
-            const correctAnswer =
-                String(question.correctAnswer)
-                    .trim()
-                    .toUpperCase();
+            if (question.correctAnswer !== undefined && question.correctAnswer !== null && String(question.correctAnswer).trim() !== "") {
+                const correctAnswer =
+                    String(question.correctAnswer)
+                        .trim()
+                        .toUpperCase();
 
-
-            if (!optionKeys.includes(correctAnswer)) {
-
-                return {
-                    valid: false,
-                    message:
-                        `Question ${questionNumber} has an invalid correctAnswer.`
-                };
-
+                if (!optionKeys.includes(correctAnswer)) {
+                    return {
+                        valid: false,
+                        message:
+                            `Question ${questionNumber} has an invalid correctAnswer.`
+                    };
+                }
             }
 
 
