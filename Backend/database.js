@@ -46,28 +46,35 @@ try {
         db.exec("ALTER TABLE candidates ADD COLUMN exam_combination TEXT;");
     } catch (e) {}
 
-    // Seed default Admin and Student accounts if missing
-    const bcrypt = require("bcryptjs");
-    try {
-        const adminExists = db.prepare("SELECT id FROM candidates WHERE user_id = 'admin'").get();
-        if (!adminExists) {
-            const adminHash = bcrypt.hashSync("admin123", 12);
-            db.prepare(`
-                INSERT INTO candidates (user_id, password_hash, candidate_name, email, role, active)
-                VALUES (?, ?, ?, ?, ?, 1)
-            `).run("admin", adminHash, "Master Administrator", "admin@slogon.edu", "Admin");
-        }
+    // Seed default Admin and Student accounts if missing (unless disabled via DISABLE_DEFAULT_SEED=true)
+    if (process.env.DISABLE_DEFAULT_SEED !== "true") {
+        const bcrypt = require("bcryptjs");
+        try {
+            const adminExists = db.prepare("SELECT id FROM candidates WHERE user_id = 'admin'").get();
+            if (!adminExists) {
+                const defaultAdminPwd = process.env.ADMIN_DEFAULT_PASSWORD || "admin123";
+                if (!process.env.ADMIN_DEFAULT_PASSWORD) {
+                    console.warn("[SECURITY WARNING] Seeding 'admin' with default dev password. Set ADMIN_DEFAULT_PASSWORD in .env for production.");
+                }
+                const adminHash = bcrypt.hashSync(defaultAdminPwd, 12);
+                db.prepare(`
+                    INSERT INTO candidates (user_id, password_hash, candidate_name, email, role, active)
+                    VALUES (?, ?, ?, ?, ?, 1)
+                `).run("admin", adminHash, "Master Administrator", "admin@slogon.edu", "Admin");
+            }
 
-        const naviExists = db.prepare("SELECT id FROM candidates WHERE user_id = 'navi'").get();
-        if (!naviExists) {
-            const naviHash = bcrypt.hashSync("navii007", 12);
-            db.prepare(`
-                INSERT INTO candidates (user_id, password_hash, candidate_name, email, role, active)
-                VALUES (?, ?, ?, ?, ?, 1)
-            `).run("navi", naviHash, "Navi", "navi@slogon.edu", "Student");
+            const naviExists = db.prepare("SELECT id FROM candidates WHERE user_id = 'navi'").get();
+            if (!naviExists && process.env.NODE_ENV !== "production") {
+                const defaultStudentPwd = process.env.STUDENT_DEFAULT_PASSWORD || "navii007";
+                const naviHash = bcrypt.hashSync(defaultStudentPwd, 12);
+                db.prepare(`
+                    INSERT INTO candidates (user_id, password_hash, candidate_name, email, role, active)
+                    VALUES (?, ?, ?, ?, ?, 1)
+                `).run("navi", naviHash, "Navi", "navi@slogon.edu", "Student");
+            }
+        } catch (e) {
+            console.error("Account seeding error:", e);
         }
-    } catch (e) {
-        console.error("Account seeding error:", e);
     }
 
     // Create question_sets table

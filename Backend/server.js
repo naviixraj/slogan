@@ -25,7 +25,10 @@ app.set("trust proxy", 1);
 const PORT = process.env.PORT || 3000;
 const ROOT = path.join(__dirname, "..");
 
-const SESSION_SECRET = process.env.SESSION_SECRET || "slogon_secure_secret_key_2026_exam_platform_dev";
+const SESSION_SECRET = process.env.SESSION_SECRET || crypto.randomBytes(32).toString("hex");
+if (!process.env.SESSION_SECRET) {
+    console.warn("[SECURITY WARNING] SESSION_SECRET is not set. Using an ephemeral runtime secret; set SESSION_SECRET in .env or hosting environment variables.");
+}
 
 app.use(
     helmet({
@@ -126,7 +129,7 @@ app.use(
         saveUninitialized: false,
         cookie: {
             httpOnly: true,
-            secure: process.env.NODE_ENV === "production" || hasCerts,
+            secure: "auto",
             sameSite: "lax",
             maxAge: 4 * 60 * 60 * 1000
         }
