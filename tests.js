@@ -907,15 +907,6 @@ const paperSearchResults = document.getElementById("paperSearchResults");
 let questionPaperSearchTimeout = null;
 let currentSearchFilter = "all";
 
-function escapeHtml(str) {
-    return String(str || "")
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        .replace(/"/g, "&quot;")
-        .replace(/'/g, "&#039;");
-}
-
 function performQuestionPaperSearch() {
     const rawQuery = mobileQuestionSearchInput ? mobileQuestionSearchInput.value.trim().toLowerCase() : "";
     if (clearQuestionSearchBtn) {

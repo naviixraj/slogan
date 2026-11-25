@@ -13,11 +13,8 @@ if (window.location.hostname === "127.0.0.1" || window.location.hostname === "lo
    Architecture: Exact Match to Student Portal (tests.js)
    ===================================================== */
 
-// Initial default question sets (loaded dynamically from database via /api/admin/sets)
-const DEFAULT_SETS = [];
-
 // Active State
-let activeSets = [...DEFAULT_SETS];
+let activeSets = [];
 
 // -----------------------------------------------------
 // DOM ELEMENTS
@@ -79,7 +76,6 @@ const cancelUploadButton = document.getElementById("cancelUploadButton");
 const submitUploadButton = document.getElementById("submitUploadButton");
 const setFileInput = document.getElementById("setFileInput");
 const dropBoxArea = document.getElementById("dropBoxArea");
-const selectedFileNameLabel = document.getElementById("selectedFileNameLabel");
 const uploadExamTitle = document.getElementById("uploadExamTitle");
 const uploadSubject = document.getElementById("uploadSubject");
 const uploadDuration = document.getElementById("uploadDuration");
@@ -282,7 +278,6 @@ function renderSets() {
         const card = document.createElement("article");
         card.className = "test-card";
 
-        const fileBadge = (set.file_type || set.fileType || "SET").toUpperCase();
         const fName = set.file_name || set.fileName || "File";
         const qCount = set.questions_count !== undefined ? set.questions_count : (set.questionsCount || (set.questions ? set.questions.length : 0));
         const dur = set.duration || 180;
@@ -665,19 +660,6 @@ function handleUniversalOpenSpaceDeselect(e) {
     // Clicking ANY open space on the screen (page background, body, main, content,
     // topbar title/empty area, inspector empty canvas, sidebar, margins, headers):
     clearSelection();
-}
-
-function selectAllQuestions() {
-    if (!currentInspectedQuestions || currentInspectedQuestions.length === 0) return;
-    currentInspectedQuestions.forEach((q, idx) => {
-        const qNum = q.number || q.id || (idx + 1);
-        selectedQuestionNumbers.add(Number(qNum));
-    });
-    if (inspectorQuestionsContainer) {
-        const cards = inspectorQuestionsContainer.querySelectorAll(".question-card");
-        cards.forEach(card => card.classList.add("is-selected"));
-    }
-    updateBulkActionBar();
 }
 
 function toggleQuestionSelection(qNum, cardEl) {

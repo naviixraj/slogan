@@ -62,10 +62,6 @@ async function loadAnswerReview() {
             " | Incorrect: " + result.wrong +
             " | Unanswered: " + result.unanswered;
 
-        const correctCount = Number(result.correct || 0);
-        const wrongCount = Number(result.wrong || 0);
-        const unansweredCount = Number(result.unanswered || 0);
-
         if (questions.length === 0) {
             throw new Error("No questions were found.");
         }

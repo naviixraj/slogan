@@ -65,7 +65,6 @@ if (window.location.hostname === "127.0.0.1" || window.location.hostname === "lo
     let candidateRegisterEl;
     let candidateSubjectEl;
 
-    let questionCounterEl;
     let questionNumberEl;
     let questionTypeEl;
     let questionTextEl;
@@ -181,7 +180,6 @@ if (window.location.hostname === "127.0.0.1" || window.location.hostname === "lo
     }
 
     // Question details
-    questionCounterEl = null;
     questionNumberEl = document.getElementById("questionNumber");
     questionTypeEl = document.querySelector(".question-type");
     questionTextEl = document.getElementById("questionText");
@@ -717,13 +715,6 @@ async function loadCandidateInfo() {
             saveExamState();
         }
 
-
-/* ---------- Question counter ---------- */
-
-if (questionCounterEl) {
-    questionCounterEl.textContent =
-        `Question ${currentQuestionIndex + 1} / ${questions.length}`;
-}
 
 /* ---------- Question number ---------- */
 
@@ -1507,79 +1498,6 @@ if (totalNumberEl) {
                 modalSubmitEl.textContent = "Confirm Submit";
             }
             showExamError(error.message || "Failed to submit examination. Please try again.");
-        }
-    }
-
-
-    /* =====================================================
-       GET MARKS PER QUESTION
-    ===================================================== */
-
-    function getMarksPerQuestion() {
-
-        if (!questions.length) {
-            return 1;
-        }
-
-
-        const firstQuestion =
-            questions[0];
-
-
-        const marks =
-            Number(firstQuestion.marks);
-
-
-        if (
-            Number.isFinite(marks) &&
-            marks > 0
-        ) {
-
-            return marks;
-        }
-
-
-        return 1;
-    }
-
-
-    /* =====================================================
-       GET CANDIDATE DATA
-    ===================================================== */
-
-    function getCandidateData() {
-
-        const savedCandidate =
-            localStorage.getItem(
-                STORAGE_KEYS.candidateInfo
-            );
-
-
-        if (!savedCandidate) {
-
-            return {
-                name: "",
-                registerNumber: "",
-                subject: "",
-                exam: ""
-            };
-        }
-
-
-        try {
-
-            return JSON.parse(
-                savedCandidate
-            );
-
-        } catch (error) {
-
-            return {
-                name: "",
-                registerNumber: "",
-                subject: "",
-                exam: ""
-            };
         }
     }
 
