@@ -369,7 +369,7 @@ function renderTests() {
 
         const soonPill = document.createElement("span");
         soonPill.className = "upcoming-soon-pill";
-        soonPill.textContent = "⏳ COMING SOON";
+        soonPill.innerHTML = `<svg class="hourglass-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2h12M6 22h12"/><path d="M7 2v5.5a5 5 0 0 0 2.2 4.15L12 13.5l2.8-1.85A5 5 0 0 0 17 7.5V2"/><path d="M7 22v-5.5a5 5 0 0 1 2.2-4.15L12 10.5l2.8 1.85A5 5 0 0 1 17 16.5V22"/><path d="M9.2 6h5.6L12 9.5 9.2 6Z" fill="#D97706" stroke="none"/><path d="M9.2 19h5.6L12 15.5 9.2 19Z" fill="#D97706" stroke="none"/></svg><span>COMING SOON</span>`;
 
         badges.append(codePill, soonPill);
 

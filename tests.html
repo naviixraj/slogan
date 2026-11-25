@@ -3313,6 +3313,24 @@
             text-transform: uppercase;
         }
 
+        .hourglass-icon {
+            width: 13px;
+            height: 13px;
+            display: inline-block;
+            flex-shrink: 0;
+            transform-origin: 50% 50%;
+            animation: hourglassRotate4s 4s cubic-bezier(0.45, 0.05, 0.55, 0.95) infinite;
+        }
+
+        @keyframes hourglassRotate4s {
+            0%, 72% {
+                transform: rotate(0deg);
+            }
+            88%, 100% {
+                transform: rotate(180deg);
+            }
+        }
+
         .upcoming-index-num {
             font-size: 21px;
             font-weight: 800;
