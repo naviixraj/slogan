@@ -59,13 +59,16 @@
         }
 
         body {
-            background-color: #3A010D;
+            position: relative;
+            background-color: #2D020A;
             background-image:
-                radial-gradient(ellipse at 50% 22%, rgba(251, 222, 199, 0.14) 0%, transparent 52%),
-                linear-gradient(125deg, transparent 26%, rgba(251, 222, 199, 0.05) 44%, transparent 62%),
-                linear-gradient(235deg, transparent 34%, rgba(189, 139, 127, 0.06) 52%, transparent 70%),
-                linear-gradient(155deg, #4B0212 0%, #3A010D 48%, #2D020A 100%);
+                radial-gradient(ellipse at 18% 12%, rgba(142, 31, 56, 0.42) 0%, transparent 52%),
+                radial-gradient(ellipse at 85% 38%, rgba(124, 20, 43, 0.36) 0%, transparent 54%),
+                radial-gradient(ellipse at 25% 78%, rgba(110, 11, 34, 0.4) 0%, transparent 55%),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 900' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='w1' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%237C142B' stop-opacity='0.52'/%3E%3Cstop offset='100%25' stop-color='%233A010D' stop-opacity='0.05'/%3E%3C/linearGradient%3E%3ClinearGradient id='w2' x1='100%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%238E1F38' stop-opacity='0.38'/%3E%3Cstop offset='100%25' stop-color='%23570215' stop-opacity='0.08'/%3E%3C/linearGradient%3E%3ClinearGradient id='w3' x1='0%25' y1='100%25' x2='100%25' y2='0%25'%3E%3Cstop offset='0%25' stop-color='%236E0B22' stop-opacity='0.48'/%3E%3Cstop offset='100%25' stop-color='%232D020A' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M-60,180 C280,40 520,340 920,190 C1180,95 1340,210 1500,140 L1500,0 L-60,0 Z' fill='url(%23w1)'/%3E%3Cpath d='M-60,520 C240,370 580,640 940,460 C1190,335 1360,440 1500,380 L1500,720 C1240,620 960,820 620,690 C320,575 120,760 -60,680 Z' fill='url(%23w2)'/%3E%3Cpath d='M-60,880 C300,740 620,920 1020,780 C1240,705 1380,790 1500,740 L1500,920 L-60,920 Z' fill='url(%23w3)'/%3E%3C/svg%3E"),
+                linear-gradient(155deg, #3A010D 0%, #2D020A 55%, #3A010D 100%);
             background-repeat: no-repeat;
+            background-size: cover, cover, cover, 100% 100%, cover;
             background-attachment: fixed;
             color: #FDF4EE;
             font-family: Inter, Arial, sans-serif;
@@ -78,11 +81,14 @@
 
         @media (max-width: 900px) {
             body {
-                background-color: #3A010D;
+                background-color: #2D020A;
                 background-image:
-                    radial-gradient(ellipse at 50% 20%, rgba(251, 222, 199, 0.16) 0%, transparent 52%),
-                    linear-gradient(125deg, transparent 26%, rgba(251, 222, 199, 0.06) 44%, transparent 62%),
-                    linear-gradient(155deg, #4B0212 0%, #3A010D 48%, #2D020A 100%);
+                    radial-gradient(ellipse at 20% 10%, rgba(142, 31, 56, 0.45) 0%, transparent 52%),
+                    radial-gradient(ellipse at 85% 45%, rgba(124, 20, 43, 0.4) 0%, transparent 55%),
+                    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 1000' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='mw1' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%238E1F38' stop-opacity='0.46'/%3E%3Cstop offset='100%25' stop-color='%233A010D' stop-opacity='0.06'/%3E%3C/linearGradient%3E%3ClinearGradient id='mw2' x1='100%25' y1='20%25' x2='0%25' y2='90%25'%3E%3Cstop offset='0%25' stop-color='%237C142B' stop-opacity='0.44'/%3E%3Cstop offset='100%25' stop-color='%232D020A' stop-opacity='0.04'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M-40,140 C140,40 280,250 480,150 C550,115 610,145 640,120 L640,0 L-40,0 Z' fill='url(%23mw1)'/%3E%3Cpath d='M-40,480 C150,360 340,590 640,420 L640,660 C410,560 190,740 -40,620 Z' fill='url(%23mw2)'/%3E%3Cpath d='M-40,860 C180,760 390,920 640,800 L640,1040 L-40,1040 Z' fill='url(%23mw1)'/%3E%3C/svg%3E"),
+                    linear-gradient(155deg, #3A010D 0%, #2D020A 52%, #3A010D 100%);
+                background-repeat: no-repeat;
+                background-size: cover, cover, 100% 100%, cover;
                 background-attachment: fixed;
             }
         }
