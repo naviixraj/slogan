@@ -1192,9 +1192,14 @@
                 color: #DC2626;
             }
 
-            html,
+            html {
+                overflow-x: clip !important;
+                max-width: 100vw !important;
+            }
+
             body {
-                overflow-x: hidden !important;
+                overflow-x: visible !important;
+                overflow-y: visible !important;
                 max-width: 100vw !important;
             }
 
@@ -1203,7 +1208,8 @@
                 width: 100% !important;
                 min-width: 0 !important;
                 max-width: 100vw !important;
-                overflow-x: hidden !important;
+                overflow-x: clip !important;
+                overflow-y: visible !important;
             }
 
             .topbar {
@@ -3693,10 +3699,13 @@
            ========================================================= */
         html,
         body {
-            scroll-behavior: smooth;
             -webkit-font-smoothing: antialiased;
             -moz-osx-font-smoothing: grayscale;
-            overscroll-behavior-y: contain;
+        }
+
+        .hero-carousel-track,
+        .exam-carousel-track {
+            touch-action: pan-x pan-y;
         }
 
         .hero-slide-card,
