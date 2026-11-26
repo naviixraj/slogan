@@ -967,6 +967,23 @@ async function handleUploadSetSubmit() {
     formData.append("title", title);
     formData.append("subject", subject || "All");
     formData.append("duration", duration || "180");
+
+    const releaseScheduleBtn = document.getElementById("releaseScheduleBtn");
+    const uploadReleaseAt = document.getElementById("uploadReleaseAt");
+    const isScheduled = releaseScheduleBtn && releaseScheduleBtn.classList.contains("active");
+    if (isScheduled) {
+        const rawDt = uploadReleaseAt ? uploadReleaseAt.value : "";
+        const parsedMs = Date.parse(rawDt);
+        if (!rawDt || Number.isNaN(parsedMs) || parsedMs <= Date.now()) {
+            alert("Please select a future date and time for the scheduled release timer.");
+            return;
+        }
+        formData.append("releaseMode", "scheduled");
+        formData.append("releaseAt", new Date(parsedMs).toISOString());
+    } else {
+        formData.append("releaseMode", "immediate");
+    }
+
     formData.append("file", setFileInput.files[0]);
 
     if (submitUploadButton) {
@@ -2111,6 +2128,29 @@ function initAdminMobileTabs() {
         closeStudyModalBtn.addEventListener("click", () => studyModal.classList.remove("open"));
         studyModal.addEventListener("click", (e) => {
             if (e.target === studyModal) studyModal.classList.remove("open");
+        });
+    }
+
+    const releaseNowBtn = document.getElementById("releaseNowBtn");
+    const releaseScheduleBtn = document.getElementById("releaseScheduleBtn");
+    const releaseDatetimeWrap = document.getElementById("releaseDatetimeWrap");
+    const uploadReleaseAt = document.getElementById("uploadReleaseAt");
+
+    if (releaseNowBtn && releaseScheduleBtn && releaseDatetimeWrap) {
+        releaseNowBtn.addEventListener("click", () => {
+            releaseNowBtn.classList.add("active");
+            releaseScheduleBtn.classList.remove("active");
+            releaseDatetimeWrap.classList.remove("show");
+        });
+        releaseScheduleBtn.addEventListener("click", () => {
+            releaseScheduleBtn.classList.add("active");
+            releaseNowBtn.classList.remove("active");
+            releaseDatetimeWrap.classList.add("show");
+            if (uploadReleaseAt && !uploadReleaseAt.value) {
+                const d = new Date(Date.now() + 60 * 60 * 1000);
+                const pad = n => String(n).padStart(2, "0");
+                uploadReleaseAt.value = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+            }
         });
     }
 

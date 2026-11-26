@@ -1573,10 +1573,25 @@ async function getNextUniqueSetId() {
     }
 }
 
+function resolveScheduledSetStatus(setRow) {
+    if (!setRow) return setRow;
+    const rawStatus = String(setRow.status || "available");
+    if (!rawStatus.startsWith("scheduled:")) {
+        return setRow;
+    }
+    const releaseAt = rawStatus.slice("scheduled:".length).trim();
+    const releaseMs = Date.parse(releaseAt);
+    if (!Number.isNaN(releaseMs) && Date.now() >= releaseMs) {
+        return { ...setRow, status: "available", releaseAt };
+    }
+    return { ...setRow, status: "coming", releaseAt };
+}
+
 // Get all Question Sets
 app.get("/api/admin/sets", requireAdmin, async (req, res) => {
     try {
-        const sets = await unifiedDb.listQuestionSets();
+        const rawSets = await unifiedDb.listQuestionSets();
+        const sets = rawSets.map(resolveScheduledSetStatus);
         return res.json({ success: true, sets });
     } catch (error) {
         console.error("Admin fetch sets error:", error);
@@ -1619,7 +1634,7 @@ app.get("/api/admin/sets/:id", requireAdmin, async (req, res) => {
 // Upload and parse file into a Question Set with single split questions
 app.post("/api/admin/sets/upload", requireAdmin, upload.single("file"), async (req, res) => {
     try {
-        const { title, subject, duration } = req.body;
+        const { title, subject, duration, releaseMode, releaseAt } = req.body;
         const file = req.file;
 
         if (!title || !title.trim()) {
@@ -1646,6 +1661,16 @@ app.post("/api/admin/sets/upload", requireAdmin, upload.single("file"), async (r
         const setDuration = parseInt(duration, 10) || 180;
         const setSubject = subject && subject.trim() ? subject.trim() : "General Paper";
 
+        let initialStatus = "available";
+        let scheduledIso = null;
+        if (releaseMode === "scheduled" && releaseAt) {
+            const parsedMs = Date.parse(releaseAt);
+            if (!Number.isNaN(parsedMs) && parsedMs > Date.now()) {
+                scheduledIso = new Date(parsedMs).toISOString();
+                initialStatus = `scheduled:${scheduledIso}`;
+            }
+        }
+
         await unifiedDb.createQuestionSet({
             id: setId,
             title: title.trim(),
@@ -1654,13 +1679,17 @@ app.post("/api/admin/sets/upload", requireAdmin, upload.single("file"), async (r
             fileType: ext,
             questionsCount: questions.length,
             duration: setDuration,
-            status: "available",
+            status: initialStatus,
             questionsJson: questions
         });
 
         return res.json({
             success: true,
-            message: `Question Set "${title.trim()}" uploaded successfully with ${questions.length} single split questions!`,
+            status: scheduledIso ? "coming" : "available",
+            releaseAt: scheduledIso,
+            message: scheduledIso
+                ? `Question Set "${title.trim()}" scheduled for release (${questions.length} questions)!`
+                : `Question Set "${title.trim()}" uploaded successfully with ${questions.length} single split questions!`,
             setId: setId,
             questionsCount: questions.length
         });
@@ -1999,7 +2028,8 @@ app.get("/api/student/tests", async (req, res) => {
     }
 
     try {
-        const allTests = await unifiedDb.listQuestionSets();
+        const rawTests = await unifiedDb.listQuestionSets();
+        const allTests = rawTests.map(resolveScheduledSetStatus);
         const candidate = req.session.candidate;
 
         // Admins see all tests

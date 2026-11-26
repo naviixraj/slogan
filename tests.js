@@ -79,6 +79,7 @@ async function loadStudentTests() {
                     id: t.id,
                     title: t.title,
                     status: t.status || "available",
+                    releaseAt: t.releaseAt || null,
                     subject: t.subject || "All",
                     questionsCount: t.questions_count,
                     duration: t.duration,
@@ -395,7 +396,17 @@ function renderTests() {
 
         const desc = document.createElement("p");
         desc.className = "upcoming-card-desc";
-        desc.textContent = "This examination will be available once its question bank is ready.";
+        if (test.releaseAt) {
+            const relDate = new Date(test.releaseAt);
+            const relLabel = Number.isNaN(relDate.getTime())
+                ? ""
+                : relDate.toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" });
+            desc.textContent = relLabel
+                ? `Scheduled release: ${relLabel}. Tap alert below to get notified when unlocked.`
+                : "This examination will unlock automatically at its scheduled release time.";
+        } else {
+            desc.textContent = "This examination will be available once its question bank is ready.";
+        }
 
         const statBoxes = document.createElement("div");
         statBoxes.className = "upcoming-stat-boxes";
@@ -2321,19 +2332,29 @@ function initNotificationsBell() {
         availableTests.forEach(test => {
             const qCount = test.questionsCount || test.questions_count || 150;
             const dur = test.duration || 180;
+            const isAlertedRelease = alertIds.includes(String(test.id));
             items.push({
-                tag: "Live",
-                title: `${test.title || "Mock Exam"} is Available`,
-                desc: `${test.subject || "General Paper"} · ${qCount} Questions · ${dur} mins. Ready to attempt now.`,
+                tag: isAlertedRelease ? "Unlocked" : "Live",
+                title: isAlertedRelease
+                    ? `${test.title || "Mock Exam"} is Now Published!`
+                    : `${test.title || "Mock Exam"} is Available`,
+                desc: isAlertedRelease
+                    ? `Your alerted exam just unlocked (${qCount} Questions · ${dur} mins). Ready to start now!`
+                    : `${test.subject || "General Paper"} · ${qCount} Questions · ${dur} mins. Ready to attempt now.`,
                 targetId: "availableExamsSection",
                 icon: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"/></svg>`
             });
         });
 
-        if (alertIds.length > 0) {
+        const pendingAlerts = alertIds.filter(idStr => {
+            const match = (typeof mockTests !== "undefined" ? mockTests : []).find(t => String(t.id) === idStr);
+            return !match || match.status !== "available";
+        });
+
+        if (pendingAlerts.length > 0) {
             items.push({
                 tag: "Alert On",
-                title: `${alertIds.length} Upcoming Exam ${alertIds.length === 1 ? "Reminder" : "Reminders"} Active`,
+                title: `${pendingAlerts.length} Upcoming Exam ${pendingAlerts.length === 1 ? "Reminder" : "Reminders"} Active`,
                 desc: "You will be notified here as soon as your alerted upcoming mock sets unlock.",
                 targetId: "upcomingExamsSection",
                 icon: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>`
@@ -2438,4 +2459,39 @@ initNotificationsBell();
 loadCandidate();
 loadStudentTests();
 loadLeaderboard();
+
+// Auto-unlock scheduled exams when their release timer expires & notify alerted students
+setInterval(() => {
+    if (!Array.isArray(mockTests) || mockTests.length === 0) return;
+    let changed = false;
+    let alertedUnlocked = false;
+    let alerts = [];
+    try {
+        alerts = JSON.parse(localStorage.getItem("slogonUpcomingAlerts") || "[]");
+    } catch {}
+
+    const nowMs = Date.now();
+    mockTests.forEach(t => {
+        if (t.status !== "available" && t.releaseAt) {
+            const relMs = Date.parse(t.releaseAt);
+            if (!Number.isNaN(relMs) && nowMs >= relMs) {
+                t.status = "available";
+                changed = true;
+                if (alerts.includes(String(t.id))) {
+                    alertedUnlocked = true;
+                }
+            }
+        }
+    });
+
+    if (changed) {
+        renderTests();
+        if (typeof performQuestionPaperSearch === "function") {
+            performQuestionPaperSearch();
+        }
+        if (alertedUnlocked) {
+            document.querySelectorAll(".hero-bell-dot").forEach(dot => dot.classList.remove("is-hidden"));
+        }
+    }
+}, 15000);
 

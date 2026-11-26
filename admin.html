@@ -2630,9 +2630,41 @@
             .admin-mobile-header {
                 display: flex;
                 align-items: center;
-                justify-content: flex-start;
+                justify-content: space-between;
                 gap: 12px;
                 padding: 2px 4px 14px;
+            }
+
+            .admin-mobile-brand-left {
+                display: flex;
+                align-items: center;
+                gap: 12px;
+                min-width: 0;
+            }
+
+            .admin-guide-info-btn {
+                width: 34px;
+                height: 34px;
+                border-radius: 50%;
+                border: 1.5px solid rgba(232, 192, 136, 0.85);
+                background: rgba(255, 248, 240, 0.14);
+                color: #FFF7EB;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                text-decoration: none;
+                font-family: "Playfair Display", Georgia, serif;
+                font-size: 16px;
+                font-weight: 800;
+                font-style: italic;
+                flex-shrink: 0;
+                box-shadow: 0 0 10px rgba(232, 192, 136, 0.25);
+                transition: transform 0.18s ease, background 0.18s ease;
+            }
+
+            .admin-guide-info-btn:hover {
+                transform: scale(1.06);
+                background: rgba(232, 192, 136, 0.25);
             }
 
             .hero-brand-logo {
@@ -2772,32 +2804,247 @@
             }
 
             .test-card {
+                position: relative;
+                overflow: hidden;
                 background: linear-gradient(165deg, #FFFFFF 0%, #FCF9F5 52%, #F8F0E8 100%) !important;
                 border: 1.5px solid #E2B887 !important;
-                border-radius: 22px !important;
-                box-shadow: 0 10px 26px rgba(58, 1, 13, 0.08), inset 0 1px 0 #FFFFFF !important;
+                border-radius: 24px !important;
+                padding: 14px 18px 18px !important;
+                box-shadow: 0 10px 26px rgba(58, 1, 13, 0.1), inset 0 1px 0 #FFFFFF !important;
+            }
+
+            .test-card::before {
+                content: "";
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 190px;
+                height: 50px;
+                pointer-events: none;
+                z-index: 1;
+                background-repeat: no-repeat;
+                background-size: 100% 100%;
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 190 50' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='ag1' x1='0%25' y1='100%25' x2='100%25' y2='0%25'%3E%3Cstop offset='0%25' stop-color='%23A97434'/%3E%3Cstop offset='45%25' stop-color='%23FFF0CE'/%3E%3Cstop offset='100%25' stop-color='%23D8A35D'/%3E%3C/linearGradient%3E%3ClinearGradient id='ab1' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23841F38'/%3E%3Cstop offset='100%25' stop-color='%235B1024'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M0,0 L180,0 C148,2 138,36 94,36 L30,36 C12,36 4,42 0,48 Z' fill='url(%23ab1)'/%3E%3Cpath d='M0,36 C4,15 18,4 48,0 L34,0 C10,2 3,12 0,27 Z' fill='url(%23ag1)' opacity='0.92'/%3E%3Cpath d='M0,46 C6,36 16,36 30,36 L94,36 C138,36 148,2 180,0' fill='none' stroke='url(%23ag1)' stroke-width='2.2'/%3E%3C/svg%3E");
+            }
+
+            .test-card::after {
+                content: "";
+                position: absolute;
+                bottom: 0;
+                right: 0;
+                width: 108px;
+                height: 58px;
+                pointer-events: none;
+                z-index: 1;
+                background-repeat: no-repeat;
+                background-size: 100% 100%;
+                background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 108 58' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='ag2' x1='0%25' y1='100%25' x2='100%25' y2='0%25'%3E%3Cstop offset='0%25' stop-color='%23E8C088'/%3E%3Cstop offset='50%25' stop-color='%23FFF2D4'/%3E%3Cstop offset='100%25' stop-color='%23B6803E'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M108,10 C92,38 64,52 16,58 L108,58 Z' fill='%23631227'/%3E%3Cpath d='M16,58 C64,50 92,36 108,6 L108,14 C92,41 64,54 24,58 Z' fill='url(%23ag2)'/%3E%3C/svg%3E");
             }
 
             .test-card .accent {
-                background: linear-gradient(180deg, #841F38 0%, #5B1024 100%) !important;
+                display: none !important;
+            }
+
+            .test-card .card-body {
+                position: relative;
+                z-index: 2;
+                padding: 0 !important;
+            }
+
+            .test-card .card-top {
+                justify-content: flex-end !important;
+                min-height: 28px;
+                margin-bottom: 10px;
             }
 
             .test-card .test-code {
-                background: linear-gradient(135deg, #7C1B34 0%, #5B1024 100%) !important;
+                position: absolute;
+                top: -14px;
+                left: -18px;
+                background: transparent !important;
                 color: #FDF4EE !important;
-                border-radius: 999px !important;
+                font-size: 10.5px !important;
+                font-weight: 800 !important;
+                padding: 9px 18px 10px 24px !important;
+                border: none !important;
+                letter-spacing: 0.65px;
+                text-shadow: 0 1px 3px rgba(24, 0, 5, 0.45);
             }
 
             .test-card h2 {
                 font-family: "Playfair Display", Georgia, serif;
                 color: #3A010D !important;
+                font-size: 18px !important;
+                margin-bottom: 6px !important;
             }
 
-            .test-card .start:not(:disabled) {
+            .test-card .meta {
+                display: grid !important;
+                grid-template-columns: repeat(3, 1fr) !important;
+                gap: 8px !important;
+                border-top: none !important;
+                padding-top: 0 !important;
+                margin-top: 10px !important;
+            }
+
+            .test-card .meta span {
+                background: #F9EBDD;
+                border: 1px solid rgba(226, 184, 135, 0.45);
+                border-radius: 12px;
+                padding: 8px 6px;
+                text-align: center;
+                color: #3A010D !important;
+                font-size: 11px !important;
+                font-weight: 700 !important;
+            }
+
+            .test-card .start {
                 background: linear-gradient(105deg, #7C1B34 0%, #5F1024 60%, #4E0C1D 100%) !important;
                 border: 1px solid rgba(232, 192, 136, 0.7) !important;
                 border-radius: 999px !important;
                 color: #FDF4EE !important;
+                font-weight: 800 !important;
+                opacity: 1 !important;
+            }
+
+            /* INSPECT QUESTION VIEW (MATCHING STUDENT EXAM BANNER STYLE) */
+            .inspector-topbar {
+                background: linear-gradient(135deg, #FFFFFF 0%, #FAF6F1 55%, #F5EDE4 100%) !important;
+                border: 1.25px solid rgba(226, 184, 135, 0.7) !important;
+                border-radius: 18px !important;
+                padding: 10px 12px !important;
+                box-shadow: 0 6px 18px rgba(58, 1, 13, 0.06) !important;
+            }
+
+            .btn-back-sets,
+            .btn-edit-set-details {
+                background: linear-gradient(135deg, #7C1B34 0%, #5B1024 100%) !important;
+                color: #FDF4EE !important;
+                border: 1px solid rgba(232, 192, 136, 0.65) !important;
+                border-radius: 999px !important;
+            }
+
+            .q-card {
+                background: linear-gradient(165deg, #FFFFFF 0%, #FCF9F5 52%, #F8F0E8 100%) !important;
+                border: 1.5px solid #E2B887 !important;
+                border-radius: 22px !important;
+                box-shadow: 0 10px 26px rgba(58, 1, 13, 0.08) !important;
+            }
+
+            .q-num-badge {
+                background: linear-gradient(135deg, #7C1B34 0%, #5B1024 100%) !important;
+                color: #FDF4EE !important;
+                border-radius: 999px !important;
+            }
+
+            .option-box {
+                background: #FAF2EA !important;
+                border: 1px solid rgba(226, 184, 135, 0.55) !important;
+                border-radius: 14px !important;
+            }
+
+            .option-box.is-correct {
+                background: #ECFDF5 !important;
+                border-color: #16A34A !important;
+            }
+
+            /* UPLOAD / ADD QUESTION MODAL PROFESSIONAL THEME */
+            #uploadModal .form-modal-box {
+                background: linear-gradient(165deg, #FFFFFF 0%, #FCF9F5 52%, #F8F0E8 100%) !important;
+                border: 1.5px solid #E2B887 !important;
+                border-radius: 26px !important;
+                box-shadow: 0 20px 48px rgba(58, 1, 13, 0.28) !important;
+            }
+
+            .upload-modal-top-actions {
+                position: absolute;
+                top: 16px;
+                right: 16px;
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                z-index: 5;
+            }
+
+            .upload-modal-top-actions .modal-close-icon-btn {
+                position: static;
+            }
+
+            .upload-guide-pill-btn {
+                width: 32px;
+                height: 32px;
+                border-radius: 50%;
+                border: 1.5px solid #D4A767;
+                background: #F9EBDD;
+                color: #5B1024;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                text-decoration: none;
+                font-family: "Playfair Display", Georgia, serif;
+                font-size: 16px;
+                font-weight: 800;
+                font-style: italic;
+                transition: transform 0.16s ease, background 0.16s ease;
+            }
+
+            .upload-guide-pill-btn:hover {
+                transform: scale(1.06);
+                background: #F3D9B8;
+            }
+
+            .release-timer-card {
+                background: #F9EBDD;
+                border: 1px solid rgba(226, 184, 135, 0.65);
+                border-radius: 16px;
+                padding: 12px 14px;
+                margin-bottom: 14px;
+            }
+
+            .release-mode-row {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+                margin-top: 8px;
+            }
+
+            .release-mode-btn {
+                border: 1px solid rgba(218, 175, 122, 0.7);
+                background: #FFFFFF;
+                color: #5B1024;
+                border-radius: 12px;
+                padding: 8px 10px;
+                font-size: 12px;
+                font-weight: 700;
+                cursor: pointer;
+                transition: all 0.18s ease;
+            }
+
+            .release-mode-btn.active {
+                background: linear-gradient(135deg, #7C1B34 0%, #5B1024 100%);
+                color: #FDF4EE;
+                border-color: #5B1024;
+                box-shadow: 0 4px 12px rgba(88, 14, 34, 0.22);
+            }
+
+            .release-datetime-wrap {
+                margin-top: 10px;
+                display: none;
+            }
+
+            .release-datetime-wrap.show {
+                display: block;
+            }
+
+            .release-datetime-wrap input {
+                width: 100%;
+                padding: 9px 12px;
+                border-radius: 10px;
+                border: 1.25px solid rgba(218, 175, 122, 0.75);
+                background: #FFFFFF;
+                color: #3A010D;
+                font-size: 13px;
+                font-weight: 600;
             }
 
             /* Mobile Notes, Ranks & Profile Shared Luxury Styles */
@@ -3343,11 +3590,14 @@
             =============================================== -->
             <section id="examSection">
 
-                <!-- MOBILE BRAND HEADER (NO NOTIFICATION BUTTON) -->
+                <!-- MOBILE BRAND HEADER (WITH AUTHORING GUIDE INFO ICON, NO NOTIFICATION BUTTON) -->
                 <div class="admin-mobile-header">
-                    <img src="Logoicon.png" alt="SLOGON ACADEMY Logo" class="hero-brand-logo">
-                    <span class="hero-brand-divider" aria-hidden="true"></span>
-                    <span class="hero-brand-name">SLOGON ACADEMY</span>
+                    <div class="admin-mobile-brand-left">
+                        <img src="Logoicon.png" alt="SLOGON ACADEMY Logo" class="hero-brand-logo">
+                        <span class="hero-brand-divider" aria-hidden="true"></span>
+                        <span class="hero-brand-name">SLOGON ACADEMY</span>
+                    </div>
+                    <a class="admin-guide-info-btn" href="QUESTION_AUTHORING_BLUEPRINT.pdf" target="_blank" title="Authoring Guide" aria-label="Open Authoring Guide">i</a>
                 </div>
 
                 <!-- MOBILE ADMIN OVERVIEW HERO CARD -->
@@ -3780,10 +4030,13 @@
     <!-- MODAL: ADD / UPLOAD QUESTION SET -->
     <div class="modal" id="uploadModal" aria-hidden="true">
         <div class="form-modal-box">
-            <button class="modal-close-icon-btn" id="closeUploadModalButton" type="button" aria-label="Close dialog">✕</button>
-            <div class="form-modal-header">
-                <h3>Add Question Set</h3>
-                <p style="font-size: 11.5px; color: var(--muted); margin-top: 3px;">Upload an exam question bank file (Word, PDF, Excel, CSV, TXT, JSON).</p>
+            <div class="upload-modal-top-actions">
+                <a class="upload-guide-pill-btn" href="QUESTION_AUTHORING_BLUEPRINT.pdf" target="_blank" title="Open Authoring Guide" aria-label="Open Authoring Guide">i</a>
+                <button class="modal-close-icon-btn" id="closeUploadModalButton" type="button" aria-label="Close dialog">✕</button>
+            </div>
+            <div class="form-modal-header" style="padding-right: 72px;">
+                <h3 style="font-family: 'Playfair Display', Georgia, serif; color: #3A010D; font-size: 20px;">Add Question Set</h3>
+                <p style="font-size: 11.5px; color: #6E4A4E; margin-top: 3px;">Upload an exam bank file and choose immediate publish or scheduled release timer.</p>
             </div>
 
             <div class="form-field">
@@ -3803,6 +4056,19 @@
                 <div class="form-field">
                     <label for="uploadDuration">Time Duration (Minutes)</label>
                     <input type="number" id="uploadDuration" placeholder="e.g. 60" value="60" min="5" max="360">
+                </div>
+            </div>
+
+            <!-- RELEASE SCHEDULE TIMER -->
+            <div class="release-timer-card">
+                <label style="display:block; font-size:12px; font-weight:800; color:#3A010D; text-transform:uppercase; letter-spacing:0.5px;">When to Release</label>
+                <div class="release-mode-row">
+                    <button type="button" class="release-mode-btn active" id="releaseNowBtn" data-release-mode="immediate">Publish Now</button>
+                    <button type="button" class="release-mode-btn" id="releaseScheduleBtn" data-release-mode="scheduled">Schedule Timer</button>
+                </div>
+                <div class="release-datetime-wrap" id="releaseDatetimeWrap">
+                    <label for="uploadReleaseAt" style="display:block; font-size:11.5px; font-weight:600; color:#6E4A4E; margin-bottom:5px;">Select Publish Date &amp; Time</label>
+                    <input type="datetime-local" id="uploadReleaseAt">
                 </div>
             </div>
 
