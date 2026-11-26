@@ -137,16 +137,47 @@
             box-shadow: 0 4px 12px rgba(24, 0, 5, 0.28) !important;
         }
 
+        .result-header-left,
+        .result-brand {
+            display: flex !important;
+            align-items: center !important;
+            gap: 12px !important;
+        }
+
+        .hero-brand-divider {
+            width: 1.5px;
+            height: 30px;
+            background: linear-gradient(180deg, transparent 0%, #E8C088 50%, transparent 100%);
+            flex-shrink: 0;
+        }
+
         .result-academy-name {
+            display: inline-block !important;
+            position: relative !important;
+            white-space: nowrap !important;
             font-family: "Playfair Display", Georgia, serif !important;
-            font-size: clamp(16px, 4vw, 19px) !important;
+            font-size: clamp(16px, 4.4vw, 19px) !important;
             font-weight: 800 !important;
-            letter-spacing: 2px !important;
+            letter-spacing: 2.2px !important;
+            line-height: 1.15 !important;
+            padding-bottom: 4px !important;
             background: linear-gradient(135deg, #FDF4EE 0%, #FBDEC7 48%, #E8C088 100%);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent !important;
             -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 6px rgba(24, 0, 5, 0.6)) drop-shadow(0 0 12px rgba(232, 192, 136, 0.24));
+        }
+
+        .result-academy-name::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 18%;
+            bottom: 0;
+            height: 1.5px;
+            background: linear-gradient(90deg, #E8C088 0%, rgba(251, 222, 199, 0.45) 65%, transparent 100%);
+            border-radius: 2px;
         }
 
         .result-tagline {
@@ -497,6 +528,8 @@
                 <div class="result-brand">
 
                     <img src="Logoicon.png" alt="SLOGON ACADEMY Logo" class="result-logo">
+
+                    <span class="hero-brand-divider" aria-hidden="true"></span>
 
                     <div class="result-brand-text">
 
