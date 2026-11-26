@@ -1029,30 +1029,46 @@ function renderStudyNotesForUnit(paperKey, unitNum) {
         filteredUploaded.forEach(note => {
             const card = document.createElement("article");
             card.className = "notes-list-card";
+            card.setAttribute("role", "button");
+            card.setAttribute("tabindex", "0");
+            card.setAttribute("title", `Tap to open ${note.title}`);
+            card.style.cssText = "position: relative; overflow: hidden; cursor: pointer; min-height: 156px; justify-content: space-between;";
+
             const extLabel = String(note.fileType || "FILE").toUpperCase();
             const kb = Math.max(1, Math.round((Number(note.fileSize) || 0) / 1024));
             const sizeLabel = kb >= 1024 ? `${(kb / 1024).toFixed(1)} MB` : `${kb} KB`;
             const noteUnitLabel = `${String(note.paper || "").toLowerCase() === "paper 2" ? "அலகு" : "Unit"} ${note.unit}`;
 
-            const coverHtml = note.hasCustomCover && note.coverUrl
-                ? `<div style="width:100%; border-radius:16px; overflow:hidden; border:1.25px solid rgba(226,184,135,0.65); margin-bottom:4px;"><img src="${note.coverUrl}" alt="${note.title}" style="width:100%; height:136px; object-fit:cover; display:block;"></div>`
-                : `<div style="width:100%; height:62px; border-radius:14px; background:linear-gradient(135deg,#821D36 0%,#5B1024 100%); border:1px solid rgba(232,192,136,0.6); display:flex; align-items:center; justify-content:space-between; padding:0 16px; color:#FDF4EE; margin-bottom:4px;"><span style="font-size:10.5px; font-weight:800; letter-spacing:0.8px; color:#E8C088;">SLOGON ACADEMY &bull; NOTES</span><span style="font-size:11px; font-weight:800; background:rgba(255,255,255,0.14); padding:3px 9px; border-radius:999px;">${extLabel}</span></div>`;
+            const bgLayerHtml = note.hasCustomCover && note.coverUrl
+                ? `<img src="${note.coverUrl}" alt="" aria-hidden="true" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0.32; pointer-events:none; z-index:0;">
+                   <div aria-hidden="true" style="position:absolute; inset:0; background:linear-gradient(155deg, rgba(255,252,248,0.68) 0%, rgba(250,242,232,0.56) 100%); pointer-events:none; z-index:0;"></div>`
+                : `<div aria-hidden="true" style="position:absolute; inset:0; background:linear-gradient(145deg, rgba(130,29,54,0.12) 0%, rgba(232,192,136,0.22) 100%); pointer-events:none; z-index:0;"></div>`;
 
             card.innerHTML = `
-                ${coverHtml}
-                <div class="notes-list-top">
+                ${bgLayerHtml}
+                <div class="notes-list-top" style="position:relative; z-index:1;">
                     <div class="notes-list-badges">
                         <span class="notes-list-code">${note.paper.toUpperCase()}</span>
                         <span class="notes-list-format">${extLabel}</span>
                     </div>
                     <span class="notes-list-unit">${noteUnitLabel}</span>
                 </div>
-                <h3 class="notes-list-title">${note.title}</h3>
-                <p class="notes-list-desc">${note.fileName} &bull; ${sizeLabel}</p>
-                <a href="note-viewer.html?id=${encodeURIComponent(note.id)}" target="_blank" rel="noopener" class="notes-list-cta" style="text-decoration:none; margin-top:4px;">
-                    <span>Open Note</span><span>&rarr;</span>
-                </a>
+                <div style="position:relative; z-index:1; margin-top:auto;">
+                    <h3 class="notes-list-title" style="margin-bottom:4px;">${note.title}</h3>
+                    <p class="notes-list-desc" style="margin:0; font-weight:600;">${note.fileName} &bull; ${sizeLabel}</p>
+                </div>
             `;
+
+            const openProtectedNote = () => {
+                window.open(`note-viewer.html?id=${encodeURIComponent(note.id)}`, "_blank", "noopener");
+            };
+            card.addEventListener("click", openProtectedNote);
+            card.addEventListener("keydown", (e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    openProtectedNote();
+                }
+            });
             studyNotesList.appendChild(card);
         });
     }
