@@ -950,40 +950,34 @@ function openStudyNotesPage() {
     window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-let cachedPaperNotes = [];
-let currentSelectedPaper = "Paper 1";
+let allPublishedNotesCache = [];
+let notesPrefetched = false;
 
-async function renderUnitSelectorForPaper(paperKey) {
-    if (!studyUnitOptions || !studyPaperSelectorView || !studyUnitSelectorView) return;
-    currentSelectedPaper = paperKey;
-
-    const tagEl = document.getElementById("unitSelectorPaperTag");
-    const headingEl = document.getElementById("unitSelectorHeading");
-    if (tagEl) tagEl.textContent = paperKey.toUpperCase();
-    if (headingEl) headingEl.textContent = `${paperKey} — Select Unit`;
-
-    studyPaperSelectorView.style.display = "none";
-    if (studyNotesListView) studyNotesListView.style.display = "none";
-    studyUnitSelectorView.style.display = "block";
-    studyUnitOptions.innerHTML = `<div style="background:rgba(255,255,255,0.88); border:1.25px solid #E2B887; border-radius:18px; padding:24px; text-align:center; color:#6E4A4E; font-size:13px; font-weight:700;">Loading units for ${paperKey}...</div>`;
-    window.scrollTo({ top: 0, behavior: "smooth" });
-
-    cachedPaperNotes = [];
+async function prefetchAllNotes(force = false) {
+    if (notesPrefetched && !force) return allPublishedNotesCache;
     try {
-        const res = await fetch(`/api/notes?paper=${encodeURIComponent(paperKey)}`);
+        const res = await fetch("/api/notes");
         const data = await res.json();
         if (data && data.success && Array.isArray(data.notes)) {
-            cachedPaperNotes = data.notes;
+            allPublishedNotesCache = data.notes;
+            notesPrefetched = true;
         }
     } catch (err) {
-        console.warn("Could not fetch uploaded notes:", err);
+        console.warn("Could not prefetch notes:", err);
     }
+    return allPublishedNotesCache;
+}
 
+// Prefetch in background so opening Paper -> Unit -> Notes is instant
+prefetchAllNotes();
+
+function renderUnitCardsDom(paperKey, paperNotes) {
+    if (!studyUnitOptions) return;
     studyUnitOptions.innerHTML = "";
     const isTamilPaper = String(paperKey).toLowerCase() === "paper 2";
     const unitPrefix = isTamilPaper ? "அலகு" : "Unit";
     for (let u = 1; u <= 10; u++) {
-        const unitNotes = cachedPaperNotes.filter(n => Number(n.unit) === u);
+        const unitNotes = paperNotes.filter(n => Number(n.unit) === u);
         const countText = `${unitNotes.length} ${unitNotes.length === 1 ? "NOTE" : "NOTES"}`;
         const unitLabel = `${unitPrefix} ${u}`;
         const unitBtn = document.createElement("button");
@@ -1008,6 +1002,34 @@ async function renderUnitSelectorForPaper(paperKey) {
         unitBtn.addEventListener("click", () => renderStudyNotesForUnit(paperKey, u));
         studyUnitOptions.appendChild(unitBtn);
     }
+}
+
+function renderUnitSelectorForPaper(paperKey) {
+    if (!studyUnitOptions || !studyPaperSelectorView || !studyUnitSelectorView) return;
+    currentSelectedPaper = paperKey;
+
+    const tagEl = document.getElementById("unitSelectorPaperTag");
+    const headingEl = document.getElementById("unitSelectorHeading");
+    if (tagEl) tagEl.textContent = paperKey.toUpperCase();
+    if (headingEl) headingEl.textContent = `${paperKey} — Select Unit`;
+
+    // Render all 10 unit cards immediately from cache (zero loading delay)
+    cachedPaperNotes = allPublishedNotesCache.filter(n => String(n.paper || "").toLowerCase() === String(paperKey).toLowerCase());
+    renderUnitCardsDom(paperKey, cachedPaperNotes);
+
+    studyPaperSelectorView.style.display = "none";
+    if (studyNotesListView) studyNotesListView.style.display = "none";
+    studyUnitSelectorView.style.display = "block";
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    // Silently refresh in background in case new notes were just published
+    prefetchAllNotes(true).then(() => {
+        const fresh = allPublishedNotesCache.filter(n => String(n.paper || "").toLowerCase() === String(paperKey).toLowerCase());
+        cachedPaperNotes = fresh;
+        if (studyUnitSelectorView.style.display === "block" && currentSelectedPaper === paperKey) {
+            renderUnitCardsDom(paperKey, fresh);
+        }
+    });
 }
 
 function renderStudyNotesForUnit(paperKey, unitNum) {
@@ -1059,14 +1081,16 @@ function renderStudyNotesForUnit(paperKey, unitNum) {
                 </div>
             `;
 
-            const openProtectedNote = () => {
-                window.open(`note-viewer.html?id=${encodeURIComponent(note.id)}`, "_blank", "noopener");
+            const openRawFile = () => {
+                const isPdf = String(note.fileType || "").toLowerCase() === "pdf";
+                const targetUrl = isPdf ? `${note.downloadUrl}#toolbar=0&navpanes=0` : note.downloadUrl;
+                window.open(targetUrl, "_blank", "noopener");
             };
-            card.addEventListener("click", openProtectedNote);
+            card.addEventListener("click", openRawFile);
             card.addEventListener("keydown", (e) => {
                 if (e.key === "Enter" || e.key === " ") {
                     e.preventDefault();
-                    openProtectedNote();
+                    openRawFile();
                 }
             });
             studyNotesList.appendChild(card);

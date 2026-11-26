@@ -1740,6 +1740,24 @@ function formatStudyNoteMeta(row) {
     };
 }
 
+let cachedNotesMeta = null;
+let cachedNotesMetaAt = 0;
+
+async function getCachedNotesMeta() {
+    if (cachedNotesMeta && Date.now() - cachedNotesMetaAt < 60000) {
+        return cachedNotesMeta;
+    }
+    const rows = await unifiedDb.listStudyNotes();
+    cachedNotesMeta = rows.map(formatStudyNoteMeta);
+    cachedNotesMetaAt = Date.now();
+    return cachedNotesMeta;
+}
+
+function invalidateNotesMetaCache() {
+    cachedNotesMeta = null;
+    cachedNotesMetaAt = 0;
+}
+
 app.post(
     "/api/admin/notes/upload",
     requireAdmin,
@@ -1802,6 +1820,7 @@ app.post(
                 status: scheduledIso ? `note:scheduled:${scheduledIso}` : "note:published",
                 notePayload
             });
+            invalidateNotesMetaCache();
 
             return res.json({
                 success: true,
@@ -1836,6 +1855,7 @@ app.delete("/api/admin/notes/:id", requireAdmin, async (req, res) => {
         if (!deleted) {
             return res.status(404).json({ success: false, message: "Note not found." });
         }
+        invalidateNotesMetaCache();
         return res.json({ success: true, message: "Study note deleted." });
     } catch (error) {
         console.error("Delete study note error:", error);
@@ -1845,12 +1865,21 @@ app.delete("/api/admin/notes/:id", requireAdmin, async (req, res) => {
 
 app.get("/api/notes", async (req, res) => {
     try {
-        const rows = await unifiedDb.listStudyNotes();
+        const allMeta = await getCachedNotesMeta();
         const paperFilter = req.query.paper ? String(req.query.paper).trim().toLowerCase() : "";
         const unitFilter = req.query.unit ? parseInt(req.query.unit, 10) : 0;
 
-        const notes = rows
-            .map(formatStudyNoteMeta)
+        const nowMs = Date.now();
+        const notes = allMeta
+            .map(n => {
+                if (n.releaseAt) {
+                    const ms = Date.parse(n.releaseAt);
+                    if (!Number.isNaN(ms) && ms <= nowMs) {
+                        return { ...n, status: "published" };
+                    }
+                }
+                return n;
+            })
             .filter(n => n.status === "published")
             .filter(n => !paperFilter || n.paper.toLowerCase() === paperFilter)
             .filter(n => !unitFilter || n.unit === unitFilter);
