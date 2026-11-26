@@ -1603,14 +1603,12 @@
                HUMAN-CRAFTED SEARCH SECTION (EXACT SKELETON WITH OUR CSS)
                ========================================================= */
             .search-hero-card {
-                background: linear-gradient(155deg, rgba(87, 2, 21, 0.92) 0%, rgba(58, 1, 13, 0.96) 100%);
+                background: linear-gradient(155deg, #821D36 0%, #631227 58%, #4F0C1E 100%);
                 border-radius: 24px;
                 padding: 22px 18px 18px;
-                box-shadow: 0 0 20px rgba(232, 192, 136, 0.22), 0 14px 32px rgba(24, 0, 5, 0.45), inset 0 1px 0 rgba(251, 222, 199, 0.16);
-                border: 1.25px solid rgba(232, 192, 136, 0.72);
+                box-shadow: 0 0 20px rgba(232, 192, 136, 0.24), 0 14px 32px rgba(58, 1, 13, 0.28), inset 0 1px 0 rgba(251, 222, 199, 0.16);
+                border: 1.5px solid #E8C088;
                 margin-bottom: 14px;
-                backdrop-filter: blur(10px);
-                -webkit-backdrop-filter: blur(10px);
             }
 
             .search-hero-tag {
@@ -1886,21 +1884,29 @@
                 cursor: not-allowed;
             }
 
+            .paper-search-results .avail-exam-card,
+            .paper-search-results .upcoming-exam-card {
+                flex: none;
+                width: 100%;
+                box-sizing: border-box;
+            }
+
             .paper-search-empty {
                 text-align: center;
                 padding: 26px 18px;
-                background: #FFFFFF;
-                border: 1px solid #E2E8F0;
-                border-radius: 14px;
-                color: #475569;
+                background: linear-gradient(165deg, #FFFFFF 0%, #FAF6F1 100%);
+                border: 1.5px solid #E2B887;
+                border-radius: 20px;
+                color: #5C3A3E;
                 font-size: 14px;
+                box-shadow: 0 8px 22px rgba(58, 1, 13, 0.06);
             }
 
             .paper-search-empty strong {
                 display: block;
-                font-size: 14.5px;
-                font-weight: 600;
-                color: #475569;
+                font-size: 15px;
+                font-weight: 800;
+                color: #3A010D;
             }
 
             /* =========================================================
@@ -4206,8 +4212,8 @@
             width: 34px;
             height: 34px;
             border-radius: 50%;
-            background: rgba(45, 2, 10, 0.86);
-            border: 1.5px solid rgba(251, 222, 199, 0.55);
+            background: rgba(91, 16, 36, 0.88);
+            border: 1.5px solid rgba(232, 192, 136, 0.72);
             color: #FDF4EE;
             display: inline-flex;
             align-items: center;

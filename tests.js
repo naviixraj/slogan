@@ -477,6 +477,11 @@ function renderTests() {
         return card;
     }
 
+    window._slogonCardBuilders = { buildAvailableCard, buildUpcomingCard };
+        card.append(top, title, desc, statBoxes, footer);
+        return card;
+    }
+
     // Render carousels and wire navigation controls
     function setupCarousel(trackEl, items, builderFn, dotsEl, prevBtn, nextBtn, controlsEl) {
         if (!trackEl) return;
@@ -1504,8 +1509,17 @@ function performQuestionPaperSearch() {
         return;
     }
 
+    let upcomingIdx = 0;
     matches.forEach(test => {
         const isAvailable = test.status === "available";
+        const builders = window._slogonCardBuilders;
+        if (builders) {
+            const card = isAvailable
+                ? builders.buildAvailableCard(test)
+                : builders.buildUpcomingCard(test, upcomingIdx++);
+            paperSearchResults.appendChild(card);
+            return;
+        }
         const testNum = String(test.id || "01").replace(/\D/g, "");
         const testCode = `TEST ${testNum.padStart(2, "0")}`;
         const qCount = test.questionsCount || test.questions_count || 150;
