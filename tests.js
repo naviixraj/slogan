@@ -2550,7 +2550,7 @@ function initNotificationsBell() {
             metaEl.textContent = `${remaining} active ${remaining === 1 ? "notification" : "notifications"}`;
         }
         if (remaining === 0) {
-            listEl.innerHTML = `<div style="padding:26px 14px; text-align:center; color:rgba(251,222,199,0.75); font-size:13px; font-weight:600; border:1px dashed rgba(232,192,136,0.3); border-radius:16px;">You're all caught up.</div>`;
+            listEl.innerHTML = `<p style="padding:20px 10px; margin:0; text-align:center; color:rgba(251,222,199,0.78); font-size:13px; font-weight:600;">You're all caught up.</p>`;
         }
     }
 
@@ -2560,7 +2560,7 @@ function initNotificationsBell() {
             metaEl.textContent = `${items.length} active ${items.length === 1 ? "notification" : "notifications"}`;
         }
         if (items.length === 0) {
-            listEl.innerHTML = `<div style="padding:26px 14px; text-align:center; color:rgba(251,222,199,0.75); font-size:13px; font-weight:600; border:1px dashed rgba(232,192,136,0.3); border-radius:16px;">You're all caught up.</div>`;
+            listEl.innerHTML = `<p style="padding:20px 10px; margin:0; text-align:center; color:rgba(251,222,199,0.78); font-size:13px; font-weight:600;">You're all caught up.</p>`;
             return;
         }
         listEl.innerHTML = items.map(item => `
