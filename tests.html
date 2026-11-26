@@ -3508,12 +3508,13 @@
             font-weight: 800;
             letter-spacing: 1.5px;
             text-transform: uppercase;
-            color: #F4CE95;
-            background: rgba(255, 248, 240, 0.08);
-            border: 1px solid rgba(232, 192, 136, 0.35);
+            color: #FFE6BD;
+            background: rgba(34, 2, 10, 0.54);
+            border: 1px solid rgba(232, 192, 136, 0.55);
             padding: 4px 11px;
             border-radius: 999px;
             margin-bottom: 10px;
+            text-shadow: 0 1px 3px rgba(18, 0, 4, 0.5);
         }
 
         .hero-slide-card:not(.is-active) .hero-slide-eyebrow {
@@ -3570,23 +3571,28 @@
             letter-spacing: -0.2px;
             margin: 0 0 5px;
             line-height: 1.12;
-            color: #FDF4EE;
+            color: #FFFFFF;
+            text-shadow: 0 2px 8px rgba(20, 0, 5, 0.58);
         }
 
         .hero-slide-card:not(.is-active) .hero-slide-title {
             color: #3A010D;
+            text-shadow: none;
         }
 
         .hero-slide-desc {
-            font-size: 12.2px;
+            font-size: 12.4px;
+            font-weight: 500;
             line-height: 1.45;
             margin: 0;
-            color: rgba(251, 222, 199, 0.88);
-            opacity: 0.96;
+            color: #FFF6EE;
+            opacity: 1;
+            text-shadow: 0 1px 6px rgba(20, 0, 5, 0.68);
         }
 
         .hero-slide-card:not(.is-active) .hero-slide-desc {
             color: #5C3A3E;
+            text-shadow: none;
         }
 
         .hero-slide-stats {
@@ -3614,8 +3620,10 @@
             flex-direction: column;
             align-items: center;
             border-radius: 14px;
-            background: rgba(255, 248, 240, 0.1);
-            border: 1px solid rgba(232, 192, 136, 0.32);
+            background: rgba(38, 3, 12, 0.58);
+            backdrop-filter: blur(6px);
+            -webkit-backdrop-filter: blur(6px);
+            border: 1px solid rgba(232, 192, 136, 0.45);
         }
 
         .hero-slide-card:not(.is-active) .hero-slide-stat {
@@ -3644,19 +3652,21 @@
             font-size: 21px;
             font-weight: 800;
             line-height: 1.1;
-            color: #FDF4EE;
+            color: #FFFFFF;
+            text-shadow: 0 1px 4px rgba(18, 0, 4, 0.45);
             font-family: Inter, system-ui, sans-serif;
         }
 
         .hero-slide-card:not(.is-active) .hero-slide-stat-num {
             color: #3A010D;
+            text-shadow: none;
         }
 
         .hero-slide-stat-lbl {
             display: block;
             font-size: 10.5px;
-            font-weight: 600;
-            color: rgba(251, 222, 199, 0.78);
+            font-weight: 700;
+            color: #FBDEC7;
             margin-top: 2px;
             letter-spacing: 0.15px;
         }
