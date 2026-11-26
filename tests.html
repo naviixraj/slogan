@@ -3447,18 +3447,40 @@
             overflow: visible;
         }
 
+        .hero-slide-eyebrow {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 9.5px;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #F4CE95;
+            background: rgba(255, 248, 240, 0.08);
+            border: 1px solid rgba(232, 192, 136, 0.35);
+            padding: 4px 11px;
+            border-radius: 999px;
+            margin-bottom: 10px;
+        }
+
+        .hero-slide-card:not(.is-active) .hero-slide-eyebrow {
+            color: #6E1226;
+            background: rgba(110, 18, 38, 0.08);
+            border-color: rgba(110, 18, 38, 0.22);
+        }
+
         .hero-slide-icon-wrap {
-            width: 54px;
-            height: 54px;
+            width: 56px;
+            height: 56px;
             border-radius: 18px;
-            background: rgba(232, 192, 136, 0.16);
-            color: #FBDEC7;
+            background: linear-gradient(145deg, rgba(232, 192, 136, 0.24) 0%, rgba(168, 112, 48, 0.16) 100%);
+            color: #FCE6C8;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 12px;
-            box-shadow: 0 6px 16px rgba(18, 0, 4, 0.34);
-            border: 1.5px solid rgba(232, 192, 136, 0.65);
+            margin: 0 auto 10px;
+            box-shadow: 0 0 0 4px rgba(232, 192, 136, 0.14), 0 8px 20px rgba(18, 0, 4, 0.36);
+            border: 1.5px solid rgba(232, 192, 136, 0.72);
             transition: transform 0.3s ease;
         }
 
@@ -3576,28 +3598,43 @@
         }
 
         .hero-slide-cta {
+            width: 100%;
             margin-top: 14px;
-            border: 1px solid rgba(255, 244, 232, 0.72);
-            border-radius: 999px;
-            padding: 9px 22px;
-            background: linear-gradient(135deg, #FBDEC7 0%, #E8C088 55%, #C89B5B 100%);
+            border: 1px solid rgba(255, 244, 232, 0.75);
+            border-radius: 14px;
+            padding: 9px 10px 9px 16px;
+            background: linear-gradient(135deg, #FFF1DF 0%, #E8C088 52%, #C99654 100%);
             color: #3A010D;
             font-size: 12px;
             font-weight: 800;
-            letter-spacing: 0.4px;
+            letter-spacing: 0.45px;
             text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            cursor: pointer;
+            box-shadow: 0 6px 18px rgba(232, 192, 136, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.65);
+            transition: transform 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .hero-cta-arrow {
+            width: 26px;
+            height: 26px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #7C1B34 0%, #4F0C1E 100%);
+            color: #FDF4EE;
             display: inline-flex;
             align-items: center;
             justify-content: center;
-            gap: 7px;
-            cursor: pointer;
-            box-shadow: 0 5px 16px rgba(232, 192, 136, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.55);
-            transition: transform 0.18s ease, box-shadow 0.18s ease;
+            font-size: 13px;
+            flex-shrink: 0;
+            box-shadow: 0 2px 6px rgba(58, 1, 13, 0.25);
         }
 
         .hero-slide-cta:hover {
             transform: translateY(-1px);
-            box-shadow: 0 8px 20px rgba(232, 192, 136, 0.45);
+            box-shadow: 0 9px 22px rgba(232, 192, 136, 0.46);
         }
 
         .hero-slide-card:not(.is-active) .hero-slide-cta {
@@ -3605,6 +3642,11 @@
             color: #FDF4EE;
             border-color: rgba(232, 192, 136, 0.5);
             box-shadow: none;
+        }
+
+        .hero-slide-card:not(.is-active) .hero-cta-arrow {
+            background: rgba(255, 248, 240, 0.18);
+            color: #FBDEC7;
         }
 
         .hero-slide-card:not(.is-active) .hero-slide-stat-lbl {
@@ -4948,6 +4990,7 @@
                         <div class="hero-carousel-track" id="heroCarouselTrack">
                             <!-- Slide 1: Examinations Overview -->
                             <article class="hero-slide-card is-active" data-hero-slide="0" tabindex="0">
+                                <span class="hero-slide-eyebrow">LIVE PORTAL &bull; MOCK TESTS</span>
                                 <div class="hero-slide-icon-wrap" aria-hidden="true">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
@@ -4986,12 +5029,13 @@
                                     </div>
                                 </div>
                                 <button type="button" class="hero-slide-cta" data-hero-action="exams">
-                                    <span>Start Examination</span><span>&rarr;</span>
+                                    <span>Start Examination</span><span class="hero-cta-arrow" aria-hidden="true">&rarr;</span>
                                 </button>
                             </article>
 
                             <!-- Slide 2: Study Notes -->
                             <article class="hero-slide-card" data-hero-slide="1" tabindex="0">
+                                <span class="hero-slide-eyebrow">SYLLABUS LIBRARY &bull; NOTES</span>
                                 <div class="hero-slide-icon-wrap" aria-hidden="true">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
@@ -5020,12 +5064,13 @@
                                     </div>
                                 </div>
                                 <button type="button" class="hero-slide-cta" data-hero-action="notes">
-                                    <span>Open Study Notes</span><span>&rarr;</span>
+                                    <span>Open Study Notes</span><span class="hero-cta-arrow" aria-hidden="true">&rarr;</span>
                                 </button>
                             </article>
 
                             <!-- Slide 3: Cohort Rankings -->
                             <article class="hero-slide-card" data-hero-slide="2" tabindex="0">
+                                <span class="hero-slide-eyebrow">LIVE STANDINGS &bull; PODIUM</span>
                                 <div class="hero-slide-icon-wrap" aria-hidden="true">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
@@ -5058,12 +5103,13 @@
                                     </div>
                                 </div>
                                 <button type="button" class="hero-slide-cta" data-hero-action="ranks">
-                                    <span>View Cohort Ranks</span><span>&rarr;</span>
+                                    <span>View Cohort Ranks</span><span class="hero-cta-arrow" aria-hidden="true">&rarr;</span>
                                 </button>
                             </article>
 
                             <!-- Slide 4: Portal Readiness -->
                             <article class="hero-slide-card" data-hero-slide="3" tabindex="0">
+                                <span class="hero-slide-eyebrow">QUESTION BANK &bull; SEARCH</span>
                                 <div class="hero-slide-icon-wrap" aria-hidden="true">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                         <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
@@ -5092,7 +5138,7 @@
                                     </div>
                                 </div>
                                 <button type="button" class="hero-slide-cta" data-hero-action="search">
-                                    <span>Browse All Papers</span><span>&rarr;</span>
+                                    <span>Browse All Papers</span><span class="hero-cta-arrow" aria-hidden="true">&rarr;</span>
                                 </button>
                             </article>
                         </div>
