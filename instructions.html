@@ -24,11 +24,266 @@
         crossorigin>
 
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+Tamil:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Tamil:wght@400;500;600;700&family=Playfair+Display:wght@700;800&display=swap"
         rel="stylesheet">
 
     <!-- Main CSS -->
     <link rel="stylesheet" href="style.css?v=20261120-v8">
+
+    <!-- Modern SLOGON Academy Theme Overrides (Preserves Candidate Declaration Breathing Box) -->
+    <style>
+        body.instructions-body {
+            position: relative;
+            background-color: #FAF0E6 !important;
+            background-image: none !important;
+            color: #3A010D;
+            font-family: Inter, "Noto Sans Tamil", sans-serif;
+            min-height: 100vh;
+        }
+
+        body.instructions-body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -2;
+            pointer-events: none;
+            background-color: #F6E7D8;
+            background-image:
+                radial-gradient(ellipse at 16% 18%, rgba(255, 251, 245, 0.72) 0%, transparent 56%),
+                radial-gradient(ellipse at 85% 44%, rgba(218, 178, 142, 0.34) 0%, transparent 58%),
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 900' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='iw1' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23781931' stop-opacity='0.95'/%3E%3Cstop offset='75%25' stop-color='%235B0F23' stop-opacity='0.88'/%3E%3Cstop offset='100%25' stop-color='%235B0F23' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M-40,180 C320,220 620,130 980,175 C1210,200 1360,158 1500,140 L1500,0 L-40,0 Z' fill='url(%23iw1)'/%3E%3C/svg%3E"),
+                linear-gradient(160deg, #FDF7F0 0%, #F4E1CE 52%, #EAD0B8 100%);
+            background-repeat: no-repeat;
+            background-size: cover, cover, 100% 100%, cover;
+        }
+
+        body.instructions-body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background: url("Logoicon.png") center 56% / min(280px, 64vw) no-repeat;
+            opacity: 0.08;
+            mix-blend-mode: multiply;
+        }
+
+        .instructions-header {
+            background: transparent !important;
+            border: none !important;
+            box-shadow: none !important;
+            max-width: 920px;
+            margin: 0 auto;
+            padding: 14px 16px 8px !important;
+        }
+
+        .nav-back-btn {
+            width: 38px !important;
+            height: 38px !important;
+            border-radius: 50% !important;
+            background: rgba(58, 1, 13, 0.34) !important;
+            border: 1.25px solid rgba(232, 192, 136, 0.85) !important;
+            color: #FBDEC7 !important;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .mini-logo {
+            width: 42px !important;
+            height: 42px !important;
+            border-radius: 12px !important;
+            background: #FDF4EE !important;
+            padding: 4px !important;
+            border: 1.25px solid rgba(232, 192, 136, 0.9) !important;
+            box-shadow: 0 4px 12px rgba(24, 0, 5, 0.28) !important;
+        }
+
+        .instructions-brand-text h1 {
+            font-family: "Playfair Display", Georgia, serif !important;
+            font-size: clamp(16px, 4vw, 19px) !important;
+            font-weight: 800 !important;
+            letter-spacing: 2px !important;
+            background: linear-gradient(135deg, #FDF4EE 0%, #FBDEC7 48%, #E8C088 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent !important;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .instructions-exam-mobile {
+            color: rgba(251, 222, 199, 0.88) !important;
+            font-weight: 600 !important;
+        }
+
+        .header-exam-info {
+            background: rgba(58, 1, 13, 0.36) !important;
+            border: 1px solid rgba(232, 192, 136, 0.65) !important;
+            color: #FBDEC7 !important;
+            border-radius: 999px !important;
+            padding: 7px 14px !important;
+            font-weight: 700 !important;
+        }
+
+        .instructions-container {
+            max-width: 920px !important;
+            margin: 0 auto !important;
+            padding: 8px 16px 32px !important;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+
+        .page-heading {
+            background:
+                radial-gradient(ellipse at 50% 10%, rgba(232, 192, 136, 0.28) 0%, transparent 58%),
+                linear-gradient(155deg, #821D36 0%, #631227 58%, #4F0C1E 100%) !important;
+            border: 1.5px solid #E8C088 !important;
+            border-radius: 24px !important;
+            padding: 20px 18px !important;
+            color: #FDF4EE !important;
+            box-shadow: 0 0 22px rgba(232, 192, 136, 0.22), 0 14px 32px rgba(58, 1, 13, 0.26) !important;
+        }
+
+        .page-heading .heading-icon {
+            background: linear-gradient(135deg, #FBDEC7 0%, #E8C088 100%) !important;
+            color: #4F0C1E !important;
+            border: 1.5px solid #FFFFFF !important;
+            font-weight: 900 !important;
+        }
+
+        .page-heading h2 {
+            font-family: "Playfair Display", Georgia, serif !important;
+            color: #FDF4EE !important;
+            letter-spacing: 0.4px;
+        }
+
+        .page-heading p {
+            color: rgba(251, 222, 199, 0.88) !important;
+        }
+
+        .candidate-info-card,
+        .instructions-card {
+            background: linear-gradient(165deg, #FFFFFF 0%, #FCF9F5 55%, #F8F0E8 100%) !important;
+            border: 1.5px solid #E2B887 !important;
+            border-radius: 24px !important;
+            box-shadow: 0 10px 26px rgba(58, 1, 13, 0.08), inset 0 1px 0 #FFFFFF !important;
+            padding: 18px !important;
+        }
+
+        .candidate-info-item {
+            background: #FAF2EA !important;
+            border: 1px solid rgba(218, 175, 122, 0.55) !important;
+            border-radius: 16px !important;
+            padding: 12px 14px !important;
+        }
+
+        .candidate-info-item .info-label {
+            color: #6E4A4E !important;
+            font-weight: 700 !important;
+            text-transform: uppercase;
+            font-size: 10.5px !important;
+            letter-spacing: 0.5px;
+        }
+
+        .candidate-info-item strong {
+            color: #3A010D !important;
+            font-weight: 800 !important;
+        }
+
+        .overview-card {
+            background: linear-gradient(165deg, #FFFFFF 0%, #FCF9F5 55%, #F8F0E8 100%) !important;
+            border: 1.5px solid #E2B887 !important;
+            border-radius: 20px !important;
+            box-shadow: 0 8px 20px rgba(58, 1, 13, 0.07) !important;
+            padding: 16px !important;
+        }
+
+        .overview-card span {
+            color: #6E4A4E !important;
+            font-weight: 700 !important;
+        }
+
+        .overview-card strong {
+            color: #5B1024 !important;
+            font-family: "Playfair Display", Georgia, serif !important;
+            font-size: 20px !important;
+        }
+
+        .section-header h3 {
+            font-family: "Playfair Display", Georgia, serif !important;
+            color: #3A010D !important;
+            font-size: 18px !important;
+        }
+
+        .section-header p {
+            color: #6E4A4E !important;
+        }
+
+        .instruction-item {
+            background: #FAF2EA !important;
+            border: 1px solid rgba(218, 175, 122, 0.52) !important;
+            border-radius: 16px !important;
+            padding: 13px 15px !important;
+        }
+
+        .instruction-item h4 {
+            color: #5B1024 !important;
+            font-weight: 800 !important;
+        }
+
+        .instruction-item p {
+            color: #4A2529 !important;
+        }
+
+        .status-item {
+            background: #FAF2EA !important;
+            border: 1px solid rgba(218, 175, 122, 0.52) !important;
+            border-radius: 16px !important;
+            padding: 12px 14px !important;
+        }
+
+        .status-item strong {
+            color: #3A010D !important;
+        }
+
+        .status-item small {
+            color: #6E4A4E !important;
+        }
+
+        .proceed-section p {
+            color: #5C3A3E !important;
+            font-weight: 600 !important;
+        }
+
+        .proceed-btn {
+            border-radius: 999px !important;
+            border: 1.25px solid rgba(232, 192, 136, 0.78) !important;
+            background: linear-gradient(105deg, #7C1B34 0%, #5F1024 60%, #4E0C1D 100%) !important;
+            color: #FDF4EE !important;
+            font-weight: 800 !important;
+            letter-spacing: 0.6px;
+            box-shadow: 0 8px 22px rgba(58, 1, 13, 0.28) !important;
+            transition: transform 0.16s ease, filter 0.16s ease, opacity 0.2s ease !important;
+        }
+
+        .proceed-btn:disabled {
+            opacity: 0.48 !important;
+            cursor: not-allowed !important;
+            box-shadow: none !important;
+        }
+
+        .proceed-btn:not(:disabled):hover {
+            filter: brightness(1.06);
+            transform: translateY(-1px);
+        }
+
+        .instructions-footer {
+            color: #6E4A4E !important;
+            background: transparent !important;
+            border-top: 1px solid rgba(226, 184, 135, 0.45) !important;
+        }
+    </style>
 
 </head>
 
