@@ -941,11 +941,49 @@ function renderStudyNotesForPaper(paperKey) {
     const items = studyNotesCatalog.filter(item => item.paper === paperKey);
     studyNotesList.innerHTML = "";
     const builder = window._slogonStudyCardBuilder;
-    if (builder && typeof builder.buildStudyMaterialCard === "function") {
-        items.forEach(item => {
-            studyNotesList.appendChild(builder.buildStudyMaterialCard(item));
+    items.forEach(item => {
+        const card = document.createElement("article");
+        card.className = "notes-list-card";
+        card.setAttribute("role", "button");
+        card.setAttribute("tabindex", "0");
+
+        const topicsHtml = (item.topics || []).map(t => `
+            <div class="notes-topic-row">
+                <span class="notes-topic-dot" aria-hidden="true"></span>
+                <span>${t}</span>
+            </div>
+        `).join("");
+
+        card.innerHTML = `
+            <div class="notes-list-top">
+                <div class="notes-list-badges">
+                    <span class="notes-list-code">${item.code}</span>
+                    <span class="notes-list-format">${item.format}</span>
+                </div>
+                <span class="notes-list-unit">${item.units}</span>
+            </div>
+            <h3 class="notes-list-title">${item.title}</h3>
+            <p class="notes-list-desc">${item.desc}</p>
+            <div class="notes-list-topics">${topicsHtml}</div>
+            <button type="button" class="notes-list-cta">
+                <span>Read Study Notes</span><span>&rarr;</span>
+            </button>
+        `;
+
+        const openNotes = () => {
+            if (builder && typeof builder.openStudyMaterialModal === "function") {
+                builder.openStudyMaterialModal(item);
+            }
+        };
+        card.addEventListener("click", openNotes);
+        card.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                openNotes();
+            }
         });
-    }
+        studyNotesList.appendChild(card);
+    });
 
     studyPaperSelectorView.style.display = "none";
     studyNotesListView.style.display = "block";
