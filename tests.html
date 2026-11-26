@@ -3359,17 +3359,76 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
+            overflow: hidden;
         }
 
         .hero-slide-card.is-active {
             background:
-                radial-gradient(ellipse at 50% 16%, rgba(232, 192, 136, 0.28) 0%, transparent 56%),
+                radial-gradient(ellipse at 50% 16%, rgba(232, 192, 136, 0.3) 0%, transparent 56%),
                 linear-gradient(155deg, #821D36 0%, #631227 58%, #4F0C1E 100%);
             border: 1.5px solid #E8C088;
             color: #FDF4EE;
             transform: translateZ(0) scale(1.03);
             opacity: 1;
             z-index: 3;
+        }
+
+        .hero-slide-card.is-active::before {
+            content: "";
+            position: absolute;
+            inset: 0;
+            pointer-events: none;
+            background:
+                radial-gradient(circle at 92% 10%, rgba(255, 240, 210, 0.16) 0%, transparent 32%),
+                radial-gradient(circle at 8% 90%, rgba(232, 192, 136, 0.14) 0%, transparent 34%);
+            z-index: 0;
+        }
+
+        .hero-slide-card.is-active::after {
+            content: "";
+            position: absolute;
+            top: -20%;
+            left: -65%;
+            width: 45%;
+            height: 140%;
+            background: linear-gradient(105deg, transparent 0%, rgba(255, 244, 218, 0.14) 50%, transparent 100%);
+            transform: skewX(-18deg);
+            pointer-events: none;
+            animation: heroGoldSheen 5.5s ease-in-out infinite;
+            z-index: 1;
+        }
+
+        .hero-slide-card > * {
+            position: relative;
+            z-index: 2;
+        }
+
+        @keyframes heroGoldSheen {
+            0%, 55% {
+                transform: translateX(0) skewX(-18deg);
+                opacity: 0;
+            }
+            70% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateX(430%) skewX(-18deg);
+                opacity: 0;
+            }
+        }
+
+        @keyframes heroEmblemFloat {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-4px);
+            }
+        }
+
+        .hero-slide-card.is-active .hero-laurel-emblem,
+        .hero-slide-card.is-active .hero-slide-icon-wrap {
+            animation: heroEmblemFloat 3.6s ease-in-out infinite;
         }
 
         .hero-laurel-emblem {
@@ -3526,25 +3585,27 @@
             top: 50%;
             transform: translateY(-50%);
             z-index: 4;
-            width: 34px;
-            height: 34px;
+            width: 32px;
+            height: 32px;
             border-radius: 50%;
-            background: rgba(45, 2, 10, 0.86);
-            border: 1.2px solid rgba(251, 222, 199, 0.55);
+            background: rgba(91, 16, 36, 0.82);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+            border: 1.25px solid rgba(232, 192, 136, 0.72);
             color: #FDF4EE;
             display: grid;
             place-items: center;
             cursor: pointer;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease;
+            box-shadow: 0 4px 12px rgba(24, 0, 5, 0.28);
+            transition: transform 0.18s ease, background 0.18s ease, border-color 0.18s ease, box-shadow 0.18s ease;
         }
 
         .hero-nav-arrow.is-prev {
-            left: 10px;
+            left: 4px;
         }
 
         .hero-nav-arrow.is-next {
-            right: 10px;
+            right: 4px;
         }
 
         .hero-nav-arrow:hover {
