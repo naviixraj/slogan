@@ -1997,6 +1997,7 @@ function initAdminMobileTabs() {
     const tabProfileBtn = document.getElementById("tabProfileBtn");
 
     const notesSection = document.getElementById("adminNotesSection");
+    const addQuestionSection = document.getElementById("adminAddQuestionSection");
     const ranksSection = document.getElementById("adminRanksSection");
     const profileSection = document.getElementById("adminProfileSection");
 
@@ -2019,6 +2020,7 @@ function initAdminMobileTabs() {
         if (examSection) examSection.style.display = "none";
         if (helpSection) helpSection.style.display = "none";
         if (notesSection) notesSection.style.display = "none";
+        if (addQuestionSection) addQuestionSection.style.display = "none";
         if (ranksSection) ranksSection.style.display = "none";
         if (profileSection) profileSection.style.display = "none";
     }
@@ -2046,11 +2048,135 @@ function initAdminMobileTabs() {
 
     if (tabAddQuestionBtn) {
         tabAddQuestionBtn.addEventListener("click", () => {
-            setActiveAdminTab(tabHomeBtn);
+            setActiveAdminTab(tabAddQuestionBtn);
             hideAllAdminSections();
-            if (examSection) examSection.style.display = "block";
-            const uploadBtn = document.getElementById("openUploadModalButton");
-            if (uploadBtn) uploadBtn.click();
+            if (addQuestionSection) {
+                addQuestionSection.style.display = "block";
+                window.scrollTo({ top: 0, behavior: "smooth" });
+            } else {
+                if (examSection) examSection.style.display = "block";
+                const uploadBtn = document.getElementById("openUploadModalButton");
+                if (uploadBtn) uploadBtn.click();
+            }
+        });
+    }
+
+    // Wire dedicated Upload Question Set Page controls
+    const pageReleaseNowBtn = document.getElementById("pageReleaseNowBtn");
+    const pageReleaseScheduleBtn = document.getElementById("pageReleaseScheduleBtn");
+    const pageReleaseDatetimeWrap = document.getElementById("pageReleaseDatetimeWrap");
+    const pageUploadReleaseAt = document.getElementById("pageUploadReleaseAt");
+    const pageSetFileInput = document.getElementById("pageSetFileInput");
+    const pageDropBoxArea = document.getElementById("pageDropBoxArea");
+    const pageSelectedFileCard = document.getElementById("pageSelectedFileCard");
+    const pageChangeFileBtn = document.getElementById("pageChangeFileBtn");
+    const pageSubmitUploadButton = document.getElementById("pageSubmitUploadButton");
+
+    if (pageReleaseNowBtn && pageReleaseScheduleBtn && pageReleaseDatetimeWrap) {
+        pageReleaseNowBtn.addEventListener("click", () => {
+            pageReleaseNowBtn.classList.add("active");
+            pageReleaseScheduleBtn.classList.remove("active");
+            pageReleaseDatetimeWrap.classList.remove("show");
+        });
+        pageReleaseScheduleBtn.addEventListener("click", () => {
+            pageReleaseScheduleBtn.classList.add("active");
+            pageReleaseNowBtn.classList.remove("active");
+            pageReleaseDatetimeWrap.classList.add("show");
+            if (pageUploadReleaseAt && !pageUploadReleaseAt.value) {
+                const d = new Date(Date.now() + 60 * 60 * 1000);
+                const pad = n => String(n).padStart(2, "0");
+                pageUploadReleaseAt.value = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+            }
+        });
+    }
+
+    if (pageDropBoxArea && pageSetFileInput) {
+        pageDropBoxArea.addEventListener("click", () => pageSetFileInput.click());
+    }
+    if (pageChangeFileBtn && pageSetFileInput) {
+        pageChangeFileBtn.addEventListener("click", () => pageSetFileInput.click());
+    }
+    if (pageSetFileInput) {
+        pageSetFileInput.addEventListener("change", () => {
+            const file = pageSetFileInput.files && pageSetFileInput.files[0];
+            if (!file) return;
+            const ext = (file.name.split(".").pop() || "FILE").toUpperCase();
+            const badge = document.getElementById("pageFileTypeBadge");
+            const nameEl = document.getElementById("pageFileCardName");
+            const sizeEl = document.getElementById("pageFileCardSize");
+            if (badge) badge.textContent = ext.slice(0, 4);
+            if (nameEl) nameEl.textContent = file.name;
+            if (sizeEl) sizeEl.textContent = `${Math.max(1, Math.round(file.size / 1024))} KB`;
+            if (pageDropBoxArea) pageDropBoxArea.style.display = "none";
+            if (pageSelectedFileCard) pageSelectedFileCard.style.display = "flex";
+        });
+    }
+
+    if (pageSubmitUploadButton) {
+        pageSubmitUploadButton.addEventListener("click", async () => {
+            const titleEl = document.getElementById("pageUploadExamTitle");
+            const subjEl = document.getElementById("pageUploadSubject");
+            const durEl = document.getElementById("pageUploadDuration");
+            const title = titleEl ? titleEl.value.trim() : "";
+            const subject = subjEl ? subjEl.value : "All";
+            const duration = durEl ? durEl.value : "180";
+
+            if (!title) {
+                alert("Please enter the Examination Display Title.");
+                return;
+            }
+            if (!pageSetFileInput || !pageSetFileInput.files || pageSetFileInput.files.length === 0) {
+                alert("Please select a question bank file to upload.");
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("title", title);
+            formData.append("subject", subject || "All");
+            formData.append("duration", duration || "180");
+
+            const isScheduled = pageReleaseScheduleBtn && pageReleaseScheduleBtn.classList.contains("active");
+            if (isScheduled) {
+                const rawDt = pageUploadReleaseAt ? pageUploadReleaseAt.value : "";
+                const parsedMs = Date.parse(rawDt);
+                if (!rawDt || Number.isNaN(parsedMs) || parsedMs <= Date.now()) {
+                    alert("Please select a future date and time for the scheduled release timer.");
+                    return;
+                }
+                formData.append("releaseMode", "scheduled");
+                formData.append("releaseAt", new Date(parsedMs).toISOString());
+            } else {
+                formData.append("releaseMode", "immediate");
+            }
+            formData.append("file", pageSetFileInput.files[0]);
+
+            const origHtml = pageSubmitUploadButton.innerHTML;
+            pageSubmitUploadButton.disabled = true;
+            pageSubmitUploadButton.textContent = "Uploading & Splitting...";
+
+            try {
+                const res = await fetch("/api/admin/sets/upload", {
+                    method: "POST",
+                    body: formData,
+                    credentials: "same-origin"
+                });
+                const data = await res.json();
+                if (!res.ok || !data.success) {
+                    throw new Error((data && data.message) || "Failed to upload question set.");
+                }
+                alert(`🎉 ${data.message}`);
+                if (titleEl) titleEl.value = "";
+                if (pageSetFileInput) pageSetFileInput.value = "";
+                if (pageSelectedFileCard) pageSelectedFileCard.style.display = "none";
+                if (pageDropBoxArea) pageDropBoxArea.style.display = "block";
+                await fetchSets();
+                if (tabHomeBtn) tabHomeBtn.click();
+            } catch (err) {
+                alert(err.message || "Upload failed.");
+            } finally {
+                pageSubmitUploadButton.disabled = false;
+                pageSubmitUploadButton.innerHTML = origHtml;
+            }
         });
     }
 

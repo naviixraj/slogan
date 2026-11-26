@@ -3047,6 +3047,63 @@
                 font-weight: 600;
             }
 
+            /* DEDICATED UPLOAD QUESTIONS PAGE CARD */
+            .admin-upload-page-card {
+                background: linear-gradient(165deg, #FFFFFF 0%, #FCF9F5 52%, #F8F0E8 100%);
+                border: 1.5px solid #E2B887;
+                border-radius: 24px;
+                padding: 18px;
+                box-shadow: 0 10px 26px rgba(58, 1, 13, 0.08), inset 0 1px 0 #FFFFFF;
+                display: flex;
+                flex-direction: column;
+                gap: 14px;
+            }
+
+            .admin-upload-page-card label {
+                display: block;
+                font-size: 11.5px;
+                font-weight: 800;
+                color: #5B1024;
+                text-transform: uppercase;
+                letter-spacing: 0.45px;
+                margin-bottom: 6px;
+            }
+
+            .admin-upload-page-card input[type="text"],
+            .admin-upload-page-card input[type="number"],
+            .admin-upload-page-card select {
+                width: 100%;
+                padding: 11px 13px;
+                border-radius: 12px;
+                border: 1.25px solid rgba(218, 175, 122, 0.72);
+                background: #FFFFFF;
+                color: #3A010D;
+                font-size: 13.5px;
+                font-weight: 600;
+                outline: none;
+            }
+
+            .admin-upload-page-card input:focus,
+            .admin-upload-page-card select:focus {
+                border-color: #7C1B34;
+                box-shadow: 0 0 0 3px rgba(124, 27, 52, 0.12);
+            }
+
+            .admin-upload-dropzone {
+                border: 1.5px dashed #C89B5B;
+                background: #FAF2EA;
+                border-radius: 16px;
+                padding: 20px 14px;
+                text-align: center;
+                cursor: pointer;
+                transition: background 0.18s ease, border-color 0.18s ease;
+            }
+
+            .admin-upload-dropzone:hover {
+                background: #F5E6D6;
+                border-color: #7C1B34;
+            }
+
             /* Mobile Notes, Ranks & Profile Shared Luxury Styles */
             .admin-sub-section {
                 display: none;
@@ -3750,6 +3807,87 @@
                         <p class="admin-hero-sub">Tap any note module below to view full syllabus topics.</p>
                     </div>
                     <div class="notes-list-stack" id="adminNotesList"></div>
+                </div>
+            </section>
+
+            <!-- ==============================================
+                 MOBILE SECTION 3: ADD / UPLOAD QUESTION SET PAGE
+            =============================================== -->
+            <section id="adminAddQuestionSection" class="admin-sub-section">
+                <div class="admin-mobile-header">
+                    <div class="admin-mobile-brand-left">
+                        <img src="Logoicon.png" alt="SLOGON ACADEMY Logo" class="hero-brand-logo">
+                        <span class="hero-brand-divider" aria-hidden="true"></span>
+                        <span class="hero-brand-name">SLOGON ACADEMY</span>
+                    </div>
+                    <a class="admin-guide-info-btn" href="QUESTION_AUTHORING_BLUEPRINT.pdf" target="_blank" title="Authoring Guide" aria-label="Open Authoring Guide">i</a>
+                </div>
+
+                <div class="notes-hero-card">
+                    <span class="admin-hero-eyebrow">QUESTION BANK &bull; AUTHORING</span>
+                    <h2 class="admin-hero-title">Upload Question Set</h2>
+                    <p class="admin-hero-sub">Parse Word, PDF, Excel, CSV, TXT, or JSON files with scheduled release timing.</p>
+                </div>
+
+                <div class="admin-upload-page-card">
+                    <div>
+                        <label for="pageUploadExamTitle">Examination Display Title</label>
+                        <input type="text" id="pageUploadExamTitle" placeholder="e.g. UGC NET Mock Exam 02">
+                    </div>
+
+                    <div style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 10px;">
+                        <div>
+                            <label for="pageUploadSubject">Paper Stream</label>
+                            <select id="pageUploadSubject">
+                                <option value="All" selected>All Students</option>
+                                <option value="Paper 1 - General Paper">Paper 1 - General</option>
+                                <option value="Paper 1 + Paper 2 - Tamil">Paper 1 + 2 - Tamil</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label for="pageUploadDuration">Duration (Mins)</label>
+                            <input type="number" id="pageUploadDuration" value="180" min="5" max="360">
+                        </div>
+                    </div>
+
+                    <div class="release-timer-card" style="margin-bottom: 0;">
+                        <label style="margin-bottom: 0;">When to Release</label>
+                        <div class="release-mode-row">
+                            <button type="button" class="release-mode-btn active" id="pageReleaseNowBtn">Publish Now</button>
+                            <button type="button" class="release-mode-btn" id="pageReleaseScheduleBtn">Schedule Timer</button>
+                        </div>
+                        <div class="release-datetime-wrap" id="pageReleaseDatetimeWrap">
+                            <label for="pageUploadReleaseAt" style="text-transform:none; letter-spacing:0; font-weight:600; color:#6E4A4E; margin-top:4px;">Select Publish Date &amp; Time</label>
+                            <input type="datetime-local" id="pageUploadReleaseAt">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label>Question Bank File</label>
+                        <input type="file" id="pageSetFileInput" style="display: none;">
+                        <div class="admin-upload-dropzone" id="pageDropBoxArea">
+                            <strong style="display:block; font-size:13.5px; color:#3A010D; margin-bottom:3px;">Tap to Choose Question File</strong>
+                            <span style="font-size:11.5px; color:#6E4A4E;">Word (.docx), PDF, Excel (.xlsx), CSV, TXT, or JSON</span>
+                        </div>
+                        <div class="selected-file-card" id="pageSelectedFileCard" style="display: none; margin-top: 8px;">
+                            <div class="file-card-left">
+                                <div class="file-type-badge badge-docx" id="pageFileTypeBadge">FILE</div>
+                            </div>
+                            <div class="file-card-details">
+                                <div class="file-card-name" id="pageFileCardName">file.docx</div>
+                                <div class="file-card-meta">
+                                    <span id="pageFileCardSize">0 KB</span>
+                                    <span>&bull;</span>
+                                    <span class="status-ready">Ready to upload</span>
+                                </div>
+                            </div>
+                            <button type="button" class="btn-change-file" id="pageChangeFileBtn">Change</button>
+                        </div>
+                    </div>
+
+                    <button type="button" class="notes-list-cta" id="pageSubmitUploadButton">
+                        <span>Publish Question Set</span><span>&rarr;</span>
+                    </button>
                 </div>
             </section>
 
