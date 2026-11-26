@@ -1054,17 +1054,25 @@ function renderStudyNotesForUnit(paperKey, unitNum) {
             card.setAttribute("role", "button");
             card.setAttribute("tabindex", "0");
             card.setAttribute("title", `Tap to open ${note.title}`);
-            card.style.cssText = "position: relative; overflow: hidden; cursor: pointer; min-height: 156px; justify-content: space-between;";
+            card.style.cssText = "position: relative; overflow: hidden; cursor: pointer; min-height: 240px; justify-content: space-between; padding: 16px;";
 
             const extLabel = String(note.fileType || "FILE").toUpperCase();
             const kb = Math.max(1, Math.round((Number(note.fileSize) || 0) / 1024));
             const sizeLabel = kb >= 1024 ? `${(kb / 1024).toFixed(1)} MB` : `${kb} KB`;
             const noteUnitLabel = `${String(note.paper || "").toLowerCase() === "paper 2" ? "அலகு" : "Unit"} ${note.unit}`;
+            const hasCustom = note.hasCustomCover && note.coverUrl;
 
-            const bgLayerHtml = note.hasCustomCover && note.coverUrl
-                ? `<img src="${note.coverUrl}" alt="" aria-hidden="true" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0.32; pointer-events:none; z-index:0;">
-                   <div aria-hidden="true" style="position:absolute; inset:0; background:linear-gradient(155deg, rgba(255,252,248,0.68) 0%, rgba(250,242,232,0.56) 100%); pointer-events:none; z-index:0;"></div>`
-                : `<div aria-hidden="true" style="position:absolute; inset:0; background:linear-gradient(145deg, rgba(130,29,54,0.12) 0%, rgba(232,192,136,0.22) 100%); pointer-events:none; z-index:0;"></div>`;
+            const bgLayerHtml = hasCustom
+                ? `<img src="${note.coverUrl}" alt="" aria-hidden="true" style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0.95; pointer-events:none; z-index:0;">
+                   <div aria-hidden="true" style="position:absolute; inset:0; background:linear-gradient(180deg, rgba(24,2,8,0.18) 0%, rgba(24,2,8,0.06) 45%, rgba(24,2,8,0.82) 100%); pointer-events:none; z-index:0;"></div>`
+                : `<div aria-hidden="true" style="position:absolute; inset:0; background:linear-gradient(145deg, rgba(130,29,54,0.16) 0%, rgba(232,192,136,0.28) 100%); pointer-events:none; z-index:0;"></div>`;
+
+            const titleStyle = hasCustom
+                ? "margin-bottom:4px; color:#FDF4EE; text-shadow:0 2px 8px rgba(0,0,0,0.65);"
+                : "margin-bottom:4px;";
+            const descStyle = hasCustom
+                ? "margin:0; font-weight:600; color:rgba(253,244,238,0.92); text-shadow:0 1px 6px rgba(0,0,0,0.65);"
+                : "margin:0; font-weight:600;";
 
             card.innerHTML = `
                 ${bgLayerHtml}
@@ -1073,11 +1081,11 @@ function renderStudyNotesForUnit(paperKey, unitNum) {
                         <span class="notes-list-code">${note.paper.toUpperCase()}</span>
                         <span class="notes-list-format">${extLabel}</span>
                     </div>
-                    <span class="notes-list-unit">${noteUnitLabel}</span>
+                    <span class="notes-list-unit" style="${hasCustom ? "background:rgba(255,255,255,0.92); padding:3px 10px; border-radius:999px;" : ""}">${noteUnitLabel}</span>
                 </div>
                 <div style="position:relative; z-index:1; margin-top:auto;">
-                    <h3 class="notes-list-title" style="margin-bottom:4px;">${note.title}</h3>
-                    <p class="notes-list-desc" style="margin:0; font-weight:600;">${note.fileName} &bull; ${sizeLabel}</p>
+                    <h3 class="notes-list-title" style="${titleStyle}">${note.title}</h3>
+                    <p class="notes-list-desc" style="${descStyle}">${note.fileName} &bull; ${sizeLabel}</p>
                 </div>
             `;
 
