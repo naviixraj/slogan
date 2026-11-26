@@ -2044,9 +2044,10 @@ function renderLeaderboard(entries) {
         return;
     }
 
-    list.forEach((entry) => {
+    list.forEach((entry, idx) => {
         const card = document.createElement("div");
         card.className = entry.isCurrentUser ? "leader-card is-current-user" : "leader-card";
+        card.style.setProperty("--row-i", String(Math.min(idx, 12)));
 
         const rankNum = document.createElement("span");
         rankNum.className = "leader-rank-num";
