@@ -1501,9 +1501,6 @@ function switchStudentTab(tabName) {
         }
     });
 
-    if (studyNotesSection) studyNotesSection.style.display = "none";
-    document.body.classList.remove("in-notes-tab");
-
     if (helpSection) helpSection.style.display = "none";
     if (examinationsNav) {
         if (tabName === "home") examinationsNav.classList.add("active");
@@ -1533,6 +1530,9 @@ function switchStudentTab(tabName) {
         if (typeof performQuestionPaperSearch === "function") {
             performQuestionPaperSearch();
         }
+    } else if (tabName === "notes") {
+        if (pageTitle) pageTitle.textContent = "Study Notes";
+        if (pageSubtitle) pageSubtitle.textContent = "Choose a paper to view structured unit notes and revision guides.";
     } else if (tabName === "profile") {
         pageTitle.textContent = "Candidate Profile";
         pageSubtitle.textContent = "View your registered credentials and examination details.";
