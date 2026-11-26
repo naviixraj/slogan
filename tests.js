@@ -222,11 +222,12 @@ function renderTests() {
 
         card.innerHTML = `
             <svg class="avail-card-watermark" viewBox="0 0 96 96" fill="none" aria-hidden="true">
-                <rect x="20" y="14" width="46" height="58" rx="8" fill="rgba(251,222,199,0.12)" stroke="rgba(251,222,199,0.35)" stroke-width="2"/>
-                <rect x="33" y="9" width="20" height="9" rx="4" fill="rgba(251,222,199,0.22)" stroke="rgba(251,222,199,0.42)" stroke-width="1.5"/>
-                <path d="M30 33l4 4 8-8M30 46l4 4 8-8M30 59h20" stroke="rgba(253,244,238,0.5)" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-                <circle cx="64" cy="64" r="16" fill="#BD8B7F" stroke="#FDF4EE" stroke-width="2"/>
-                <path d="M64 56v9l6 3" stroke="#3A010D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                <rect x="18" y="12" width="48" height="60" rx="9" fill="#FDF7F1" stroke="#B69690" stroke-width="2.2"/>
+                <rect x="31" y="7" width="22" height="10" rx="4.5" fill="#4B0415" stroke="#FDF7F1" stroke-width="1.5"/>
+                <path d="M27 31l3.5 3.5 6.5-6.5M27 44l3.5 3.5 6.5-6.5M27 57l3.5 3.5 6.5-6.5" stroke="#4B0415" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M42 32h15M42 45h15M42 58h11" stroke="#CBB2AD" stroke-width="2.3" stroke-linecap="round"/>
+                <circle cx="66" cy="64" r="17" fill="#4B0415" stroke="#FFFFFF" stroke-width="2.6"/>
+                <path d="M66 55.5v9l6 3.5" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
         `;
 

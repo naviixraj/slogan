@@ -3737,15 +3737,15 @@
             scroll-snap-type: none;
         }
 
-        /* AVAILABLE EXAM CARD (WARM IVORY WHITE + BURGUNDY BADGE & CTA) */
+        /* AVAILABLE EXAM CARD (EXACT WARM IVORY + CURVED BURGUNDY RIBBON + 3 SAND TILES) */
         .avail-exam-card {
             flex: 0 0 min(380px, calc(100% - 26px));
             scroll-snap-align: start;
-            background: linear-gradient(165deg, #FFFDFB 0%, #FDF4EC 100%);
-            border-radius: 22px;
-            padding: 18px;
-            border: 1.5px solid rgba(218, 175, 122, 0.78);
-            box-shadow: 0 10px 26px rgba(58, 1, 13, 0.08);
+            background: linear-gradient(170deg, #FFFDFB 0%, #FDF6EE 100%);
+            border-radius: 24px;
+            padding: 14px 18px 18px;
+            border: 1.5px solid #E2B887;
+            box-shadow: 0 10px 26px rgba(58, 1, 13, 0.1);
             color: #3A010D;
             position: relative;
             overflow: hidden;
@@ -3758,40 +3758,46 @@
 
         .avail-exam-card:hover {
             transform: translateY(-3px);
-            box-shadow: 0 14px 30px rgba(58, 1, 13, 0.14);
+            box-shadow: 0 14px 30px rgba(58, 1, 13, 0.16);
         }
 
         .avail-card-watermark {
             position: absolute;
             right: 16px;
-            top: 50px;
+            top: 52px;
             width: 82px;
             height: 82px;
-            opacity: 0.16;
-            color: #570215;
+            opacity: 1;
             pointer-events: none;
+            z-index: 1;
         }
 
         .avail-card-top {
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            justify-content: flex-end;
             gap: 8px;
+            min-height: 28px;
             position: relative;
             z-index: 2;
         }
 
         .avail-code-pill {
-            background: linear-gradient(135deg, #6A0920 0%, #3A010D 100%);
-            border: 1px solid rgba(232, 192, 136, 0.55);
+            position: absolute;
+            top: -14px;
+            left: -18px;
+            background: linear-gradient(135deg, #6E0922 0%, #430212 100%);
+            border-right: 1.5px solid #E8C088;
+            border-bottom: 1.5px solid #E8C088;
             color: #FDF4EE;
             font-size: 11px;
-            font-weight: 700;
-            padding: 4px 12px;
-            border-radius: 999px;
-            letter-spacing: 0.6px;
+            font-weight: 800;
+            padding: 8px 24px 9px 18px;
+            border-radius: 0 0 24px 0;
+            letter-spacing: 0.7px;
             text-transform: uppercase;
-            font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+            font-family: Inter, system-ui, sans-serif;
+            box-shadow: 0 4px 12px rgba(58, 1, 13, 0.16);
         }
 
         .avail-status-pill {
@@ -3838,9 +3844,9 @@
         }
 
         .avail-inner-panel {
-            background: #F9ECE0;
-            border-radius: 16px;
-            padding: 13px 14px;
+            background: transparent;
+            border-radius: 0;
+            padding: 0;
             color: #3A010D;
             display: flex;
             flex-direction: column;
@@ -3852,24 +3858,28 @@
 
         .avail-metrics-grid {
             display: grid;
-            grid-template-columns: 1fr 1fr 1.25fr;
-            align-items: center;
+            grid-template-columns: 1fr 1fr 1.15fr;
+            gap: 9px;
+            align-items: stretch;
         }
 
         .avail-metric-item {
             display: flex;
             align-items: center;
             gap: 7px;
-            padding: 0 8px;
+            padding: 10px 10px;
+            background: #F9EBDD;
+            border-radius: 14px;
+            border: 1px solid rgba(226, 184, 135, 0.4);
             min-width: 0;
         }
 
         .avail-metric-item:first-child {
-            padding-left: 0;
+            padding-left: 10px;
         }
 
         .avail-metric-item + .avail-metric-item {
-            border-left: 1px solid rgba(189, 139, 127, 0.45);
+            border-left: 1px solid rgba(226, 184, 135, 0.4);
         }
 
         .avail-metric-icon {
@@ -4243,7 +4253,6 @@
                 0 14px 30px rgba(58, 1, 13, 0.28) !important;
         }
 
-        .avail-inner-panel,
         .upcoming-stat-box,
         .home-filter-chip,
         .hero-nav-arrow,
@@ -4252,6 +4261,11 @@
             box-shadow:
                 0 0 7px rgba(232, 192, 136, 0.28),
                 inset 0 0 4px rgba(251, 222, 199, 0.12);
+        }
+
+        .avail-inner-panel {
+            border: none !important;
+            box-shadow: none !important;
         }
 
         .mobile-tab-bar {
