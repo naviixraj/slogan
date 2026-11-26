@@ -780,15 +780,19 @@ function renderTests() {
         return card;
     }
 
-    setupCarousel(
-        studyMaterialTrack,
-        studyMaterials,
-        buildStudyMaterialCard,
-        studyMaterialDots,
-        studyMaterialPrevBtn,
-        studyMaterialNextBtn,
-        studyMaterialControls
-    );
+    window._slogonStudyCardBuilder = { buildStudyMaterialCard, openStudyMaterialModal };
+
+    if (studyMaterialTrack) {
+        setupCarousel(
+            studyMaterialTrack,
+            studyMaterials,
+            buildStudyMaterialCard,
+            studyMaterialDots,
+            studyMaterialPrevBtn,
+            studyMaterialNextBtn,
+            studyMaterialControls
+        );
+    }
 
     const studyModalEl = document.getElementById("studyMaterialModal");
     const closeStudyModalBtn = document.getElementById("closeStudyModalBtn");
@@ -808,27 +812,187 @@ function renderTests() {
     }
 }
 
-// Wire Home filter chips (All, Available, Upcoming)
+// Wire Home filter chips (All, Available, Upcoming, Study Notes)
 const homeFilterChips = document.querySelectorAll(".home-filter-chip");
-const studyMaterialSectionEl = document.getElementById("studyMaterialSection");
+const studyNotesSection = document.getElementById("studyNotesSection");
+const studyPaperSelectorView = document.getElementById("studyPaperSelectorView");
+const studyNotesListView = document.getElementById("studyNotesListView");
+const studyNotesList = document.getElementById("studyNotesList");
+const notesBackToHomeBtn = document.getElementById("notesBackToHomeBtn");
+const notesBackToPapersBtn = document.getElementById("notesBackToPapersBtn");
 
-function applyHomeSectionFilter(filter) {
-    // Show/hide study material section based on filter
-    if (studyMaterialSectionEl) {
-        studyMaterialSectionEl.style.display = (filter === "all") ? "block" : "none";
+const studyNotesCatalog = [
+    {
+        code: "P1 NOTE 01",
+        title: "Paper 1 — Teaching & Research Aptitude",
+        desc: "Core concepts of learner characteristics, teaching methods, research ethics, and hypothesis design.",
+        units: "Unit 1–2",
+        unitsLabel: "Modules",
+        paper: "Paper 1",
+        paperLabel: "Paper",
+        format: "Notes",
+        topics: [
+            "Levels of Teaching: Memory, Understanding & Reflective",
+            "Research Types, Positivism & Post-Positivistic Approaches",
+            "Sampling Techniques & Research Ethics Guidelines"
+        ]
+    },
+    {
+        code: "P1 NOTE 02",
+        title: "Paper 1 — Reasoning, DI & Logical Fallacies",
+        desc: "High-yield shortcuts for Data Interpretation, percentage tables, syllogisms, and Indian Logic.",
+        units: "Unit 5–7",
+        unitsLabel: "Modules",
+        paper: "Paper 1",
+        paperLabel: "Paper",
+        format: "Guide",
+        topics: [
+            "Ratio, Average & Percentage Speed Tables for DI",
+            "Classical Square of Opposition & Mood/Figure",
+            "Indian Logic: Pramanas & Hetvabhasa Summary"
+        ]
+    },
+    {
+        code: "P1 NOTE 03",
+        title: "Paper 1 — ICT, Environment & Higher Education",
+        desc: "Digital initiatives, networking protocols, environmental treaties, and NEP 2020 highlights.",
+        units: "Unit 8–10",
+        unitsLabel: "Modules",
+        paper: "Paper 1",
+        paperLabel: "Paper",
+        format: "Briefs",
+        topics: [
+            "ICT Abbreviations, Memory Hierarchy & Cyber Security",
+            "Kyoto Protocol, Paris Agreement & SDG Goals",
+            "Ancient Indian Universities & NEP 2020 Framework"
+        ]
+    },
+    {
+        code: "P2 NOTE 01",
+        title: "Paper 2 — Classical Sangam Literature",
+        desc: "Comprehensive unit-wise reference covering Ettuthogai, Pathuppattu, and Sangam poetic conventions.",
+        units: "Unit 1–3",
+        unitsLabel: "Modules",
+        paper: "Paper 2",
+        paperLabel: "Paper",
+        format: "Notes",
+        topics: [
+            "Akam & Puram Thinai Classification & Uripporul",
+            "Ettuthogai Anthologies & Key Poets",
+            "Pathuppattu Long Poems & Historical Context"
+        ]
+    },
+    {
+        code: "P2 NOTE 02",
+        title: "Paper 2 — Tolkappiyam & Nannool Grammar",
+        desc: "Structured grammar notes for Ezhuthu, Sol, Porul, Yappu, and Ani Ilakkanam rules.",
+        units: "Unit 4–6",
+        unitsLabel: "Modules",
+        paper: "Paper 2",
+        paperLabel: "Paper",
+        format: "Guide",
+        topics: [
+            "Tolkappiyam Ezhuthathikaram & Sollathikaram Essentials",
+            "Porulathikaram Meiypaadu & Uvamai",
+            "Yapparunkalakkarikai & Dandi Alankaram Rules"
+        ]
+    },
+    {
+        code: "P2 NOTE 03",
+        title: "Paper 2 — Bhakti, Epics & Modern Tamil",
+        desc: "Revision notes on Twin Epics, Panniru Thirumurai, Nalayira Divya Prabandham, and Modern Prose.",
+        units: "Unit 7–10",
+        unitsLabel: "Modules",
+        paper: "Paper 2",
+        paperLabel: "Paper",
+        format: "Briefs",
+        topics: [
+            "Silappathikaram, Manimekalai & Kambaramayanam",
+            "Saiva & Vaishnava Bhakti Literature Milestones",
+            "Modern Tamil Poetry, Short Stories & Literary Criticism"
+        ]
     }
-    // Available & Upcoming sections are handled inside renderTests() via the filter param
+];
+
+function openStudyNotesPage() {
+    if (!studyNotesSection) return;
+    if (examSection) examSection.style.display = "none";
+    if (mobileSearchSection) mobileSearchSection.style.display = "none";
+    if (mobileProfileSection) mobileProfileSection.style.display = "none";
+    if (mobileLeaderboardSection) mobileLeaderboardSection.style.display = "none";
+    if (helpSection) helpSection.style.display = "none";
+
+    studyNotesSection.style.display = "block";
+    if (studyPaperSelectorView) studyPaperSelectorView.style.display = "block";
+    if (studyNotesListView) studyNotesListView.style.display = "none";
+
+    document.body.classList.remove("in-home-tab", "in-search-tab", "in-leaderboard-tab", "in-profile-tab");
+    document.body.classList.add("in-notes-tab");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+function renderStudyNotesForPaper(paperKey) {
+    if (!studyNotesList || !studyPaperSelectorView || !studyNotesListView) return;
+    const tagEl = document.getElementById("selectedPaperTag");
+    const headingEl = document.getElementById("selectedPaperHeading");
+    if (tagEl) tagEl.textContent = paperKey.toUpperCase();
+    if (headingEl) headingEl.textContent = `${paperKey} Study Notes`;
+
+    const items = studyNotesCatalog.filter(item => item.paper === paperKey);
+    studyNotesList.innerHTML = "";
+    const builder = window._slogonStudyCardBuilder;
+    if (builder && typeof builder.buildStudyMaterialCard === "function") {
+        items.forEach(item => {
+            studyNotesList.appendChild(builder.buildStudyMaterialCard(item));
+        });
+    }
+
+    studyPaperSelectorView.style.display = "none";
+    studyNotesListView.style.display = "block";
+    window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+document.querySelectorAll("[data-study-paper]").forEach(btn => {
+    btn.addEventListener("click", () => {
+        const paperKey = btn.getAttribute("data-study-paper");
+        if (paperKey) renderStudyNotesForPaper(paperKey);
+    });
+});
+
+if (notesBackToPapersBtn) {
+    notesBackToPapersBtn.addEventListener("click", () => {
+        if (studyPaperSelectorView) studyPaperSelectorView.style.display = "block";
+        if (studyNotesListView) studyNotesListView.style.display = "none";
+    });
+}
+
+if (notesBackToHomeBtn) {
+    notesBackToHomeBtn.addEventListener("click", () => {
+        if (studyNotesSection) studyNotesSection.style.display = "none";
+        document.body.classList.remove("in-notes-tab");
+        homeFilterChips.forEach(c => {
+            c.classList.toggle("active", c.getAttribute("data-home-filter") === "all");
+        });
+        currentHomeFilter = "all";
+        if (statusFilter) statusFilter.value = "all";
+        switchStudentTab("home");
+        renderTests();
+    });
 }
 
 homeFilterChips.forEach(chip => {
     chip.addEventListener("click", () => {
+        const selected = chip.getAttribute("data-home-filter") || "all";
+        if (selected === "notes") {
+            openStudyNotesPage();
+            return;
+        }
         homeFilterChips.forEach(c => c.classList.remove("active"));
         chip.classList.add("active");
-        currentHomeFilter = chip.getAttribute("data-home-filter") || "all";
+        currentHomeFilter = selected;
         if (statusFilter) {
             statusFilter.value = currentHomeFilter;
         }
-        applyHomeSectionFilter(currentHomeFilter);
         renderTests();
     });
 });
@@ -1287,6 +1451,9 @@ function switchStudentTab(tabName) {
             item.section.style.display = (key === tabName) ? "block" : "none";
         }
     });
+
+    if (studyNotesSection) studyNotesSection.style.display = "none";
+    document.body.classList.remove("in-notes-tab");
 
     if (helpSection) helpSection.style.display = "none";
     if (examinationsNav) {
@@ -2104,7 +2271,7 @@ function initNotificationsBell() {
             tag: "Notes",
             title: "Study Notes Ready",
             desc: "Browse Paper 1 & Paper 2 unit guides, grammar references, and quick revision notes.",
-            targetId: "studyMaterialSection",
+            action: "openStudyNotes",
             icon: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>`
         });
 
@@ -2117,7 +2284,7 @@ function initNotificationsBell() {
             metaEl.textContent = `${items.length} active ${items.length === 1 ? "notification" : "notifications"}`;
         }
         listEl.innerHTML = items.map(item => `
-            <button type="button" class="notif-item" data-scroll-target="${item.targetId || ""}">
+            <button type="button" class="notif-item" data-scroll-target="${item.targetId || ""}" data-notif-action="${item.action || ""}">
                 <span class="notif-item-icon" aria-hidden="true">${item.icon}</span>
                 <span class="notif-item-body">
                     <span class="notif-item-top">
@@ -2132,8 +2299,11 @@ function initNotificationsBell() {
         listEl.querySelectorAll(".notif-item").forEach(btn => {
             btn.addEventListener("click", () => {
                 const targetId = btn.getAttribute("data-scroll-target");
+                const action = btn.getAttribute("data-notif-action");
                 closeNotifications();
-                if (targetId) {
+                if (action === "openStudyNotes") {
+                    openStudyNotesPage();
+                } else if (targetId) {
                     const targetEl = document.getElementById(targetId);
                     if (targetEl) {
                         targetEl.scrollIntoView({ behavior: "smooth", block: "start" });

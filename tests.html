@@ -1465,10 +1465,11 @@
                 padding-bottom: calc(86px + env(safe-area-inset-bottom, 0px)) !important;
             }
 
-            /* Hide topbar on mobile Home, Search, Ranks & Profile tabs */
+            /* Hide topbar on mobile Home, Search, Ranks, Notes & Profile tabs */
             body.in-home-tab .topbar,
             body.in-search-tab .topbar,
             body.in-leaderboard-tab .topbar,
+            body.in-notes-tab .topbar,
             body.in-profile-tab .topbar {
                 display: none !important;
             }
@@ -1476,6 +1477,7 @@
             body.in-home-tab .content,
             body.in-search-tab .content,
             body.in-leaderboard-tab .content,
+            body.in-notes-tab .content,
             body.in-profile-tab .content {
                 padding-top: calc(env(safe-area-inset-top, 0px) + 10px) !important;
             }
@@ -3650,6 +3652,130 @@
             margin-bottom: 24px;
         }
 
+        /* DEDICATED STUDY NOTES PAGE (PAPER SELECTOR + LIST VIEW) */
+        .notes-hero-card {
+            background: linear-gradient(155deg, #821D36 0%, #631227 58%, #4F0C1E 100%);
+            border-radius: 24px;
+            padding: 20px 18px 18px;
+            border: 1.5px solid #E8C088;
+            box-shadow: 0 0 20px rgba(232, 192, 136, 0.24), 0 14px 32px rgba(58, 1, 13, 0.28), inset 0 1px 0 rgba(251, 222, 199, 0.16);
+            color: #FDF4EE;
+            margin-bottom: 16px;
+        }
+
+        .notes-back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.12);
+            border: 1px solid rgba(232, 192, 136, 0.55);
+            color: #FBDEC7;
+            border-radius: 999px;
+            padding: 6px 13px;
+            font-size: 12px;
+            font-weight: 700;
+            cursor: pointer;
+            margin-bottom: 12px;
+            transition: background 0.18s ease, transform 0.18s ease;
+        }
+
+        .notes-back-btn:hover {
+            background: rgba(232, 192, 136, 0.22);
+            transform: translateX(-2px);
+        }
+
+        .notes-paper-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .notes-paper-option {
+            width: 100%;
+            text-align: left;
+            background: linear-gradient(165deg, #FFFFFF 0%, #FCF9F5 52%, #F8F0E8 100%);
+            border: 1.5px solid #E2B887;
+            border-radius: 22px;
+            padding: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 14px;
+            cursor: pointer;
+            box-shadow: 0 10px 26px rgba(58, 1, 13, 0.08), inset 0 1px 0 #FFFFFF;
+            transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease, border-color 0.2s ease;
+        }
+
+        .notes-paper-option:hover {
+            transform: translateY(-2px);
+            border-color: #C89B5B;
+            box-shadow: 0 14px 30px rgba(58, 1, 13, 0.14);
+        }
+
+        .notes-paper-left {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            min-width: 0;
+        }
+
+        .notes-paper-badge {
+            width: 48px;
+            height: 48px;
+            border-radius: 15px;
+            background: linear-gradient(135deg, #7C1B34 0%, #5B1024 100%);
+            color: #FDF4EE;
+            border: 1px solid rgba(232, 192, 136, 0.65);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 800;
+            font-size: 13px;
+            flex-shrink: 0;
+            box-shadow: 0 6px 14px rgba(88, 14, 34, 0.22);
+        }
+
+        .notes-paper-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: #3A010D;
+            margin: 0 0 3px;
+        }
+
+        .notes-paper-sub {
+            font-size: 12.5px;
+            color: #6E4A4E;
+            margin: 0;
+            line-height: 1.4;
+        }
+
+        .notes-paper-arrow {
+            width: 34px;
+            height: 34px;
+            border-radius: 50%;
+            background: #F9EBDD;
+            border: 1px solid rgba(226, 184, 135, 0.65);
+            color: #5B1024;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+        }
+
+        .notes-list-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            width: 100%;
+        }
+
+        .notes-list-stack .avail-exam-card {
+            flex: none;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
         .exam-section-header {
             display: flex;
             align-items: center;
@@ -4720,6 +4846,13 @@
                         </svg>
                         <span>Upcoming (<span id="chipUpCount">0</span>)</span>
                     </button>
+                    <button type="button" class="home-filter-chip" data-home-filter="notes" id="homeStudyNotesBtn">
+                        <svg class="chip-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" aria-hidden="true">
+                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                        </svg>
+                        <span>Study Notes</span>
+                    </button>
                 </div>
 
                 <div class="toolbar">
@@ -4769,37 +4902,6 @@
 
                 <div class="count" id="resultCount">
                     Showing 10 examinations
-                </div>
-
-                <!-- STUDY MATERIAL HORIZONTAL CAROUSEL -->
-                <div class="exam-carousel-section" id="studyMaterialSection">
-                    <div class="exam-section-header">
-                        <div class="exam-section-title-group">
-                            <span class="section-icon-badge available" aria-hidden="true">
-                                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round">
-                                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/>
-                                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>
-                                </svg>
-                            </span>
-                            <div>
-                                <h2 class="exam-section-heading">Study Notes</h2>
-                                <p class="exam-section-sub">Curated syllabus notes &amp; revision guides — swipe or use arrows</p>
-                            </div>
-                        </div>
-                        <span class="carousel-count-pill" id="studyMaterialCountBadge">3 SETS</span>
-                    </div>
-
-                    <div class="exam-carousel-track" id="studyMaterialTrack"></div>
-
-                    <div class="carousel-controls-row" id="studyMaterialControls">
-                        <button type="button" class="carousel-arrow-btn" id="studyMaterialPrevBtn" aria-label="Previous study material">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"/><path d="m12 19-7-7 7-7"/></svg>
-                        </button>
-                        <div class="carousel-dots-pill is-available" id="studyMaterialDots"></div>
-                        <button type="button" class="carousel-arrow-btn" id="studyMaterialNextBtn" aria-label="Next study material">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
-                        </button>
-                    </div>
                 </div>
 
                 <!-- AVAILABLE EXAMS HORIZONTAL CAROUSEL -->
@@ -4866,6 +4968,83 @@
 
                 <div class="empty" id="emptyTestsState" style="display: none;">No examinations match your search.</div>
 
+            </section>
+
+            <!-- DEDICATED STUDY NOTES PAGE (PAPER SELECTOR -> LIST VIEW) -->
+            <section id="studyNotesSection" class="mobile-view-section" style="display: none;">
+                <!-- Brand Crest Header -->
+                <div class="hero-brand-header" style="padding: 2px 4px 14px;">
+                    <div class="hero-brand-left">
+                        <img src="Logoicon.png" alt="SLOGON ACADEMY Logo" class="hero-brand-logo">
+                        <span class="hero-brand-divider" aria-hidden="true"></span>
+                        <div class="hero-brand-text">
+                            <span class="hero-brand-name">SLOGON ACADEMY</span>
+                        </div>
+                    </div>
+                    <button type="button" class="hero-bell-btn" aria-label="Open notifications" aria-haspopup="dialog" aria-controls="notificationsModal">
+                        <svg class="hero-bell-svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                            <path class="hero-bell-wave" d="M3.8 8.5a9.5 9.5 0 0 1 2.2-3.4" stroke="#E8C088" stroke-width="1.6"/>
+                            <path class="hero-bell-wave" d="M20.2 8.5a9.5 9.5 0 0 0-2.2-3.4" stroke="#E8C088" stroke-width="1.6"/>
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0" stroke="#E8C088"/>
+                        </svg>
+                        <span class="hero-bell-dot" aria-hidden="true"></span>
+                    </button>
+                </div>
+
+                <!-- Step 1: Paper Selection View -->
+                <div id="studyPaperSelectorView">
+                    <div class="notes-hero-card">
+                        <button type="button" class="notes-back-btn" id="notesBackToHomeBtn">
+                            <span>&larr;</span><span>Back to Home</span>
+                        </button>
+                        <span class="search-hero-tag">SYLLABUS LIBRARY</span>
+                        <h2 class="search-hero-title" style="margin-bottom: 6px;">Study Notes</h2>
+                        <p style="margin: 0; font-size: 12.5px; color: rgba(251, 222, 199, 0.86); line-height: 1.45;">
+                            Choose a paper below to view all structured unit notes and revision guides.
+                        </p>
+                    </div>
+
+                    <div class="notes-paper-grid" id="studyPaperOptions">
+                        <button type="button" class="notes-paper-option" data-study-paper="Paper 1">
+                            <div class="notes-paper-left">
+                                <div class="notes-paper-badge">P1</div>
+                                <div>
+                                    <h3 class="notes-paper-title">Paper 1</h3>
+                                    <p class="notes-paper-sub">General Paper &bull; Teaching, Research, DI, Logic &amp; ICT</p>
+                                </div>
+                            </div>
+                            <span class="notes-paper-arrow" aria-hidden="true">&rarr;</span>
+                        </button>
+
+                        <button type="button" class="notes-paper-option" data-study-paper="Paper 2">
+                            <div class="notes-paper-left">
+                                <div class="notes-paper-badge">P2</div>
+                                <div>
+                                    <h3 class="notes-paper-title">Paper 2</h3>
+                                    <p class="notes-paper-sub">Subject Paper &bull; Tamil Literature, Grammar &amp; Criticism</p>
+                                </div>
+                            </div>
+                            <span class="notes-paper-arrow" aria-hidden="true">&rarr;</span>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Step 2: Selected Paper Notes List View -->
+                <div id="studyNotesListView" style="display: none;">
+                    <div class="notes-hero-card">
+                        <button type="button" class="notes-back-btn" id="notesBackToPapersBtn">
+                            <span>&larr;</span><span>All Papers</span>
+                        </button>
+                        <span class="search-hero-tag" id="selectedPaperTag">PAPER 1</span>
+                        <h2 class="search-hero-title" id="selectedPaperHeading" style="margin-bottom: 6px;">Paper 1 Notes</h2>
+                        <p id="selectedPaperSub" style="margin: 0; font-size: 12.5px; color: rgba(251, 222, 199, 0.86); line-height: 1.45;">
+                            Tap any study note banner below to open its unit syllabus and key topics.
+                        </p>
+                    </div>
+
+                    <div class="notes-list-stack" id="studyNotesList"></div>
+                </div>
             </section>
 
             <!-- HELP SECTION -->
