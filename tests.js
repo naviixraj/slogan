@@ -999,7 +999,7 @@ function renderUnitCardsDom(paperKey, paperNotes) {
                         <p class="notes-paper-sub">${unitNotes.length > 0 ? `View ${unitNotes.length} uploaded study ${unitNotes.length === 1 ? "note" : "notes"}` : "No notes uploaded yet"}</p>
                     </div>
                 </div>
-                <span class="notes-paper-arrow" aria-hidden="true">&rarr;</span>
+                <span class="notes-paper-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m13 6 6 6-6 6"/></svg></span>
             </div>
         `;
         unitBtn.addEventListener("click", () => renderStudyNotesForUnit(paperKey, u));
