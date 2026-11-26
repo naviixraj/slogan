@@ -1993,6 +1993,23 @@ function initHeroCardCarousel() {
     const realCount = realSlides.length;
     if (realCount < 2) return;
 
+    track.addEventListener("click", (e) => {
+        const cta = e.target.closest("[data-hero-action]");
+        if (!cta) return;
+        e.stopPropagation();
+        const action = cta.getAttribute("data-hero-action");
+        if (action === "exams") {
+            const availEl = document.getElementById("availableExamsSection");
+            if (availEl) availEl.scrollIntoView({ behavior: "smooth", block: "start" });
+        } else if (action === "notes") {
+            if (typeof openStudyNotesPage === "function") openStudyNotesPage();
+        } else if (action === "ranks") {
+            if (typeof switchStudentTab === "function") switchStudentTab("leaderboard");
+        } else if (action === "search") {
+            if (typeof switchStudentTab === "function") switchStudentTab("search");
+        }
+    });
+
     function makeClone(slideEl) {
         const clone = slideEl.cloneNode(true);
         clone.removeAttribute("id");

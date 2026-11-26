@@ -3575,6 +3575,38 @@
             color: #6E4A4E;
         }
 
+        .hero-slide-cta {
+            margin-top: 14px;
+            border: 1px solid rgba(255, 244, 232, 0.72);
+            border-radius: 999px;
+            padding: 9px 22px;
+            background: linear-gradient(135deg, #FBDEC7 0%, #E8C088 55%, #C89B5B 100%);
+            color: #3A010D;
+            font-size: 12px;
+            font-weight: 800;
+            letter-spacing: 0.4px;
+            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 7px;
+            cursor: pointer;
+            box-shadow: 0 5px 16px rgba(232, 192, 136, 0.32), inset 0 1px 0 rgba(255, 255, 255, 0.55);
+            transition: transform 0.18s ease, box-shadow 0.18s ease;
+        }
+
+        .hero-slide-cta:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px rgba(232, 192, 136, 0.45);
+        }
+
+        .hero-slide-card:not(.is-active) .hero-slide-cta {
+            background: linear-gradient(135deg, #7C1B34 0%, #5B1024 100%);
+            color: #FDF4EE;
+            border-color: rgba(232, 192, 136, 0.5);
+            box-shadow: none;
+        }
+
         .hero-slide-card:not(.is-active) .hero-slide-stat-lbl {
             color: #F1D6C7;
         }
@@ -4953,83 +4985,55 @@
                                         <span class="hero-slide-stat-lbl">Total Sets</span>
                                     </div>
                                 </div>
+                                <button type="button" class="hero-slide-cta" data-hero-action="exams">
+                                    <span>Start Examination</span><span>&rarr;</span>
+                                </button>
                             </article>
 
-                            <!-- Slide 2: Exam Pattern -->
+                            <!-- Slide 2: Study Notes -->
                             <article class="hero-slide-card" data-hero-slide="1" tabindex="0">
                                 <div class="hero-slide-icon-wrap" aria-hidden="true">
                                     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <rect x="8" y="2" width="8" height="4" rx="1"></rect>
-                                        <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
-                                        <path d="M9 12l2 2 4-4"></path>
+                                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
                                     </svg>
                                 </div>
-                                <h2 class="hero-slide-title">Exam Pattern</h2>
+                                <h2 class="hero-slide-title">Study Notes</h2>
                                 <p class="hero-slide-desc">
-                                    Full-length bilingual assessment structured into Paper 1 General Paper and Paper 2 Subject.
+                                    Unit-wise notes, grammar guides, and quick revision briefs for Paper 1 and Paper 2.
                                 </p>
                                 <div class="hero-slide-stats">
                                     <div class="hero-slide-stat">
                                         <svg class="hero-stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
-                                        <span class="hero-slide-stat-num">50</span>
-                                        <span class="hero-slide-stat-lbl">Paper 1 Qs</span>
+                                        <span class="hero-slide-stat-num">2</span>
+                                        <span class="hero-slide-stat-lbl">Papers</span>
                                     </div>
                                     <div class="hero-slide-stat">
-                                        <svg class="hero-stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>
-                                        <span class="hero-slide-stat-num">100</span>
-                                        <span class="hero-slide-stat-lbl">Paper 2 Qs</span>
+                                        <svg class="hero-stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 12 12 17 22 12"/></svg>
+                                        <span class="hero-slide-stat-num">6</span>
+                                        <span class="hero-slide-stat-lbl">Modules</span>
                                     </div>
                                     <div class="hero-slide-stat">
-                                        <svg class="hero-stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>
-                                        <span class="hero-slide-stat-num">180m</span>
-                                        <span class="hero-slide-stat-lbl">Duration</span>
+                                        <svg class="hero-stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+                                        <span class="hero-slide-stat-num">20</span>
+                                        <span class="hero-slide-stat-lbl">Units</span>
                                     </div>
                                 </div>
+                                <button type="button" class="hero-slide-cta" data-hero-action="notes">
+                                    <span>Open Study Notes</span><span>&rarr;</span>
+                                </button>
                             </article>
 
                             <!-- Slide 3: Cohort Rankings -->
                             <article class="hero-slide-card" data-hero-slide="2" tabindex="0">
-                                <div class="hero-laurel-emblem" aria-hidden="true">
-                                    <svg viewBox="0 0 180 86" fill="none">
-                                        <defs>
-                                            <linearGradient id="laurelGold" x1="0%" y1="0%" x2="100%" y2="100%">
-                                                <stop offset="0%" stop-color="#FFF7D6"/>
-                                                <stop offset="35%" stop-color="#F3CE78"/>
-                                                <stop offset="70%" stop-color="#C88E2B"/>
-                                                <stop offset="100%" stop-color="#8C5912"/>
-                                            </linearGradient>
-                                            <linearGradient id="laurelShine" x1="0%" y1="0%" x2="0%" y2="100%">
-                                                <stop offset="0%" stop-color="#FFFBE8"/>
-                                                <stop offset="100%" stop-color="#D9A03C"/>
-                                            </linearGradient>
-                                        </defs>
-                                        <!-- Left & Right Golden Stems -->
-                                        <path d="M90 66C60 66 35 48 26 16" stroke="url(#laurelGold)" stroke-width="2.6" stroke-linecap="round"/>
-                                        <path d="M90 66C120 66 145 48 154 16" stroke="url(#laurelGold)" stroke-width="2.6" stroke-linecap="round"/>
-                                        <!-- Left Sculpted Leaves -->
-                                        <path d="M26 16C20 8 24 4 30 12C29 18 27 19 26 16Z" fill="url(#laurelShine)" stroke="#7A4C0D" stroke-width="0.7"/>
-                                        <path d="M31 28C21 23 19 17 27 21C32 24 33 27 31 28Z" fill="url(#laurelGold)" stroke="#7A4C0D" stroke-width="0.7"/>
-                                        <path d="M33 24C34 14 39 12 40 20C38 25 35 26 33 24Z" fill="url(#laurelShine)" stroke="#7A4C0D" stroke-width="0.7"/>
-                                        <path d="M39 39C27 36 25 30 35 32C40 34 41 37 39 39Z" fill="url(#laurelGold)" stroke="#7A4C0D" stroke-width="0.7"/>
-                                        <path d="M41 35C41 24 47 21 48 31C46 36 43 37 41 35Z" fill="url(#laurelShine)" stroke="#7A4C0D" stroke-width="0.7"/>
-                                        <path d="M50 49C37 49 35 42 46 43C51 45 52 48 50 49Z" fill="url(#laurelGold)" stroke="#7A4C0D" stroke-width="0.7"/>
-                                        <path d="M52 45C51 34 57 30 59 40C57 45 54 46 52 45Z" fill="url(#laurelShine)" stroke="#7A4C0D" stroke-width="0.7"/>
-                                        <path d="M64 58C50 60 48 53 60 52C65 54 66 57 64 58Z" fill="url(#laurelGold)" stroke="#7A4C0D" stroke-width="0.7"/>
-                                        <path d="M66 54C64 43 70 39 73 49C71 54 68 55 66 54Z" fill="url(#laurelShine)" stroke="#7A4C0D" stroke-width="0.7"/>
-                                        <path d="M78 64C65 68 62 62 73 59C78 60 79 62 78 64Z" fill="url(#laurelGold)" stroke="#7A4C0D" stroke-width="0.7"/>
-                                        <!-- Right Sculpted Leaves -->
-                                        <path d="M154 16C160 8 156 4 150 12C151 18 153 19 154 16Z" fill="url(#laurelShine)" stroke="#7A4C0D" stroke-width="0.7"/>
-                                        <path d="M149 28C159 23 161 17 153 21C148 24 147 27 149 28Z" fill="url(#laurelGold)" stroke="#7A4C0D" stroke-width="0.7"/>
-                                        <path d="M147 24C146 14 141 12 140 20C142 25 145 26 147 24Z" fill="url(#laurelShine)" stroke="#7A4C0D" stroke-width="0.7"/>
-                                        <path d="M141 39C153 36 155 30 145 32C140 34 139 37 141 39Z" fill="url(#laurelGold)" stroke="#7A4C0D" stroke-width="0.7"/>
-                                        <path d="M139 35C139 24 133 21 132 31C134 36 137 37 139 35Z" fill="url(#laurelShine)" stroke="#7A4C0D" stroke-width="0.7"/>
-                                        <path d="M130 49C143 49 145 42 134 43C129 45 128 48 130 49Z" fill="url(#laurelGold)" stroke="#7A4C0D" stroke-width="0.7"/>
-                                        <path d="M128 45C129 34 123 30 121 40C123 45 126 46 128 45Z" fill="url(#laurelShine)" stroke="#7A4C0D" stroke-width="0.7"/>
-                                        <path d="M116 58C130 60 132 53 120 52C115 54 114 57 116 58Z" fill="url(#laurelGold)" stroke="#7A4C0D" stroke-width="0.7"/>
-                                        <path d="M114 54C116 43 110 39 107 49C109 54 112 55 114 54Z" fill="url(#laurelShine)" stroke="#7A4C0D" stroke-width="0.7"/>
-                                        <path d="M102 64C115 68 118 62 107 59C102 60 101 62 102 64Z" fill="url(#laurelGold)" stroke="#7A4C0D" stroke-width="0.7"/>
-                                        <!-- Center Crossed Ribbon Knot -->
-                                        <path d="M84 65L90 61L96 65L90 70Z" fill="url(#laurelShine)" stroke="#7A4C0D" stroke-width="0.8"/>
+                                <div class="hero-slide-icon-wrap" aria-hidden="true">
+                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+                                        <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+                                        <path d="M4 22h16"></path>
+                                        <path d="M10 14.66V17c0 .55-.45 1-1 1H7"></path>
+                                        <path d="M14 14.66V17c0 .55.45 1 1 1h2"></path>
+                                        <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
                                     </svg>
                                 </div>
                                 <h2 class="hero-slide-title">Cohort Ranks</h2>
@@ -5053,6 +5057,9 @@
                                         <span class="hero-slide-stat-lbl">Tie-Break</span>
                                     </div>
                                 </div>
+                                <button type="button" class="hero-slide-cta" data-hero-action="ranks">
+                                    <span>View Cohort Ranks</span><span>&rarr;</span>
+                                </button>
                             </article>
 
                             <!-- Slide 4: Portal Readiness -->
@@ -5084,6 +5091,9 @@
                                         <span class="hero-slide-stat-lbl">Timer</span>
                                     </div>
                                 </div>
+                                <button type="button" class="hero-slide-cta" data-hero-action="search">
+                                    <span>Browse All Papers</span><span>&rarr;</span>
+                                </button>
                             </article>
                         </div>
 
