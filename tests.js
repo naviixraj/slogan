@@ -478,9 +478,6 @@ function renderTests() {
     }
 
     window._slogonCardBuilders = { buildAvailableCard, buildUpcomingCard };
-        card.append(top, title, desc, statBoxes, footer);
-        return card;
-    }
 
     // Render carousels and wire navigation controls
     function setupCarousel(trackEl, items, builderFn, dotsEl, prevBtn, nextBtn, controlsEl) {
