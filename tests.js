@@ -223,10 +223,10 @@ function renderTests() {
         card.innerHTML = `
             <svg class="avail-card-watermark" viewBox="0 0 96 96" fill="none" aria-hidden="true">
                 <rect x="18" y="12" width="48" height="60" rx="9" fill="#FDF7F1" stroke="#B69690" stroke-width="2.2"/>
-                <rect x="31" y="7" width="22" height="10" rx="4.5" fill="#4B0415" stroke="#FDF7F1" stroke-width="1.5"/>
-                <path d="M27 31l3.5 3.5 6.5-6.5M27 44l3.5 3.5 6.5-6.5M27 57l3.5 3.5 6.5-6.5" stroke="#4B0415" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
+                <rect x="31" y="7" width="22" height="10" rx="4.5" fill="#631328" stroke="#FDF7F1" stroke-width="1.5"/>
+                <path d="M27 31l3.5 3.5 6.5-6.5M27 44l3.5 3.5 6.5-6.5M27 57l3.5 3.5 6.5-6.5" stroke="#631328" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
                 <path d="M42 32h15M42 45h15M42 58h11" stroke="#CBB2AD" stroke-width="2.3" stroke-linecap="round"/>
-                <circle cx="66" cy="64" r="17" fill="#4B0415" stroke="#FFFFFF" stroke-width="2.6"/>
+                <circle cx="66" cy="64" r="17" fill="#631328" stroke="#FFFFFF" stroke-width="2.6"/>
                 <path d="M66 55.5v9l6 3.5" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
         `;
