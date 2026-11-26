@@ -1557,10 +1557,10 @@
         }
 
         .logout-modal-box {
-            background: #FFFFFF;
-            border: 1px solid #E2E8F0;
-            border-radius: 16px;
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.18);
+            background: linear-gradient(165deg, #FFFFFF 0%, #FCF9F5 55%, #F8F0E8 100%) !important;
+            border: 1.5px solid #E2B887 !important;
+            border-radius: 26px !important;
+            box-shadow: 0 0 28px rgba(232, 192, 136, 0.35), 0 22px 48px rgba(58, 1, 13, 0.28) !important;
             width: min(390px, 94%);
             padding: 28px 24px;
             text-align: center;
@@ -1580,9 +1580,9 @@
             width: 30px;
             height: 30px;
             border-radius: 50%;
-            border: 1px solid #E2E8F0;
-            background: #F8FAFC;
-            color: #64748B;
+            border: 1px solid rgba(218, 175, 122, 0.72);
+            background: #FAF2EA;
+            color: #5B1024;
             font-size: 14px;
             display: grid;
             place-items: center;
@@ -1591,16 +1591,18 @@
         }
 
         .modal-close-icon-btn:hover {
-            background: #F1F5F9;
-            color: #0F172A;
+            background: #F3E2CE;
+            color: #3A010D;
         }
 
         .logout-icon-tile {
-            width: 54px;
-            height: 54px;
+            width: 58px;
+            height: 58px;
             border-radius: 50%;
-            background: #FEE2E2;
-            color: #DC2626;
+            background: linear-gradient(135deg, #821D36 0%, #5B1024 100%);
+            border: 1.5px solid #E8C088;
+            color: #FBDEC7;
+            box-shadow: 0 8px 20px rgba(88, 14, 34, 0.28);
             display: grid;
             place-items: center;
             margin: 0 auto 16px;
@@ -1612,10 +1614,38 @@
         }
 
         .logout-title {
-            font-size: 17px;
-            font-weight: 800;
-            color: #0F172A;
+            font-family: "Playfair Display", Georgia, serif;
+            font-size: 21px;
+            font-weight: 700;
+            color: #3A010D;
             margin-bottom: 8px;
+        }
+
+        .logout-modal-box p {
+            color: #6E4A4E !important;
+            font-size: 13.5px !important;
+            line-height: 1.5 !important;
+        }
+
+        .logout-modal-box .logout-actions button,
+        .logout-modal-box .modal-actions button {
+            border-radius: 999px !important;
+            font-weight: 800 !important;
+            padding: 11px 18px !important;
+        }
+
+        .logout-modal-box .btn-cancel-logout,
+        .logout-modal-box .btn-cancel-modal {
+            background: #FAF2EA !important;
+            border: 1.25px solid #D4A767 !important;
+            color: #5B1024 !important;
+        }
+
+        .logout-modal-box .btn-confirm-logout {
+            background: linear-gradient(105deg, #7C1B34 0%, #5F1024 60%, #4E0C1D 100%) !important;
+            border: 1.25px solid rgba(232, 192, 136, 0.8) !important;
+            color: #FDF4EE !important;
+            box-shadow: 0 6px 16px rgba(58, 1, 13, 0.25) !important;
         }
 
         .logout-desc {
