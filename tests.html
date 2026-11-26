@@ -3961,18 +3961,34 @@
             transform: translateY(-1px);
         }
 
-        /* UPCOMING EXAM CARD (WARM IVORY + 3 BLUSH BEIGE STAT BOXES + ALERT BUTTON) */
+        /* UPCOMING EXAM CARD (WARM IVORY + CHAMPAGNE GOLD + SOFT ROSE-BURGUNDY) */
         .upcoming-exam-card {
             flex: 0 0 min(380px, calc(100% - 26px));
             scroll-snap-align: start;
-            background: #FDF4EE;
-            border-radius: 22px;
+            background: linear-gradient(170deg, #FFFDFB 0%, #FDF6EE 100%);
+            border-radius: 24px;
             padding: 18px;
-            border: 1.5px solid #BD8B7F;
-            box-shadow: 0 10px 26px rgba(24, 0, 5, 0.22);
+            border: 1.5px solid #E2B887;
+            box-shadow: 0 10px 26px rgba(58, 1, 13, 0.08);
+            position: relative;
+            overflow: hidden;
             display: flex;
             flex-direction: column;
             gap: 12px;
+        }
+
+        .upcoming-exam-card::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 108px;
+            height: 58px;
+            pointer-events: none;
+            z-index: 1;
+            background-repeat: no-repeat;
+            background-size: 100% 100%;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 108 58' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='ug' x1='0%25' y1='100%25' x2='100%25' y2='0%25'%3E%3Cstop offset='0%25' stop-color='%23E8C088'/%3E%3Cstop offset='50%25' stop-color='%23FFF2D4'/%3E%3Cstop offset='100%25' stop-color='%23B6803E'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M108,10 C92,38 64,52 16,58 L108,58 Z' fill='%23631227'/%3E%3Cpath d='M16,58 C64,50 92,36 108,6 L108,14 C92,41 64,54 24,58 Z' fill='url(%23ug)'/%3E%3C/svg%3E");
         }
 
         .upcoming-card-title {
@@ -3998,9 +4014,9 @@
         }
 
         .upcoming-code-pill {
-            background: #FBDEC7;
-            border: 1px solid #BD8B7F;
-            color: #3A010D;
+            background: #F9EBDD;
+            border: 1px solid rgba(218, 175, 122, 0.65);
+            color: #5B1024;
             font-size: 11px;
             font-weight: 800;
             padding: 4px 11px;
@@ -4011,9 +4027,9 @@
         }
 
         .upcoming-soon-pill {
-            background: #F1D6C7;
-            border: 1px solid #BD8B7F;
-            color: #570215;
+            background: #F6DFC4;
+            border: 1px solid rgba(218, 175, 122, 0.78);
+            color: #6E1A2E;
             font-size: 11px;
             font-weight: 800;
             padding: 4px 11px;
@@ -4073,8 +4089,8 @@
         }
 
         .upcoming-stat-box {
-            background: #F1D6C7;
-            border: 1px solid rgba(189, 139, 127, 0.65);
+            background: #F9EBDD;
+            border: 1px solid rgba(226, 184, 135, 0.45);
             border-radius: 14px;
             padding: 10px 9px;
             min-width: 0;
@@ -4118,13 +4134,15 @@
             display: flex;
             justify-content: flex-end;
             margin-top: auto;
+            position: relative;
+            z-index: 2;
         }
 
         .upcoming-alert-btn {
-            border: none;
+            border: 1px solid rgba(232, 192, 136, 0.65);
             border-radius: 999px;
             padding: 10px 18px;
-            background: linear-gradient(135deg, #570215 0%, #3A010D 100%);
+            background: linear-gradient(135deg, #7C1B34 0%, #5B1024 100%);
             color: #FDF4EE;
             font-size: 11.5px;
             font-weight: 800;
@@ -4134,14 +4152,14 @@
             align-items: center;
             gap: 7px;
             cursor: pointer;
-            box-shadow: 0 4px 14px rgba(58, 1, 13, 0.24);
+            box-shadow: 0 4px 14px rgba(88, 14, 34, 0.22);
             transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .upcoming-alert-btn:hover {
-            background: linear-gradient(135deg, #3A010D 0%, #570215 100%);
+            background: linear-gradient(135deg, #8A213C 0%, #68142A 100%);
             transform: translateY(-1px);
-            box-shadow: 0 6px 20px rgba(58, 1, 13, 0.34);
+            box-shadow: 0 6px 20px rgba(88, 14, 34, 0.3);
         }
 
         .upcoming-alert-btn.is-alerted {
