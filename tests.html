@@ -1128,9 +1128,11 @@
 
         .footer {
             text-align: center;
-            color: #BD8B7F;
-            font-size: 12px;
-            padding: 22px;
+            color: #6E4A4E;
+            font-size: 11.5px;
+            font-weight: 600;
+            letter-spacing: 1.2px;
+            padding: 20px 22px 26px;
         }
 
         /* MOBILE RESPONSIVE */
@@ -3554,18 +3556,19 @@
         .hero-carousel-dot {
             width: 7px;
             height: 7px;
-            border-radius: 50%;
+            border-radius: 999px;
             border: none;
             padding: 0;
-            background: rgba(189, 139, 127, 0.42);
+            background: rgba(110, 18, 38, 0.24);
             cursor: pointer;
-            transition: transform 0.22s ease, background 0.22s ease, box-shadow 0.22s ease;
+            transition: width 0.24s ease, background 0.22s ease, box-shadow 0.22s ease;
         }
 
         .hero-carousel-dot.active {
-            background: #E8C088;
-            transform: scale(1.22);
-            box-shadow: 0 0 8px rgba(251, 222, 199, 0.65);
+            width: 18px;
+            background: #6E1226;
+            transform: none;
+            box-shadow: 0 2px 8px rgba(110, 18, 38, 0.28);
         }
 
         /* =========================================================
@@ -3696,11 +3699,13 @@
         }
 
         .exam-section-heading {
-            font-size: 16.5px;
-            font-weight: 800;
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 18px;
+            font-weight: 700;
             color: #2D0610;
             margin: 0;
             line-height: 1.2;
+            letter-spacing: 0.1px;
         }
 
         .exam-section-sub {
@@ -4223,9 +4228,10 @@
         }
 
         .carousel-arrow-btn:disabled {
-            border-color: rgba(189, 139, 127, 0.35);
-            color: rgba(241, 214, 199, 0.45);
-            background: rgba(45, 2, 10, 0.45);
+            border-color: rgba(226, 184, 135, 0.48) !important;
+            color: rgba(110, 18, 38, 0.32);
+            background: rgba(255, 255, 255, 0.62);
+            box-shadow: none !important;
             cursor: default;
         }
 
@@ -4233,35 +4239,37 @@
             display: inline-flex;
             align-items: center;
             gap: 6px;
-            padding: 7px 11px;
+            padding: 7px 12px;
             border-radius: 999px;
         }
 
         .carousel-dots-pill.is-available,
         .carousel-dots-pill.is-upcoming {
-            background: rgba(253, 244, 238, 0.12);
-            border: 1px solid rgba(251, 222, 199, 0.22);
+            background: rgba(255, 255, 255, 0.85);
+            border: 1px solid rgba(226, 184, 135, 0.72);
+            box-shadow: 0 3px 10px rgba(58, 1, 13, 0.06);
         }
 
         .carousel-dot {
             width: 7px;
             height: 7px;
-            border-radius: 50%;
+            border-radius: 999px;
             border: none;
             padding: 0;
             cursor: pointer;
-            transition: transform 0.15s ease, background 0.15s ease;
+            transition: width 0.22s ease, background 0.18s ease;
         }
 
         .carousel-dots-pill.is-available .carousel-dot,
         .carousel-dots-pill.is-upcoming .carousel-dot {
-            background: rgba(189, 139, 127, 0.48);
+            background: rgba(110, 18, 38, 0.24);
         }
 
         .carousel-dots-pill.is-available .carousel-dot.active,
         .carousel-dots-pill.is-upcoming .carousel-dot.active {
-            background: #FBDEC7;
-            transform: scale(1.18);
+            width: 16px;
+            background: #6E1226;
+            transform: none;
         }
 
         @media (max-width: 900px) {
