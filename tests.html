@@ -1599,8 +1599,8 @@
 
             .hero-slide-card {
                 flex: 0 0 calc(100% - 20px);
-                min-height: 345px;
-                padding: 26px 20px 24px;
+                min-height: 288px;
+                padding: 20px 18px 18px;
             }
 
             /* =========================================================
@@ -3337,18 +3337,18 @@
 
         .hero-slide-card {
             flex: 0 0 min(520px, calc(100% - 10px));
-            min-height: 350px;
+            min-height: 300px;
             scroll-snap-align: center;
-            background: linear-gradient(160deg, rgba(255, 251, 246, 0.94) 0%, rgba(244, 223, 202, 0.96) 100%);
+            background: linear-gradient(160deg, rgba(255, 251, 246, 0.96) 0%, rgba(244, 223, 202, 0.98) 100%);
             border: 1.25px solid rgba(226, 184, 135, 0.85);
-            border-radius: 26px;
-            padding: 30px 26px 26px;
-            text-align: center;
+            border-radius: 24px;
+            padding: 22px 20px 18px;
+            text-align: left;
             color: #3A010D;
             position: relative;
             cursor: pointer;
             transform-origin: center center;
-            transform: translateZ(0) scale(0.82);
+            transform: translateZ(0) scale(0.84);
             opacity: 0.86;
             will-change: transform, opacity;
             transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1),
@@ -3357,8 +3357,9 @@
                         border-color 0.65s ease;
             display: flex;
             flex-direction: column;
-            align-items: center;
-            justify-content: center;
+            align-items: stretch;
+            justify-content: space-between;
+            gap: 14px;
             overflow: hidden;
         }
 
@@ -3469,17 +3470,31 @@
             border-color: rgba(110, 18, 38, 0.22);
         }
 
+        .hero-slide-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 14px;
+            width: 100%;
+        }
+
+        .hero-slide-head-text {
+            flex: 1;
+            min-width: 0;
+        }
+
         .hero-slide-icon-wrap {
-            width: 56px;
-            height: 56px;
-            border-radius: 18px;
+            width: 48px;
+            height: 48px;
+            border-radius: 15px;
             background: linear-gradient(145deg, rgba(232, 192, 136, 0.24) 0%, rgba(168, 112, 48, 0.16) 100%);
             color: #FCE6C8;
             display: flex;
             align-items: center;
             justify-content: center;
-            margin: 0 auto 10px;
-            box-shadow: 0 0 0 4px rgba(232, 192, 136, 0.14), 0 8px 20px rgba(18, 0, 4, 0.36);
+            margin: 2px 0 0;
+            flex-shrink: 0;
+            box-shadow: 0 0 0 3px rgba(232, 192, 136, 0.14), 0 8px 18px rgba(18, 0, 4, 0.32);
             border: 1.5px solid rgba(232, 192, 136, 0.72);
             transition: transform 0.3s ease;
         }
@@ -3498,10 +3513,10 @@
 
         .hero-slide-title {
             font-family: "Playfair Display", Georgia, "Times New Roman", serif;
-            font-size: 29px;
+            font-size: 25px;
             font-weight: 800;
             letter-spacing: -0.2px;
-            margin: 0 0 8px;
+            margin: 0 0 5px;
             line-height: 1.12;
             color: #FDF4EE;
         }
@@ -3511,10 +3526,9 @@
         }
 
         .hero-slide-desc {
-            font-size: 12.5px;
-            line-height: 1.48;
-            margin: 0 auto;
-            max-width: 300px;
+            font-size: 12.2px;
+            line-height: 1.45;
+            margin: 0;
             color: rgba(251, 222, 199, 0.88);
             opacity: 0.96;
         }
@@ -3527,36 +3541,38 @@
             width: 100%;
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            align-items: center;
-            margin-top: 16px;
-            padding: 12px 6px;
-            border-radius: 16px;
-            background: rgba(255, 248, 240, 0.11);
-            border: 1px solid rgba(232, 192, 136, 0.34);
+            gap: 8px;
+            align-items: stretch;
+            margin-top: 0;
+            padding: 0;
+            background: transparent;
+            border: none;
         }
 
         .hero-slide-card:not(.is-active) .hero-slide-stats {
-            background: rgba(249, 235, 221, 0.72);
-            border-color: rgba(226, 184, 135, 0.55);
+            background: transparent;
+            border: none;
         }
 
         .hero-slide-stat {
             position: relative;
-            padding: 2px 6px;
+            padding: 10px 6px;
             text-align: center;
             display: flex;
             flex-direction: column;
             align-items: center;
+            border-radius: 14px;
+            background: rgba(255, 248, 240, 0.1);
+            border: 1px solid rgba(232, 192, 136, 0.32);
+        }
+
+        .hero-slide-card:not(.is-active) .hero-slide-stat {
+            background: #F9EBDD;
+            border-color: rgba(226, 184, 135, 0.55);
         }
 
         .hero-slide-stat + .hero-slide-stat::before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 12%;
-            bottom: 12%;
-            width: 1px;
-            background: rgba(232, 192, 136, 0.35);
+            display: none;
         }
 
         .hero-stat-icon {
@@ -4990,17 +5006,21 @@
                         <div class="hero-carousel-track" id="heroCarouselTrack">
                             <!-- Slide 1: Examinations Overview -->
                             <article class="hero-slide-card is-active" data-hero-slide="0" tabindex="0">
-                                <span class="hero-slide-eyebrow">LIVE PORTAL &bull; MOCK TESTS</span>
-                                <div class="hero-slide-icon-wrap" aria-hidden="true">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
-                                        <path d="M6 12v5c3 3 9 3 12 0v-5"/>
-                                    </svg>
+                                <div class="hero-slide-header">
+                                    <div class="hero-slide-head-text">
+                                        <span class="hero-slide-eyebrow">LIVE PORTAL &bull; MOCK TESTS</span>
+                                        <h1 class="hero-slide-title">Examinations</h1>
+                                        <p class="hero-slide-desc">
+                                            Browse active mock tests, check upcoming sets, and launch your exam session.
+                                        </p>
+                                    </div>
+                                    <div class="hero-slide-icon-wrap" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M22 10v6M2 10l10-5 10 5-10 5z"/>
+                                            <path d="M6 12v5c3 3 9 3 12 0v-5"/>
+                                        </svg>
+                                    </div>
                                 </div>
-                                <h1 class="hero-slide-title">Examinations</h1>
-                                <p class="hero-slide-desc">
-                                    Browse active mock tests, check upcoming question sets, and launch your exam session.
-                                </p>
                                 <div class="hero-slide-stats">
                                     <div class="hero-slide-stat">
                                         <svg class="hero-stat-icon" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
@@ -5035,17 +5055,21 @@
 
                             <!-- Slide 2: Study Notes -->
                             <article class="hero-slide-card" data-hero-slide="1" tabindex="0">
-                                <span class="hero-slide-eyebrow">SYLLABUS LIBRARY &bull; NOTES</span>
-                                <div class="hero-slide-icon-wrap" aria-hidden="true">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
-                                        <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
-                                    </svg>
+                                <div class="hero-slide-header">
+                                    <div class="hero-slide-head-text">
+                                        <span class="hero-slide-eyebrow">SYLLABUS LIBRARY &bull; NOTES</span>
+                                        <h2 class="hero-slide-title">Study Notes</h2>
+                                        <p class="hero-slide-desc">
+                                            Unit-wise notes, grammar guides, and quick revision briefs for Paper 1 and Paper 2.
+                                        </p>
+                                    </div>
+                                    <div class="hero-slide-icon-wrap" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                                            <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                                        </svg>
+                                    </div>
                                 </div>
-                                <h2 class="hero-slide-title">Study Notes</h2>
-                                <p class="hero-slide-desc">
-                                    Unit-wise notes, grammar guides, and quick revision briefs for Paper 1 and Paper 2.
-                                </p>
                                 <div class="hero-slide-stats">
                                     <div class="hero-slide-stat">
                                         <svg class="hero-stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>
@@ -5070,21 +5094,25 @@
 
                             <!-- Slide 3: Cohort Rankings -->
                             <article class="hero-slide-card" data-hero-slide="2" tabindex="0">
-                                <span class="hero-slide-eyebrow">LIVE STANDINGS &bull; PODIUM</span>
-                                <div class="hero-slide-icon-wrap" aria-hidden="true">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
-                                        <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
-                                        <path d="M4 22h16"></path>
-                                        <path d="M10 14.66V17c0 .55-.45 1-1 1H7"></path>
-                                        <path d="M14 14.66V17c0 .55.45 1 1 1h2"></path>
-                                        <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
-                                    </svg>
+                                <div class="hero-slide-header">
+                                    <div class="hero-slide-head-text">
+                                        <span class="hero-slide-eyebrow">LIVE STANDINGS &bull; PODIUM</span>
+                                        <h2 class="hero-slide-title">Cohort Ranks</h2>
+                                        <p class="hero-slide-desc">
+                                            Compare your mock test accuracy and completion speed on the live SLOGON leaderboard.
+                                        </p>
+                                    </div>
+                                    <div class="hero-slide-icon-wrap" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+                                            <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+                                            <path d="M4 22h16"></path>
+                                            <path d="M10 14.66V17c0 .55-.45 1-1 1H7"></path>
+                                            <path d="M14 14.66V17c0 .55.45 1 1 1h2"></path>
+                                            <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
+                                        </svg>
+                                    </div>
                                 </div>
-                                <h2 class="hero-slide-title">Cohort Ranks</h2>
-                                <p class="hero-slide-desc">
-                                    Compare your mock test accuracy and completion speed on the live SLOGON leaderboard.
-                                </p>
                                 <div class="hero-slide-stats">
                                     <div class="hero-slide-stat">
                                         <svg class="hero-stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 2l3 7h7l-5.5 4.2 2 6.8L12 16l-6.5 4 2-6.8L2 9h7l3-7z"/></svg>
@@ -5109,17 +5137,21 @@
 
                             <!-- Slide 4: Portal Readiness -->
                             <article class="hero-slide-card" data-hero-slide="3" tabindex="0">
-                                <span class="hero-slide-eyebrow">QUESTION BANK &bull; SEARCH</span>
-                                <div class="hero-slide-icon-wrap" aria-hidden="true">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                                        <path d="m9 12 2 2 4-4"></path>
-                                    </svg>
+                                <div class="hero-slide-header">
+                                    <div class="hero-slide-head-text">
+                                        <span class="hero-slide-eyebrow">QUESTION BANK &bull; SEARCH</span>
+                                        <h2 class="hero-slide-title">Exam Ready</h2>
+                                        <p class="hero-slide-desc">
+                                            Instant answer saving, review bookmarking, and automated timer submission built in.
+                                        </p>
+                                    </div>
+                                    <div class="hero-slide-icon-wrap" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                                            <path d="m9 12 2 2 4-4"></path>
+                                        </svg>
+                                    </div>
                                 </div>
-                                <h2 class="hero-slide-title">Exam Ready</h2>
-                                <p class="hero-slide-desc">
-                                    Instant answer saving, review bookmarking, and automated timer submission built in.
-                                </p>
                                 <div class="hero-slide-stats">
                                     <div class="hero-slide-stat">
                                         <svg class="hero-stat-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/></svg>
