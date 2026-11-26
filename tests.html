@@ -3339,17 +3339,17 @@
             flex: 0 0 min(520px, calc(100% - 10px));
             min-height: 350px;
             scroll-snap-align: center;
-            background: linear-gradient(160deg, rgba(142, 31, 56, 0.56) 0%, rgba(58, 1, 13, 0.9) 100%);
-            border: 1.25px solid rgba(232, 192, 136, 0.72);
+            background: linear-gradient(160deg, rgba(255, 251, 246, 0.94) 0%, rgba(244, 223, 202, 0.96) 100%);
+            border: 1.25px solid rgba(226, 184, 135, 0.85);
             border-radius: 26px;
             padding: 30px 26px 26px;
             text-align: center;
-            color: #FDF4EE;
+            color: #3A010D;
             position: relative;
             cursor: pointer;
             transform-origin: center center;
             transform: translateZ(0) scale(0.82);
-            opacity: 0.72;
+            opacity: 0.86;
             will-change: transform, opacity;
             transition: transform 0.75s cubic-bezier(0.22, 1, 0.36, 1),
                         opacity 0.75s cubic-bezier(0.22, 1, 0.36, 1),
@@ -3362,7 +3362,9 @@
         }
 
         .hero-slide-card.is-active {
-            background: linear-gradient(155deg, #821D36 0%, #631227 58%, #4F0C1E 100%);
+            background:
+                radial-gradient(ellipse at 50% 16%, rgba(232, 192, 136, 0.28) 0%, transparent 56%),
+                linear-gradient(155deg, #821D36 0%, #631227 58%, #4F0C1E 100%);
             border: 1.5px solid #E8C088;
             color: #FDF4EE;
             transform: translateZ(0) scale(1.03);
@@ -3402,10 +3404,10 @@
         }
 
         .hero-slide-card:not(.is-active) .hero-slide-icon-wrap {
-            background: rgba(253, 244, 238, 0.14);
-            color: #FBDEC7;
-            border-color: rgba(251, 222, 199, 0.4);
-            box-shadow: none;
+            background: linear-gradient(135deg, #7C1B34 0%, #5B1024 100%);
+            color: #FDF4EE;
+            border-color: rgba(232, 192, 136, 0.65);
+            box-shadow: 0 4px 10px rgba(88, 14, 34, 0.2);
         }
 
         .hero-slide-icon-wrap svg {
@@ -3423,6 +3425,10 @@
             color: #FDF4EE;
         }
 
+        .hero-slide-card:not(.is-active) .hero-slide-title {
+            color: #3A010D;
+        }
+
         .hero-slide-desc {
             font-size: 12.5px;
             line-height: 1.48;
@@ -3433,7 +3439,7 @@
         }
 
         .hero-slide-card:not(.is-active) .hero-slide-desc {
-            color: #F1D6C7;
+            color: #5C3A3E;
         }
 
         .hero-slide-stats {
@@ -3442,8 +3448,15 @@
             grid-template-columns: repeat(3, 1fr);
             align-items: center;
             margin-top: 16px;
-            padding-top: 12px;
-            border-top: 1px solid rgba(232, 192, 136, 0.28);
+            padding: 12px 6px;
+            border-radius: 16px;
+            background: rgba(255, 248, 240, 0.11);
+            border: 1px solid rgba(232, 192, 136, 0.34);
+        }
+
+        .hero-slide-card:not(.is-active) .hero-slide-stats {
+            background: rgba(249, 235, 221, 0.72);
+            border-color: rgba(226, 184, 135, 0.55);
         }
 
         .hero-slide-stat {
@@ -3474,7 +3487,7 @@
         }
 
         .hero-slide-card:not(.is-active) .hero-stat-icon {
-            color: #FBDEC7;
+            color: #6E1226;
         }
 
         .hero-slide-stat-num {
@@ -3487,7 +3500,7 @@
         }
 
         .hero-slide-card:not(.is-active) .hero-slide-stat-num {
-            color: #FDF4EE;
+            color: #3A010D;
         }
 
         .hero-slide-stat-lbl {
@@ -3497,6 +3510,10 @@
             color: rgba(251, 222, 199, 0.78);
             margin-top: 2px;
             letter-spacing: 0.15px;
+        }
+
+        .hero-slide-card:not(.is-active) .hero-slide-stat-lbl {
+            color: #6E4A4E;
         }
 
         .hero-slide-card:not(.is-active) .hero-slide-stat-lbl {
@@ -4934,14 +4951,47 @@
 
                             <!-- Slide 3: Cohort Rankings -->
                             <article class="hero-slide-card" data-hero-slide="2" tabindex="0">
-                                <div class="hero-slide-icon-wrap" aria-hidden="true">
-                                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                                        <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
-                                        <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
-                                        <path d="M4 22h16"></path>
-                                        <path d="M10 14.66V17c0 .55-.45 1-1 1H7"></path>
-                                        <path d="M14 14.66V17c0 .55.45 1 1 1h2"></path>
-                                        <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
+                                <div class="hero-laurel-emblem" aria-hidden="true">
+                                    <svg viewBox="0 0 180 86" fill="none">
+                                        <defs>
+                                            <linearGradient id="laurelGold" x1="0%" y1="0%" x2="100%" y2="100%">
+                                                <stop offset="0%" stop-color="#FFF7D6"/>
+                                                <stop offset="35%" stop-color="#F3CE78"/>
+                                                <stop offset="70%" stop-color="#C88E2B"/>
+                                                <stop offset="100%" stop-color="#8C5912"/>
+                                            </linearGradient>
+                                            <linearGradient id="laurelShine" x1="0%" y1="0%" x2="0%" y2="100%">
+                                                <stop offset="0%" stop-color="#FFFBE8"/>
+                                                <stop offset="100%" stop-color="#D9A03C"/>
+                                            </linearGradient>
+                                        </defs>
+                                        <!-- Left & Right Golden Stems -->
+                                        <path d="M90 66C60 66 35 48 26 16" stroke="url(#laurelGold)" stroke-width="2.6" stroke-linecap="round"/>
+                                        <path d="M90 66C120 66 145 48 154 16" stroke="url(#laurelGold)" stroke-width="2.6" stroke-linecap="round"/>
+                                        <!-- Left Sculpted Leaves -->
+                                        <path d="M26 16C20 8 24 4 30 12C29 18 27 19 26 16Z" fill="url(#laurelShine)" stroke="#7A4C0D" stroke-width="0.7"/>
+                                        <path d="M31 28C21 23 19 17 27 21C32 24 33 27 31 28Z" fill="url(#laurelGold)" stroke="#7A4C0D" stroke-width="0.7"/>
+                                        <path d="M33 24C34 14 39 12 40 20C38 25 35 26 33 24Z" fill="url(#laurelShine)" stroke="#7A4C0D" stroke-width="0.7"/>
+                                        <path d="M39 39C27 36 25 30 35 32C40 34 41 37 39 39Z" fill="url(#laurelGold)" stroke="#7A4C0D" stroke-width="0.7"/>
+                                        <path d="M41 35C41 24 47 21 48 31C46 36 43 37 41 35Z" fill="url(#laurelShine)" stroke="#7A4C0D" stroke-width="0.7"/>
+                                        <path d="M50 49C37 49 35 42 46 43C51 45 52 48 50 49Z" fill="url(#laurelGold)" stroke="#7A4C0D" stroke-width="0.7"/>
+                                        <path d="M52 45C51 34 57 30 59 40C57 45 54 46 52 45Z" fill="url(#laurelShine)" stroke="#7A4C0D" stroke-width="0.7"/>
+                                        <path d="M64 58C50 60 48 53 60 52C65 54 66 57 64 58Z" fill="url(#laurelGold)" stroke="#7A4C0D" stroke-width="0.7"/>
+                                        <path d="M66 54C64 43 70 39 73 49C71 54 68 55 66 54Z" fill="url(#laurelShine)" stroke="#7A4C0D" stroke-width="0.7"/>
+                                        <path d="M78 64C65 68 62 62 73 59C78 60 79 62 78 64Z" fill="url(#laurelGold)" stroke="#7A4C0D" stroke-width="0.7"/>
+                                        <!-- Right Sculpted Leaves -->
+                                        <path d="M154 16C160 8 156 4 150 12C151 18 153 19 154 16Z" fill="url(#laurelShine)" stroke="#7A4C0D" stroke-width="0.7"/>
+                                        <path d="M149 28C159 23 161 17 153 21C148 24 147 27 149 28Z" fill="url(#laurelGold)" stroke="#7A4C0D" stroke-width="0.7"/>
+                                        <path d="M147 24C146 14 141 12 140 20C142 25 145 26 147 24Z" fill="url(#laurelShine)" stroke="#7A4C0D" stroke-width="0.7"/>
+                                        <path d="M141 39C153 36 155 30 145 32C140 34 139 37 141 39Z" fill="url(#laurelGold)" stroke="#7A4C0D" stroke-width="0.7"/>
+                                        <path d="M139 35C139 24 133 21 132 31C134 36 137 37 139 35Z" fill="url(#laurelShine)" stroke="#7A4C0D" stroke-width="0.7"/>
+                                        <path d="M130 49C143 49 145 42 134 43C129 45 128 48 130 49Z" fill="url(#laurelGold)" stroke="#7A4C0D" stroke-width="0.7"/>
+                                        <path d="M128 45C129 34 123 30 121 40C123 45 126 46 128 45Z" fill="url(#laurelShine)" stroke="#7A4C0D" stroke-width="0.7"/>
+                                        <path d="M116 58C130 60 132 53 120 52C115 54 114 57 116 58Z" fill="url(#laurelGold)" stroke="#7A4C0D" stroke-width="0.7"/>
+                                        <path d="M114 54C116 43 110 39 107 49C109 54 112 55 114 54Z" fill="url(#laurelShine)" stroke="#7A4C0D" stroke-width="0.7"/>
+                                        <path d="M102 64C115 68 118 62 107 59C102 60 101 62 102 64Z" fill="url(#laurelGold)" stroke="#7A4C0D" stroke-width="0.7"/>
+                                        <!-- Center Crossed Ribbon Knot -->
+                                        <path d="M84 65L90 61L96 65L90 70Z" fill="url(#laurelShine)" stroke="#7A4C0D" stroke-width="0.8"/>
                                     </svg>
                                 </div>
                                 <h2 class="hero-slide-title">Cohort Ranks</h2>
