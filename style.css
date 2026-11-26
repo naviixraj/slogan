@@ -88,6 +88,22 @@ body {
 
     min-height: 100vh;
 
+    position: relative;
+
+}
+
+/* Subtle Academy Logo Watermark across all pages */
+body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: url("Logoicon.png") center 56% / min(280px, 64vw) no-repeat;
+    opacity: 0.075;
+    mix-blend-mode: multiply;
+    filter: sepia(0.28) saturate(0.85) contrast(1.05);
+    transform: translateZ(0);
 }
 
 
