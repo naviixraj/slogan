@@ -2759,13 +2759,13 @@
                 100% { opacity: 1; transform: translateY(0); }
             }
 
-            /* Standings List Container (Solid opaque backdrop stops watermark overlap) */
+            /* Standings List Container (Luxury Warm Ivory & Champagne Gold) */
             .leaderboard-list-wrap {
-                background: #FFFFFF;
-                border-radius: 20px;
+                background: linear-gradient(165deg, #FFFFFF 0%, #FCF9F5 55%, #F8F0E8 100%);
+                border-radius: 24px;
                 padding: 18px 14px;
-                border: 1px solid #E2E8F0;
-                box-shadow: 0 4px 16px rgba(15, 23, 42, 0.04);
+                border: 1.5px solid #E2B887;
+                box-shadow: 0 12px 28px rgba(58, 1, 13, 0.1), inset 0 1px 0 #FFFFFF;
                 display: flex;
                 flex-direction: column;
                 gap: 12px;
@@ -2773,20 +2773,27 @@
 
             .leaderboard-list-header {
                 display: flex;
-                align-items: baseline;
+                align-items: center;
                 justify-content: space-between;
-                padding: 0 4px;
+                padding: 0 4px 6px;
+                border-bottom: 1px solid rgba(226, 184, 135, 0.45);
             }
 
             .list-title {
-                font-size: 14px;
-                font-weight: 800;
-                color: #0F172A;
+                font-family: "Playfair Display", Georgia, serif;
+                font-size: 17px;
+                font-weight: 700;
+                color: #3A010D;
             }
 
             .list-subtitle {
                 font-size: 11px;
-                color: #64748B;
+                font-weight: 700;
+                color: #6E4A4E;
+                background: #F5DCC0;
+                padding: 3px 10px;
+                border-radius: 999px;
+                border: 1px solid rgba(200, 155, 91, 0.55);
             }
 
             .leaderboard-items {
@@ -2796,45 +2803,54 @@
             }
 
             .leader-card {
-                background: #FFFFFF;
-                border: 1px solid #E2E8F0;
-                border-radius: 16px;
+                background: #FAF2EA;
+                border: 1px solid rgba(218, 175, 122, 0.58);
+                border-radius: 18px;
                 padding: 12px 14px;
                 display: flex;
                 align-items: center;
                 gap: 12px;
-                box-shadow: 0 2px 6px rgba(15, 23, 42, 0.03);
+                box-shadow: 0 3px 10px rgba(58, 1, 13, 0.05), inset 0 1px 0 rgba(255, 255, 255, 0.7);
+                transition: transform 0.18s ease, box-shadow 0.18s ease;
+            }
+
+            .leader-card:hover {
+                transform: translateY(-1px);
+                box-shadow: 0 6px 16px rgba(58, 1, 13, 0.1);
             }
 
             .leader-card.is-current-user {
-                border: 2px solid #570215 !important;
-                background: #FDF4EE;
-                box-shadow: 0 0 12px rgba(232, 192, 136, 0.45), 0 4px 16px rgba(58, 1, 13, 0.12) !important;
+                border: 1.75px solid #7C1B34 !important;
+                background: linear-gradient(135deg, #FFFDF9 0%, #F9EBDD 100%);
+                box-shadow: 0 0 14px rgba(232, 192, 136, 0.5), 0 6px 18px rgba(58, 1, 13, 0.12) !important;
             }
 
             .leader-rank-num {
                 font-size: 13.5px;
                 font-weight: 800;
-                color: #64748B;
-                min-width: 16px;
+                color: #5B1024;
+                min-width: 22px;
                 text-align: center;
             }
 
             .leader-avatar {
-                width: 36px;
-                height: 36px;
+                width: 38px;
+                height: 38px;
                 border-radius: 50%;
-                color: #FFFFFF;
+                color: #FDF4EE;
                 display: grid;
                 place-items: center;
                 font-size: 12.5px;
                 font-weight: 800;
                 flex-shrink: 0;
-                background: linear-gradient(135deg, #1E3A8A 0%, #172554 100%);
+                background: linear-gradient(135deg, #821D36 0%, #5B1024 100%);
+                border: 1.5px solid #E8C088;
+                box-shadow: 0 3px 8px rgba(58, 1, 13, 0.18);
             }
 
             .avatar-top-user {
-                background: linear-gradient(135deg, #312E81 0%, #1E1B4B 100%);
+                background: linear-gradient(135deg, #7C1B34 0%, #4E0C1D 100%);
+                border-color: #F6D365;
             }
 
             .leader-info {
@@ -2851,7 +2867,7 @@
             .leader-name {
                 font-size: 13.5px;
                 font-weight: 800;
-                color: #0F172A;
+                color: #3A010D;
                 white-space: nowrap;
                 overflow: hidden;
                 text-overflow: ellipsis;
@@ -5816,63 +5832,80 @@
 
                         <!-- Rank 1: Center (Tallest) -->
                         <div class="podium-col rank-1">
-                            <!-- Realistic Floating & Rotating Royal Crown above 1st Profile -->
+                            <!-- Sculpted 3D Imperial Gold & Velvet Crown above 1st Profile -->
                             <div class="leaderboard-crown-wrap" aria-hidden="true">
-                                <svg class="crown-svg" viewBox="0 0 80 62" fill="none">
+                                <svg class="crown-svg" viewBox="0 0 96 68" fill="none">
                                     <defs>
-                                        <linearGradient id="crownVelvet" x1="50%" y1="0%" x2="50%" y2="100%">
-                                            <stop offset="0%" stop-color="#8B122C"/>
-                                            <stop offset="100%" stop-color="#3A010D"/>
+                                        <radialGradient id="crownVelvetDome" cx="45%" cy="32%" r="65%">
+                                            <stop offset="0%" stop-color="#A81838"/>
+                                            <stop offset="55%" stop-color="#6B0B21"/>
+                                            <stop offset="100%" stop-color="#2D010B"/>
+                                        </radialGradient>
+                                        <linearGradient id="gold3DMid" x1="0%" y1="0%" x2="100%" y2="0%">
+                                            <stop offset="0%" stop-color="#8C5810"/>
+                                            <stop offset="18%" stop-color="#E7B956"/>
+                                            <stop offset="38%" stop-color="#FFF5C8"/>
+                                            <stop offset="55%" stop-color="#DDA23B"/>
+                                            <stop offset="78%" stop-color="#FFEBA8"/>
+                                            <stop offset="100%" stop-color="#7D4C0C"/>
                                         </linearGradient>
-                                        <linearGradient id="goldCrownGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                                            <stop offset="0%" stop-color="#FFF7D6"/>
-                                            <stop offset="28%" stop-color="#F6D365"/>
-                                            <stop offset="65%" stop-color="#D49B35"/>
-                                            <stop offset="100%" stop-color="#9A6616"/>
+                                        <linearGradient id="gold3DRim" x1="0%" y1="0%" x2="100%" y2="100%">
+                                            <stop offset="0%" stop-color="#FFF9DC"/>
+                                            <stop offset="35%" stop-color="#F2C85B"/>
+                                            <stop offset="70%" stop-color="#BD8222"/>
+                                            <stop offset="100%" stop-color="#76470A"/>
                                         </linearGradient>
-                                        <linearGradient id="goldBandGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                                            <stop offset="0%" stop-color="#B87D24"/>
-                                            <stop offset="30%" stop-color="#FCE8A6"/>
-                                            <stop offset="55%" stop-color="#E5AE44"/>
-                                            <stop offset="80%" stop-color="#FFF2C2"/>
-                                            <stop offset="100%" stop-color="#9A6616"/>
-                                        </linearGradient>
-                                        <radialGradient id="pearlTip" cx="35%" cy="30%" r="70%">
+                                        <radialGradient id="pearlSphere" cx="32%" cy="28%" r="68%">
                                             <stop offset="0%" stop-color="#FFFFFF"/>
-                                            <stop offset="65%" stop-color="#FDE8C8"/>
-                                            <stop offset="100%" stop-color="#C99A5B"/>
+                                            <stop offset="55%" stop-color="#FFF3DB"/>
+                                            <stop offset="100%" stop-color="#B98A4D"/>
                                         </radialGradient>
-                                        <radialGradient id="crownGemRed" cx="35%" cy="30%" r="70%">
-                                            <stop offset="0%" stop-color="#FCA5A5"/>
-                                            <stop offset="45%" stop-color="#DC2626"/>
-                                            <stop offset="100%" stop-color="#7F1D1D"/>
+                                        <radialGradient id="rubyGem" cx="34%" cy="30%" r="68%">
+                                            <stop offset="0%" stop-color="#FFB4B4"/>
+                                            <stop offset="38%" stop-color="#DC2626"/>
+                                            <stop offset="85%" stop-color="#7F1D1D"/>
+                                            <stop offset="100%" stop-color="#450A0A"/>
                                         </radialGradient>
-                                        <radialGradient id="crownGemBlue" cx="35%" cy="30%" r="70%">
+                                        <radialGradient id="sapphireGem" cx="34%" cy="30%" r="68%">
                                             <stop offset="0%" stop-color="#BAE6FD"/>
-                                            <stop offset="45%" stop-color="#0284C7"/>
-                                            <stop offset="100%" stop-color="#0C4A6E"/>
+                                            <stop offset="38%" stop-color="#0284C7"/>
+                                            <stop offset="85%" stop-color="#1E3A8A"/>
+                                            <stop offset="100%" stop-color="#0F172A"/>
                                         </radialGradient>
+                                        <filter id="crownDrop" x="-15%" y="-15%" width="130%" height="140%">
+                                            <feDropShadow dx="0" dy="3" stdDeviation="2.5" flood-color="#1E0006" flood-opacity="0.5"/>
+                                        </filter>
                                     </defs>
-                                    <!-- Inner Royal Velvet Cushion -->
-                                    <path d="M16 44C16 26 26 16 40 16C54 16 64 26 64 44H16Z" fill="url(#crownVelvet)"/>
-                                    <!-- Back Crown Spires for 3D Depth -->
-                                    <path d="M22 44L27 22L36 33L44 33L53 22L58 44H22Z" fill="#8C5B12" opacity="0.72"/>
-                                    <!-- Main Sculpted Gold Crown Body -->
-                                    <path d="M10 46L14 20L27 32L40 12L53 32L66 20L70 46H10Z" fill="url(#goldCrownGrad)" stroke="#8A5810" stroke-width="1.3" stroke-linejoin="round"/>
-                                    <!-- Inner Specular Ridge -->
-                                    <path d="M15 44L17 24L27 34L40 16L53 34L63 24L65 44" stroke="#FFF8DC" stroke-width="0.9" stroke-opacity="0.65" fill="none"/>
-                                    <!-- Embossed Royal Base Band -->
-                                    <rect x="8" y="45" width="64" height="8.5" rx="3.5" fill="url(#goldBandGrad)" stroke="#7C4D0C" stroke-width="1.2"/>
-                                    <line x1="12" y1="47.2" x2="68" y2="47.2" stroke="#FFF7D6" stroke-width="0.8" stroke-opacity="0.7"/>
-                                    <!-- Pearl & Jewel Tips -->
-                                    <circle cx="14" cy="18.5" r="3.2" fill="url(#pearlTip)" stroke="#A67428" stroke-width="0.7"/>
-                                    <circle cx="40" cy="10" r="4" fill="url(#pearlTip)" stroke="#A67428" stroke-width="0.7"/>
-                                    <circle cx="66" cy="18.5" r="3.2" fill="url(#pearlTip)" stroke="#A67428" stroke-width="0.7"/>
-                                    <!-- Center & Band Faceted Jewels -->
-                                    <circle cx="40" cy="31" r="4.2" fill="url(#crownGemBlue)" stroke="#FFF3C4" stroke-width="0.9"/>
-                                    <circle cx="24" cy="49.2" r="2.4" fill="url(#crownGemRed)" stroke="#FFF3C4" stroke-width="0.6"/>
-                                    <circle cx="40" cy="49.2" r="3" fill="url(#crownGemRed)" stroke="#FFF3C4" stroke-width="0.7"/>
-                                    <circle cx="56" cy="49.2" r="2.4" fill="url(#crownGemRed)" stroke="#FFF3C4" stroke-width="0.6"/>
+                                    <g filter="url(#crownDrop)">
+                                        <!-- Royal Velvet Inner Cushion -->
+                                        <path d="M18 49 C18 28 30 19 48 19 C66 19 78 28 78 49 Z" fill="url(#crownVelvetDome)"/>
+                                        <!-- Back Gold Arches for 3D Depth -->
+                                        <path d="M24 49 C26 30 34 21 48 20 C62 21 70 30 72 49" stroke="#8C5810" stroke-width="4" stroke-linecap="round" opacity="0.65"/>
+                                        <!-- Curved Imperial Gold Ribs -->
+                                        <path d="M14 50 C14 35 19 25 27 25 C34 25 38 35 48 16 C58 35 62 25 69 25 C77 25 82 35 82 50 Z" fill="url(#gold3DMid)" stroke="#76470A" stroke-width="1.2" stroke-linejoin="round"/>
+                                        <!-- Center Arch & Specular Highlights -->
+                                        <path d="M33 49 C35 32 40 20 48 16 C56 20 61 32 63 49" fill="none" stroke="url(#gold3DRim)" stroke-width="3.4"/>
+                                        <path d="M19 48 C20 36 24 29 28 29 C34 29 38 37 48 20 C58 37 62 29 68 29 C72 29 76 36 77 48" fill="none" stroke="#FFF9E0" stroke-width="0.9" opacity="0.7"/>
+                                        <!-- Top Imperial Orb & Finial -->
+                                        <circle cx="48" cy="12" r="4.6" fill="url(#gold3DRim)" stroke="#76470A" stroke-width="0.9"/>
+                                        <circle cx="48" cy="12" r="2.2" fill="url(#rubyGem)"/>
+                                        <circle cx="47.2" cy="11.1" r="0.7" fill="#FFFFFF" opacity="0.9"/>
+                                        <!-- Side Pearl Tips -->
+                                        <circle cx="24" cy="24" r="3" fill="url(#pearlSphere)" stroke="#9A6616" stroke-width="0.7"/>
+                                        <circle cx="72" cy="24" r="3" fill="url(#pearlSphere)" stroke="#9A6616" stroke-width="0.7"/>
+                                        <circle cx="13" cy="34" r="2.6" fill="url(#pearlSphere)" stroke="#9A6616" stroke-width="0.7"/>
+                                        <circle cx="83" cy="34" r="2.6" fill="url(#pearlSphere)" stroke="#9A6616" stroke-width="0.7"/>
+                                        <!-- Curved 3D Beveled Base Diadem -->
+                                        <path d="M12 48 Q48 53 84 48 L82 57 Q48 62 14 57 Z" fill="url(#gold3DMid)" stroke="#76470A" stroke-width="1.2"/>
+                                        <path d="M14 50 Q48 55 82 50" fill="none" stroke="#FFF9DF" stroke-width="1" opacity="0.8"/>
+                                        <!-- Bezel-set Gemstones on Crown & Band -->
+                                        <circle cx="48" cy="36" r="4.6" fill="url(#sapphireGem)" stroke="#FCE8A6" stroke-width="1"/>
+                                        <circle cx="46.7" cy="34.5" r="1.2" fill="#FFFFFF" opacity="0.85"/>
+                                        <circle cx="28" cy="53.2" r="2.7" fill="url(#rubyGem)" stroke="#FCE8A6" stroke-width="0.7"/>
+                                        <circle cx="48" cy="54.8" r="3.4" fill="url(#rubyGem)" stroke="#FCE8A6" stroke-width="0.8"/>
+                                        <circle cx="46.9" cy="53.6" r="0.9" fill="#FFFFFF" opacity="0.85"/>
+                                        <circle cx="68" cy="53.2" r="2.7" fill="url(#rubyGem)" stroke="#FCE8A6" stroke-width="0.7"/>
+                                    </g>
                                 </svg>
                             </div>
                             <div class="podium-avatar-wrap">
