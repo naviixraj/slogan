@@ -987,9 +987,14 @@ homeFilterChips.forEach(chip => {
             openStudyNotesPage();
             return;
         }
+        const wasActive = chip.classList.contains("active");
         homeFilterChips.forEach(c => c.classList.remove("active"));
-        chip.classList.add("active");
-        currentHomeFilter = selected;
+        if (wasActive) {
+            currentHomeFilter = "all";
+        } else {
+            chip.classList.add("active");
+            currentHomeFilter = selected;
+        }
         if (statusFilter) {
             statusFilter.value = currentHomeFilter;
         }
