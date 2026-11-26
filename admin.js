@@ -2330,8 +2330,15 @@ function initAdminMobileTabs() {
             setActiveAdminTab(tabNotesBtn);
             hideAllAdminSections();
             if (notesSection) notesSection.style.display = "block";
-            if (notesPaperView) notesPaperView.style.display = "block";
-            if (notesListView) notesListView.style.display = "none";
+            const addPanel = document.getElementById("adminAddNotePanel");
+            const listPanel = document.getElementById("adminManageNotesPanel");
+            const addTab = document.getElementById("adminNoteTabAddBtn");
+            const listTab = document.getElementById("adminNoteTabListBtn");
+            if (addPanel) addPanel.style.display = "block";
+            if (listPanel) listPanel.style.display = "none";
+            if (addTab) addTab.classList.add("active");
+            if (listTab) listTab.classList.remove("active");
+            if (typeof loadAdminUploadedNotes === "function") loadAdminUploadedNotes();
             window.scrollTo({ top: 0, behavior: "smooth" });
         });
     }
@@ -2489,56 +2496,282 @@ function initAdminMobileTabs() {
         });
     }
 
-    document.querySelectorAll("[data-admin-paper]").forEach(btn => {
-        btn.addEventListener("click", () => {
-            const paper = btn.getAttribute("data-admin-paper");
-            if (!paper || !notesListEl) return;
-            const tagEl = document.getElementById("adminNotesPaperTag");
-            const titleEl = document.getElementById("adminNotesPaperTitle");
-            if (tagEl) tagEl.textContent = paper.toUpperCase();
-            if (titleEl) titleEl.textContent = `${paper} Study Notes`;
+    const adminNoteTabAddBtn = document.getElementById("adminNoteTabAddBtn");
+    const adminNoteTabListBtn = document.getElementById("adminNoteTabListBtn");
+    const adminAddNotePanel = document.getElementById("adminAddNotePanel");
+    const adminManageNotesPanel = document.getElementById("adminManageNotesPanel");
+    const adminNotesCountBadge = document.getElementById("adminNotesCountBadge");
 
-            const items = adminNotesCatalog.filter(n => n.paper === paper);
-            notesListEl.innerHTML = "";
-            items.forEach(item => {
-                const card = document.createElement("article");
-                card.className = "notes-list-card";
-                card.innerHTML = `
-                    <div style="display:flex; justify-content:space-between; align-items:center;">
-                        <span style="background:linear-gradient(135deg,#7C1B34,#5B1024); color:#FDF4EE; font-size:10.5px; font-weight:800; padding:4px 10px; border-radius:999px;">${item.code}</span>
-                        <span style="font-size:11.5px; font-weight:700; color:#6E4A4E;">${item.units}</span>
-                    </div>
-                    <h3 class="notes-list-title">${item.title}</h3>
-                    <p class="notes-list-desc">${item.desc}</p>
-                    <button type="button" class="notes-list-cta"><span>Open Notes</span><span>&rarr;</span></button>
-                `;
-                card.addEventListener("click", () => {
-                    if (!studyModal) return;
-                    const mTitle = document.getElementById("adminStudyModalTitle");
-                    const mMeta = document.getElementById("adminStudyModalMeta");
-                    const mBody = document.getElementById("adminStudyModalBody");
-                    if (mTitle) mTitle.textContent = item.title;
-                    if (mMeta) mMeta.textContent = `${item.paper} · ${item.units}`;
-                    if (mBody) {
-                        mBody.innerHTML = `<p style="margin-bottom:10px;">${item.desc}</p><ul style="padding-left:18px; margin:0;">${item.topics.map(t => `<li style="margin-bottom:4px;">${t}</li>`).join("")}</ul>`;
-                    }
-                    studyModal.classList.add("open");
-                });
-                notesListEl.appendChild(card);
-            });
+    const noteTitleInput = document.getElementById("noteTitleInput");
+    const notePaperSelect = document.getElementById("notePaperSelect");
+    const noteUnitSelect = document.getElementById("noteUnitSelect");
+    const noteDropBoxArea = document.getElementById("noteDropBoxArea");
+    const noteFileInput = document.getElementById("noteFileInput");
+    const noteSelectedFileCard = document.getElementById("noteSelectedFileCard");
+    const noteSelectedFileName = document.getElementById("noteSelectedFileName");
+    const noteSelectedFileMeta = document.getElementById("noteSelectedFileMeta");
+    const noteChangeFileBtn = document.getElementById("noteChangeFileBtn");
 
-            if (notesPaperView) notesPaperView.style.display = "none";
-            if (notesListView) notesListView.style.display = "block";
-            window.scrollTo({ top: 0, behavior: "smooth" });
+    const noteCoverFixedBtn = document.getElementById("noteCoverFixedBtn");
+    const noteCoverCustomBtn = document.getElementById("noteCoverCustomBtn");
+    const noteCoverCustomControls = document.getElementById("noteCoverCustomControls");
+    const notePickCoverBtn = document.getElementById("notePickCoverBtn");
+    const noteCoverInput = document.getElementById("noteCoverInput");
+    const noteCoverPreviewImg = document.getElementById("noteCoverPreviewImg");
+    const noteCoverFixedLabel = document.getElementById("noteCoverFixedLabel");
+
+    const noteReleaseNowBtn = document.getElementById("noteReleaseNowBtn");
+    const noteReleaseScheduleBtn = document.getElementById("noteReleaseScheduleBtn");
+    const noteReleaseDatetimeWrap = document.getElementById("noteReleaseDatetimeWrap");
+    const noteReleaseAt = document.getElementById("noteReleaseAt");
+    const noteUploadStatusBanner = document.getElementById("noteUploadStatusBanner");
+    const noteSubmitUploadBtn = document.getElementById("noteSubmitUploadBtn");
+
+    let selectedNoteFile = null;
+    let selectedCoverFile = null;
+
+    if (adminNoteTabAddBtn && adminNoteTabListBtn && adminAddNotePanel && adminManageNotesPanel) {
+        adminNoteTabAddBtn.addEventListener("click", () => {
+            adminNoteTabAddBtn.classList.add("active");
+            adminNoteTabListBtn.classList.remove("active");
+            adminAddNotePanel.style.display = "block";
+            adminManageNotesPanel.style.display = "none";
         });
-    });
-
-    if (notesBackBtn) {
-        notesBackBtn.addEventListener("click", () => {
-            if (notesPaperView) notesPaperView.style.display = "block";
-            if (notesListView) notesListView.style.display = "none";
+        adminNoteTabListBtn.addEventListener("click", () => {
+            adminNoteTabListBtn.classList.add("active");
+            adminNoteTabAddBtn.classList.remove("active");
+            adminAddNotePanel.style.display = "none";
+            adminManageNotesPanel.style.display = "block";
+            if (typeof window.loadAdminUploadedNotes === "function") window.loadAdminUploadedNotes();
         });
     }
+
+    const showNoteFileSelected = (file) => {
+        selectedNoteFile = file || null;
+        if (!selectedNoteFile) {
+            if (noteDropBoxArea) noteDropBoxArea.style.display = "block";
+            if (noteSelectedFileCard) noteSelectedFileCard.style.display = "none";
+            return;
+        }
+        const ext = (file.name.split(".").pop() || "FILE").toUpperCase();
+        const kb = Math.max(1, Math.round(file.size / 1024));
+        if (noteSelectedFileName) noteSelectedFileName.textContent = file.name;
+        if (noteSelectedFileMeta) noteSelectedFileMeta.textContent = `${ext} • ${kb >= 1024 ? (kb / 1024).toFixed(1) + " MB" : kb + " KB"}`;
+        if (noteDropBoxArea) noteDropBoxArea.style.display = "none";
+        if (noteSelectedFileCard) noteSelectedFileCard.style.display = "flex";
+    };
+
+    if (noteDropBoxArea && noteFileInput) {
+        noteDropBoxArea.addEventListener("click", () => noteFileInput.click());
+        noteFileInput.addEventListener("change", () => {
+            if (noteFileInput.files && noteFileInput.files[0]) showNoteFileSelected(noteFileInput.files[0]);
+        });
+    }
+    if (noteChangeFileBtn && noteFileInput) {
+        noteChangeFileBtn.addEventListener("click", () => noteFileInput.click());
+    }
+
+    if (noteCoverFixedBtn && noteCoverCustomBtn) {
+        noteCoverFixedBtn.addEventListener("click", () => {
+            noteCoverFixedBtn.classList.add("active");
+            noteCoverCustomBtn.classList.remove("active");
+            if (noteCoverCustomControls) noteCoverCustomControls.style.display = "none";
+            if (noteCoverPreviewImg) noteCoverPreviewImg.style.display = "none";
+            if (noteCoverFixedLabel) noteCoverFixedLabel.style.display = "block";
+            selectedCoverFile = null;
+        });
+        noteCoverCustomBtn.addEventListener("click", () => {
+            noteCoverCustomBtn.classList.add("active");
+            noteCoverFixedBtn.classList.remove("active");
+            if (noteCoverCustomControls) noteCoverCustomControls.style.display = "block";
+            if (selectedCoverFile && noteCoverPreviewImg) {
+                noteCoverPreviewImg.style.display = "block";
+                if (noteCoverFixedLabel) noteCoverFixedLabel.style.display = "none";
+            }
+        });
+    }
+
+    if (notePickCoverBtn && noteCoverInput) {
+        notePickCoverBtn.addEventListener("click", () => noteCoverInput.click());
+        noteCoverInput.addEventListener("change", () => {
+            const file = noteCoverInput.files && noteCoverInput.files[0];
+            if (!file) return;
+            selectedCoverFile = file;
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+                if (noteCoverPreviewImg) {
+                    noteCoverPreviewImg.src = ev.target.result;
+                    noteCoverPreviewImg.style.display = "block";
+                }
+                if (noteCoverFixedLabel) noteCoverFixedLabel.style.display = "none";
+            };
+            reader.readAsDataURL(file);
+        });
+    }
+
+    if (noteReleaseNowBtn && noteReleaseScheduleBtn && noteReleaseDatetimeWrap) {
+        noteReleaseNowBtn.addEventListener("click", () => {
+            noteReleaseNowBtn.classList.add("active");
+            noteReleaseScheduleBtn.classList.remove("active");
+            noteReleaseDatetimeWrap.classList.remove("show");
+            if (noteSubmitUploadBtn) noteSubmitUploadBtn.innerHTML = `<span>Publish Study Note</span><span>&rarr;</span>`;
+        });
+        noteReleaseScheduleBtn.addEventListener("click", () => {
+            noteReleaseScheduleBtn.classList.add("active");
+            noteReleaseNowBtn.classList.remove("active");
+            noteReleaseDatetimeWrap.classList.add("show");
+            if (noteSubmitUploadBtn) noteSubmitUploadBtn.innerHTML = `<span>Schedule Study Note</span><span>&rarr;</span>`;
+            if (noteReleaseAt && !noteReleaseAt.value) {
+                const d = new Date(Date.now() + 3600000);
+                const pad = (n) => String(n).padStart(2, "0");
+                noteReleaseAt.value = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+            }
+        });
+    }
+
+    const setNoteStatus = (msg, isErr) => {
+        if (!noteUploadStatusBanner) return;
+        if (!msg) {
+            noteUploadStatusBanner.style.display = "none";
+            return;
+        }
+        noteUploadStatusBanner.style.display = "block";
+        noteUploadStatusBanner.style.background = isErr ? "#FEF2F2" : "#ECFDF5";
+        noteUploadStatusBanner.style.color = isErr ? "#991B1B" : "#166534";
+        noteUploadStatusBanner.style.border = isErr ? "1px solid #FECACA" : "1px solid #BBF7D0";
+        noteUploadStatusBanner.textContent = msg;
+    };
+
+    if (noteSubmitUploadBtn) {
+        noteSubmitUploadBtn.addEventListener("click", async () => {
+            setNoteStatus("", false);
+            const title = noteTitleInput ? noteTitleInput.value.trim() : "";
+            const paper = notePaperSelect ? notePaperSelect.value : "Paper 1";
+            const unit = noteUnitSelect ? noteUnitSelect.value : "1";
+            const isScheduled = noteReleaseScheduleBtn && noteReleaseScheduleBtn.classList.contains("active");
+            const isCustomCover = noteCoverCustomBtn && noteCoverCustomBtn.classList.contains("active");
+
+            if (!title) {
+                setNoteStatus("Please enter a Note Name.", true);
+                return;
+            }
+            if (!selectedNoteFile) {
+                setNoteStatus("Please select a note file to upload.", true);
+                return;
+            }
+            if (isCustomCover && !selectedCoverFile) {
+                setNoteStatus("Please choose a cover image or switch to Fixed Academy Cover.", true);
+                return;
+            }
+
+            const formData = new FormData();
+            formData.append("title", title);
+            formData.append("paper", paper);
+            formData.append("unit", unit);
+            formData.append("file", selectedNoteFile);
+            formData.append("coverMode", isCustomCover ? "custom" : "fixed");
+            if (isCustomCover && selectedCoverFile) {
+                formData.append("cover", selectedCoverFile);
+            }
+
+            if (isScheduled) {
+                const rawDt = noteReleaseAt ? noteReleaseAt.value : "";
+                const parsedMs = rawDt ? Date.parse(rawDt) : NaN;
+                if (!rawDt || Number.isNaN(parsedMs) || parsedMs <= Date.now()) {
+                    setNoteStatus("Please choose a future date and time for scheduled release.", true);
+                    return;
+                }
+                formData.append("releaseMode", "scheduled");
+                formData.append("releaseAt", new Date(parsedMs).toISOString());
+            } else {
+                formData.append("releaseMode", "now");
+            }
+
+            noteSubmitUploadBtn.disabled = true;
+            noteSubmitUploadBtn.innerHTML = `<span>Uploading Note...</span>`;
+
+            try {
+                const res = await fetch("/api/admin/notes/upload", {
+                    method: "POST",
+                    body: formData
+                });
+                const data = await res.json();
+                if (!res.ok || !data.success) {
+                    throw new Error(data.message || "Failed to upload note.");
+                }
+
+                setNoteStatus(data.message || "Study note saved!", false);
+                if (noteTitleInput) noteTitleInput.value = "";
+                if (noteFileInput) noteFileInput.value = "";
+                if (noteCoverInput) noteCoverInput.value = "";
+                showNoteFileSelected(null);
+                if (noteCoverFixedBtn) noteCoverFixedBtn.click();
+                if (noteReleaseNowBtn) noteReleaseNowBtn.click();
+                if (typeof window.loadAdminUploadedNotes === "function") await window.loadAdminUploadedNotes();
+            } catch (err) {
+                setNoteStatus(err.message || "Upload failed.", true);
+            } finally {
+                noteSubmitUploadBtn.disabled = false;
+                const sched = noteReleaseScheduleBtn && noteReleaseScheduleBtn.classList.contains("active");
+                noteSubmitUploadBtn.innerHTML = sched ? `<span>Schedule Study Note</span><span>&rarr;</span>` : `<span>Publish Study Note</span><span>&rarr;</span>`;
+            }
+        });
+    }
+
+    window.loadAdminUploadedNotes = async function () {
+        if (!notesListEl) return;
+        try {
+            const res = await fetch("/api/admin/notes");
+            const data = await res.json();
+            const notes = (data && data.notes) ? data.notes : [];
+            if (adminNotesCountBadge) adminNotesCountBadge.textContent = String(notes.length);
+
+            if (!notes.length) {
+                notesListEl.innerHTML = `<div style="background:rgba(255,255,255,0.88); border:1.5px dashed #E2B887; border-radius:18px; padding:24px; text-align:center; color:#6E4A4E; font-size:13px; font-weight:600;">No notes uploaded yet. Switch to "+ Add Note" to upload one.</div>`;
+                return;
+            }
+
+            notesListEl.innerHTML = "";
+            notes.forEach(note => {
+                const card = document.createElement("article");
+                card.className = "notes-list-card";
+                const isSched = note.status === "scheduled";
+                const statusBadge = isSched
+                    ? `<span style="background:#F6DFC4; color:#6E1A2E; border:1px solid rgba(218,175,122,0.78); font-size:10px; font-weight:800; padding:3px 9px; border-radius:999px;">SCHEDULED</span>`
+                    : `<span style="background:#DCFCE7; color:#15803D; font-size:10px; font-weight:800; padding:3px 9px; border-radius:999px;">PUBLISHED</span>`;
+                const coverHtml = note.hasCustomCover && note.coverUrl
+                    ? `<img src="${note.coverUrl}" alt="${note.title}" style="width:100%; height:110px; object-fit:cover; border-radius:14px; border:1px solid rgba(226,184,135,0.5);">`
+                    : `<div style="width:100%; height:54px; border-radius:12px; background:linear-gradient(135deg,#7C1B34 0%,#5B1024 100%); display:flex; align-items:center; justify-content:space-between; padding:0 14px; color:#FDF4EE;"><span style="font-size:10.5px; font-weight:800; letter-spacing:0.6px; color:#E8C088;">SLOGON ACADEMY COVER</span><span style="font-size:11px; font-weight:700;">${String(note.fileType || "FILE").toUpperCase()}</span></div>`;
+
+                card.innerHTML = `
+                    ${coverHtml}
+                    <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-top:4px;">
+                        <span style="background:linear-gradient(135deg,#7C1B34,#5B1024); color:#FDF4EE; font-size:10.5px; font-weight:800; padding:4px 10px; border-radius:999px;">${note.paper} &bull; UNIT ${note.unit}</span>
+                        ${statusBadge}
+                    </div>
+                    <h3 class="notes-list-title">${note.title}</h3>
+                    <p class="notes-list-desc">${note.fileName}${isSched && note.releaseAt ? ` &bull; Launches ${new Date(note.releaseAt).toLocaleString()}` : ""}</p>
+                    <div style="display:flex; gap:8px; margin-top:4px;">
+                        <a href="${note.downloadUrl}" target="_blank" class="notes-list-cta" style="text-decoration:none; flex:1;"><span>Open File</span><span>&rarr;</span></a>
+                        <button type="button" class="admin-card-icon-btn is-delete" data-delete-note="${note.id}" title="Delete Note" aria-label="Delete Note" style="width:42px; height:42px; border-radius:999px;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/></svg>
+                        </button>
+                    </div>
+                `;
+                const delBtn = card.querySelector("[data-delete-note]");
+                if (delBtn) {
+                    delBtn.addEventListener("click", async () => {
+                        if (!confirm(`Delete "${note.title}"?`)) return;
+                        await fetch(`/api/admin/notes/${encodeURIComponent(note.id)}`, { method: "DELETE" });
+                        window.loadAdminUploadedNotes();
+                    });
+                }
+                notesListEl.appendChild(card);
+            });
+        } catch (err) {
+            console.error("Failed to load admin notes:", err);
+        }
+    };
 
     if (closeStudyModalBtn && studyModal) {
         closeStudyModalBtn.addEventListener("click", () => studyModal.classList.remove("open"));

@@ -4410,36 +4410,117 @@
             =============================================== -->
             <section id="adminNotesSection" class="admin-sub-section">
                 <div class="admin-mobile-header">
-                    <img src="Logoicon.png" alt="SLOGON ACADEMY Logo" class="hero-brand-logo">
-                    <span class="hero-brand-divider" aria-hidden="true"></span>
-                    <span class="hero-brand-name">SLOGON ACADEMY</span>
+                    <div class="admin-mobile-brand-left">
+                        <img src="Logoicon.png" alt="SLOGON ACADEMY Logo" class="hero-brand-logo">
+                        <span class="hero-brand-divider" aria-hidden="true"></span>
+                        <span class="hero-brand-name">SLOGON ACADEMY</span>
+                    </div>
+                    <a class="admin-guide-info-btn" href="QUESTION_AUTHORING_BLUEPRINT.pdf" target="_blank" title="Authoring Guide" aria-label="Open Authoring Guide">i</a>
                 </div>
 
-                <div id="adminNotesPaperView">
-                    <div class="notes-hero-card">
-                        <span class="admin-hero-eyebrow">SYLLABUS LIBRARY &bull; NOTES</span>
-                        <h2 class="admin-hero-title">Study Notes</h2>
-                        <p class="admin-hero-sub">Select a paper below to review structured unit notes and revision guides.</p>
-                    </div>
-                    <div class="notes-paper-grid">
-                        <button type="button" class="notes-paper-option" data-admin-paper="Paper 1">
-                            <h3 class="notes-paper-title">Paper 1 — General Paper</h3>
-                            <p class="notes-paper-sub">Teaching &amp; Research Aptitude, DI, Logical Reasoning &amp; ICT (3 Modules)</p>
-                        </button>
-                        <button type="button" class="notes-paper-option" data-admin-paper="Paper 2">
-                            <h3 class="notes-paper-title">Paper 2 — Tamil Literature</h3>
-                            <p class="notes-paper-sub">Sangam Classics, Tolkappiyam Grammar, Epics &amp; Modern Prose (3 Modules)</p>
-                        </button>
-                    </div>
+                <div class="notes-hero-card">
+                    <span class="admin-hero-eyebrow">SYLLABUS LIBRARY &bull; ADD NOTES</span>
+                    <h2 class="admin-hero-title">Add Study Notes</h2>
+                    <p class="admin-hero-sub">Upload notes of any file type, assign to a Paper &amp; Unit (1–10), design the container cover, and publish or schedule.</p>
                 </div>
 
-                <div id="adminNotesListView" style="display: none;">
-                    <div class="notes-hero-card">
-                        <button type="button" class="notes-back-btn" id="adminNotesBackBtn">&larr; All Papers</button>
-                        <span class="admin-hero-eyebrow" id="adminNotesPaperTag">PAPER 1</span>
-                        <h2 class="admin-hero-title" id="adminNotesPaperTitle">Paper 1 Notes</h2>
-                        <p class="admin-hero-sub">Tap any note module below to view full syllabus topics.</p>
+                <div class="release-toggle-row" style="margin-bottom: 14px;">
+                    <button type="button" class="release-toggle-btn active" id="adminNoteTabAddBtn">+ Add Note</button>
+                    <button type="button" class="release-toggle-btn" id="adminNoteTabListBtn">Manage Notes (<span id="adminNotesCountBadge">0</span>)</button>
+                </div>
+
+                <div id="adminAddNotePanel" class="admin-upload-page-card">
+                    <div class="admin-upload-field">
+                        <label for="noteTitleInput">Note Name</label>
+                        <input id="noteTitleInput" type="text" placeholder="e.g. Teaching Aptitude Complete Revision" required>
                     </div>
+
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 10px;">
+                        <div class="admin-upload-field">
+                            <label for="notePaperSelect">Paper</label>
+                            <select id="notePaperSelect">
+                                <option value="Paper 1">Paper 1 — General</option>
+                                <option value="Paper 2">Paper 2 — Tamil</option>
+                            </select>
+                        </div>
+                        <div class="admin-upload-field">
+                            <label for="noteUnitSelect">Unit (1–10)</label>
+                            <select id="noteUnitSelect">
+                                <option value="1">Unit 1</option>
+                                <option value="2">Unit 2</option>
+                                <option value="3">Unit 3</option>
+                                <option value="4">Unit 4</option>
+                                <option value="5">Unit 5</option>
+                                <option value="6">Unit 6</option>
+                                <option value="7">Unit 7</option>
+                                <option value="8">Unit 8</option>
+                                <option value="9">Unit 9</option>
+                                <option value="10">Unit 10</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="admin-upload-field">
+                        <label>Upload Note File (All File Types Supported)</label>
+                        <div class="admin-upload-dropzone" id="noteDropBoxArea">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#7C1B34" stroke-width="2" style="margin-bottom: 6px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                            <div style="font-size: 13px; font-weight: 800; color: #3A010D;">Tap to choose any note file</div>
+                            <div style="font-size: 11px; color: #6E4A4E; margin-top: 3px;">PDF, DOCX, PPTX, XLSX, TXT, CSV, Images &amp; more</div>
+                            <input type="file" id="noteFileInput" style="display: none;" accept="*/*">
+                        </div>
+
+                        <div id="noteSelectedFileCard" style="display: none; align-items: center; justify-content: space-between; gap: 10px; background: #FAF2EA; border: 1.25px solid #D4A767; border-radius: 12px; padding: 10px 12px; margin-top: 8px;">
+                            <div style="min-width: 0;">
+                                <div id="noteSelectedFileName" style="font-size: 13px; font-weight: 800; color: #3A010D; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">note.pdf</div>
+                                <div id="noteSelectedFileMeta" style="font-size: 11px; color: #6E4A4E;">PDF &bull; 0 KB</div>
+                            </div>
+                            <button type="button" id="noteChangeFileBtn" style="border: 1px solid #C89B5B; background: #FFFFFF; color: #5B1024; border-radius: 999px; padding: 5px 12px; font-size: 11px; font-weight: 800; cursor: pointer;">Change</button>
+                        </div>
+                    </div>
+
+                    <div class="admin-upload-field">
+                        <label>Container Cover Design</label>
+                        <div class="release-toggle-row">
+                            <button type="button" class="release-toggle-btn active" id="noteCoverFixedBtn">Fixed Academy Cover</button>
+                            <button type="button" class="release-toggle-btn" id="noteCoverCustomBtn">Upload Custom Cover</button>
+                        </div>
+                        <input type="file" id="noteCoverInput" style="display: none;" accept="image/*">
+
+                        <div id="noteCoverCustomControls" style="display: none; margin-top: 10px;">
+                            <button type="button" id="notePickCoverBtn" style="width: 100%; border: 1.25px dashed #C89B5B; background: #FAF2EA; color: #5B1024; border-radius: 12px; padding: 10px 12px; font-size: 12.5px; font-weight: 800; cursor: pointer;">
+                                Choose Cover Image (.png, .jpg, .webp)
+                            </button>
+                        </div>
+
+                        <div id="noteCoverPreviewBox" style="margin-top: 10px; border-radius: 16px; overflow: hidden; border: 1.25px solid rgba(218,175,122,0.75); background: linear-gradient(135deg, #7C1B34 0%, #5B1024 100%); color: #FDF4EE; min-height: 92px; display: flex; align-items: center; justify-content: center; position: relative;">
+                            <img id="noteCoverPreviewImg" alt="Cover preview" style="display: none; width: 100%; height: 120px; object-fit: cover;">
+                            <div id="noteCoverFixedLabel" style="padding: 14px; text-align: center;">
+                                <div style="font-size: 10.5px; font-weight: 800; letter-spacing: 0.8px; color: #E8C088; text-transform: uppercase;">SLOGON ACADEMY &bull; FIXED COVER</div>
+                                <div style="font-size: 13px; font-weight: 700; margin-top: 3px;">Default Luxury Burgundy &amp; Gold Container</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="admin-upload-field">
+                        <label>When to Release</label>
+                        <div class="release-toggle-row">
+                            <button type="button" class="release-toggle-btn active" id="noteReleaseNowBtn">Publish Now</button>
+                            <button type="button" class="release-toggle-btn" id="noteReleaseScheduleBtn">Schedule Release</button>
+                        </div>
+                        <div class="release-datetime-wrap" id="noteReleaseDatetimeWrap">
+                            <input type="datetime-local" id="noteReleaseAt" aria-label="Scheduled release date and time" style="width: 100%; padding: 10px 12px; border-radius: 12px; border: 1.25px solid rgba(218,175,122,0.72); background: #FFFFFF; color: #3A010D; font-size: 13px; font-weight: 600;">
+                            <div style="font-size: 11px; color: #6E4A4E; margin-top: 6px;">Note will stay hidden from students until this scheduled time.</div>
+                        </div>
+                    </div>
+
+                    <div id="noteUploadStatusBanner" style="display: none; padding: 10px 12px; border-radius: 12px; font-size: 12.5px; font-weight: 700; margin-bottom: 12px;"></div>
+
+                    <button type="button" class="notes-list-cta" id="noteSubmitUploadBtn">
+                        <span>Publish Study Note</span><span>&rarr;</span>
+                    </button>
+                </div>
+
+                <div id="adminManageNotesPanel" style="display: none;">
                     <div class="notes-list-stack" id="adminNotesList"></div>
                 </div>
             </section>

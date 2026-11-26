@@ -946,63 +946,141 @@ function openStudyNotesPage() {
     window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
-function renderStudyNotesForPaper(paperKey) {
+async function renderStudyNotesForPaper(paperKey, selectedUnit = 0) {
     if (!studyNotesList || !studyPaperSelectorView || !studyNotesListView) return;
     const tagEl = document.getElementById("selectedPaperTag");
     const headingEl = document.getElementById("selectedPaperHeading");
+    const unitBarEl = document.getElementById("studyUnitFilterBar");
     if (tagEl) tagEl.textContent = paperKey.toUpperCase();
     if (headingEl) headingEl.textContent = `${paperKey} Study Notes`;
 
-    const items = studyNotesCatalog.filter(item => item.paper === paperKey);
+    studyPaperSelectorView.style.display = "none";
+    studyNotesListView.style.display = "block";
+    studyNotesList.innerHTML = `<div style="background:rgba(255,255,255,0.88); border:1.25px solid #E2B887; border-radius:18px; padding:24px; text-align:center; color:#6E4A4E; font-size:13px; font-weight:700;">Loading ${paperKey} notes...</div>`;
+    window.scrollTo({ top: 0, behavior: "smooth" });
+
+    let uploadedNotes = [];
+    try {
+        const res = await fetch(`/api/notes?paper=${encodeURIComponent(paperKey)}`);
+        const data = await res.json();
+        if (data && data.success && Array.isArray(data.notes)) {
+            uploadedNotes = data.notes;
+        }
+    } catch (err) {
+        console.warn("Could not fetch uploaded notes:", err);
+    }
+
+    if (unitBarEl) {
+        unitBarEl.innerHTML = "";
+        const makeChip = (label, unitNum) => {
+            const btn = document.createElement("button");
+            btn.type = "button";
+            const isActive = Number(selectedUnit) === Number(unitNum);
+            btn.style.cssText = isActive
+                ? "flex:0 0 auto; border-radius:999px; padding:7px 14px; font-size:11.5px; font-weight:800; cursor:pointer; border:1px solid #E8C088; background:linear-gradient(135deg,#7C1B34,#5B1024); color:#FDF4EE; box-shadow:0 3px 10px rgba(58,1,13,0.18);"
+                : "flex:0 0 auto; border-radius:999px; padding:7px 14px; font-size:11.5px; font-weight:700; cursor:pointer; border:1px solid rgba(218,175,122,0.75); background:#FFFFFF; color:#5B1024;";
+            const count = unitNum === 0
+                ? uploadedNotes.length
+                : uploadedNotes.filter(n => Number(n.unit) === unitNum).length;
+            btn.textContent = count > 0 ? `${label} (${count})` : label;
+            btn.addEventListener("click", () => renderStudyNotesForPaper(paperKey, unitNum));
+            return btn;
+        };
+        unitBarEl.appendChild(makeChip("All Units", 0));
+        for (let u = 1; u <= 10; u++) {
+            unitBarEl.appendChild(makeChip(`Unit ${u}`, u));
+        }
+    }
+
+    const filteredUploaded = Number(selectedUnit) > 0
+        ? uploadedNotes.filter(n => Number(n.unit) === Number(selectedUnit))
+        : uploadedNotes;
+
     studyNotesList.innerHTML = "";
-    const builder = window._slogonStudyCardBuilder;
-    items.forEach(item => {
+
+    filteredUploaded.forEach(note => {
         const card = document.createElement("article");
         card.className = "notes-list-card";
-        card.setAttribute("role", "button");
-        card.setAttribute("tabindex", "0");
+        const extLabel = String(note.fileType || "FILE").toUpperCase();
+        const kb = Math.max(1, Math.round((Number(note.fileSize) || 0) / 1024));
+        const sizeLabel = kb >= 1024 ? `${(kb / 1024).toFixed(1)} MB` : `${kb} KB`;
 
-        const topicsHtml = (item.topics || []).map(t => `
-            <div class="notes-topic-row">
-                <span class="notes-topic-dot" aria-hidden="true"></span>
-                <span>${t}</span>
-            </div>
-        `).join("");
+        const coverHtml = note.hasCustomCover && note.coverUrl
+            ? `<div style="width:100%; border-radius:16px; overflow:hidden; border:1.25px solid rgba(226,184,135,0.65); margin-bottom:4px;"><img src="${note.coverUrl}" alt="${note.title}" style="width:100%; height:136px; object-fit:cover; display:block;"></div>`
+            : `<div style="width:100%; height:62px; border-radius:14px; background:linear-gradient(135deg,#821D36 0%,#5B1024 100%); border:1px solid rgba(232,192,136,0.6); display:flex; align-items:center; justify-content:space-between; padding:0 16px; color:#FDF4EE; margin-bottom:4px;"><span style="font-size:10.5px; font-weight:800; letter-spacing:0.8px; color:#E8C088;">SLOGON ACADEMY &bull; NOTES</span><span style="font-size:11px; font-weight:800; background:rgba(255,255,255,0.14); padding:3px 9px; border-radius:999px;">${extLabel}</span></div>`;
 
         card.innerHTML = `
+            ${coverHtml}
             <div class="notes-list-top">
                 <div class="notes-list-badges">
-                    <span class="notes-list-code">${item.code}</span>
-                    <span class="notes-list-format">${item.format}</span>
+                    <span class="notes-list-code">${note.paper.toUpperCase()}</span>
+                    <span class="notes-list-format">${extLabel}</span>
                 </div>
-                <span class="notes-list-unit">${item.units}</span>
+                <span class="notes-list-unit">Unit ${note.unit}</span>
             </div>
-            <h3 class="notes-list-title">${item.title}</h3>
-            <p class="notes-list-desc">${item.desc}</p>
-            <div class="notes-list-topics">${topicsHtml}</div>
-            <button type="button" class="notes-list-cta">
-                <span>Read Study Notes</span><span>&rarr;</span>
-            </button>
+            <h3 class="notes-list-title">${note.title}</h3>
+            <p class="notes-list-desc">${note.fileName} &bull; ${sizeLabel}</p>
+            <div style="display:flex; gap:8px; margin-top:4px;">
+                <a href="${note.downloadUrl}" target="_blank" rel="noopener" class="notes-list-cta" style="text-decoration:none; flex:1;">
+                    <span>Open Note</span><span>&rarr;</span>
+                </a>
+                <a href="${note.downloadUrl}?download=1" class="notes-list-cta" style="text-decoration:none; width:auto; padding:11px 16px; background:#FAF2EA; color:#5B1024; border-color:#D4A767;">
+                    <span>Download</span>
+                </a>
+            </div>
         `;
-
-        const openNotes = () => {
-            if (builder && typeof builder.openStudyMaterialModal === "function") {
-                builder.openStudyMaterialModal(item);
-            }
-        };
-        card.addEventListener("click", openNotes);
-        card.addEventListener("keydown", (e) => {
-            if (e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
-                openNotes();
-            }
-        });
         studyNotesList.appendChild(card);
     });
 
-    studyPaperSelectorView.style.display = "none";
-    studyNotesListView.style.display = "block";
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    if (Number(selectedUnit) === 0) {
+        const items = studyNotesCatalog.filter(item => item.paper === paperKey);
+        const builder = window._slogonStudyCardBuilder;
+        items.forEach(item => {
+            const card = document.createElement("article");
+            card.className = "notes-list-card";
+            card.setAttribute("role", "button");
+            card.setAttribute("tabindex", "0");
+
+            const topicsHtml = (item.topics || []).map(t => `
+                <div class="notes-topic-row">
+                    <span class="notes-topic-dot" aria-hidden="true"></span>
+                    <span>${t}</span>
+                </div>
+            `).join("");
+
+            card.innerHTML = `
+                <div class="notes-list-top">
+                    <div class="notes-list-badges">
+                        <span class="notes-list-code">${item.code}</span>
+                        <span class="notes-list-format">${item.format}</span>
+                    </div>
+                    <span class="notes-list-unit">${item.units}</span>
+                </div>
+                <h3 class="notes-list-title">${item.title}</h3>
+                <p class="notes-list-desc">${item.desc}</p>
+                <div class="notes-list-topics">${topicsHtml}</div>
+                <button type="button" class="notes-list-cta">
+                    <span>Read Study Notes</span><span>&rarr;</span>
+                </button>
+            `;
+
+            const openNotes = () => {
+                if (builder && typeof builder.openStudyMaterialModal === "function") {
+                    builder.openStudyMaterialModal(item);
+                }
+            };
+            card.addEventListener("click", openNotes);
+            card.addEventListener("keydown", (e) => {
+                if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    openNotes();
+                }
+            });
+            studyNotesList.appendChild(card);
+        });
+    } else if (filteredUploaded.length === 0) {
+        studyNotesList.innerHTML = `<div style="background:rgba(255,255,255,0.88); border:1.5px dashed #E2B887; border-radius:18px; padding:26px 18px; text-align:center; color:#6E4A4E; font-size:13px; font-weight:600;">No notes uploaded yet for ${paperKey} &bull; Unit ${selectedUnit}.</div>`;
+    }
 }
 
 document.querySelectorAll("[data-study-paper]").forEach(btn => {

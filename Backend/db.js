@@ -253,14 +253,56 @@ async function listQuestionSets() {
             .select("id, title, subject, file_name, file_type, questions_count, duration, status, created_at")
             .order("id", { ascending: true });
         if (error) console.error("Supabase listQuestionSets error:", error.message);
-        return data || [];
+        return (data || []).filter(row => !String(row.id || "").toUpperCase().startsWith("NOTE_"));
     } else {
         return sqliteDb.prepare(`
             SELECT id, title, subject, file_name, file_type, questions_count, duration, status, created_at
             FROM question_sets
+            WHERE UPPER(id) NOT LIKE 'NOTE_%'
             ORDER BY id ASC
         `).all() || [];
     }
+}
+
+async function listStudyNotes() {
+    if (isSupabase) {
+        const { data, error } = await supabase
+            .from("question_sets")
+            .select("id, title, subject, file_name, file_type, questions_count, duration, status, questions_json, created_at")
+            .ilike("id", "NOTE_%")
+            .order("created_at", { ascending: false });
+        if (error) console.error("Supabase listStudyNotes error:", error.message);
+        return data || [];
+    } else {
+        return sqliteDb.prepare(`
+            SELECT id, title, subject, file_name, file_type, questions_count, duration, status, questions_json, created_at
+            FROM question_sets
+            WHERE UPPER(id) LIKE 'NOTE_%'
+            ORDER BY created_at DESC
+        `).all() || [];
+    }
+}
+
+async function getStudyNoteById(id) {
+    return getQuestionSetById(id);
+}
+
+async function createStudyNote({ id, title, paper, unit, fileName, fileType, fileSize, status = "note:available", notePayload }) {
+    return createQuestionSet({
+        id,
+        title,
+        subject: `${paper} | Unit ${unit}`,
+        fileName,
+        fileType,
+        questionsCount: Number(unit) || 1,
+        duration: Number(fileSize) || 0,
+        status,
+        questionsJson: notePayload
+    });
+}
+
+async function deleteStudyNote(id) {
+    return deleteQuestionSet(id);
 }
 
 async function getQuestionSetById(id) {
@@ -609,6 +651,10 @@ module.exports = {
     deleteQuestionSet,
     updateQuestionSetQuestions,
     updateQuestionSetDetails,
+    listStudyNotes,
+    getStudyNoteById,
+    createStudyNote,
+    deleteStudyNote,
     getSession,
     setSession,
     destroySession,

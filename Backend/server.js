@@ -1699,6 +1699,203 @@ app.post("/api/admin/sets/upload", requireAdmin, upload.single("file"), async (r
     }
 });
 
+// -------------------------------------------------------------
+// STUDY NOTES (ADMIN UPLOAD / SCHEDULE & STUDENT DELIVERY)
+// -------------------------------------------------------------
+
+function parseNotePayload(row) {
+    if (!row) return {};
+    const raw = row.questions_json;
+    if (!raw) return {};
+    if (typeof raw === "string") {
+        try { return JSON.parse(raw); } catch { return {}; }
+    }
+    return raw;
+}
+
+function formatStudyNoteMeta(row) {
+    const payload = parseNotePayload(row);
+    const releaseAt = payload.releaseAt || null;
+    const relMs = releaseAt ? Date.parse(releaseAt) : NaN;
+    const isScheduledFuture = !Number.isNaN(relMs) && relMs > Date.now();
+    const status = isScheduledFuture ? "scheduled" : "published";
+    const hasCustomCover = payload.coverType === "custom" && Boolean(payload.coverDataBase64);
+
+    return {
+        id: row.id,
+        title: row.title,
+        paper: payload.paper || "Paper 1",
+        unit: Number(payload.unit || row.questions_count || 1),
+        fileName: payload.fileName || row.file_name || "Note",
+        fileType: payload.fileType || row.file_type || "file",
+        fileMime: payload.fileMime || "application/octet-stream",
+        fileSize: Number(payload.fileSize || row.duration || 0),
+        coverType: hasCustomCover ? "custom" : "fixed",
+        hasCustomCover,
+        coverUrl: hasCustomCover ? `/api/notes/${encodeURIComponent(row.id)}/cover` : null,
+        downloadUrl: `/api/notes/${encodeURIComponent(row.id)}/download`,
+        status,
+        releaseAt,
+        createdAt: row.created_at || payload.createdAt || null
+    };
+}
+
+app.post(
+    "/api/admin/notes/upload",
+    requireAdmin,
+    upload.fields([
+        { name: "file", maxCount: 1 },
+        { name: "cover", maxCount: 1 }
+    ]),
+    async (req, res) => {
+        try {
+            const { title, paper, unit, coverMode, releaseMode, releaseAt } = req.body;
+            const noteFile = req.files && req.files.file && req.files.file[0];
+            const coverFile = req.files && req.files.cover && req.files.cover[0];
+
+            if (!title || !title.trim()) {
+                return res.status(400).json({ success: false, message: "Please provide a name for the note." });
+            }
+            if (!noteFile) {
+                return res.status(400).json({ success: false, message: "Please select a note file to upload." });
+            }
+
+            const unitNum = Math.min(10, Math.max(1, parseInt(unit, 10) || 1));
+            const paperName = paper && paper.trim() ? paper.trim() : "Paper 1";
+            const ext = path.extname(noteFile.originalname).toLowerCase().replace(".", "") || "file";
+
+            let scheduledIso = null;
+            if (releaseMode === "scheduled" && releaseAt) {
+                const parsedMs = Date.parse(releaseAt);
+                if (!Number.isNaN(parsedMs) && parsedMs > Date.now()) {
+                    scheduledIso = new Date(parsedMs).toISOString();
+                }
+            }
+
+            const useCustomCover = coverMode === "custom" && coverFile;
+            const noteId = `NOTE_${Date.now().toString(36).toUpperCase()}_${crypto.randomBytes(2).toString("hex").toUpperCase()}`;
+
+            const notePayload = {
+                kind: "study_note",
+                paper: paperName,
+                unit: unitNum,
+                fileName: noteFile.originalname,
+                fileType: ext,
+                fileMime: noteFile.mimetype || "application/octet-stream",
+                fileSize: noteFile.size || noteFile.buffer.length,
+                fileDataBase64: noteFile.buffer.toString("base64"),
+                coverType: useCustomCover ? "custom" : "fixed",
+                coverMime: useCustomCover ? (coverFile.mimetype || "image/png") : null,
+                coverDataBase64: useCustomCover ? coverFile.buffer.toString("base64") : null,
+                releaseAt: scheduledIso,
+                createdAt: new Date().toISOString()
+            };
+
+            await unifiedDb.createStudyNote({
+                id: noteId,
+                title: title.trim(),
+                paper: paperName,
+                unit: unitNum,
+                fileName: noteFile.originalname,
+                fileType: ext,
+                fileSize: noteFile.size || noteFile.buffer.length,
+                status: scheduledIso ? `note:scheduled:${scheduledIso}` : "note:published",
+                notePayload
+            });
+
+            return res.json({
+                success: true,
+                status: scheduledIso ? "scheduled" : "published",
+                releaseAt: scheduledIso,
+                noteId,
+                message: scheduledIso
+                    ? `Note "${title.trim()}" scheduled for ${paperName} · Unit ${unitNum}!`
+                    : `Note "${title.trim()}" published to ${paperName} · Unit ${unitNum}!`
+            });
+        } catch (error) {
+            console.error("Upload study note error:", error);
+            return res.status(500).json({ success: false, message: "Failed to upload study note: " + error.message });
+        }
+    }
+);
+
+app.get("/api/admin/notes", requireAdmin, async (req, res) => {
+    try {
+        const rows = await unifiedDb.listStudyNotes();
+        const notes = rows.map(formatStudyNoteMeta);
+        return res.json({ success: true, notes });
+    } catch (error) {
+        console.error("List admin notes error:", error);
+        return res.status(500).json({ success: false, message: "Failed to load notes." });
+    }
+});
+
+app.delete("/api/admin/notes/:id", requireAdmin, async (req, res) => {
+    try {
+        const deleted = await unifiedDb.deleteStudyNote(req.params.id);
+        if (!deleted) {
+            return res.status(404).json({ success: false, message: "Note not found." });
+        }
+        return res.json({ success: true, message: "Study note deleted." });
+    } catch (error) {
+        console.error("Delete study note error:", error);
+        return res.status(500).json({ success: false, message: "Failed to delete note." });
+    }
+});
+
+app.get("/api/notes", async (req, res) => {
+    try {
+        const rows = await unifiedDb.listStudyNotes();
+        const paperFilter = req.query.paper ? String(req.query.paper).trim().toLowerCase() : "";
+        const unitFilter = req.query.unit ? parseInt(req.query.unit, 10) : 0;
+
+        const notes = rows
+            .map(formatStudyNoteMeta)
+            .filter(n => n.status === "published")
+            .filter(n => !paperFilter || n.paper.toLowerCase() === paperFilter)
+            .filter(n => !unitFilter || n.unit === unitFilter);
+
+        return res.json({ success: true, notes });
+    } catch (error) {
+        console.error("List student notes error:", error);
+        return res.status(500).json({ success: false, message: "Failed to load study notes." });
+    }
+});
+
+app.get("/api/notes/:id/cover", async (req, res) => {
+    try {
+        const row = await unifiedDb.getStudyNoteById(req.params.id);
+        const payload = parseNotePayload(row);
+        if (!row || payload.coverType !== "custom" || !payload.coverDataBase64) {
+            return res.status(404).send("Cover not found");
+        }
+        const buf = Buffer.from(payload.coverDataBase64, "base64");
+        res.setHeader("Content-Type", payload.coverMime || "image/png");
+        res.setHeader("Cache-Control", "public, max-age=3600");
+        return res.send(buf);
+    } catch (error) {
+        return res.status(500).send("Failed to load cover");
+    }
+});
+
+app.get("/api/notes/:id/download", async (req, res) => {
+    try {
+        const row = await unifiedDb.getStudyNoteById(req.params.id);
+        const payload = parseNotePayload(row);
+        if (!row || !payload.fileDataBase64) {
+            return res.status(404).json({ success: false, message: "Note file not found." });
+        }
+        const buf = Buffer.from(payload.fileDataBase64, "base64");
+        const safeName = String(payload.fileName || "note").replace(/["\r\n]/g, "_");
+        const disposition = req.query.download === "1" ? "attachment" : "inline";
+        res.setHeader("Content-Type", payload.fileMime || "application/octet-stream");
+        res.setHeader("Content-Disposition", `${disposition}; filename="${safeName}"`);
+        return res.send(buf);
+    } catch (error) {
+        return res.status(500).json({ success: false, message: "Failed to download note file." });
+    }
+});
+
 // Delete a Question Set
 app.delete("/api/admin/sets/:id", requireAdmin, async (req, res) => {
     try {
