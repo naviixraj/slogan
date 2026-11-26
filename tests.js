@@ -677,9 +677,13 @@ function renderTests() {
 
         card.innerHTML = `
             <svg class="avail-card-watermark" viewBox="0 0 96 96" fill="none" aria-hidden="true">
-                <path d="M18 22C18 18 22 15 26 15H46V73H26C22 73 18 76 18 80V22Z" fill="rgba(251,222,199,0.12)" stroke="rgba(251,222,199,0.38)" stroke-width="2"/>
-                <path d="M78 22C78 18 74 15 70 15H50V73H70C74 73 78 76 78 80V22Z" fill="rgba(251,222,199,0.12)" stroke="rgba(251,222,199,0.38)" stroke-width="2"/>
-                <path d="M26 30h12M26 42h12M58 30h12M58 42h12" stroke="rgba(253,244,238,0.48)" stroke-width="2" stroke-linecap="round"/>
+                <!-- Outer cover with rounded spine dip -->
+                <path d="M12 34L6 68C6 71 8 73 11 73H41C44 73 46 76 48 76C50 76 52 73 55 73H85C88 73 90 71 90 68L84 34" stroke="#6E1226" stroke-width="4.2" stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- Middle layered page edges -->
+                <path d="M17 28L12 64C23 60 35 61 48 69C61 61 73 60 84 64L79 28" stroke="#6E1226" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- Top open pages + center spine -->
+                <path d="M48 31V69" stroke="#6E1226" stroke-width="3.8" stroke-linecap="round"/>
+                <path d="M48 31C42 22 31 20 22 21L17 57C27 54 38 56 48 69C58 56 69 54 79 57L74 21C65 20 54 22 48 31Z" stroke="#6E1226" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
         `;
 
