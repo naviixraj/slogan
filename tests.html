@@ -101,6 +101,20 @@
             }
         }
 
+        /* Subtle Academy Logo Watermark blended into the cream wave background */
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background: url("Logoicon.png") center 56% / min(280px, 64vw) no-repeat;
+            opacity: 0.085;
+            mix-blend-mode: multiply;
+            filter: sepia(0.32) saturate(0.85) contrast(1.05);
+            transform: translateZ(0);
+        }
+
         /* ---- GLOBAL MICRO-ANIMATIONS ---- */
         @keyframes subtlePulse {
             0%, 100% { opacity: 1; }
