@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>SLOGON ACADEMY — Study Note Viewer</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-user-select: none; user-select: none; }
+        body {
+            font-family: Inter, Arial, sans-serif;
+            background-color: #FAF0E6;
+            color: #3A010D;
+            min-height: 100vh;
+            position: relative;
+        }
+        body::before {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background:
+                radial-gradient(ellipse at 16% 18%, rgba(255, 251, 245, 0.72) 0%, transparent 56%),
+                linear-gradient(180deg, rgba(120, 25, 49, 0.94) 0%, rgba(91, 15, 35, 0.88) 120px, rgba(250, 240, 230, 0) 210px),
+                linear-gradient(160deg, #FDF7F0 0%, #F4E1CE 52%, #EAD0B8 100%);
+        }
+        body::after {
+            content: "";
+            position: fixed;
+            inset: 0;
+            z-index: -1;
+            pointer-events: none;
+            background: url("Logoicon.png") center 56% / min(280px, 64vw) no-repeat;
+            opacity: 0.085;
+            mix-blend-mode: multiply;
+        }
+        @media print {
+            body { display: none !important; }
+        }
+        .viewer-wrap {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 14px 16px 32px;
+        }
+        .viewer-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            padding: 4px 2px 16px;
+        }
+        .viewer-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .viewer-logo {
+            width: 42px;
+            height: 42px;
+            border-radius: 12px;
+            background: #FDF4EE;
+            padding: 4px;
+            object-fit: contain;
+            border: 1.25px solid rgba(232, 192, 136, 0.9);
+            box-shadow: 0 4px 12px rgba(24, 0, 5, 0.3);
+        }
+        .viewer-divider {
+            width: 1.5px;
+            height: 28px;
+            background: linear-gradient(180deg, transparent 0%, #E8C088 50%, transparent 100%);
+        }
+        .viewer-brand-name {
+            font-family: "Playfair Display", Georgia, serif;
+            font-size: clamp(16px, 4vw, 19px);
+            font-weight: 800;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            background: linear-gradient(135deg, #FDF4EE 0%, #FBDEC7 48%, #E8C088 100%);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            -webkit-text-fill-color: transparent;
+        }
+        .viewer-close-btn {
+            border: 1.25px solid rgba(232, 192, 136, 0.85);
+            background: rgba(58, 1, 13, 0.36);
+            color: #FBDEC7;
+            border-radius: 999px;
+            padding: 8px 16px;
+            font-size: 12px;
+            font-weight: 800;
+            cursor: pointer;
+        }
+        .viewer-meta-card {
+            background: linear-gradient(155deg, #821D36 0%, #631227 58%, #4F0C1E 100%);
+            border: 1.5px solid #E8C088;
+            border-radius: 22px;
+            padding: 18px;
+            color: #FDF4EE;
+            margin-bottom: 16px;
+            box-shadow: 0 12px 28px rgba(58, 1, 13, 0.24);
+        }
+        .viewer-badge-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 8px;
+            margin-bottom: 8px;
+        }
+        .viewer-pill {
+            background: rgba(255, 255, 255, 0.14);
+            border: 1px solid rgba(232, 192, 136, 0.55);
+            color: #FBDEC7;
+            font-size: 10.5px;
+            font-weight: 800;
+            padding: 4px 10px;
+            border-radius: 999px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+        .viewer-title {
+            font-family: "Playfair Display", Georgia, serif;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        .viewer-sub {
+            font-size: 12px;
+            color: rgba(251, 222, 199, 0.85);
+        }
+        .viewer-stage {
+            background: #FFFFFF;
+            border: 1.5px solid #E2B887;
+            border-radius: 22px;
+            overflow: hidden;
+            box-shadow: 0 10px 26px rgba(58, 1, 13, 0.1);
+            min-height: 70vh;
+            position: relative;
+        }
+        .viewer-frame {
+            width: 100%;
+            height: 76vh;
+            border: none;
+            display: block;
+        }
+        .viewer-img {
+            display: block;
+            max-width: 100%;
+            margin: 0 auto;
+            pointer-events: none;
+        }
+        .viewer-text {
+            padding: 22px;
+            font-size: 14px;
+            line-height: 1.65;
+            white-space: pre-wrap;
+            word-break: break-word;
+            color: #3A010D;
+        }
+        .viewer-status {
+            padding: 48px 20px;
+            text-align: center;
+            color: #6E4A4E;
+            font-size: 14px;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body>
+    <div class="viewer-wrap">
+        <header class="viewer-header">
+            <div class="viewer-brand">
+                <img src="Logoicon.png" alt="SLOGON ACADEMY Logo" class="viewer-logo">
+                <span class="viewer-divider" aria-hidden="true"></span>
+                <span class="viewer-brand-name">SLOGON ACADEMY</span>
+            </div>
+            <button type="button" class="viewer-close-btn" id="viewerBackBtn">&larr; Back</button>
+        </header>
+
+        <section class="viewer-meta-card">
+            <div class="viewer-badge-row">
+                <span class="viewer-pill" id="viewerPaperUnit">STUDY NOTE</span>
+                <span class="viewer-pill">VIEW ONLY &bull; PROTECTED</span>
+            </div>
+            <h1 class="viewer-title" id="viewerTitle">Loading Study Note...</h1>
+            <p class="viewer-sub" id="viewerSub">Preparing protected document viewer</p>
+        </section>
+
+        <section class="viewer-stage" id="viewerStage">
+            <div class="viewer-status">Loading protected note content...</div>
+        </section>
+    </div>
+
+    <script src="note-viewer.js?v=20261126-v1"></script>
+</body>
+</html>

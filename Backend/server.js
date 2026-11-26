@@ -1862,6 +1862,22 @@ app.get("/api/notes", async (req, res) => {
     }
 });
 
+app.get("/api/notes/:id", async (req, res) => {
+    try {
+        const row = await unifiedDb.getStudyNoteById(req.params.id);
+        if (!row) {
+            return res.status(404).json({ success: false, message: "Study note not found." });
+        }
+        const meta = formatStudyNoteMeta(row);
+        if (meta.status !== "published") {
+            return res.status(403).json({ success: false, message: "This study note is not published yet." });
+        }
+        return res.json({ success: true, note: meta });
+    } catch (error) {
+        return res.status(500).json({ success: false, message: "Failed to load study note." });
+    }
+});
+
 app.get("/api/notes/:id/cover", async (req, res) => {
     try {
         const row = await unifiedDb.getStudyNoteById(req.params.id);
@@ -1887,9 +1903,9 @@ app.get("/api/notes/:id/download", async (req, res) => {
         }
         const buf = Buffer.from(payload.fileDataBase64, "base64");
         const safeName = String(payload.fileName || "note").replace(/["\r\n]/g, "_");
-        const disposition = req.query.download === "1" ? "attachment" : "inline";
         res.setHeader("Content-Type", payload.fileMime || "application/octet-stream");
-        res.setHeader("Content-Disposition", `${disposition}; filename="${safeName}"`);
+        res.setHeader("Content-Disposition", `inline; filename="${safeName}"`);
+        res.setHeader("X-Content-Type-Options", "nosniff");
         return res.send(buf);
     } catch (error) {
         return res.status(500).json({ success: false, message: "Failed to download note file." });

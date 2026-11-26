@@ -1020,14 +1020,9 @@ async function renderStudyNotesForPaper(paperKey, selectedUnit = 0) {
             </div>
             <h3 class="notes-list-title">${note.title}</h3>
             <p class="notes-list-desc">${note.fileName} &bull; ${sizeLabel}</p>
-            <div style="display:flex; gap:8px; margin-top:4px;">
-                <a href="${note.downloadUrl}" target="_blank" rel="noopener" class="notes-list-cta" style="text-decoration:none; flex:1;">
-                    <span>Open Note</span><span>&rarr;</span>
-                </a>
-                <a href="${note.downloadUrl}?download=1" class="notes-list-cta" style="text-decoration:none; width:auto; padding:11px 16px; background:#FAF2EA; color:#5B1024; border-color:#D4A767;">
-                    <span>Download</span>
-                </a>
-            </div>
+            <a href="note-viewer.html?id=${encodeURIComponent(note.id)}" target="_blank" rel="noopener" class="notes-list-cta" style="text-decoration:none; margin-top:4px;">
+                <span>Open Note</span><span>&rarr;</span>
+            </a>
         `;
         studyNotesList.appendChild(card);
     });
