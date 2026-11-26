@@ -242,7 +242,25 @@ function closeModal(modalEl) {
 // -----------------------------------------------------
 
 function renderSets() {
-    if (!testGrid) return;
+    const availableExamsSection = document.getElementById("availableExamsSection");
+    const availableCarouselTrack = document.getElementById("availableCarouselTrack");
+    const availableCountBadge = document.getElementById("availableCountBadge");
+    const availableCarouselControls = document.getElementById("availableCarouselControls");
+    const availableCarouselDots = document.getElementById("availableCarouselDots");
+    const availablePrevBtn = document.getElementById("availablePrevBtn");
+    const availableNextBtn = document.getElementById("availableNextBtn");
+
+    const upcomingExamsSection = document.getElementById("upcomingExamsSection");
+    const upcomingCarouselTrack = document.getElementById("upcomingCarouselTrack");
+    const upcomingCountBadge = document.getElementById("upcomingCountBadge");
+    const upcomingCarouselControls = document.getElementById("upcomingCarouselControls");
+    const upcomingCarouselDots = document.getElementById("upcomingCarouselDots");
+    const upcomingPrevBtn = document.getElementById("upcomingPrevBtn");
+    const upcomingNextBtn = document.getElementById("upcomingNextBtn");
+
+    const emptySetsState = document.getElementById("emptySetsState");
+
+    if (!availableCarouselTrack && !testGrid) return;
 
     const term = searchInput ? searchInput.value.trim().toLowerCase() : "";
     const filter = statusFilter ? statusFilter.value : "all";
@@ -257,14 +275,13 @@ function renderSets() {
         return matchesSearch && matchesFilter;
     });
 
-    // Sort question sets in constructed sequential order (SET01, SET02, SET03, ...)
+    // Sort question sets in sequential order (SET01, SET02, SET03, ...)
     matches.sort((a, b) => {
         const idA = String(a.id || "").trim();
         const idB = String(b.id || "").trim();
         return idA.localeCompare(idB, undefined, { numeric: true, sensitivity: 'base' });
     });
 
-    testGrid.innerHTML = "";
     if (resultCount) {
         resultCount.textContent = `Showing ${matches.length} of ${activeSets.length} question sets`;
     }
@@ -279,75 +296,42 @@ function renderSets() {
         adminHeroQCount.textContent = String(totalQs);
     }
 
-    if (!matches.length) {
-        testGrid.innerHTML = '<div style="grid-column: 1 / -1; background: #FFFFFF; border: 1px dashed #D8DED7; border-radius: 10px; padding: 35px; text-align: center; color: var(--muted); font-size: 12px;">No question sets match your search. Click "+ Upload Set" to create one.</div>';
-        return;
+    const isSetAvailable = (s) => {
+        const relVal = s.releaseAt || s.release_at || null;
+        const relMs = relVal ? Date.parse(relVal) : NaN;
+        const isScheduledFuture = !Number.isNaN(relMs) && relMs > Date.now();
+        return s.status !== "coming" && !isScheduledFuture;
+    };
+
+    const availableList = matches.filter(isSetAvailable);
+    const upcomingList = matches.filter(s => !isSetAvailable(s));
+
+    if (availableCountBadge) {
+        availableCountBadge.textContent = `${availableList.length} ${availableList.length === 1 ? "EXAM" : "EXAMS"}`;
+    }
+    if (upcomingCountBadge) {
+        upcomingCountBadge.textContent = `${upcomingList.length} ${upcomingList.length === 1 ? "EXAM" : "EXAMS"}`;
+    }
+    if (emptySetsState) {
+        emptySetsState.style.display = matches.length === 0 ? "block" : "none";
+    }
+    if (availableExamsSection) {
+        availableExamsSection.style.display = availableList.length > 0 ? "block" : "none";
+    }
+    if (upcomingExamsSection) {
+        upcomingExamsSection.style.display = upcomingList.length > 0 ? "block" : "none";
     }
 
-    matches.forEach(set => {
-        const card = document.createElement("article");
-        card.className = "test-card";
-
-        const fName = set.file_name || set.fileName || "File";
-        const qCount = set.questions_count !== undefined ? set.questions_count : (set.questionsCount || (set.questions ? set.questions.length : 0));
-        const dur = set.duration || 180;
-        const isAvailable = set.status !== "coming";
-
-        const accent = document.createElement("div");
-        accent.className = "accent";
-
-        const body = document.createElement("div");
-        body.className = "card-body";
-
-        const top = document.createElement("div");
-        top.className = "card-top";
-
-        const codeSpan = document.createElement("span");
-        codeSpan.className = "test-code";
-        codeSpan.textContent = `EXAM ${String(set.id).toUpperCase()}`;
-
-        const statusSpan = document.createElement("span");
-        statusSpan.className = isAvailable ? "status available" : "status coming";
-        statusSpan.textContent = isAvailable ? "AVAILABLE" : "COMING SOON";
-
-        top.append(codeSpan, statusSpan);
-
-        const titleH2 = document.createElement("h2");
-        titleH2.textContent = set.title;
-
-        const metaDiv = document.createElement("div");
-        metaDiv.className = "meta";
-        const subj = set.subject || "All";
-        [`${qCount} Questions`, subj, `${dur} Minutes`].forEach(text => {
-            const item = document.createElement("span");
-            item.textContent = text;
-            metaDiv.appendChild(item);
-        });
-
-        const inspectBtn = document.createElement("button");
-        inspectBtn.className = "start";
-        inspectBtn.type = "button";
-        inspectBtn.textContent = isAvailable ? "INSPECT QUESTIONS" : "COMING SOON";
-        inspectBtn.disabled = !isAvailable;
-        inspectBtn.addEventListener("click", (e) => {
-            e.stopPropagation();
-            inspectSet(set.id);
-        });
-
-        const actionsCluster = document.createElement("div");
-        actionsCluster.className = "card-actions-cluster";
+    const buildAdminActionButtons = (set) => {
+        const row = document.createElement("div");
+        row.className = "admin-card-footer-row";
 
         const editBtn = document.createElement("button");
         editBtn.type = "button";
-        editBtn.className = "card-icon-action card-icon-edit";
+        editBtn.className = "admin-card-icon-btn";
         editBtn.title = `Edit details for "${set.title}"`;
         editBtn.setAttribute("aria-label", `Edit details for "${set.title}"`);
-        editBtn.innerHTML = `
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-            </svg>
-        `;
+        editBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>`;
         editBtn.addEventListener("click", (e) => {
             e.stopPropagation();
             openEditSetModal(set);
@@ -355,49 +339,355 @@ function renderSets() {
 
         const delBtn = document.createElement("button");
         delBtn.type = "button";
-        delBtn.className = "card-icon-action card-icon-delete bin-btn";
+        delBtn.className = "admin-card-icon-btn is-delete";
         delBtn.title = `Delete Question Set "${set.title}"`;
         delBtn.setAttribute("aria-label", `Delete Question Set "${set.title}"`);
-        delBtn.innerHTML = `
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M3 6h18"></path>
-                <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
-                <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
-                <line x1="10" y1="11" x2="10" y2="17"></line>
-                <line x1="14" y1="11" x2="14" y2="17"></line>
-            </svg>
-        `;
+        delBtn.innerHTML = `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" y1="11" x2="10" y2="17"/><line x1="14" y1="11" x2="14" y2="17"/></svg>`;
         delBtn.addEventListener("click", (e) => {
             e.stopPropagation();
             deleteSet(set.id);
         });
 
-        actionsCluster.append(editBtn, delBtn);
+        row.append(editBtn, delBtn);
+        return row;
+    };
 
-        body.append(top, titleH2, metaDiv, inspectBtn, actionsCluster);
-        card.append(accent, body);
+    const buildAvailableCard = (set) => {
+        const qCount = set.questions_count !== undefined ? set.questions_count : (set.questionsCount || (set.questions ? set.questions.length : 0));
+        const dur = set.duration || 180;
+        const subj = set.subject || "All";
+        const codeLabel = `EXAM ${String(set.id || "SET01").toUpperCase()}`;
 
-        // Enable clicking anywhere on the card/tab in both grid and list views
-        card.classList.add("is-clickable");
-        card.style.cursor = "pointer";
+        const card = document.createElement("article");
+        card.className = "avail-exam-card";
         card.setAttribute("role", "button");
         card.setAttribute("tabindex", "0");
-        card.setAttribute("title", `Click anywhere to inspect questions in "${set.title}"`);
+        card.setAttribute("title", `Inspect questions in "${set.title}"`);
 
-        card.addEventListener("click", (e) => {
-            if (e.target.closest(".card-icon-action")) return;
+        card.innerHTML = `
+            <svg class="avail-card-watermark" viewBox="0 0 96 96" fill="none" aria-hidden="true">
+                <rect x="16" y="16" width="52" height="64" rx="7" fill="none" stroke="#6E1226" stroke-width="5"/>
+                <path d="M31 16v-2a4 4 0 0 1 4-4h2a6 6 0 0 1 10 0h2a4 4 0 0 1 4 4v2a3 3 0 0 1-3 3H34a3 3 0 0 1-3-3Z" fill="#FDF7F1" stroke="#6E1226" stroke-width="4.5" stroke-linejoin="round"/>
+                <path d="M26 32l3.5 3.5 5.5-6" stroke="#6E1226" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M26 43l3.5 3.5 5.5-6" stroke="#6E1226" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M26 54l3.5 3.5 5.5-6" stroke="#6E1226" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M26 65l3.5 3.5 5.5-6" stroke="#6E1226" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M40 33h17M40 44h17M40 55h17M40 66h12" stroke="#6E1226" stroke-width="4.2" stroke-linecap="round"/>
+                <circle cx="67" cy="69" r="19" fill="#FDF7F1"/>
+                <circle cx="67" cy="69" r="15.5" fill="#FDF7F1" stroke="#6E1226" stroke-width="4.8"/>
+                <path d="M60.5 69.5l4.5 4.5 8.5-9" stroke="#6E1226" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+        `;
+
+        const top = document.createElement("div");
+        top.className = "avail-card-top";
+
+        const codePill = document.createElement("span");
+        codePill.className = "avail-code-pill";
+        codePill.textContent = codeLabel;
+
+        const statusPill = document.createElement("span");
+        statusPill.className = "avail-status-pill";
+        const dot = document.createElement("span");
+        dot.className = "avail-status-dot";
+        statusPill.append(dot, document.createTextNode("AVAILABLE"));
+
+        top.append(codePill, statusPill);
+
+        const body = document.createElement("div");
+        body.className = "avail-card-body";
+
+        const title = document.createElement("h3");
+        title.className = "avail-card-title";
+        title.textContent = set.title;
+
+        const desc = document.createElement("p");
+        desc.className = "avail-card-desc";
+        desc.textContent = "Published and live for students. Inspect or manage questions below.";
+
+        body.append(title, desc);
+
+        const inner = document.createElement("div");
+        inner.className = "avail-inner-panel";
+
+        const metricsGrid = document.createElement("div");
+        metricsGrid.className = "avail-metrics-grid";
+
+        const m1 = document.createElement("div");
+        m1.className = "avail-metric-item";
+        m1.innerHTML = `<svg class="avail-metric-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/><path d="M9 12h6M9 16h6"/></svg>`;
+        const m1Text = document.createElement("div");
+        m1Text.className = "avail-metric-text";
+        const m1Strong = document.createElement("strong");
+        m1Strong.textContent = String(qCount);
+        const m1Sub = document.createElement("span");
+        m1Sub.textContent = "Questions";
+        m1Text.append(m1Strong, m1Sub);
+        m1.appendChild(m1Text);
+
+        const m2 = document.createElement("div");
+        m2.className = "avail-metric-item";
+        m2.innerHTML = `<svg class="avail-metric-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>`;
+        const m2Text = document.createElement("div");
+        m2Text.className = "avail-metric-text";
+        const m2Strong = document.createElement("strong");
+        m2Strong.textContent = String(dur);
+        const m2Sub = document.createElement("span");
+        m2Sub.textContent = "Minutes";
+        m2Text.append(m2Strong, m2Sub);
+        m2.appendChild(m2Text);
+
+        const m3 = document.createElement("div");
+        m3.className = "avail-metric-item";
+        m3.innerHTML = `<svg class="avail-metric-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 12 12 17 22 12"/><polyline points="2 17 12 22 22 17"/></svg>`;
+        const m3Text = document.createElement("div");
+        m3Text.className = "avail-metric-text is-subject";
+        const m3Strong = document.createElement("strong");
+        m3Strong.textContent = subj;
+        m3Text.appendChild(m3Strong);
+        m3.appendChild(m3Text);
+
+        metricsGrid.append(m1, m2, m3);
+
+        const inspectBtn = document.createElement("button");
+        inspectBtn.type = "button";
+        inspectBtn.className = "avail-start-btn";
+        inspectBtn.innerHTML = `<span>▶ INSPECT QUESTIONS &rarr;</span>`;
+        inspectBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
             inspectSet(set.id);
         });
 
+        inner.append(metricsGrid, inspectBtn);
+        card.append(top, body, inner, buildAdminActionButtons(set));
+
+        card.addEventListener("click", (e) => {
+            if (e.target.closest(".admin-card-icon-btn")) return;
+            inspectSet(set.id);
+        });
         card.addEventListener("keydown", (e) => {
             if (e.key === "Enter" || e.key === " ") {
                 e.preventDefault();
                 inspectSet(set.id);
             }
         });
+        return card;
+    };
 
-        testGrid.appendChild(card);
-    });
+    const buildUpcomingCard = (set, idx) => {
+        const qCount = set.questions_count !== undefined ? set.questions_count : (set.questionsCount || (set.questions ? set.questions.length : 0));
+        const dur = set.duration || 180;
+        const subj = set.subject || "All";
+        const codeLabel = `EXAM ${String(set.id || "SET01").toUpperCase()}`;
+        const indexLabel = String(idx + 1).padStart(2, "0");
+
+        const card = document.createElement("article");
+        card.className = "upcoming-exam-card";
+        card.setAttribute("role", "button");
+        card.setAttribute("tabindex", "0");
+        card.setAttribute("title", `Inspect upcoming questions in "${set.title}"`);
+
+        const top = document.createElement("div");
+        top.className = "upcoming-card-top";
+
+        const badges = document.createElement("div");
+        badges.className = "upcoming-badges";
+
+        const codePill = document.createElement("span");
+        codePill.className = "upcoming-code-pill";
+        codePill.textContent = codeLabel;
+
+        const soonPill = document.createElement("span");
+        soonPill.className = "upcoming-soon-pill";
+        soonPill.innerHTML = `<svg class="hourglass-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M6 2h12M6 22h12"/><path d="M7 2v5.5a5 5 0 0 0 2.2 4.15L12 13.5l2.8-1.85A5 5 0 0 0 17 7.5V2"/><path d="M7 22v-5.5a5 5 0 0 1 2.2-4.15L12 10.5l2.8 1.85A5 5 0 0 1 17 16.5V22"/><path d="M9.2 6h5.6L12 9.5 9.2 6Z" fill="#570215" stroke="none"/><path d="M9.2 19h5.6L12 15.5 9.2 19Z" fill="#570215" stroke="none"/></svg><span>COMING SOON</span>`;
+
+        badges.append(codePill, soonPill);
+
+        const idxSpan = document.createElement("span");
+        idxSpan.className = "upcoming-index-num";
+        idxSpan.textContent = indexLabel;
+
+        top.append(badges, idxSpan);
+
+        const title = document.createElement("h3");
+        title.className = "upcoming-card-title";
+        title.textContent = set.title;
+
+        const desc = document.createElement("p");
+        desc.className = "upcoming-card-desc";
+        const relVal = set.releaseAt || set.release_at;
+        if (relVal) {
+            const relDate = new Date(relVal);
+            const relLabel = Number.isNaN(relDate.getTime())
+                ? ""
+                : relDate.toLocaleString(undefined, { dateStyle: "medium", timeStyle: "short" });
+            desc.textContent = relLabel
+                ? `Scheduled release: ${relLabel}. Inspect or edit questions before launch.`
+                : "Scheduled for upcoming release. Inspect or edit questions before launch.";
+        } else {
+            desc.textContent = "Scheduled for upcoming release. Inspect or edit questions before launch.";
+        }
+
+        const statBoxes = document.createElement("div");
+        statBoxes.className = "upcoming-stat-boxes";
+
+        const specs = [
+            {
+                icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="8" y="2" width="8" height="4" rx="1"/><path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"/></svg>`,
+                label: "ITEMS",
+                val: String(qCount),
+                sub: "Questions"
+            },
+            {
+                icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg>`,
+                label: "DURATION",
+                val: String(dur),
+                sub: "Minutes"
+            },
+            {
+                icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>`,
+                label: "STREAM",
+                val: subj,
+                sub: "Mandatory"
+            }
+        ];
+
+        specs.forEach(sp => {
+            const box = document.createElement("div");
+            box.className = "upcoming-stat-box";
+            const head = document.createElement("div");
+            head.className = "upcoming-stat-head";
+            head.innerHTML = sp.icon;
+            const headLbl = document.createElement("span");
+            headLbl.textContent = sp.label;
+            head.appendChild(headLbl);
+
+            const val = document.createElement("strong");
+            val.className = "upcoming-stat-val";
+            val.textContent = sp.val;
+
+            const sub = document.createElement("span");
+            sub.className = "upcoming-stat-sub";
+            sub.textContent = sp.sub;
+
+            box.append(head, val, sub);
+            statBoxes.appendChild(box);
+        });
+
+        const inspectBtn = document.createElement("button");
+        inspectBtn.type = "button";
+        inspectBtn.className = "avail-start-btn";
+        inspectBtn.innerHTML = `<span>▶ INSPECT QUESTIONS &rarr;</span>`;
+        inspectBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            inspectSet(set.id);
+        });
+
+        card.append(top, title, desc, statBoxes, inspectBtn, buildAdminActionButtons(set));
+
+        card.addEventListener("click", (e) => {
+            if (e.target.closest(".admin-card-icon-btn")) return;
+            inspectSet(set.id);
+        });
+        card.addEventListener("keydown", (e) => {
+            if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                inspectSet(set.id);
+            }
+        });
+        return card;
+    };
+
+    function setupCarousel(trackEl, items, builderFn, dotsEl, prevBtn, nextBtn, controlsEl) {
+        if (!trackEl) return;
+        trackEl.innerHTML = "";
+        items.forEach((item, i) => trackEl.appendChild(builderFn(item, i)));
+
+        if (dotsEl) dotsEl.innerHTML = "";
+        if (controlsEl) {
+            controlsEl.style.display = items.length > 1 ? "flex" : "none";
+        }
+        if (items.length <= 1 || !dotsEl) return;
+
+        const dots = items.map((_, i) => {
+            const dot = document.createElement("button");
+            dot.type = "button";
+            dot.className = i === 0 ? "carousel-dot active" : "carousel-dot";
+            dot.setAttribute("aria-label", `Go to slide ${i + 1}`);
+            dot.addEventListener("click", () => {
+                const targetCard = trackEl.children[i];
+                if (targetCard) {
+                    trackEl.scrollTo({ left: targetCard.offsetLeft - trackEl.offsetLeft, behavior: "smooth" });
+                }
+            });
+            dotsEl.appendChild(dot);
+            return dot;
+        });
+
+        const getCurrentIndex = () => {
+            let bestIdx = 0;
+            let bestDist = Infinity;
+            const left = trackEl.scrollLeft + trackEl.offsetLeft;
+            Array.from(trackEl.children).forEach((child, i) => {
+                const dist = Math.abs(child.offsetLeft - left);
+                if (dist < bestDist) {
+                    bestDist = dist;
+                    bestIdx = i;
+                }
+            });
+            return bestIdx;
+        };
+
+        const syncControls = () => {
+            const idx = getCurrentIndex();
+            dots.forEach((d, i) => d.classList.toggle("active", i === idx));
+            if (prevBtn) prevBtn.disabled = idx <= 0;
+            if (nextBtn) nextBtn.disabled = idx >= items.length - 1;
+        };
+
+        trackEl.onscroll = syncControls;
+
+        if (prevBtn) {
+            prevBtn.onclick = () => {
+                const idx = Math.max(0, getCurrentIndex() - 1);
+                const targetCard = trackEl.children[idx];
+                if (targetCard) {
+                    trackEl.scrollTo({ left: targetCard.offsetLeft - trackEl.offsetLeft, behavior: "smooth" });
+                }
+            };
+        }
+        if (nextBtn) {
+            nextBtn.onclick = () => {
+                const idx = Math.min(items.length - 1, getCurrentIndex() + 1);
+                const targetCard = trackEl.children[idx];
+                if (targetCard) {
+                    trackEl.scrollTo({ left: targetCard.offsetLeft - trackEl.offsetLeft, behavior: "smooth" });
+                }
+            };
+        }
+
+        syncControls();
+    }
+
+    setupCarousel(
+        availableCarouselTrack,
+        availableList,
+        buildAvailableCard,
+        availableCarouselDots,
+        availablePrevBtn,
+        availableNextBtn,
+        availableCarouselControls
+    );
+
+    setupCarousel(
+        upcomingCarouselTrack,
+        upcomingList,
+        buildUpcomingCard,
+        upcomingCarouselDots,
+        upcomingPrevBtn,
+        upcomingNextBtn,
+        upcomingCarouselControls
+    );
 }
 
 // -----------------------------------------------------
