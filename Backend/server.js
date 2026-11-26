@@ -1923,6 +1923,112 @@ app.get("/api/notes/:id/cover", async (req, res) => {
     }
 });
 
+app.get("/api/notes/:id/view", async (req, res) => {
+    try {
+        const row = await unifiedDb.getStudyNoteById(req.params.id);
+        const payload = parseNotePayload(row);
+        if (!row || !payload.fileDataBase64) {
+            return res.status(404).send("Note file not found.");
+        }
+        const meta = formatStudyNoteMeta(row);
+        if (meta.status !== "published") {
+            return res.status(403).send("This study note is not published yet.");
+        }
+
+        const buf = Buffer.from(payload.fileDataBase64, "base64");
+        const ext = String(payload.fileType || "").toLowerCase();
+        const mime = String(payload.fileMime || "").toLowerCase();
+        const escapeHtml = (str) => String(str || "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;");
+
+        const wrapViewOnlyHtml = (bodyHtml, extraStyles = "") => `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>${escapeHtml(row.title || payload.fileName || "Study Note")}</title>
+<style>
+* { box-sizing: border-box; -webkit-user-select: none; user-select: none; }
+html, body { margin: 0; padding: 0; background: #FFFFFF; color: #111827; font-family: Inter, system-ui, -apple-system, sans-serif; }
+@media print { body { display: none !important; } }
+${extraStyles}
+</style>
+</head>
+<body oncontextmenu="return false;">
+${bodyHtml}
+<script>
+document.addEventListener("contextmenu", function (e) { e.preventDefault(); });
+document.addEventListener("keydown", function (e) {
+    if ((e.ctrlKey || e.metaKey) && ["s", "p", "u", "c"].includes(String(e.key || "").toLowerCase())) {
+        e.preventDefault();
+    }
+});
+</script>
+</body>
+</html>`;
+
+        res.setHeader("Content-Type", "text/html; charset=utf-8");
+        res.setHeader("X-Content-Type-Options", "nosniff");
+
+        if (ext === "pdf" || mime.includes("pdf")) {
+            const pdfUrl = `/api/notes/${encodeURIComponent(row.id)}/download#toolbar=0&navpanes=0&scrollbar=1`;
+            return res.send(wrapViewOnlyHtml(
+                `<iframe src="${pdfUrl}" style="width:100vw; height:100vh; border:0; display:block;" title="${escapeHtml(row.title)}"></iframe>`,
+                `html, body { overflow: hidden; height: 100%; }`
+            ));
+        }
+
+        if (["png", "jpg", "jpeg", "webp", "gif", "bmp", "svg"].includes(ext) || mime.startsWith("image/")) {
+            const imgUrl = `/api/notes/${encodeURIComponent(row.id)}/download`;
+            return res.send(wrapViewOnlyHtml(
+                `<div style="min-height:100vh; display:flex; align-items:center; justify-content:center; padding:12px; background:#111827;"><img src="${imgUrl}" alt="${escapeHtml(row.title)}" draggable="false" style="max-width:100%; max-height:96vh; object-fit:contain; pointer-events:none;"></div>`
+            ));
+        }
+
+        if (ext === "docx") {
+            const result = await mammoth.convertToHtml({ buffer: buf });
+            return res.send(wrapViewOnlyHtml(
+                `<main class="doc-body">${result.value || "<p>Empty document.</p>"}</main>`,
+                `.doc-body { max-width: 820px; margin: 0 auto; padding: 24px 20px 48px; line-height: 1.65; font-size: 15px; }
+                 .doc-body img { max-width: 100%; height: auto; pointer-events: none; }
+                 .doc-body table { width: 100%; border-collapse: collapse; margin: 14px 0; }
+                 .doc-body td, .doc-body th { border: 1px solid #D1D5DB; padding: 8px 10px; text-align: left; }`
+            ));
+        }
+
+        if (["xlsx", "xls", "csv"].includes(ext)) {
+            const wb = xlsx.read(buf, { type: "buffer" });
+            const tablesHtml = wb.SheetNames.map(name => {
+                const html = xlsx.utils.sheet_to_html(wb.Sheets[name]);
+                return `<section style="margin-bottom:24px;"><h2 style="font-size:15px; margin:0 0 8px;">${escapeHtml(name)}</h2>${html}</section>`;
+            }).join("");
+            return res.send(wrapViewOnlyHtml(
+                `<main class="sheet-body">${tablesHtml}</main>`,
+                `.sheet-body { padding: 18px; overflow-x: auto; font-size: 13px; }
+                 table { border-collapse: collapse; width: 100%; }
+                 td, th { border: 1px solid #D1D5DB; padding: 6px 10px; }`
+            ));
+        }
+
+        if (["txt", "json", "md", "log"].includes(ext) || mime.startsWith("text/")) {
+            return res.send(wrapViewOnlyHtml(
+                `<pre style="max-width:880px; margin:0 auto; padding:22px; white-space:pre-wrap; word-break:break-word; font-size:14px; line-height:1.6;">${escapeHtml(buf.toString("utf8"))}</pre>`
+            ));
+        }
+
+        return res.send(wrapViewOnlyHtml(
+            `<iframe src="/api/notes/${encodeURIComponent(row.id)}/download" style="width:100vw; height:100vh; border:0; display:block;" title="${escapeHtml(row.title)}"></iframe>`,
+            `html, body { overflow: hidden; height: 100%; }`
+        ));
+    } catch (error) {
+        console.error("View note error:", error);
+        return res.status(500).send("Failed to render study note online.");
+    }
+});
+
 app.get("/api/notes/:id/download", async (req, res) => {
     try {
         const row = await unifiedDb.getStudyNoteById(req.params.id);

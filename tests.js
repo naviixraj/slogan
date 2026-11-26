@@ -1092,9 +1092,7 @@ function renderStudyNotesForUnit(paperKey, unitNum) {
             `;
 
             const openRawFile = () => {
-                const isPdf = String(note.fileType || "").toLowerCase() === "pdf";
-                const targetUrl = isPdf ? `${note.downloadUrl}#toolbar=0&navpanes=0` : note.downloadUrl;
-                window.open(targetUrl, "_blank", "noopener");
+                window.open(`/api/notes/${encodeURIComponent(note.id)}/view`, "_blank", "noopener");
             };
             card.addEventListener("click", openRawFile);
             card.addEventListener("keydown", (e) => {
