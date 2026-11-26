@@ -222,12 +222,21 @@ function renderTests() {
 
         card.innerHTML = `
             <svg class="avail-card-watermark" viewBox="0 0 96 96" fill="none" aria-hidden="true">
-                <rect x="18" y="12" width="48" height="60" rx="9" fill="#FDF7F1" stroke="#B69690" stroke-width="2.2"/>
-                <rect x="31" y="7" width="22" height="10" rx="4.5" fill="#631328" stroke="#FDF7F1" stroke-width="1.5"/>
-                <path d="M27 31l3.5 3.5 6.5-6.5M27 44l3.5 3.5 6.5-6.5M27 57l3.5 3.5 6.5-6.5" stroke="#631328" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"/>
-                <path d="M42 32h15M42 45h15M42 58h11" stroke="#CBB2AD" stroke-width="2.3" stroke-linecap="round"/>
-                <circle cx="66" cy="64" r="17" fill="#631328" stroke="#FFFFFF" stroke-width="2.6"/>
-                <path d="M66 55.5v9l6 3.5" stroke="#FFFFFF" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- Clipboard outer frame -->
+                <rect x="16" y="16" width="52" height="64" rx="7" fill="none" stroke="#6E1226" stroke-width="5"/>
+                <!-- Clipboard top clip -->
+                <path d="M31 16v-2a4 4 0 0 1 4-4h2a6 6 0 0 1 10 0h2a4 4 0 0 1 4 4v2a3 3 0 0 1-3 3H34a3 3 0 0 1-3-3Z" fill="#FDF7F1" stroke="#6E1226" stroke-width="4.5" stroke-linejoin="round"/>
+                <!-- 4 Checkmarks -->
+                <path d="M26 32l3.5 3.5 5.5-6" stroke="#6E1226" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M26 43l3.5 3.5 5.5-6" stroke="#6E1226" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M26 54l3.5 3.5 5.5-6" stroke="#6E1226" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+                <path d="M26 65l3.5 3.5 5.5-6" stroke="#6E1226" stroke-width="3.6" stroke-linecap="round" stroke-linejoin="round"/>
+                <!-- 4 Horizontal bars -->
+                <path d="M40 33h17M40 44h17M40 55h17M40 66h12" stroke="#6E1226" stroke-width="4.2" stroke-linecap="round"/>
+                <!-- Bottom-right checkmark circle with clean cutout -->
+                <circle cx="67" cy="69" r="19" fill="#FDF7F1"/>
+                <circle cx="67" cy="69" r="15.5" fill="#FDF7F1" stroke="#6E1226" stroke-width="4.8"/>
+                <path d="M60.5 69.5l4.5 4.5 8.5-9" stroke="#6E1226" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
         `;
 
