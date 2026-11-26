@@ -12,7 +12,7 @@
     <title>Master Admin | SLOGON ACADEMY</title>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Tamil:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+Tamil:wght@400;500;600;700&family=Playfair+Display:wght@600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css?v=20261119-v7">
 
     <style>
@@ -2576,6 +2576,614 @@
                 flex-wrap: wrap;
             }
         }
+
+        /* =========================================================
+           ADMIN MOBILE LUXURY UI (MATCHING STUDENT PORTAL)
+           ========================================================= */
+        .mobile-tab-bar,
+        .admin-mobile-header,
+        .admin-mobile-hero {
+            display: none;
+        }
+
+        @media (max-width: 900px) {
+            body {
+                position: relative;
+                background-color: #F6E7D8 !important;
+                background-image: none !important;
+                color: #3A010D;
+            }
+
+            body::before {
+                content: "";
+                position: fixed;
+                inset: 0;
+                z-index: -1;
+                pointer-events: none;
+                transform: translateZ(0);
+                background-color: #F6E7D8;
+                background-image:
+                    radial-gradient(ellipse at 18% 18%, rgba(255, 251, 245, 0.72) 0%, transparent 55%),
+                    radial-gradient(ellipse at 85% 48%, rgba(218, 178, 142, 0.34) 0%, transparent 58%),
+                    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 600 1000' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='mw1' x1='0%25' y1='0%25' x2='0%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23781931' stop-opacity='0.95'/%3E%3Cstop offset='78%25' stop-color='%235B0F23' stop-opacity='0.9'/%3E%3Cstop offset='100%25' stop-color='%235B0F23' stop-opacity='0'/%3E%3C/linearGradient%3E%3ClinearGradient id='mw2' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23FFFBF5' stop-opacity='0.78'/%3E%3Cstop offset='52%25' stop-color='%23EDD3BA' stop-opacity='0.64'/%3E%3Cstop offset='100%25' stop-color='%23DFBFA2' stop-opacity='0.18'/%3E%3C/linearGradient%3E%3ClinearGradient id='mw3' x1='0%25' y1='0%25' x2='100%25' y2='100%25'%3E%3Cstop offset='0%25' stop-color='%23E3C4A6' stop-opacity='0.18'/%3E%3Cstop offset='50%25' stop-color='%23DFBA98' stop-opacity='0.54'/%3E%3Cstop offset='100%25' stop-color='%23FAF0E6' stop-opacity='0.68'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M-20,165 C150,198 340,125 620,160 L620,0 L-20,0 Z' fill='url(%23mw1)'/%3E%3Cpath d='M-40,360 C150,270 360,460 640,340 L640,680 C410,585 190,745 -40,635 Z' fill='url(%23mw2)'/%3E%3Cpath d='M-40,610 C170,515 390,700 640,575 L640,1040 L-40,1040 Z' fill='url(%23mw3)'/%3E%3C/svg%3E"),
+                    linear-gradient(160deg, #FDF7F0 0%, #F4E1CE 52%, #EAD0B8 100%);
+                background-repeat: no-repeat;
+                background-size: cover, cover, 100% 100%, cover;
+            }
+
+            .sidebar,
+            .topbar,
+            .page-heading,
+            .profile-dropdown-wrapper {
+                display: none !important;
+            }
+
+            .main {
+                margin-left: 0 !important;
+                width: 100% !important;
+            }
+
+            .content {
+                padding: calc(env(safe-area-inset-top, 0px) + 10px) 14px calc(96px + env(safe-area-inset-bottom, 0px)) !important;
+            }
+
+            .admin-mobile-header {
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                gap: 12px;
+                padding: 2px 4px 14px;
+            }
+
+            .hero-brand-logo {
+                width: 44px;
+                height: 44px;
+                border-radius: 12px;
+                background: #FDF4EE;
+                padding: 4px;
+                object-fit: contain;
+                border: 1.25px solid rgba(232, 192, 136, 0.9);
+                box-shadow: 0 0 10px rgba(232, 192, 136, 0.36), 0 4px 12px rgba(24, 0, 5, 0.3);
+                flex-shrink: 0;
+                display: block;
+            }
+
+            .hero-brand-divider {
+                width: 1.5px;
+                height: 30px;
+                background: linear-gradient(180deg, transparent 0%, #E8C088 50%, transparent 100%);
+                flex-shrink: 0;
+            }
+
+            .hero-brand-name {
+                display: inline-block;
+                font-family: "Playfair Display", Georgia, serif;
+                font-size: 20px;
+                font-weight: 800;
+                letter-spacing: 1.8px;
+                text-transform: uppercase;
+                background: linear-gradient(135deg, #FFF7EB 0%, #F4CE95 45%, #E8C088 70%, #FFF7EB 100%);
+                -webkit-background-clip: text;
+                background-clip: text;
+                color: transparent;
+                filter: drop-shadow(0 2px 6px rgba(20, 0, 5, 0.45));
+            }
+
+            .admin-mobile-hero {
+                display: flex;
+                flex-direction: column;
+                gap: 14px;
+                background:
+                    radial-gradient(ellipse at 50% 16%, rgba(232, 192, 136, 0.28) 0%, transparent 56%),
+                    linear-gradient(155deg, #821D36 0%, #631227 58%, #4F0C1E 100%);
+                border: 1.5px solid #E8C088;
+                border-radius: 24px;
+                padding: 20px 18px 18px;
+                color: #FDF4EE;
+                margin-bottom: 16px;
+                box-shadow: 0 0 20px rgba(232, 192, 136, 0.22), 0 14px 32px rgba(58, 1, 13, 0.28);
+            }
+
+            .admin-hero-eyebrow {
+                display: inline-flex;
+                align-self: flex-start;
+                font-size: 9.5px;
+                font-weight: 800;
+                letter-spacing: 1.5px;
+                text-transform: uppercase;
+                color: #FFE6BD;
+                background: rgba(255, 248, 240, 0.08);
+                border: 1px solid rgba(232, 192, 136, 0.35);
+                padding: 4px 11px;
+                border-radius: 999px;
+                margin-bottom: 6px;
+            }
+
+            .admin-hero-title {
+                font-family: "Playfair Display", Georgia, serif;
+                font-size: 24px;
+                font-weight: 800;
+                color: #FFFFFF;
+                margin: 0 0 4px;
+                text-shadow: 0 2px 8px rgba(20, 0, 5, 0.55);
+            }
+
+            .admin-hero-sub {
+                font-size: 12.4px;
+                color: #FFF6EE;
+                margin: 0;
+                line-height: 1.45;
+            }
+
+            .admin-hero-stats {
+                display: grid;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+
+            .admin-hero-stat {
+                background: rgba(255, 248, 240, 0.1);
+                border: 1px solid rgba(232, 192, 136, 0.34);
+                border-radius: 14px;
+                padding: 10px 6px;
+                text-align: center;
+            }
+
+            .admin-hero-stat strong {
+                display: block;
+                font-size: 20px;
+                font-weight: 800;
+                color: #FFFFFF;
+                line-height: 1.1;
+            }
+
+            .admin-hero-stat span {
+                display: block;
+                font-size: 10.5px;
+                font-weight: 700;
+                color: #FBDEC7;
+                margin-top: 2px;
+            }
+
+            .toolbar {
+                background: linear-gradient(135deg, #FFFFFF 0%, #FAF6F1 55%, #F5EDE4 100%) !important;
+                border: 1.25px solid rgba(226, 184, 135, 0.65) !important;
+                border-radius: 18px !important;
+                padding: 10px 12px !important;
+                box-shadow: 0 6px 18px rgba(58, 1, 13, 0.06) !important;
+                margin-bottom: 12px !important;
+            }
+
+            .search {
+                border-color: rgba(226, 184, 135, 0.6) !important;
+                border-radius: 12px !important;
+            }
+
+            .btn-upload-set {
+                background: linear-gradient(135deg, #7C1B34 0%, #5B1024 100%) !important;
+                color: #FDF4EE !important;
+                border: 1px solid rgba(232, 192, 136, 0.65) !important;
+                border-radius: 12px !important;
+            }
+
+            .count {
+                color: #6E4A4E !important;
+                font-weight: 700 !important;
+            }
+
+            .test-card {
+                background: linear-gradient(165deg, #FFFFFF 0%, #FCF9F5 52%, #F8F0E8 100%) !important;
+                border: 1.5px solid #E2B887 !important;
+                border-radius: 22px !important;
+                box-shadow: 0 10px 26px rgba(58, 1, 13, 0.08), inset 0 1px 0 #FFFFFF !important;
+            }
+
+            .test-card .accent {
+                background: linear-gradient(180deg, #841F38 0%, #5B1024 100%) !important;
+            }
+
+            .test-card .test-code {
+                background: linear-gradient(135deg, #7C1B34 0%, #5B1024 100%) !important;
+                color: #FDF4EE !important;
+                border-radius: 999px !important;
+            }
+
+            .test-card h2 {
+                font-family: "Playfair Display", Georgia, serif;
+                color: #3A010D !important;
+            }
+
+            .test-card .start:not(:disabled) {
+                background: linear-gradient(105deg, #7C1B34 0%, #5F1024 60%, #4E0C1D 100%) !important;
+                border: 1px solid rgba(232, 192, 136, 0.7) !important;
+                border-radius: 999px !important;
+                color: #FDF4EE !important;
+            }
+
+            /* Mobile Notes, Ranks & Profile Shared Luxury Styles */
+            .admin-sub-section {
+                display: none;
+            }
+
+            .notes-hero-card {
+                background: linear-gradient(155deg, #821D36 0%, #631227 58%, #4F0C1E 100%);
+                border-radius: 24px;
+                padding: 20px 18px 18px;
+                border: 1.5px solid #E8C088;
+                box-shadow: 0 0 20px rgba(232, 192, 136, 0.24), 0 14px 32px rgba(58, 1, 13, 0.28);
+                color: #FDF4EE;
+                margin-bottom: 16px;
+            }
+
+            .notes-back-btn {
+                display: inline-flex;
+                align-items: center;
+                gap: 6px;
+                background: rgba(255, 255, 255, 0.12);
+                border: 1px solid rgba(232, 192, 136, 0.55);
+                color: #FBDEC7;
+                border-radius: 999px;
+                padding: 6px 13px;
+                font-size: 12px;
+                font-weight: 700;
+                cursor: pointer;
+                margin-bottom: 12px;
+            }
+
+            .notes-paper-grid,
+            .notes-list-stack {
+                display: flex;
+                flex-direction: column;
+                gap: 14px;
+            }
+
+            .notes-paper-option,
+            .notes-list-card {
+                width: 100%;
+                text-align: left;
+                background: linear-gradient(165deg, #FFFFFF 0%, #FCF9F5 52%, #F8F0E8 100%);
+                border: 1.5px solid #E2B887;
+                border-radius: 22px;
+                padding: 18px;
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+                cursor: pointer;
+                box-shadow: 0 10px 26px rgba(58, 1, 13, 0.08);
+            }
+
+            .notes-paper-title,
+            .notes-list-title {
+                font-family: "Playfair Display", Georgia, serif;
+                font-size: 18px;
+                font-weight: 700;
+                color: #3A010D;
+                margin: 0;
+            }
+
+            .notes-paper-sub,
+            .notes-list-desc {
+                font-size: 12.5px;
+                color: #5C3A3E;
+                margin: 0;
+                line-height: 1.45;
+            }
+
+            .notes-list-cta {
+                width: 100%;
+                border: 1px solid rgba(232, 192, 136, 0.7);
+                border-radius: 999px;
+                padding: 10px 16px;
+                background: linear-gradient(105deg, #7C1B34 0%, #5F1024 60%, #4E0C1D 100%);
+                color: #FDF4EE;
+                font-size: 12px;
+                font-weight: 800;
+                text-transform: uppercase;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+                cursor: pointer;
+            }
+
+            /* Student Ranks Podium & List on Admin */
+            .mobile-leaderboard-banner {
+                background: linear-gradient(180deg, #FDF4EE 0%, #FBDEC7 45%, #F1D6C7 100%);
+                border-radius: 28px;
+                padding: 30px 10px 0;
+                position: relative;
+                overflow: hidden;
+                box-shadow: 0 10px 30px rgba(58, 1, 13, 0.08);
+                margin-bottom: 16px;
+                text-align: center;
+                border: 1.5px solid #E2B887;
+            }
+
+            .leaderboard-podium-stage {
+                display: flex;
+                align-items: flex-end;
+                justify-content: center;
+                border-bottom: 3px solid rgba(58, 1, 13, 0.25);
+            }
+
+            .podium-col {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                max-width: 118px;
+            }
+
+            .podium-avatar {
+                width: 46px;
+                height: 46px;
+                border-radius: 50%;
+                background: linear-gradient(145deg, #570215 0%, #2D010A 100%);
+                color: #FDF4EE;
+                display: grid;
+                place-items: center;
+                font-weight: 800;
+                font-size: 14px;
+                border: 2.5px solid #E8C088;
+                margin-bottom: 6px;
+            }
+
+            .podium-col.rank-1 .podium-avatar {
+                width: 56px;
+                height: 56px;
+                font-size: 16px;
+            }
+
+            .podium-user-name {
+                font-size: 11.5px;
+                font-weight: 800;
+                color: #3A010D;
+                max-width: 100%;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                white-space: nowrap;
+            }
+
+            .podium-score-pill {
+                background: #FFFFFF;
+                border: 1px solid rgba(226, 184, 135, 0.7);
+                border-radius: 999px;
+                padding: 3px 8px;
+                font-size: 9.5px;
+                font-weight: 800;
+                color: #3A010D;
+                margin: 4px 0 6px;
+            }
+
+            .pedestal-front {
+                width: 100%;
+                background: linear-gradient(180deg, #7A1429 0%, #570215 48%, #31000A 100%);
+                color: rgba(253, 232, 184, 0.55);
+                font-size: 38px;
+                font-weight: 900;
+                display: flex;
+                justify-content: center;
+                padding-top: 10px;
+                border-radius: 10px 10px 0 0;
+            }
+
+            .rank-1 .pedestal-front { height: 120px; font-size: 48px; }
+            .rank-2 .pedestal-front { height: 84px; }
+            .rank-3 .pedestal-front { height: 58px; }
+
+            .leaderboard-list-wrap {
+                background: linear-gradient(165deg, #FFFFFF 0%, #FCF9F5 100%);
+                border-radius: 22px;
+                padding: 16px 14px;
+                border: 1.5px solid #E2B887;
+                box-shadow: 0 10px 24px rgba(58, 1, 13, 0.08);
+            }
+
+            .leader-card {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                gap: 10px;
+                padding: 10px 12px;
+                border-radius: 14px;
+                background: #FAF2EA;
+                border: 1px solid rgba(226, 184, 135, 0.45);
+                margin-top: 8px;
+            }
+
+            /* Deep Navy Admin Profile Card */
+            .mobile-profile-container {
+                background: linear-gradient(170deg, rgba(15, 23, 42, 0.96) 0%, rgba(22, 32, 54, 0.98) 50%, rgba(10, 17, 32, 0.99) 100%);
+                border-radius: 28px;
+                border: 1.25px solid rgba(148, 163, 184, 0.35);
+                box-shadow: 0 20px 50px rgba(10, 17, 32, 0.5);
+                padding: 24px 16px;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                gap: 10px;
+                color: #F1F5F9;
+            }
+
+            .profile-avatar-circle {
+                width: 78px;
+                height: 78px;
+                border-radius: 50%;
+                background: linear-gradient(145deg, #1E3A5F 0%, #0F172A 100%);
+                border: 3px solid #60A5FA;
+                color: #F1F5F9;
+                font-size: 26px;
+                font-weight: 800;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                overflow: hidden;
+            }
+
+            .profile-user-name {
+                font-family: "Playfair Display", Georgia, serif;
+                font-size: 22px;
+                font-weight: 700;
+                color: #F1F5F9;
+                margin: 4px 0 0;
+            }
+
+            .profile-user-email {
+                font-size: 13px;
+                color: #94A3B8;
+            }
+
+            .profile-status-badge {
+                font-size: 10.5px;
+                font-weight: 800;
+                letter-spacing: 1.4px;
+                color: #60A5FA;
+                text-transform: uppercase;
+            }
+
+            .profile-pill-card {
+                width: 100%;
+                background: rgba(30, 41, 59, 0.78);
+                border: 1px solid rgba(100, 116, 139, 0.35);
+                border-radius: 18px;
+                padding: 12px 16px;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                font-size: 13px;
+                color: #E2E8F0;
+            }
+
+            .profile-action-card {
+                width: 100%;
+                background: rgba(30, 41, 59, 0.85);
+                border: 1px solid rgba(100, 116, 139, 0.35);
+                border-radius: 18px;
+                padding: 12px 16px;
+                color: #F1F5F9;
+                font-size: 13.5px;
+                font-weight: 600;
+                cursor: pointer;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 8px;
+            }
+
+            .profile-action-card.logout-card {
+                background: rgba(55, 15, 20, 0.65);
+                border-color: rgba(239, 68, 68, 0.35);
+                color: #FCA5A5;
+            }
+
+            /* Floating Gold-Rimmed Pill Tab Bar */
+            .mobile-tab-bar {
+                display: flex !important;
+                position: fixed;
+                bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+                left: 10px;
+                right: 10px;
+                max-width: 460px;
+                margin: 0 auto;
+                height: 62px;
+                padding: 0 8px;
+                background: linear-gradient(180deg, #FFFDFB 0%, #FAF0E6 100%);
+                border: 2px solid #D9A44E;
+                border-radius: 999px;
+                box-shadow: 0 10px 28px rgba(58, 1, 13, 0.22), 0 0 14px rgba(232, 192, 136, 0.34), inset 0 1px 0 #FFFFFF;
+                z-index: 950;
+                align-items: center;
+                justify-content: space-around;
+                overflow: visible;
+            }
+
+            .tab-btn {
+                position: relative;
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+                align-items: center;
+                justify-content: center;
+                gap: 2px;
+                background: transparent;
+                border: none;
+                padding: 4px 0;
+                color: #63091D;
+                cursor: pointer;
+                -webkit-tap-highlight-color: transparent;
+            }
+
+            .tab-btn:not(:last-child)::after {
+                content: "";
+                position: absolute;
+                right: 0;
+                top: 22%;
+                bottom: 22%;
+                width: 1px;
+                background: rgba(189, 139, 127, 0.35);
+            }
+
+            .tab-icon-wrap {
+                position: relative;
+                width: 34px;
+                height: 24px;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            .tab-icon {
+                width: 19px;
+                height: 19px;
+                color: #63091D;
+            }
+
+            #tabAddQuestionBtn .tab-icon-wrap {
+                width: 48px;
+                height: 48px;
+                margin-top: -26px;
+                margin-bottom: 1px;
+                border-radius: 50%;
+                background: radial-gradient(circle at 32% 24%, #9A223B 0%, #63091D 58%, #3E0210 100%);
+                border: 2.2px solid #E8B85E;
+                box-shadow: 0 0 0 3px #FAF0E6, 0 6px 16px rgba(58, 1, 13, 0.34);
+            }
+
+            #tabAddQuestionBtn .tab-icon {
+                width: 22px;
+                height: 22px;
+                color: #FDF4EE;
+            }
+
+            .tab-btn.active:not(#tabAddQuestionBtn) .tab-icon-wrap {
+                background: rgba(99, 9, 29, 0.08);
+            }
+
+            .tab-btn.active::before {
+                content: "";
+                position: absolute;
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 26px;
+                height: 3.5px;
+                border-radius: 999px;
+                background: #63091D;
+            }
+
+            .tab-label {
+                font-size: 10px;
+                font-weight: 700;
+                color: #63091D;
+                white-space: nowrap;
+            }
+
+            .tab-btn.active .tab-label {
+                font-weight: 800;
+                color: #4D0515;
+            }
+        }
     </style>
 </head>
 
@@ -2735,6 +3343,36 @@
             =============================================== -->
             <section id="examSection">
 
+                <!-- MOBILE BRAND HEADER (NO NOTIFICATION BUTTON) -->
+                <div class="admin-mobile-header">
+                    <img src="Logoicon.png" alt="SLOGON ACADEMY Logo" class="hero-brand-logo">
+                    <span class="hero-brand-divider" aria-hidden="true"></span>
+                    <span class="hero-brand-name">SLOGON ACADEMY</span>
+                </div>
+
+                <!-- MOBILE ADMIN OVERVIEW HERO CARD -->
+                <div class="admin-mobile-hero">
+                    <div>
+                        <span class="admin-hero-eyebrow">MASTER ADMIN &bull; QUESTION BANK</span>
+                        <h1 class="admin-hero-title">Admin Console</h1>
+                        <p class="admin-hero-sub">Manage examination sets, inspect questions, and monitor student standings.</p>
+                    </div>
+                    <div class="admin-hero-stats">
+                        <div class="admin-hero-stat">
+                            <strong id="adminHeroSetCount">0</strong>
+                            <span>Exam Sets</span>
+                        </div>
+                        <div class="admin-hero-stat">
+                            <strong id="adminHeroQCount">0</strong>
+                            <span>Questions</span>
+                        </div>
+                        <div class="admin-hero-stat">
+                            <strong>Live</strong>
+                            <span>Cloud Sync</span>
+                        </div>
+                    </div>
+                </div>
+
                 <!-- VIEW 1: SETS DIRECTORY -->
                 <div id="setsDirectoryView">
                     <div class="toolbar">
@@ -2824,6 +3462,115 @@
                     <div id="inspectorQuestionsContainer"></div>
                 </div>
 
+            </section>
+
+            <!-- ==============================================
+                 MOBILE SECTION 2: STUDY NOTES (PAPER SELECTOR -> LIST VIEW)
+            =============================================== -->
+            <section id="adminNotesSection" class="admin-sub-section">
+                <div class="admin-mobile-header">
+                    <img src="Logoicon.png" alt="SLOGON ACADEMY Logo" class="hero-brand-logo">
+                    <span class="hero-brand-divider" aria-hidden="true"></span>
+                    <span class="hero-brand-name">SLOGON ACADEMY</span>
+                </div>
+
+                <div id="adminNotesPaperView">
+                    <div class="notes-hero-card">
+                        <span class="admin-hero-eyebrow">SYLLABUS LIBRARY &bull; NOTES</span>
+                        <h2 class="admin-hero-title">Study Notes</h2>
+                        <p class="admin-hero-sub">Select a paper below to review structured unit notes and revision guides.</p>
+                    </div>
+                    <div class="notes-paper-grid">
+                        <button type="button" class="notes-paper-option" data-admin-paper="Paper 1">
+                            <h3 class="notes-paper-title">Paper 1 — General Paper</h3>
+                            <p class="notes-paper-sub">Teaching &amp; Research Aptitude, DI, Logical Reasoning &amp; ICT (3 Modules)</p>
+                        </button>
+                        <button type="button" class="notes-paper-option" data-admin-paper="Paper 2">
+                            <h3 class="notes-paper-title">Paper 2 — Tamil Literature</h3>
+                            <p class="notes-paper-sub">Sangam Classics, Tolkappiyam Grammar, Epics &amp; Modern Prose (3 Modules)</p>
+                        </button>
+                    </div>
+                </div>
+
+                <div id="adminNotesListView" style="display: none;">
+                    <div class="notes-hero-card">
+                        <button type="button" class="notes-back-btn" id="adminNotesBackBtn">&larr; All Papers</button>
+                        <span class="admin-hero-eyebrow" id="adminNotesPaperTag">PAPER 1</span>
+                        <h2 class="admin-hero-title" id="adminNotesPaperTitle">Paper 1 Notes</h2>
+                        <p class="admin-hero-sub">Tap any note module below to view full syllabus topics.</p>
+                    </div>
+                    <div class="notes-list-stack" id="adminNotesList"></div>
+                </div>
+            </section>
+
+            <!-- ==============================================
+                 MOBILE SECTION 4: STUDENT RANKS (PODIUM + STANDINGS)
+            =============================================== -->
+            <section id="adminRanksSection" class="admin-sub-section">
+                <div class="admin-mobile-header">
+                    <img src="Logoicon.png" alt="SLOGON ACADEMY Logo" class="hero-brand-logo">
+                    <span class="hero-brand-divider" aria-hidden="true"></span>
+                    <span class="hero-brand-name">SLOGON ACADEMY</span>
+                </div>
+
+                <div class="mobile-leaderboard-banner">
+                    <div class="leaderboard-podium-stage">
+                        <div class="podium-col rank-2">
+                            <div class="podium-avatar" id="adminPodiumAvatar2">—</div>
+                            <div class="podium-user-name" id="adminPodiumName2">—</div>
+                            <div class="podium-score-pill" id="adminPodiumScore2">0 / 0</div>
+                            <div class="pedestal-front">2</div>
+                        </div>
+                        <div class="podium-col rank-1">
+                            <div class="podium-avatar" id="adminPodiumAvatar1">—</div>
+                            <div class="podium-user-name" id="adminPodiumName1">—</div>
+                            <div class="podium-score-pill" id="adminPodiumScore1">0 / 0</div>
+                            <div class="pedestal-front">1</div>
+                        </div>
+                        <div class="podium-col rank-3">
+                            <div class="podium-avatar" id="adminPodiumAvatar3">—</div>
+                            <div class="podium-user-name" id="adminPodiumName3">—</div>
+                            <div class="podium-score-pill" id="adminPodiumScore3">0 / 0</div>
+                            <div class="pedestal-front">3</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="leaderboard-list-wrap">
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <strong style="font-family:'Playfair Display',Georgia,serif; font-size:17px; color:#3A010D;">Student Standings</strong>
+                        <span style="font-size:11px; color:#6E4A4E; font-weight:600;">Score &amp; Speed</span>
+                    </div>
+                    <div id="adminLeaderboardItems" style="margin-top:8px;">
+                        <div class="leader-card">
+                            <span style="font-size:13px; color:#5C3A3E;">Loading student standings...</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ==============================================
+                 MOBILE SECTION 5: ADMIN PROFILE
+            =============================================== -->
+            <section id="adminProfileSection" class="admin-sub-section">
+                <div class="mobile-profile-container">
+                    <div class="profile-avatar-circle" id="adminMobileAvatar">MA</div>
+                    <h2 class="profile-user-name" id="adminMobileName">Master Administrator</h2>
+                    <div class="profile-user-email" id="adminMobileEmail">admin@slogon.edu</div>
+                    <div class="profile-status-badge">SLOGON ACADEMY &bull; MASTER ADMIN</div>
+
+                    <div class="profile-pill-card">
+                        <span>Admin ID</span>
+                        <strong id="adminMobileId">admin</strong>
+                    </div>
+                    <div class="profile-pill-card">
+                        <span>Access Role</span>
+                        <strong style="color:#60A5FA;" id="adminMobileRole">Admin</strong>
+                    </div>
+
+                    <button type="button" class="profile-action-card" id="adminMobileHelpBtn">Help &amp; Knowledge Base</button>
+                    <button type="button" class="profile-action-card logout-card" id="adminMobileLogoutBtn">Log Out Session</button>
+                </div>
             </section>
 
 
@@ -3192,6 +3939,72 @@
         </svg>
         <span>Question order saved</span>
     </div>
+
+    <!-- ADMIN STUDY NOTES PREVIEW MODAL -->
+    <div class="modal-backdrop" id="adminStudyModal">
+        <div class="modal-box" style="max-width:440px; border-radius:24px; border:1.5px solid #E2B887; background:linear-gradient(165deg,#FFFFFF 0%,#F8F0E8 100%);">
+            <h3 id="adminStudyModalTitle" style="font-family:'Playfair Display',Georgia,serif; color:#3A010D; margin-bottom:4px;">Study Notes</h3>
+            <p id="adminStudyModalMeta" style="font-size:12px; color:#6E4A4E; margin-bottom:12px;"></p>
+            <div id="adminStudyModalBody" style="font-size:13.5px; color:#3A010D; line-height:1.55; margin-bottom:16px;"></div>
+            <button type="button" class="notes-list-cta" id="closeAdminStudyModalBtn">Close</button>
+        </div>
+    </div>
+
+    <!-- ADMIN MOBILE BOTTOM TAB BAR (1. HOME, 2. NOTES, 3. ADD QUESTION, 4. STUDENT RANK, 5. ADMIN PROFILE) -->
+    <nav class="mobile-tab-bar" id="adminMobileTabBar" aria-label="Admin Navigation">
+        <button type="button" class="tab-btn active" id="tabHomeBtn" data-admin-tab="home" aria-label="Home">
+            <span class="tab-icon-wrap">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                </svg>
+            </span>
+            <span class="tab-label">Home</span>
+        </button>
+
+        <button type="button" class="tab-btn" id="tabNotesBtn" data-admin-tab="notes" aria-label="Notes">
+            <span class="tab-icon-wrap">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"></path>
+                    <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"></path>
+                </svg>
+            </span>
+            <span class="tab-label">Notes</span>
+        </button>
+
+        <button type="button" class="tab-btn" id="tabAddQuestionBtn" data-admin-tab="add" aria-label="Add Question">
+            <span class="tab-icon-wrap">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="12" y1="5" x2="12" y2="19"></line>
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                </svg>
+            </span>
+            <span class="tab-label">Add Q</span>
+        </button>
+
+        <button type="button" class="tab-btn" id="tabRanksBtn" data-admin-tab="ranks" aria-label="Student Rank">
+            <span class="tab-icon-wrap">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path>
+                    <path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path>
+                    <path d="M4 22h16"></path>
+                    <path d="M10 14.66V17c0 .55-.45 1-1 1H7"></path>
+                    <path d="M14 14.66V17c0 .55.45 1 1 1h2"></path>
+                    <path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path>
+                </svg>
+            </span>
+            <span class="tab-label">Ranks</span>
+        </button>
+
+        <button type="button" class="tab-btn" id="tabProfileBtn" data-admin-tab="profile" aria-label="Admin Profile">
+            <span class="tab-icon-wrap">
+                <svg class="tab-icon" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"></path>
+                </svg>
+            </span>
+            <span class="tab-label">Profile</span>
+        </button>
+    </nav>
 
     <!-- EXTERNAL CONTROLLER SCRIPT (CSP COMPLIANT) -->
     <script src="questionFormatter.js?v=20261117-v1"></script>

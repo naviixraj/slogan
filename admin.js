@@ -268,6 +268,16 @@ function renderSets() {
     if (resultCount) {
         resultCount.textContent = `Showing ${matches.length} of ${activeSets.length} question sets`;
     }
+    const adminHeroSetCount = document.getElementById("adminHeroSetCount");
+    const adminHeroQCount = document.getElementById("adminHeroQCount");
+    if (adminHeroSetCount) adminHeroSetCount.textContent = String(activeSets.length);
+    if (adminHeroQCount) {
+        const totalQs = activeSets.reduce((sum, s) => {
+            const c = s.questions_count !== undefined ? s.questions_count : (s.questionsCount || (s.questions ? s.questions.length : 0));
+            return sum + (Number(c) || 0);
+        }, 0);
+        adminHeroQCount.textContent = String(totalQs);
+    }
 
     if (!matches.length) {
         testGrid.innerHTML = '<div style="grid-column: 1 / -1; background: #FFFFFF; border: 1px dashed #D8DED7; border-radius: 10px; padding: 35px; text-align: center; color: var(--muted); font-size: 12px;">No question sets match your search. Click "+ Upload Set" to create one.</div>';
@@ -1108,6 +1118,17 @@ async function loadAdminProfile() {
         renderAvatar(sidebarAvatar, picture, inits);
         renderAvatar(topAvatar, picture, inits);
         renderAvatar(dropdownAvatar, picture, inits);
+
+        const adminMobileName = document.getElementById("adminMobileName");
+        const adminMobileEmail = document.getElementById("adminMobileEmail");
+        const adminMobileId = document.getElementById("adminMobileId");
+        const adminMobileRole = document.getElementById("adminMobileRole");
+        const adminMobileAvatar = document.getElementById("adminMobileAvatar");
+        if (adminMobileName) adminMobileName.textContent = name;
+        if (adminMobileEmail) adminMobileEmail.textContent = email;
+        if (adminMobileId) adminMobileId.textContent = id;
+        if (adminMobileRole) adminMobileRole.textContent = role;
+        renderAvatar(adminMobileAvatar, picture, inits);
     } catch (e) {
         console.log("Profile verification error:", e);
         window.location.replace("login?next=admin");
@@ -1823,12 +1844,299 @@ function bindEventListeners() {
 }
 
 // -----------------------------------------------------
+// MOBILE 5-TAB NAVIGATION, NOTES & STUDENT RANKS
+// -----------------------------------------------------
+
+const adminNotesCatalog = [
+    {
+        code: "P1 NOTE 01",
+        title: "Paper 1 — Teaching & Research Aptitude",
+        desc: "Core concepts of learner characteristics, teaching methods, research ethics, and hypothesis design.",
+        units: "Unit 1–2",
+        paper: "Paper 1",
+        topics: [
+            "Levels of Teaching: Memory, Understanding & Reflective",
+            "Research Types, Positivism & Post-Positivistic Approaches",
+            "Sampling Techniques & Research Ethics Guidelines"
+        ]
+    },
+    {
+        code: "P1 NOTE 02",
+        title: "Paper 1 — Reasoning, DI & Logical Fallacies",
+        desc: "High-yield shortcuts for Data Interpretation, percentage tables, syllogisms, and Indian Logic.",
+        units: "Unit 5–7",
+        paper: "Paper 1",
+        topics: [
+            "Ratio, Average & Percentage Speed Tables for DI",
+            "Classical Square of Opposition & Mood/Figure",
+            "Indian Logic: Pramanas & Hetvabhasa Summary"
+        ]
+    },
+    {
+        code: "P1 NOTE 03",
+        title: "Paper 1 — ICT, Environment & Higher Education",
+        desc: "Digital initiatives, networking protocols, environmental treaties, and NEP 2020 highlights.",
+        units: "Unit 8–10",
+        paper: "Paper 1",
+        topics: [
+            "ICT Abbreviations, Memory Hierarchy & Cyber Security",
+            "Kyoto Protocol, Paris Agreement & SDG Goals",
+            "Ancient Indian Universities & NEP 2020 Framework"
+        ]
+    },
+    {
+        code: "P2 NOTE 01",
+        title: "Paper 2 — Classical Sangam Literature",
+        desc: "Comprehensive unit-wise reference covering Ettuthogai, Pathuppattu, and Sangam poetic conventions.",
+        units: "Unit 1–3",
+        paper: "Paper 2",
+        topics: [
+            "Akam & Puram Thinai Classification & Uripporul",
+            "Ettuthogai Anthologies & Key Poets",
+            "Pathuppattu Long Poems & Historical Context"
+        ]
+    },
+    {
+        code: "P2 NOTE 02",
+        title: "Paper 2 — Tolkappiyam & Nannool Grammar",
+        desc: "Structured grammar notes for Ezhuthu, Sol, Porul, Yappu, and Ani Ilakkanam rules.",
+        units: "Unit 4–6",
+        paper: "Paper 2",
+        topics: [
+            "Tolkappiyam Ezhuthathikaram & Sollathikaram Essentials",
+            "Porulathikaram Meiypaadu & Uvamai",
+            "Yapparunkalakkarikai & Dandi Alankaram Rules"
+        ]
+    },
+    {
+        code: "P2 NOTE 03",
+        title: "Paper 2 — Bhakti, Epics & Modern Tamil",
+        desc: "Revision notes on Twin Epics, Panniru Thirumurai, Nalayira Divya Prabandham, and Modern Prose.",
+        units: "Unit 7–10",
+        paper: "Paper 2",
+        topics: [
+            "Silappathikaram, Manimekalai & Kambaramayanam",
+            "Saiva & Vaishnava Bhakti Literature Milestones",
+            "Modern Tamil Poetry, Short Stories & Literary Criticism"
+        ]
+    }
+];
+
+async function loadAdminLeaderboard() {
+    const itemsEl = document.getElementById("adminLeaderboardItems");
+    if (!itemsEl) return;
+    try {
+        const res = await fetch("/api/leaderboard", { credentials: "same-origin" });
+        const data = await res.json();
+        const rows = (data && data.success && Array.isArray(data.leaderboard)) ? data.leaderboard : [];
+
+        for (let r = 1; r <= 3; r++) {
+            const entry = rows[r - 1];
+            const av = document.getElementById(`adminPodiumAvatar${r}`);
+            const nm = document.getElementById(`adminPodiumName${r}`);
+            const sc = document.getElementById(`adminPodiumScore${r}`);
+            if (entry) {
+                const name = entry.studentName || entry.name || "Candidate";
+                const inits = name.split(" ").map(w => w[0]).join("").toUpperCase().slice(0, 2) || "C";
+                if (av) av.textContent = inits;
+                if (nm) nm.textContent = name;
+                if (sc) sc.textContent = `${entry.score ?? 0} / ${entry.total ?? 0}`;
+            } else {
+                if (av) av.textContent = "—";
+                if (nm) nm.textContent = "—";
+                if (sc) sc.textContent = "0 / 0";
+            }
+        }
+
+        if (!rows.length) {
+            itemsEl.innerHTML = `<div class="leader-card"><span style="font-size:13px; color:#5C3A3E;">No examination results yet.</span></div>`;
+            return;
+        }
+
+        itemsEl.innerHTML = rows.map((entry, idx) => {
+            const name = entry.studentName || entry.name || "Candidate";
+            const testTitle = entry.testTitle || entry.examTitle || "Mock Test";
+            const pct = entry.total ? Math.round((entry.score / entry.total) * 100) : 0;
+            return `
+                <div class="leader-card">
+                    <div>
+                        <strong style="display:block; font-size:13.5px; color:#3A010D;">#${idx + 1} &bull; ${name}</strong>
+                        <span style="font-size:11.5px; color:#6E4A4E;">${testTitle}</span>
+                    </div>
+                    <strong style="font-size:13px; color:#5B1024;">${entry.score ?? 0}/${entry.total ?? 0} (${pct}%)</strong>
+                </div>
+            `;
+        }).join("");
+    } catch {
+        itemsEl.innerHTML = `<div class="leader-card"><span style="font-size:13px; color:#5C3A3E;">Unable to load student standings right now.</span></div>`;
+    }
+}
+
+function initAdminMobileTabs() {
+    const tabHomeBtn = document.getElementById("tabHomeBtn");
+    const tabNotesBtn = document.getElementById("tabNotesBtn");
+    const tabAddQuestionBtn = document.getElementById("tabAddQuestionBtn");
+    const tabRanksBtn = document.getElementById("tabRanksBtn");
+    const tabProfileBtn = document.getElementById("tabProfileBtn");
+
+    const notesSection = document.getElementById("adminNotesSection");
+    const ranksSection = document.getElementById("adminRanksSection");
+    const profileSection = document.getElementById("adminProfileSection");
+
+    const notesPaperView = document.getElementById("adminNotesPaperView");
+    const notesListView = document.getElementById("adminNotesListView");
+    const notesListEl = document.getElementById("adminNotesList");
+    const notesBackBtn = document.getElementById("adminNotesBackBtn");
+    const studyModal = document.getElementById("adminStudyModal");
+    const closeStudyModalBtn = document.getElementById("closeAdminStudyModalBtn");
+
+    const tabBtns = [tabHomeBtn, tabNotesBtn, tabAddQuestionBtn, tabRanksBtn, tabProfileBtn];
+
+    function setActiveAdminTab(activeBtn) {
+        tabBtns.forEach(b => {
+            if (b) b.classList.toggle("active", b === activeBtn);
+        });
+    }
+
+    function hideAllAdminSections() {
+        if (examSection) examSection.style.display = "none";
+        if (helpSection) helpSection.style.display = "none";
+        if (notesSection) notesSection.style.display = "none";
+        if (ranksSection) ranksSection.style.display = "none";
+        if (profileSection) profileSection.style.display = "none";
+    }
+
+    if (tabHomeBtn) {
+        tabHomeBtn.addEventListener("click", () => {
+            setActiveAdminTab(tabHomeBtn);
+            hideAllAdminSections();
+            if (examSection) examSection.style.display = "block";
+            backToSets();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+    }
+
+    if (tabNotesBtn) {
+        tabNotesBtn.addEventListener("click", () => {
+            setActiveAdminTab(tabNotesBtn);
+            hideAllAdminSections();
+            if (notesSection) notesSection.style.display = "block";
+            if (notesPaperView) notesPaperView.style.display = "block";
+            if (notesListView) notesListView.style.display = "none";
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+    }
+
+    if (tabAddQuestionBtn) {
+        tabAddQuestionBtn.addEventListener("click", () => {
+            setActiveAdminTab(tabHomeBtn);
+            hideAllAdminSections();
+            if (examSection) examSection.style.display = "block";
+            const uploadBtn = document.getElementById("openUploadModalButton");
+            if (uploadBtn) uploadBtn.click();
+        });
+    }
+
+    if (tabRanksBtn) {
+        tabRanksBtn.addEventListener("click", () => {
+            setActiveAdminTab(tabRanksBtn);
+            hideAllAdminSections();
+            if (ranksSection) ranksSection.style.display = "block";
+            loadAdminLeaderboard();
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+    }
+
+    if (tabProfileBtn) {
+        tabProfileBtn.addEventListener("click", () => {
+            setActiveAdminTab(tabProfileBtn);
+            hideAllAdminSections();
+            if (profileSection) profileSection.style.display = "block";
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+    }
+
+    document.querySelectorAll("[data-admin-paper]").forEach(btn => {
+        btn.addEventListener("click", () => {
+            const paper = btn.getAttribute("data-admin-paper");
+            if (!paper || !notesListEl) return;
+            const tagEl = document.getElementById("adminNotesPaperTag");
+            const titleEl = document.getElementById("adminNotesPaperTitle");
+            if (tagEl) tagEl.textContent = paper.toUpperCase();
+            if (titleEl) titleEl.textContent = `${paper} Study Notes`;
+
+            const items = adminNotesCatalog.filter(n => n.paper === paper);
+            notesListEl.innerHTML = "";
+            items.forEach(item => {
+                const card = document.createElement("article");
+                card.className = "notes-list-card";
+                card.innerHTML = `
+                    <div style="display:flex; justify-content:space-between; align-items:center;">
+                        <span style="background:linear-gradient(135deg,#7C1B34,#5B1024); color:#FDF4EE; font-size:10.5px; font-weight:800; padding:4px 10px; border-radius:999px;">${item.code}</span>
+                        <span style="font-size:11.5px; font-weight:700; color:#6E4A4E;">${item.units}</span>
+                    </div>
+                    <h3 class="notes-list-title">${item.title}</h3>
+                    <p class="notes-list-desc">${item.desc}</p>
+                    <button type="button" class="notes-list-cta"><span>Open Notes</span><span>&rarr;</span></button>
+                `;
+                card.addEventListener("click", () => {
+                    if (!studyModal) return;
+                    const mTitle = document.getElementById("adminStudyModalTitle");
+                    const mMeta = document.getElementById("adminStudyModalMeta");
+                    const mBody = document.getElementById("adminStudyModalBody");
+                    if (mTitle) mTitle.textContent = item.title;
+                    if (mMeta) mMeta.textContent = `${item.paper} · ${item.units}`;
+                    if (mBody) {
+                        mBody.innerHTML = `<p style="margin-bottom:10px;">${item.desc}</p><ul style="padding-left:18px; margin:0;">${item.topics.map(t => `<li style="margin-bottom:4px;">${t}</li>`).join("")}</ul>`;
+                    }
+                    studyModal.classList.add("open");
+                });
+                notesListEl.appendChild(card);
+            });
+
+            if (notesPaperView) notesPaperView.style.display = "none";
+            if (notesListView) notesListView.style.display = "block";
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+    });
+
+    if (notesBackBtn) {
+        notesBackBtn.addEventListener("click", () => {
+            if (notesPaperView) notesPaperView.style.display = "block";
+            if (notesListView) notesListView.style.display = "none";
+        });
+    }
+
+    if (closeStudyModalBtn && studyModal) {
+        closeStudyModalBtn.addEventListener("click", () => studyModal.classList.remove("open"));
+        studyModal.addEventListener("click", (e) => {
+            if (e.target === studyModal) studyModal.classList.remove("open");
+        });
+    }
+
+    const adminMobileHelpBtn = document.getElementById("adminMobileHelpBtn");
+    const adminMobileLogoutBtn = document.getElementById("adminMobileLogoutBtn");
+    if (adminMobileHelpBtn) {
+        adminMobileHelpBtn.addEventListener("click", () => {
+            hideAllAdminSections();
+            if (helpSection) helpSection.style.display = "block";
+            setActiveAdminTab(null);
+            window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+    }
+    if (adminMobileLogoutBtn) {
+        adminMobileLogoutBtn.addEventListener("click", openLogoutModal);
+    }
+}
+
+// -----------------------------------------------------
 // INITIALIZE
 // -----------------------------------------------------
 
 function initAdminPortal() {
     renderSets();
     bindEventListeners();
+    initAdminMobileTabs();
     loadAdminProfile();
     fetchSets();
 }
