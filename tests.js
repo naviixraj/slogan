@@ -915,6 +915,10 @@ const studyNotesCatalog = [
 ];
 
 function openStudyNotesPage() {
+    if (typeof switchStudentTab === "function") {
+        switchStudentTab("notes");
+        return;
+    }
     if (!studyNotesSection) return;
     if (examSection) examSection.style.display = "none";
     if (mobileSearchSection) mobileSearchSection.style.display = "none";
@@ -1466,6 +1470,7 @@ window.addEventListener("resize", () => {
 
 const tabHomeBtn = document.getElementById("tabHomeBtn");
 const tabSearchBtn = document.getElementById("tabSearchBtn");
+const tabNotesBtn = document.getElementById("tabNotesBtn");
 const tabProfileBtn = document.getElementById("tabProfileBtn");
 const tabLeaderboardBtn = document.getElementById("tabLeaderboardBtn");
 
@@ -1477,6 +1482,7 @@ function switchStudentTab(tabName) {
     const tabMap = {
         home: { btn: tabHomeBtn, section: examSection },
         search: { btn: tabSearchBtn, section: mobileSearchSection },
+        notes: { btn: tabNotesBtn, section: studyNotesSection },
         profile: { btn: tabProfileBtn, section: mobileProfileSection },
         leaderboard: { btn: tabLeaderboardBtn, section: mobileLeaderboardSection }
     };
@@ -1545,14 +1551,21 @@ function switchStudentTab(tabName) {
 
     document.body.classList.toggle("in-home-tab", tabName === "home");
     document.body.classList.toggle("in-search-tab", tabName === "search");
+    document.body.classList.toggle("in-notes-tab", tabName === "notes");
     document.body.classList.toggle("in-leaderboard-tab", tabName === "leaderboard");
     document.body.classList.toggle("in-profile-tab", tabName === "profile");
+
+    if (tabName === "notes") {
+        if (studyPaperSelectorView) studyPaperSelectorView.style.display = "block";
+        if (studyNotesListView) studyNotesListView.style.display = "none";
+    }
 
     window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
 if (tabHomeBtn) tabHomeBtn.addEventListener("click", () => switchStudentTab("home"));
 if (tabSearchBtn) tabSearchBtn.addEventListener("click", () => switchStudentTab("search"));
+if (tabNotesBtn) tabNotesBtn.addEventListener("click", () => switchStudentTab("notes"));
 if (tabProfileBtn) tabProfileBtn.addEventListener("click", () => switchStudentTab("profile"));
 if (tabLeaderboardBtn) tabLeaderboardBtn.addEventListener("click", () => switchStudentTab("leaderboard"));
 
