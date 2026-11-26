@@ -2505,6 +2505,18 @@ function initAdminMobileTabs() {
     const noteTitleInput = document.getElementById("noteTitleInput");
     const notePaperSelect = document.getElementById("notePaperSelect");
     const noteUnitSelect = document.getElementById("noteUnitSelect");
+
+    if (notePaperSelect && noteUnitSelect) {
+        const syncAdminUnitLabels = () => {
+            const isPaper2 = String(notePaperSelect.value || "").toLowerCase() === "paper 2";
+            const prefix = isPaper2 ? "அலகு" : "Unit";
+            Array.from(noteUnitSelect.options).forEach((opt, idx) => {
+                opt.textContent = `${prefix} ${idx + 1}`;
+            });
+        };
+        notePaperSelect.addEventListener("change", syncAdminUnitLabels);
+        syncAdminUnitLabels();
+    }
     const noteDropBoxArea = document.getElementById("noteDropBoxArea");
     const noteFileInput = document.getElementById("noteFileInput");
     const noteSelectedFileCard = document.getElementById("noteSelectedFileCard");
@@ -2746,7 +2758,7 @@ function initAdminMobileTabs() {
                 card.innerHTML = `
                     ${coverHtml}
                     <div style="display:flex; justify-content:space-between; align-items:center; gap:8px; margin-top:4px;">
-                        <span style="background:linear-gradient(135deg,#7C1B34,#5B1024); color:#FDF4EE; font-size:10.5px; font-weight:800; padding:4px 10px; border-radius:999px;">${note.paper} &bull; UNIT ${note.unit}</span>
+                        <span style="background:linear-gradient(135deg,#7C1B34,#5B1024); color:#FDF4EE; font-size:10.5px; font-weight:800; padding:4px 10px; border-radius:999px;">${note.paper} &bull; ${String(note.paper || "").toLowerCase() === "paper 2" ? "அலகு" : "UNIT"} ${note.unit}</span>
                         ${statusBadge}
                     </div>
                     <h3 class="notes-list-title">${note.title}</h3>

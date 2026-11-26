@@ -42,7 +42,8 @@
             const note = data.note;
             document.title = `${note.title} — SLOGON ACADEMY`;
             if (titleEl) titleEl.textContent = note.title;
-            if (pillEl) pillEl.textContent = `${note.paper.toUpperCase()} • UNIT ${note.unit}`;
+            const unitTxt = `${String(note.paper || "").toLowerCase() === "paper 2" ? "அலகு" : "UNIT"} ${note.unit}`;
+            if (pillEl) pillEl.textContent = `${note.paper.toUpperCase()} • ${unitTxt}`;
             if (subEl) subEl.textContent = `${note.fileName} • View-only access (downloading disabled)`;
 
             const ext = String(note.fileType || "").toLowerCase();

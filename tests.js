@@ -980,22 +980,25 @@ async function renderUnitSelectorForPaper(paperKey) {
     }
 
     studyUnitOptions.innerHTML = "";
+    const isTamilPaper = String(paperKey).toLowerCase() === "paper 2";
+    const unitPrefix = isTamilPaper ? "அலகு" : "Unit";
     for (let u = 1; u <= 10; u++) {
         const unitNotes = cachedPaperNotes.filter(n => Number(n.unit) === u);
         const countText = `${unitNotes.length} ${unitNotes.length === 1 ? "NOTE" : "NOTES"}`;
+        const unitLabel = `${unitPrefix} ${u}`;
         const unitBtn = document.createElement("button");
         unitBtn.type = "button";
         unitBtn.className = "notes-paper-option";
         unitBtn.innerHTML = `
             <div class="notes-paper-top">
-                <span class="notes-paper-eyebrow">UNIT ${String(u).padStart(2, "0")} &bull; ${paperKey.toUpperCase()}</span>
+                <span class="notes-paper-eyebrow">${unitPrefix.toUpperCase()} ${String(u).padStart(2, "0")} &bull; ${paperKey.toUpperCase()}</span>
                 <span class="notes-paper-count">${countText}</span>
             </div>
             <div class="notes-paper-main">
                 <div class="notes-paper-left">
-                    <div class="notes-paper-badge">U${u}</div>
+                    <div class="notes-paper-badge">${isTamilPaper ? `அ${u}` : `U${u}`}</div>
                     <div>
-                        <h3 class="notes-paper-title">Unit ${u}</h3>
+                        <h3 class="notes-paper-title">${unitLabel}</h3>
                         <p class="notes-paper-sub">${unitNotes.length > 0 ? `View ${unitNotes.length} uploaded study ${unitNotes.length === 1 ? "note" : "notes"}` : "No notes uploaded yet"}</p>
                     </div>
                 </div>
@@ -1009,17 +1012,19 @@ async function renderUnitSelectorForPaper(paperKey) {
 
 function renderStudyNotesForUnit(paperKey, unitNum) {
     if (!studyNotesList || !studyUnitSelectorView || !studyNotesListView) return;
+    const isTamilPaper = String(paperKey).toLowerCase() === "paper 2";
+    const unitLabel = `${isTamilPaper ? "அலகு" : "Unit"} ${unitNum}`;
     const tagEl = document.getElementById("selectedPaperTag");
     const headingEl = document.getElementById("selectedPaperHeading");
-    if (tagEl) tagEl.textContent = `${paperKey.toUpperCase()} • UNIT ${unitNum}`;
-    if (headingEl) headingEl.textContent = `Unit ${unitNum} Study Notes`;
+    if (tagEl) tagEl.textContent = `${paperKey.toUpperCase()} • ${unitLabel.toUpperCase()}`;
+    if (headingEl) headingEl.textContent = `${unitLabel} Study Notes`;
 
     const filteredUploaded = cachedPaperNotes.filter(n => Number(n.unit) === Number(unitNum));
 
     studyNotesList.innerHTML = "";
 
     if (!filteredUploaded.length) {
-        studyNotesList.innerHTML = `<div style="background:rgba(255,255,255,0.88); border:1.5px dashed #E2B887; border-radius:18px; padding:28px 18px; text-align:center; color:#6E4A4E; font-size:13px; font-weight:600;">No notes uploaded yet for ${paperKey} &bull; Unit ${unitNum}.</div>`;
+        studyNotesList.innerHTML = `<div style="background:rgba(255,255,255,0.88); border:1.5px dashed #E2B887; border-radius:18px; padding:28px 18px; text-align:center; color:#6E4A4E; font-size:13px; font-weight:600;">No notes uploaded yet for ${paperKey} &bull; ${unitLabel}.</div>`;
     } else {
         filteredUploaded.forEach(note => {
             const card = document.createElement("article");
@@ -1027,6 +1032,7 @@ function renderStudyNotesForUnit(paperKey, unitNum) {
             const extLabel = String(note.fileType || "FILE").toUpperCase();
             const kb = Math.max(1, Math.round((Number(note.fileSize) || 0) / 1024));
             const sizeLabel = kb >= 1024 ? `${(kb / 1024).toFixed(1)} MB` : `${kb} KB`;
+            const noteUnitLabel = `${String(note.paper || "").toLowerCase() === "paper 2" ? "அலகு" : "Unit"} ${note.unit}`;
 
             const coverHtml = note.hasCustomCover && note.coverUrl
                 ? `<div style="width:100%; border-radius:16px; overflow:hidden; border:1.25px solid rgba(226,184,135,0.65); margin-bottom:4px;"><img src="${note.coverUrl}" alt="${note.title}" style="width:100%; height:136px; object-fit:cover; display:block;"></div>`
@@ -1039,7 +1045,7 @@ function renderStudyNotesForUnit(paperKey, unitNum) {
                         <span class="notes-list-code">${note.paper.toUpperCase()}</span>
                         <span class="notes-list-format">${extLabel}</span>
                     </div>
-                    <span class="notes-list-unit">Unit ${note.unit}</span>
+                    <span class="notes-list-unit">${noteUnitLabel}</span>
                 </div>
                 <h3 class="notes-list-title">${note.title}</h3>
                 <p class="notes-list-desc">${note.fileName} &bull; ${sizeLabel}</p>
