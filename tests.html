@@ -1427,20 +1427,21 @@
             .mobile-tab-bar {
                 display: flex !important;
                 position: fixed;
-                bottom: 0;
-                left: 0;
-                right: 0;
-                height: 68px;
-                padding-bottom: env(safe-area-inset-bottom, 0px);
-                background: linear-gradient(180deg, rgba(255, 253, 250, 0.97) 0%, rgba(252, 241, 232, 0.98) 60%, rgba(245, 226, 210, 0.99) 100%);
-                border-top: 1.5px solid rgba(232, 192, 136, 0.88);
-                border-radius: 24px 24px 0 0;
-                box-shadow: 0 -6px 24px rgba(232, 192, 136, 0.24), 0 -10px 30px rgba(24, 0, 5, 0.38), inset 0 1px 0 #FFFFFF;
-                backdrop-filter: blur(16px);
-                -webkit-backdrop-filter: blur(16px);
+                bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+                left: 10px;
+                right: 10px;
+                max-width: 460px;
+                margin: 0 auto;
+                height: 62px;
+                padding: 0 8px;
+                background: linear-gradient(180deg, #FFFDFB 0%, #FAF0E6 100%);
+                border: 2px solid #D9A44E;
+                border-radius: 999px;
+                box-shadow: 0 10px 28px rgba(58, 1, 13, 0.22), 0 0 14px rgba(232, 192, 136, 0.34), inset 0 1px 0 #FFFFFF;
                 z-index: 950;
                 align-items: center;
                 justify-content: space-around;
+                overflow: visible;
             }
 
             /* Hide top-right avatar dropdown on mobile (replaced by bottom Profile tab) */
@@ -1462,7 +1463,7 @@
             .content {
                 padding-top: 10px !important;
                 padding-inline: 14px !important;
-                padding-bottom: calc(86px + env(safe-area-inset-bottom, 0px)) !important;
+                padding-bottom: calc(96px + env(safe-area-inset-bottom, 0px)) !important;
             }
 
             /* Hide topbar on mobile Home, Search, Ranks, Notes & Profile tabs */
@@ -1493,11 +1494,11 @@
                 flex-direction: column;
                 align-items: center;
                 justify-content: center;
-                gap: 3px;
+                gap: 2px;
                 background: transparent;
                 border: none;
                 padding: 4px 0;
-                color: #7A4E53;
+                color: #63091D;
                 cursor: pointer;
                 transition: color 0.18s ease, transform 0.12s ease;
                 -webkit-tap-highlight-color: transparent;
@@ -1507,10 +1508,10 @@
                 content: "";
                 position: absolute;
                 right: 0;
-                top: 24%;
-                bottom: 24%;
+                top: 22%;
+                bottom: 22%;
                 width: 1px;
-                background: rgba(189, 139, 127, 0.26);
+                background: rgba(189, 139, 127, 0.35);
             }
 
             .tab-btn:active {
@@ -1519,9 +1520,9 @@
 
             .tab-icon-wrap {
                 position: relative;
-                width: 44px;
-                height: 28px;
-                border-radius: 16px;
+                width: 36px;
+                height: 26px;
+                border-radius: 50%;
                 display: flex;
                 align-items: center;
                 justify-content: center;
@@ -1532,60 +1533,78 @@
                 width: 20px;
                 height: 20px;
                 transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), color 0.2s ease;
-                color: #6E3A40;
+                color: #63091D;
+            }
+
+            /* Raised Glossy Center Medallion for Notes */
+            #tabNotesBtn .tab-icon-wrap {
+                width: 48px;
+                height: 48px;
+                margin-top: -26px;
+                margin-bottom: 1px;
+                border-radius: 50%;
+                background: radial-gradient(circle at 32% 24%, #9A223B 0%, #63091D 58%, #3E0210 100%);
+                border: 2.2px solid #E8B85E;
+                box-shadow: 0 0 0 3px #FAF0E6, 0 6px 16px rgba(58, 1, 13, 0.34);
+            }
+
+            #tabNotesBtn .tab-icon {
+                width: 21px;
+                height: 21px;
+                color: #FDF4EE;
             }
 
             .tab-btn.active {
-                color: #3A010D;
+                color: #4D0515;
             }
 
-            .tab-btn.active .tab-icon-wrap {
-                background: linear-gradient(135deg, #570215 0%, #3A010D 100%);
-                border: 1px solid rgba(232, 192, 136, 0.75);
-                box-shadow: 0 4px 12px rgba(58, 1, 13, 0.28), 0 0 10px rgba(232, 192, 136, 0.28);
+            .tab-btn.active:not(#tabNotesBtn) .tab-icon-wrap {
+                background: rgba(99, 9, 29, 0.08);
+                border: none;
+                box-shadow: none;
             }
 
-            .tab-btn.active .tab-icon {
-                color: #FBDEC7;
-                transform: scale(1.04);
-                filter: none;
+            .tab-btn.active:not(#tabNotesBtn) .tab-icon {
+                color: #4D0515;
+                transform: scale(1.08);
             }
 
             .tab-btn.active::before {
                 content: "";
                 position: absolute;
-                bottom: -2px;
-                left: 28%;
-                right: 28%;
-                height: 2.5px;
-                border-radius: 2px;
-                background: linear-gradient(90deg, transparent, #3A010D, transparent);
+                bottom: 0;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 28px;
+                height: 3.5px;
+                border-radius: 999px;
+                background: #63091D;
             }
 
             .tab-badge-dot {
                 position: absolute;
-                top: 2px;
-                right: 7px;
+                top: 0;
+                right: 3px;
                 width: 7px;
                 height: 7px;
                 border-radius: 50%;
-                background: #C89B5B;
+                background: #D9A44E;
                 border: 1.5px solid #FFFDFB;
-                box-shadow: 0 0 6px rgba(200, 155, 91, 0.65);
+                box-shadow: 0 0 6px rgba(217, 164, 78, 0.65);
             }
 
             .tab-label {
-                font-size: 10px;
+                font-size: 10.5px;
                 font-weight: 700;
-                letter-spacing: 0.6px;
-                text-transform: uppercase;
+                letter-spacing: 0.2px;
+                text-transform: none;
                 transition: font-weight 0.18s ease, color 0.18s ease;
-                color: #7A4E53;
+                color: #63091D;
             }
 
             .tab-btn.active .tab-label {
                 font-weight: 800;
-                color: #3A010D;
+                color: #4D0515;
             }
 
             /* =========================================================
@@ -4850,14 +4869,6 @@
         .avail-inner-panel {
             border: none !important;
             box-shadow: none !important;
-        }
-
-        .mobile-tab-bar {
-            border-top: 1.5px solid rgba(232, 192, 136, 0.85) !important;
-            box-shadow:
-                0 -4px 18px rgba(232, 192, 136, 0.22),
-                0 -10px 30px rgba(24, 0, 5, 0.38),
-                inset 0 1px 0 #FFFFFF !important;
         }
     </style>
 </head>
