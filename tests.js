@@ -217,6 +217,7 @@ function renderTests() {
 
         const card = document.createElement("article");
         card.className = "avail-exam-card";
+        card.setAttribute("data-test-id", String(test.id));
         card.setAttribute("role", "button");
         card.setAttribute("tabindex", "0");
         card.setAttribute("title", `Click to start ${test.title}`);
@@ -2440,16 +2441,38 @@ function initNotificationsBell() {
         }
     }
 
+    function getDismissedNotifs() {
+        try {
+            return JSON.parse(localStorage.getItem("slogonDismissedNotifs") || "[]");
+        } catch {
+            return [];
+        }
+    }
+
+    function dismissNotifId(notifId) {
+        if (!notifId) return;
+        const current = getDismissedNotifs();
+        if (!current.includes(notifId)) {
+            current.push(notifId);
+            localStorage.setItem("slogonDismissedNotifs", JSON.stringify(current));
+        }
+    }
+
     function buildNotificationItems() {
+        const dismissed = getDismissedNotifs();
         const items = [];
         const availableTests = (typeof mockTests !== "undefined" ? mockTests : []).filter(t => t.status === "available");
         const alertIds = getAlertsSafe();
 
         availableTests.forEach(test => {
+            const notifId = `exam_${test.id}`;
+            if (dismissed.includes(notifId)) return;
             const qCount = test.questionsCount || test.questions_count || 150;
             const dur = test.duration || 180;
             const isAlertedRelease = alertIds.includes(String(test.id));
             items.push({
+                id: notifId,
+                testId: String(test.id),
                 tag: isAlertedRelease ? "Unlocked" : "Live",
                 title: isAlertedRelease
                     ? `${test.title || "Mock Exam"} is Now Published!`
@@ -2467,8 +2490,9 @@ function initNotificationsBell() {
             return !match || match.status !== "available";
         });
 
-        if (pendingAlerts.length > 0) {
+        if (pendingAlerts.length > 0 && !dismissed.includes("pending_alerts")) {
             items.push({
+                id: "pending_alerts",
                 tag: "Alert On",
                 title: `${pendingAlerts.length} Upcoming Exam ${pendingAlerts.length === 1 ? "Reminder" : "Reminders"} Active`,
                 desc: "You will be notified here as soon as your alerted upcoming mock sets unlock.",
@@ -2477,15 +2501,57 @@ function initNotificationsBell() {
             });
         }
 
-        items.push({
-            tag: "Notes",
-            title: "Study Notes Ready",
-            desc: "Browse Paper 1 & Paper 2 unit guides, grammar references, and quick revision notes.",
-            action: "openStudyNotes",
-            icon: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>`
-        });
+        if (!dismissed.includes("study_notes")) {
+            items.push({
+                id: "study_notes",
+                tag: "Notes",
+                title: "Study Notes Ready",
+                desc: "Browse Paper 1 & Paper 2 unit guides, grammar references, and quick revision notes.",
+                action: "openStudyNotes",
+                icon: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>`
+            });
+        }
 
         return items;
+    }
+
+    function openSpecificNotification(targetId, action, testId) {
+        closeNotifications();
+        if (action === "openStudyNotes") {
+            openStudyNotesPage();
+            return;
+        }
+        if (typeof switchStudentTab === "function") {
+            switchStudentTab("home");
+        }
+        setTimeout(() => {
+            if (testId) {
+                const track = document.getElementById("availableCarouselTrack");
+                const card = track ? track.querySelector(`[data-test-id="${CSS.escape(testId)}"]`) : null;
+                if (card && track) {
+                    const section = document.getElementById("availableExamsSection");
+                    if (section) section.scrollIntoView({ behavior: "smooth", block: "start" });
+                    track.scrollTo({ left: card.offsetLeft - track.offsetLeft, behavior: "smooth" });
+                    card.style.boxShadow = "0 0 0 3px #E8C088, 0 14px 32px rgba(58, 1, 13, 0.25)";
+                    setTimeout(() => { card.style.boxShadow = ""; }, 1800);
+                    return;
+                }
+            }
+            if (targetId) {
+                const targetEl = document.getElementById(targetId);
+                if (targetEl) targetEl.scrollIntoView({ behavior: "smooth", block: "start" });
+            }
+        }, 60);
+    }
+
+    function updateNotifMetaCount() {
+        const remaining = listEl.querySelectorAll(".notif-item").length;
+        if (metaEl) {
+            metaEl.textContent = `${remaining} active ${remaining === 1 ? "notification" : "notifications"}`;
+        }
+        if (remaining === 0) {
+            listEl.innerHTML = `<div style="padding:26px 14px; text-align:center; color:rgba(251,222,199,0.75); font-size:13px; font-weight:600; border:1px dashed rgba(232,192,136,0.3); border-radius:16px;">You're all caught up.</div>`;
+        }
     }
 
     function renderNotifications() {
@@ -2493,8 +2559,12 @@ function initNotificationsBell() {
         if (metaEl) {
             metaEl.textContent = `${items.length} active ${items.length === 1 ? "notification" : "notifications"}`;
         }
+        if (items.length === 0) {
+            listEl.innerHTML = `<div style="padding:26px 14px; text-align:center; color:rgba(251,222,199,0.75); font-size:13px; font-weight:600; border:1px dashed rgba(232,192,136,0.3); border-radius:16px;">You're all caught up.</div>`;
+            return;
+        }
         listEl.innerHTML = items.map(item => `
-            <button type="button" class="notif-item" data-scroll-target="${item.targetId || ""}" data-notif-action="${item.action || ""}">
+            <button type="button" class="notif-item" data-notif-id="${item.id}" data-test-id="${item.testId || ""}" data-scroll-target="${item.targetId || ""}" data-notif-action="${item.action || ""}">
                 <span class="notif-item-icon" aria-hidden="true">${item.icon}</span>
                 <span class="notif-item-body">
                     <span class="notif-item-top">
@@ -2507,18 +2577,74 @@ function initNotificationsBell() {
         `).join("");
 
         listEl.querySelectorAll(".notif-item").forEach(btn => {
-            btn.addEventListener("click", () => {
+            let startX = 0;
+            let startY = 0;
+            let currentX = 0;
+            let swiping = false;
+            let didSwipe = false;
+
+            const onStart = (x, y) => {
+                startX = x;
+                startY = y;
+                currentX = 0;
+                swiping = false;
+                didSwipe = false;
+            };
+
+            const onMove = (x, y) => {
+                const dx = x - startX;
+                const dy = y - startY;
+                if (!swiping && Math.abs(dx) > 10 && Math.abs(dx) > Math.abs(dy)) {
+                    swiping = true;
+                    didSwipe = true;
+                    btn.classList.add("is-swiping");
+                }
+                if (swiping) {
+                    currentX = dx;
+                    btn.style.transform = `translateX(${dx}px)`;
+                    btn.style.opacity = String(Math.max(0.25, 1 - Math.abs(dx) / 180));
+                }
+            };
+
+            const onEnd = () => {
+                if (!swiping) return;
+                btn.classList.remove("is-swiping");
+                if (Math.abs(currentX) >= 72) {
+                    const dir = currentX > 0 ? "115%" : "-115%";
+                    btn.style.transform = `translateX(${dir})`;
+                    btn.style.opacity = "0";
+                    const nId = btn.getAttribute("data-notif-id");
+                    dismissNotifId(nId);
+                    setTimeout(() => {
+                        btn.remove();
+                        updateNotifMetaCount();
+                    }, 200);
+                } else {
+                    btn.style.transform = "";
+                    btn.style.opacity = "";
+                }
+                swiping = false;
+            };
+
+            btn.addEventListener("touchstart", (e) => {
+                if (e.touches && e.touches[0]) onStart(e.touches[0].clientX, e.touches[0].clientY);
+            }, { passive: true });
+            btn.addEventListener("touchmove", (e) => {
+                if (e.touches && e.touches[0]) onMove(e.touches[0].clientX, e.touches[0].clientY);
+            }, { passive: true });
+            btn.addEventListener("touchend", onEnd);
+            btn.addEventListener("touchcancel", onEnd);
+
+            btn.addEventListener("click", (e) => {
+                if (didSwipe) {
+                    e.preventDefault();
+                    didSwipe = false;
+                    return;
+                }
                 const targetId = btn.getAttribute("data-scroll-target");
                 const action = btn.getAttribute("data-notif-action");
-                closeNotifications();
-                if (action === "openStudyNotes") {
-                    openStudyNotesPage();
-                } else if (targetId) {
-                    const targetEl = document.getElementById(targetId);
-                    if (targetEl) {
-                        targetEl.scrollIntoView({ behavior: "smooth", block: "start" });
-                    }
-                }
+                const testId = btn.getAttribute("data-test-id");
+                openSpecificNotification(targetId, action, testId);
             });
         });
     }
