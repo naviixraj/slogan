@@ -98,26 +98,36 @@
             justify-content: center;
         }
 
+        .instructions-header-left,
+        .instructions-brand {
+            display: flex !important;
+            align-items: center !important;
+            gap: 12px !important;
+        }
+
         .mini-logo {
-            width: 42px !important;
-            height: 42px !important;
+            width: 44px !important;
+            height: 44px !important;
             border-radius: 12px !important;
             background: #FDF4EE !important;
             padding: 4px !important;
             border: 1.25px solid rgba(232, 192, 136, 0.9) !important;
-            box-shadow: 0 4px 12px rgba(24, 0, 5, 0.28) !important;
+            box-shadow: 0 4px 12px rgba(24, 0, 5, 0.3) !important;
+            flex-shrink: 0;
         }
 
         .instructions-brand-text h1 {
             font-family: "Playfair Display", Georgia, serif !important;
-            font-size: clamp(16px, 4vw, 19px) !important;
+            font-size: clamp(16px, 4.2vw, 19px) !important;
             font-weight: 800 !important;
             letter-spacing: 2px !important;
+            line-height: 1.15 !important;
             background: linear-gradient(135deg, #FDF4EE 0%, #FBDEC7 48%, #E8C088 100%);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent !important;
             -webkit-text-fill-color: transparent;
+            filter: drop-shadow(0 2px 6px rgba(24, 0, 5, 0.5));
         }
 
         .instructions-exam-mobile {
