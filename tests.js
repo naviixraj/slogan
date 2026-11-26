@@ -950,6 +950,8 @@ function openStudyNotesPage() {
     window.scrollTo({ top: 0, behavior: "smooth" });
 }
 
+let cachedPaperNotes = [];
+let currentSelectedPaper = "Paper 1";
 let allPublishedNotesCache = [];
 let notesPrefetched = false;
 
