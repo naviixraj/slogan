@@ -744,7 +744,7 @@ function renderTests() {
         const openBtn = document.createElement("button");
         openBtn.type = "button";
         openBtn.className = "avail-start-btn";
-        openBtn.innerHTML = `<span>▶ OPEN STUDY MATERIAL &rarr;</span>`;
+        openBtn.innerHTML = `<span>▶ OPEN STUDY NOTES &rarr;</span>`;
 
         const handleOpen = () => openStudyMaterialModal(item);
         card.addEventListener("click", handleOpen);
@@ -2076,8 +2076,8 @@ function initNotificationsBell() {
         }
 
         items.push({
-            tag: "Study",
-            title: "Study Material Modules Ready",
+            tag: "Notes",
+            title: "Study Notes Ready",
             desc: "Browse Paper 1 & Paper 2 unit guides, grammar references, and quick revision notes.",
             targetId: "studyMaterialSection",
             icon: `<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>`
